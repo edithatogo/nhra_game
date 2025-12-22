@@ -3,7 +3,7 @@
 ## Phase 1: Workspace Reorganization & Archiving
 - [x] **Task 1: Create core directory structure** c1b3d4d
   - Create `docs/diagrams`, `docs/figures`, `data/raw`, and `archive/legacy_versions`.
-- [ ] **Task 2: Categorize and move loose visual artifacts**
+- [~] **Task 2: Categorize and move loose visual artifacts**
   - Move all Mermaid files (`.mmd`, `.png`) to `docs/diagrams/`.
   - Move other loose images (`.png`, `.svg`) to `docs/figures/`.
 - [ ] **Task 3: Categorize and move loose data/archive artifacts**
