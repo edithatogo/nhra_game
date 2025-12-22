@@ -24,7 +24,7 @@
 - [x] **Task 9: Conductor - User Manual Verification 'Git Initialization' (Protocol in workflow.md)** [checkpoint: f79f93f]
 
 ## Phase 3: Infrastructure Setup & Baseline Validation
-- [ ] **Task 10: Validate dependency management**
+- [~] **Task 10: Validate dependency management**
   - Ensure `pyproject.toml` is in the root and correctly lists all dependencies identified in the tech stack.
 - [ ] **Task 11: Configure development tooling**
   - Initialize/update `.pre-commit-config.yaml`.
