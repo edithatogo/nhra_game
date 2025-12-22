@@ -14,7 +14,7 @@
 - [x] **Task 5: Conductor - User Manual Verification 'Workspace Reorganization' (Protocol in workflow.md)** [checkpoint: 807773d]
 
 ## Phase 2: Root Promotion & Git Initialization
-- [~] **Task 6: Promote v21 to project root**
+- [x] **Task 6: Promote v21 to project root** 0f2d9b3
   - Move the contents of `nhra_game_theory_repo_v21_20251221` to the current working directory root.
 - [ ] **Task 7: Initialize Git repository**
   - Run `git init`.
