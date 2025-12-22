@@ -6,7 +6,7 @@
 - [x] **Task 2: Categorize and move loose visual artifacts** bbcafa0
   - Move all Mermaid files (`.mmd`, `.png`) to `docs/diagrams/`.
   - Move other loose images (`.png`, `.svg`) to `docs/figures/`.
-- [ ] **Task 3: Categorize and move loose data/archive artifacts**
+- [~] **Task 3: Categorize and move loose data/archive artifacts**
   - Move loose data files (`.csv`, `.xlsb`, `.7z`) to `data/raw/`.
   - Move all `nhra_game_theory_repo_v*.zip` files to `archive/legacy_versions/`.
 - [ ] **Task 4: Archive legacy version directories**
