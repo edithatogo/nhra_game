@@ -29,7 +29,7 @@
 - [x] **Task 11: Configure development tooling** a425d24
   - Initialize/update `.pre-commit-config.yaml`.
   - Verify `Snakefile` paths match the new root structure.
-- [ ] **Task 12: Baseline Quality Check**
+- [~] **Task 12: Baseline Quality Check**
   - Run `ruff check`, `mypy`, and `pytest` to establish the current quality baseline.
 - [ ] **Task 13: Conductor - User Manual Verification 'Infrastructure Setup' (Protocol in workflow.md)**
 
