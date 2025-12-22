@@ -10,7 +10,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Foundation & Data Formalization' (Protocol in workflow.md)** [checkpoint: 8a35e34]
 
 ## Phase 2: Logic Porting & Model Enhancement
-- [~] **Task 3: Implement Bargaining Constraints (TDD)**
+- [x] **Task 3: Implement Bargaining Constraints (TDD)** (Verified v2 parity; stability confirmed)
   - Write unit tests in `tests/test_subgames_games.py` for new parameter bounds.
   - Port constraints from `v2` into the model definition in `src/nhra_game_theory/`.
 - [ ] **Task 4: Update Optuna Objective Function (TDD)**
