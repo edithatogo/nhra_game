@@ -9,7 +9,7 @@
 - [x] **Task 3: Categorize and move loose data/archive artifacts** 7ccff4d
   - Move loose data files (`.csv`, `.xlsb`, `.7z`) to `data/raw/`.
   - Move all `nhra_game_theory_repo_v*.zip` files to `archive/legacy_versions/`.
-- [~] **Task 4: Archive legacy version directories**
+- [x] **Task 4: Archive legacy version directories** d057d33
   - Move all folders matching `nhra_game_theory_repo_v*` (except v21) to `archive/legacy_versions/`.
 - [ ] **Task 5: Conductor - User Manual Verification 'Workspace Reorganization' (Protocol in workflow.md)**
 
