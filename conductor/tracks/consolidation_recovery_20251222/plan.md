@@ -11,7 +11,7 @@
   - Move all `nhra_game_theory_repo_v*.zip` files to `archive/legacy_versions/`.
 - [x] **Task 4: Archive legacy version directories** d057d33
   - Move all folders matching `nhra_game_theory_repo_v*` (except v21) to `archive/legacy_versions/`.
-- [ ] **Task 5: Conductor - User Manual Verification 'Workspace Reorganization' (Protocol in workflow.md)**
+- [~] **Task 5: Conductor - User Manual Verification 'Workspace Reorganization' (Protocol in workflow.md)**
 
 ## Phase 2: Root Promotion & Git Initialization
 - [ ] **Task 6: Promote v21 to project root**
