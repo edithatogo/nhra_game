@@ -19,7 +19,7 @@
 - [x] **Task 7: Initialize Git repository** (Already done in Phase 1, updated .gitignore)
   - Run `git init`.
   - Create a robust `.gitignore` including `archive/`, `.DS_Store`, and temporary files.
-- [~] **Task 8: Perform initial commit**
+- [x] **Task 8: Perform initial commit** f79f93f
   - Add all files and commit with message `feat: initial repository structure from v21`.
 - [ ] **Task 9: Conductor - User Manual Verification 'Git Initialization' (Protocol in workflow.md)**
 
