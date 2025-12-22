@@ -19,7 +19,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Logic Porting & Model Enhancement' (Protocol in workflow.md)** [checkpoint: 8209007]
 
 ## Phase 3: Advanced Optimization Features
-- [ ] **Task 5: Implement Posterior Sampling**
+- [~] **Task 5: Implement Posterior Sampling**
   - Update the optimization script to support saving and sampling from the posterior distribution.
   - Write tests to verify the integrity of the generated parameter distributions.
 - [ ] **Task 6: Snakemake Integration**
