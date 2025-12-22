@@ -16,7 +16,10 @@ dependencies = [
   "matplotlib>=3.7",
   "networkx>=3.2",
   "plotly>=5.18",
-  "scipy>=1.10"
+  "scipy>=1.10",
+  "SALib>=1.4.7",
+  "snakemake>=7.32",
+  "streamlit>=1.35"
 ]
 
 [project.optional-dependencies]
