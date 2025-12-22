@@ -1,7 +1,7 @@
 # Track Plan: Re-integrate v2 Calibration Logic into v21
 
 ## Phase 1: Foundation & Data Formalization
-- [~] **Task 1: Formalize Calibration Target Suite**
+- [x] **Task 1: Formalize Calibration Target Suite**
   - Extract ground-truth data points from `archive/legacy_versions/v2` context.
   - Create `data/raw/calibration_targets.csv` following the v21 schema.
 - [ ] **Task 2: Establish Regression Baseline**
