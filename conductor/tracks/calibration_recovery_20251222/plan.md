@@ -4,7 +4,7 @@
 - [x] **Task 1: Formalize Calibration Target Suite**
   - Extract ground-truth data points from `archive/legacy_versions/v2` context.
   - Create `data/raw/calibration_targets.csv` following the v21 schema.
-- [~] **Task 2: Establish Regression Baseline**
+- [x] **Task 2: Establish Regression Baseline**
   - Execute current `v21` baseline simulation and Optuna runs.
   - Document baseline residuals and equilibrium stability metrics.
 - [ ] **Task: Conductor - User Manual Verification 'Foundation & Data Formalization' (Protocol in workflow.md)**
