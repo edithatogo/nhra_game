@@ -1,0 +1,13 @@
+digraph MermaidConverted {
+  rankdir=LR;
+  graph [labelloc="t", label="Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230", fontsize=12];
+  node [shape=box, style="rounded,filled", fillcolor="#F7F7F7", color="#555555", fontname="Inter", fontsize=11];
+  edge [color="#444444", fontname="Inter", fontsize=10];
+  F1 [label="Pooled/Regional funding pilots\n(shared accountability + outcomes)"];
+  F2 [label="Integrated clinical governance\n(end-to-end responsibility;\ndata/reporting)"];
+  F3 [label="Middle-tier workforce + subacute pathways\n(unlock discharge)"];
+  I [label="Split incentives\n(cost-shifting;\nno end-to-end owner)"];
+  R [label="Clinical risk\n(ED overcrowding, delays,\nstaff harm, adverse events)"];
+  T [label="NHRA funding terms\n(price basis, caps,\nnominal vs effective share)"];
+  X [label="Exit block\n(discharge failure across\nAged Care/NDIS/community)"];
+}

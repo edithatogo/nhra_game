@@ -1,0 +1,32 @@
+digraph MermaidConverted {
+  rankdir=LR;
+  graph [labelloc="t", label="Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621", fontsize=12];
+  node [shape=box, style="rounded,filled", fillcolor="#F7F7F7", color="#555555", fontname="Inter", fontsize=11];
+  edge [color="#444444", fontname="Inter", fontsize=10];
+  Audit [label="Compliance game"];
+  Bail [label="Bailout game"];
+  Barg [label="Bargaining game"];
+  Code [label="Coding game"];
+  Define [label="Definition game"];
+  Hpress [label="Hub B: Pressure signal"];
+  Hrule [label="Hub A: Rules game"];
+  Integr [label="Integration game"];
+  Place [label="Placement game"];
+  Risk [label="Clinical risk"];
+  Shift [label="Cost-shifting game"];
+  Signal [label="Signalling game"];
+  Define -> Hrule;
+  Audit -> Hrule;
+  Code -> Define;
+  Bail -> Hrule;
+  Hrule -> Barg;
+  Barg -> Define;
+  Barg -> Bail;
+  Shift -> Hpress;
+  Place -> Hpress;
+  Integr -> Shift;
+  Hpress -> Risk;
+  Risk -> Signal;
+  Hrule -> Hpress;
+  Hpress -> Barg;
+}

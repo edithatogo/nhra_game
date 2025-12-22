@@ -1,0 +1,62 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nhra-game-theory"
+version = "0.9.0"
+description = "Stylised game-theory mechanism models for NHRA negotiations and downstream system pressure"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Dylan A Mordaunt (RACMA working draft)" }]
+dependencies = [
+  "numpy>=1.24",
+  "pandas>=2.0",
+  "matplotlib>=3.7",
+  "networkx>=3.2",
+  "plotly>=5.18",
+  "scipy>=1.10"
+]
+
+[project.optional-dependencies]
+opt = ["optuna>=3.6"]
+dev = [
+  "pytest>=7.4",
+  "hypothesis>=6.100",
+  "ruff>=0.8",
+  "mypy>=1.10",
+  "pre-commit>=3.7",
+  "tox>=4.15",
+  "mkdocs>=1.6",
+  "mkdocs-material>=9.5",
+  "mutmut>=2.4",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nhra_game_theory"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+ignore_missing_imports = true
+python_version = "3.10"
+strict = true
+warn_unused_ignores = true
+show_error_codes = true
+pretty = true
+exclude = ["scripts/", "outputs/", "reports/"]
+
+[tool.ruff.lint]
+select = ["E","F","I","B","UP","SIM"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"

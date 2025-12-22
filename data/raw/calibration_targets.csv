@@ -1,0 +1,13 @@
+metric,value,source,description
+NEP_PER_NWAU_2024_25,6465.0,IHACPA NEP 2024–25,NEP per NWAU
+HIP_REPLACEMENT_NWAU,4.0954,IHACPA NEP 2024–25,Hip replacement weight
+ED_WITHIN_4H_2024_25,0.53,AIHW ED time spent,ED LOS within 4 hours (2024-25)
+ED_WITHIN_4H_2020_21,0.67,AIHW ED time spent,ED LOS within 4 hours (2020-21)
+ALOS_ALL,2.7,AIHW admitted ALOS,Overall ALOS
+ALOS_PUBLIC_OVERNIGHT,5.8,AIHW admitted ALOS,Overnight public ALOS
+PUBLIC_BEDS_TOTAL,65900,AIHW hospital resources,Available public beds (2023-24)
+SCHEDULE_K_ONEOFF,1.7e9,NHRA Schedule K,One-off supplement (2025-26)
+NHFB_ENTITLEMENT_EST,32.2e9,NHFB corporate plan,Entitlement estimate
+UCC_HANDOVER_ANY,0.89,Medicare UCC evaluation,Handover by at least one method
+UCC_ELECTRONIC_SUMMARY_TO_GP,0.68,Medicare UCC evaluation,Electronic summary to usual GP
+AGED_CARE_OCCUPANCY,0.88,AIHW aged care data,Residential care occupancy (2023-24)

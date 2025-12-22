@@ -1,0 +1,22 @@
+digraph "Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805" {
+  rankdir=LR;
+  node [shape=box, style="rounded"];
+  ABF [label="fa:fa-database Provider ABF/coding<br>Classification, coding accuracy, gaming risk"];
+  BARG [label="fa:fa-handshake Intergovernmental bargaining (repeated)<br>Commonwealth ↔ States<br>% share, caps, indexation"];
+  COMP [label="fa:fa-shield-alt Compliance &amp; integrity<br>Maintenance-of-effort; audits; allocation"];
+  DEF [label="fa:fa-balance-scale Definition &amp; measurement<br>NEP vs actual costs; baselines; indexation"];
+  DISC [label="fa:fa-procedures Discharge/placement<br>Aged Care &amp; NDIS constraints → delayed discharge"];
+  GOV [label="fa:fa-project-diagram Governance integration<br>Parallel models (e.g., UCCs) vs LHN governance"];
+  OUT [label="fa:fa-hospital-user Operational pressure &amp; visible failure<br>Exit block → ED overcrowding → ramping<br>Clinical risk &amp; staff harm"];
+  POL [label="fa:fa-bullhorn Political blame/credit signalling<br>Voters, media, central agencies"];
+  SOFT [label="fa:fa-life-ring Soft budget constraint<br>Interim top-ups / bailout expectations"];
+  VFI [label="fa:fa-exchange-alt VFI externality / cost-shifting<br>Upstream levers vs downstream hospital risk"];
+  DEF -> BARG [style="solid"];
+  SOFT -> BARG [style="solid"];
+  POL -> BARG [style="solid"];
+  VFI -> OUT [style="solid"];
+  DISC -> OUT [style="solid"];
+  ABF -> DEF [style="solid"];
+  COMP -> DEF [style="solid"];
+  GOV -> VFI [style="solid"];
+}

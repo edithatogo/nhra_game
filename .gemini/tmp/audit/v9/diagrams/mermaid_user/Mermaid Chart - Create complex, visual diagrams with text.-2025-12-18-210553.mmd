@@ -1,0 +1,45 @@
+---
+config:
+  theme: redux
+  flowchart:
+    curve: basis
+    nodeSpacing: 60
+    rankSpacing: 85
+    padding: 10
+  themeVariables:
+    fontFamily: ''
+    fontSize: 16px
+    lineColor: '#333333'
+    textColor: '#111111'
+  layout: dagre
+  look: neo
+---
+flowchart LR
+    Shift["Cost-shifting game"] --> Place["Placement game"] & Press["Pressure (public signal)"]
+    Place --> Press
+    Press --> Risk["Clinical risk"] & Signal["Signalling game"]
+    Signal --> Barg["Bargaining game"]
+    Risk --> Signal
+    Define["Definition game"] --> Barg
+    Code["Coding game"] --> Define
+    Audit["Compliance game"] --> Define
+    Bail["Bailout game"] --> Barg
+    Barg --> Bail
+    Integr["Integration game"] --> Shift & Risk
+    Press -.-> Audit
+    Audit -.-> Press
+
+     Barg:::g
+     Signal:::g
+     Define:::g
+     Shift:::g
+     Place:::g
+     Code:::g
+     Audit:::g
+     Bail:::g
+     Integr:::g
+     Press:::o
+     Risk:::o
+    classDef g fill:#DFF1FF,stroke:#0B5FA5,stroke-width:1.8px,color:#111,rx:14,ry:14
+    classDef o fill:#FFE0E0,stroke:#B23B3B,stroke-width:2.6px,color:#111,rx:14,ry:14
+    style Press fill:#FFD1D1,stroke:#8F1F1F,stroke-width:3px

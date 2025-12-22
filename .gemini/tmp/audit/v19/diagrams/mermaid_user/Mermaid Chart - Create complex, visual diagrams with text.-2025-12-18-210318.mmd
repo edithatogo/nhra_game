@@ -1,0 +1,46 @@
+%%{init: {
+  "theme": "base",
+  "flowchart": { "curve": "basis", "nodeSpacing": 60, "rankSpacing": 80, "padding": 10 },
+  "themeVariables": {
+    "fontFamily": "Inter, Arial, sans-serif",
+    "fontSize": "16px",
+    "lineColor": "#333333",
+    "textColor": "#111111"
+  }
+}}%%
+
+flowchart LR
+  BARG["Bargaining"]:::g
+  SIGNAL["Signalling"]:::g
+  METRICS["Definitions"]:::g
+  EXTERNAL["Cost-shifting"]:::g
+  DISCHARGE["Placement delays"]:::g
+  CODING["Coding/ABF"]:::g
+  COMPLY["Audits"]:::g
+  BAILOUT["Top-ups"]:::g
+  GOVINT["Integration"]:::g
+
+  PRESS["System pressure"]:::o
+  RISK["Clinical risk"]:::o
+
+  %% Core network
+  EXTERNAL --> DISCHARGE --> PRESS --> RISK
+  EXTERNAL --> PRESS
+  PRESS --> SIGNAL --> BARG
+  METRICS --> BARG
+  CODING --> METRICS
+  COMPLY --> METRICS
+  BARG --> METRICS
+  BAILOUT --> BARG
+  BARG --> BAILOUT
+  GOVINT --> EXTERNAL
+  GOVINT --> RISK
+
+  %% Light feedback
+  PRESS -.-> COMPLY
+  COMPLY -.-> PRESS
+
+  classDef g fill:#DFF1FF,stroke:#0B5FA5,stroke-width:1.8px,color:#111,rx:14,ry:14;
+  classDef o fill:#FFE0E0,stroke:#B23B3B,stroke-width:2.6px,color:#111,rx:14,ry:14;
+
+  style PRESS fill:#FFD1D1,stroke:#8F1F1F,stroke-width:3px

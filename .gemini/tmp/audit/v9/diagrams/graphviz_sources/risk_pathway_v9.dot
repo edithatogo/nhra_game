@@ -1,0 +1,16 @@
+digraph RiskPathwayV9 {
+  rankdir=TB;
+  graph [fontname="Inter", fontsize=12, labelloc="t", label="Patient-flow risk pathway (stylised, v9)"];
+  node  [shape=box, style="rounded,filled", fontname="Inter", fontsize=11, margin="0.12,0.06"];
+  edge  [color="#444444", penwidth=1.2];
+
+  UP [label="Upstream\n(GP/Aged/NDIS)", fillcolor="#E8F0FE", color="#01579B"];
+  DISC [label="Discharge delay", fillcolor="#FFF3E0", color="#E65100"];
+  BLOCK [label="Exit block", fillcolor="#FFF3E0", color="#E65100"];
+  OCC [label="High occupancy", fillcolor="#FFF3E0", color="#E65100"];
+  OFF [label="Offload delay", fillcolor="#FFF3E0", color="#E65100"];
+  RISK [label="Safety risk", fillcolor="#FFEBEE", color="#B71C1C"];
+
+  UP -> DISC -> BLOCK -> OCC -> RISK;
+  OCC -> OFF -> RISK;
+}

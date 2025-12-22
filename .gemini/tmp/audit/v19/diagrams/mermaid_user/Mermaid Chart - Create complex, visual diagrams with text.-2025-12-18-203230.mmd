@@ -1,0 +1,27 @@
+---
+config:
+  look: handDrawn
+  theme: neutral
+---
+flowchart LR
+  V(["Vertical fiscal imbalance<br>(Commonwealth revenue; States run hospitals)"]):::core
+  T["NHRA funding terms<br>(price basis, caps,<br>nominal vs effective share)"]:::cw
+  I["Split incentives<br>(cost-shifting;<br>no end-to-end owner)"]:::neutral
+  X["Exit block<br>(discharge failure across<br>Aged Care/NDIS/community)"]:::neutral
+  R["Clinical risk<br>(ED overcrowding, delays,<br>staff harm, adverse events)"]:::risk
+
+  V --> T --> I --> X --> R
+
+  F1["Pooled/Regional funding pilots<br>(shared accountability + outcomes)"]:::st
+  F2["Integrated clinical governance<br>(end-to-end responsibility;<br>data/reporting)"]:::st
+  F3["Middle-tier workforce + subacute pathways<br>(unlock discharge)"]:::st
+
+  F1 -. reduces .-> I
+  F2 -. mitigates .-> R
+  F3 -. reduces .-> X
+
+  classDef core fill:#FFF4CC,stroke:#8A6D00,color:#111,stroke-width:2px;
+  classDef cw fill:#EAF2FF,stroke:#3B6FB6,color:#111;
+  classDef st fill:#E9FFF1,stroke:#2F8F5B,color:#111;
+  classDef neutral fill:#F5F5F5,stroke:#777,color:#111;
+  classDef risk fill:#FFE6E6,stroke:#B84A4A,color:#111;

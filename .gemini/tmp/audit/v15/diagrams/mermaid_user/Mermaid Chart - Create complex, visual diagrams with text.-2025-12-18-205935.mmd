@@ -1,0 +1,55 @@
+---
+config:
+  theme: base
+  flowchart:
+    curve: basis
+    nodeSpacing: 55
+    rankSpacing: 70
+    padding: 8
+  themeVariables:
+    fontFamily: ''
+    fontSize: 15px
+    lineColor: '#3A3A3A'
+    textColor: '#111'
+    primaryBorderColor: '#2B2B2B'
+    clusterBkg: '#FFFFFF'
+    clusterBorder: '#D0D0D0'
+  layout: dagre
+---
+flowchart LR
+ subgraph O["VISIBLE OUTCOMES"]
+    direction TB
+        OUT["System pressure<br>Exit block → ED crowding<br>Clinical risk + burnout"]
+  end
+    DEF["Definition game<br>NEP • baselines • indexation"] -- defines “45%” --> BARG["Intergov bargaining<br><b>Commonwealth ↔ States</b><br>% share • caps • indexation"]
+    SOFT["Soft budget game<br>top-ups • bailouts"] -- affects bargaining --> BARG
+    COMP["Compliance game<br>audits • effort tests"] -- adds constraints --> BARG
+    GOV["Governance game<br>UCCs • LHN integration"] -- shifts boundaries --> VFI["VFI &amp; cost-shifting<br><b>Upstream levers</b> vs <b>hospital risk</b>"]
+    DISC["Discharge game<br>Aged Care • NDIS delays"] -- adds load --> VFI
+    ABF["ABF/coding game<br>classification • gaming risk"] -- feeds data --> DEF
+    BARG -- resets rules --> DEF
+    BARG -- tightens audits --> COMP
+    BARG -- extends deals --> SOFT
+    BARG -- sets integration terms --> GOV
+    VFI -- spillover demand --> OUT
+    DISC -- occupancy loop --> OUT
+    OUT -- media pressure --> POL["Political signalling<br>voters • media • agencies"]
+    POL -- changes stance --> BARG
+    OUT -- crisis response --> BARG
+    POL -. narrative .-> DEF
+
+     OUT:::outcome
+     DEF:::secondary
+     BARG:::primary
+     SOFT:::secondary
+     COMP:::secondary
+     GOV:::secondary
+     VFI:::primary
+     DISC:::secondary
+     ABF:::secondary
+     POL:::primary
+    classDef primary fill:#FFF2CC,stroke:#8A6D00,stroke-width:2px,color:#111,rx:12,ry:12
+    classDef secondary fill:#DFF1FF,stroke:#0B5FA5,stroke-width:1.6px,color:#111,rx:12,ry:12
+    classDef outcome fill:#FFE0E0,stroke:#B23B3B,stroke-width:2px,color:#111,rx:12,ry:12
+    style OUT fill:#FFD6D6,stroke:#8F1F1F,stroke-width:3px
+    style O fill:#FFF2F2,stroke:#E6A1A1,stroke-width:1.5px

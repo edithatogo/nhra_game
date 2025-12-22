@@ -1,0 +1,8 @@
+{
+  "track_id": "calibration_recovery_20251222",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2025-12-22T09:30:00Z",
+  "updated_at": "2025-12-22T09:30:00Z",
+  "description": "Re-integrate v2 Calibration Logic into v21"
+}

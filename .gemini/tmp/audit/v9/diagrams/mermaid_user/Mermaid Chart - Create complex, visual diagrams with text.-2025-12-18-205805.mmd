@@ -1,0 +1,37 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: Inter, Helvetica
+    primaryColor: '#FFF8E1'
+    edgeLabelBackground: '#ffffffaa'
+    lineColor: '#555'
+    tertiaryColor: '#fafafa'
+  layout: dagre
+---
+flowchart LR
+    DEF["fa:fa-balance-scale Definition &amp; measurement<br>NEP vs actual costs; baselines; indexation"] --> BARG["fa:fa-handshake Intergovernmental bargaining (repeated)<br>Commonwealth ↔ States<br>% share, caps, indexation"]
+    SOFT["fa:fa-life-ring Soft budget constraint<br>Interim top-ups / bailout expectations"] --> BARG
+    POL["fa:fa-bullhorn Political blame/credit signalling<br>Voters, media, central agencies"] --> BARG
+    VFI["fa:fa-exchange-alt VFI externality / cost-shifting<br>Upstream levers vs downstream hospital risk"] --> OUT["fa:fa-hospital-user Operational pressure &amp; visible failure<br>Exit block → ED overcrowding → ramping<br>Clinical risk &amp; staff harm"]
+    DISC["fa:fa-procedures Discharge/placement<br>Aged Care &amp; NDIS constraints → delayed discharge"] --> OUT
+    ABF["fa:fa-database Provider ABF/coding<br>Classification, coding accuracy, gaming risk"] --> DEF
+    COMP["fa:fa-shield-alt Compliance &amp; integrity<br>Maintenance-of-effort; audits; allocation"] --> DEF
+    GOV["fa:fa-project-diagram Governance integration<br>Parallel models (e.g., UCCs) vs LHN governance"] --> VFI
+    OUT -. Escalates political pressure .-> POL
+    OUT -. Triggers new bargaining round .-> BARG
+    BARG --> DEF & COMP & GOV & SOFT
+
+     DEF:::secondary
+     BARG:::primary
+     SOFT:::secondary
+     POL:::primary
+     VFI:::primary
+     OUT:::outcome
+     DISC:::secondary
+     ABF:::secondary
+     COMP:::secondary
+     GOV:::secondary
+    classDef primary fill:#FFF3BF,stroke:#B38F00,stroke-width:2px,color:#111,rx:8px,ry:8px
+    classDef secondary fill:#E3F2FD,stroke:#1565C0,stroke-width:1.5px,color:#111,rx:8px,ry:8px
+    classDef outcome fill:#FFCDD2,stroke:#B71C1C,stroke-width:2px,color:#111,rx:10px,ry:10px

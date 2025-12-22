@@ -1,0 +1,21 @@
+digraph "Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318" {
+  rankdir=LR;
+  node [shape=box, style="rounded"];
+  BAILOUT [label="Top-ups"];
+  BARG [label="Bargaining"];
+  CODING [label="Coding/ABF"];
+  COMPLY [label="Audits"];
+  EXTERNAL [label="Cost-shifting"];
+  GOVINT [label="Integration"];
+  METRICS [label="Definitions"];
+  SIGNAL [label="Signalling"];
+  EXTERNAL -> PRESS [style="solid"];
+  METRICS -> BARG [style="solid"];
+  CODING -> METRICS [style="solid"];
+  COMPLY -> METRICS [style="solid"];
+  BARG -> METRICS [style="solid"];
+  BAILOUT -> BARG [style="solid"];
+  BARG -> BAILOUT [style="solid"];
+  GOVINT -> EXTERNAL [style="solid"];
+  GOVINT -> RISK [style="solid"];
+}

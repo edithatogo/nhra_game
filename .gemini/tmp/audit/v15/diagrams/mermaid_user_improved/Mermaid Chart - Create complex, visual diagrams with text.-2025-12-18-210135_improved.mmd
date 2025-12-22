@@ -1,0 +1,89 @@
+%%{init: {
+  "theme": "base",
+  "flowchart": { "curve": "basis", "nodeSpacing": 55, "rankSpacing": 75, "padding": 10 },
+  "themeVariables": {
+    "fontFamily": "Inter, Arial, sans-serif",
+    "fontSize": "15px",
+    "lineColor": "#3A3A3A",
+    "textColor": "#111111"
+  }
+}}%%
+
+flowchart LR
+
+  %% --- Games (nodes) ---
+  BARG["Bargaining game<br/>NHRA terms"]:::game
+  SIGNAL["Blame/credit game<br/>public signalling"]:::game
+  METRICS["Definition game<br/>NEP vs real cost"]:::game
+  EXTERNAL["Externality game<br/>cost shifting (VFI)"]:::game
+  DISCHARGE["Placement game<br/>Aged Care/NDIS delays"]:::game
+  CODING["Coding/ABF game<br/>classification risk"]:::game
+  COMPLY["Audit/integrity game<br/>MOE & compliance"]:::game
+  BAILOUT["Soft-budget game<br/>top-ups & precedents"]:::game
+  GOVINT["Governance game<br/>integration vs parallelism"]:::game
+
+  %% --- Outcomes / pressure (hub) ---
+  PRESS["Visible system pressure<br/>exit block → ED crowding → ramping"]:::outcome
+  RISK["Clinical risk<br/>harm + staff burnout"]:::outcome
+
+  %% --- “Change the game” levers (optional framing) ---
+  LEVER1["Pooled funding / shared KPIs<br/>shared accountability"]:::lever
+  LEVER2["Mandated integration<br/>(UCCs + digital handover)"]:::lever
+  LEVER3["Indexation realism<br/>(workforce cost growth)"]:::lever
+
+  %% -------------------------
+  %% Core causal network
+  %% -------------------------
+
+  %% Externalities manifest operationally
+  EXTERNAL -->|spillovers| DISCHARGE
+  DISCHARGE -->|delayed discharge| PRESS
+  EXTERNAL -->|downstream load| PRESS
+
+  %% Pressure creates risk
+  PRESS -->|overcrowding + holds| RISK
+
+  %% Pressure drives politics and bargaining posture
+  PRESS -->|media salience| SIGNAL
+  RISK -->|safety narrative| SIGNAL
+  SIGNAL -->|hardens/softens stance| BARG
+
+  %% Bargaining is fought through definitions
+  METRICS -->|defines “45%”| BARG
+  CODING -->|data quality affects| METRICS
+  COMPLY -->|audit rules affect| METRICS
+  BARG -->|sets rules for| METRICS
+
+  %% Interim deals change incentives to hold out
+  BAILOUT -->|bailout expectations| BARG
+  BARG -->|interim extensions| BAILOUT
+
+  %% Governance integration affects fragmentation/externalities
+  GOVINT -->|fragmentation ↑| EXTERNAL
+  GOVINT -->|handover continuity| RISK
+
+  %% Compliance feedback (pressure → tighter scrutiny)
+  PRESS -.->|scrutiny ↑| COMPLY
+  COMPLY -.->|admin burden ↑| PRESS
+
+  %% -------------------------
+  %% “Change the game” links
+  %% -------------------------
+  LEVER1 -.->|internalise externalities| EXTERNAL
+  LEVER1 -.->|reduce cost-shift payoff| BARG
+
+  LEVER2 -.->|reduces parallelism| GOVINT
+  LEVER2 -.->|improves continuity| RISK
+
+  LEVER3 -.->|narrows gap| METRICS
+  LEVER3 -.->|reduces state fiscal stress| PRESS
+
+  %% -------------------------
+  %% Styling
+  %% -------------------------
+  classDef game fill:#DFF1FF,stroke:#0B5FA5,stroke-width:1.8px,color:#111,rx:14,ry:14;
+  classDef outcome fill:#FFE0E0,stroke:#B23B3B,stroke-width:2.4px,color:#111,rx:14,ry:14;
+  classDef lever fill:#E7F7EE,stroke:#1E7A3A,stroke-width:2px,color:#111,rx:14,ry:14;
+
+  %% Emphasise the hub
+  style PRESS fill:#FFD1D1,stroke:#8F1F1F,stroke-width:3px

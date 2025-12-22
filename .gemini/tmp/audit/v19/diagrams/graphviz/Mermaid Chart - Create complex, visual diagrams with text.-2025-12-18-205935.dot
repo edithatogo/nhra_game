@@ -1,0 +1,4 @@
+digraph "Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935" {
+  rankdir=LR;
+  node [shape=box, style="rounded"];
+}

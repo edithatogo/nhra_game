@@ -1,0 +1,10 @@
+
+V2 MODEL 6 Nash equilibria
+Baseline: [('S', 'S')]
+Penalty for Separate: [('I', 'I'), ('S', 'S')]
+Subsidy for Integrate: [('I', 'I'), ('S', 'S')]
+
+Done. V2 plots saved to OUTDIR: .
+
+
+STDERR:

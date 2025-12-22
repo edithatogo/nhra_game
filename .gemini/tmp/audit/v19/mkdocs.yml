@@ -1,0 +1,16 @@
+site_name: NHRA mechanism models and game-theory maps
+site_description: Stylised mechanism models for governance and policy reasoning (not a forecast).
+docs_dir: docs_mkdocs
+
+theme:
+  name: material
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - Models: models.md
+  - Diagrams: diagrams.md
+  - Development: dev.md
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true

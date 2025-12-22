@@ -1,0 +1,5 @@
+NHRA hybrid game-theory model (v8) — plain-language summary
+
+Across scenarios, ED within-4-hours in 2030 ranged from 0.50 to 0.55 (stylised).
+The combined intervention bundle produced the highest within-4-hours and lowest pressure in these runs.
+Sensitivity screening suggested that discharge delays, fragmentation, and cost-shifting intensity were the strongest drivers of pressure and throughput.

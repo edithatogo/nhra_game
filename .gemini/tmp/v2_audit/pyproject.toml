@@ -1,0 +1,19 @@
+[project]
+name = "nhra-game-theory"
+version = "0.2.0"
+description = "Stylised game-theoretic mechanism models for NHRA negotiation dynamics"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy",
+  "pandas",
+  "matplotlib",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E","F","I","B"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

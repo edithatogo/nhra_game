@@ -1,0 +1,12 @@
+
+
+STDERR:
+Traceback (most recent call last):
+  File "/mnt/data/nhra_game_theory_repo_v2_20251220/scripts/run_mpe.py", line 34, in <module>
+    main()
+  File "/mnt/data/nhra_game_theory_repo_v2_20251220/scripts/run_mpe.py", line 29, in main
+    v72_write_bundle(str(out72), fast=True)
+  File "/mnt/data/nhra_game_theory_repo_v2_20251220/src/mpe_models.py", line 275, in v72_write_bundle
+    out = Path(outdir)
+          ^^^^
+NameError: name 'Path' is not defined

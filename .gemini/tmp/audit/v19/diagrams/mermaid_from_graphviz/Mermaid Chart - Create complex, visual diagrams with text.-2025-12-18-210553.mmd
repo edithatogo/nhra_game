@@ -1,0 +1,14 @@
+flowchart LR
+  Audit["Compliance game"]
+  Bail["Bailout game"]
+  Barg["Bargaining game"]
+  Code["Coding game"]
+  Define["Definition game"]
+  Place --> Press
+  Signal --> Barg
+  Risk --> Signal
+  Define --> Barg
+  Code --> Define
+  Audit --> Define
+  Bail --> Barg
+  Barg --> Bail

@@ -1,0 +1,28 @@
+set shell := ["bash", "-lc"]
+
+# quick pipeline
+run:
+  PYTHONPATH=src python scripts/run_v8_all.py
+  PYTHONPATH=src python scripts/diagrams/render_all.py
+  PYTHONPATH=src python scripts/interactive/make_d3_network_v9.py
+
+format:
+  ruff format .
+  ruff check . --fix
+
+lint:
+  ruff check .
+  mypy --strict src/nhra_game_theory
+
+test:
+  pytest -q
+
+docs:
+  mkdocs build -q
+
+all:
+  just format
+  just lint
+  just test
+  just run
+  just docs

@@ -1,0 +1,12 @@
+digraph MermaidConverted {
+  rankdir=LR;
+  graph [labelloc="t", label="graphical_abstract_v9", fontsize=12];
+  node [shape=box, style="rounded,filled", fillcolor="#F7F7F7", color="#555555", fontname="Inter", fontsize=11];
+  edge [color="#444444", fontname="Inter", fontsize=10];
+  A [label="Upstream levers"];
+  B [label="Exit block / shift"];
+  C [label="Crowding + offload"];
+  D [label="Risk proxy"];
+  E [label="Nominal % of NEP"];
+  F [label="Effective % of actual"];
+}

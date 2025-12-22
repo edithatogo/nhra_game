@@ -1,0 +1,37 @@
+digraph GamesNetworkMinimalV9 {
+  rankdir=LR;
+  graph [fontname="Inter", fontsize=12, labelloc="t", label="NHRA: games network (minimal labels, v9)"];
+  node  [shape=box, style="rounded,filled", fontname="Inter", fontsize=11, margin="0.12,0.06"];
+  edge  [color="#444444", penwidth=1.2];
+
+  BARG [label="Bargain", fillcolor="#E8F0FE", color="#01579B"];
+  DEF  [label="Define", fillcolor="#E8F0FE", color="#01579B"];
+  CAP  [label="Cap", fillcolor="#E8F0FE", color="#01579B"];
+  SHIFT [label="Shift", fillcolor="#E8F0FE", color="#01579B"];
+  DISC [label="Discharge", fillcolor="#E8F0FE", color="#01579B"];
+  FLOW [label="Flow", fillcolor="#E8F0FE", color="#01579B"];
+  GOV  [label="Govern", fillcolor="#E8F0FE", color="#01579B"];
+  SIGNAL [label="Signal", fillcolor="#E8F0FE", color="#01579B"];
+
+  PRESS [label="Pressure", fillcolor="#FFF3E0", color="#E65100"];
+  OCC [label="Occupancy", fillcolor="#FFF3E0", color="#E65100"];
+  OFF [label="Offload", fillcolor="#FFF3E0", color="#E65100"];
+  ED [label="ED≤4h", fillcolor="#FFF3E0", color="#E65100"];
+  RISK [label="Risk", fillcolor="#FFEBEE", color="#B71C1C"];
+
+  BARG -> DEF;
+  BARG -> CAP;
+  BARG -> GOV;
+  SIGNAL -> BARG;
+
+  DEF -> CAP;
+  CAP -> SHIFT;
+  SHIFT -> PRESS;
+  DISC -> OCC;
+  FLOW -> ED;
+  PRESS -> FLOW;
+  OCC -> OFF;
+  OFF -> RISK;
+  ED -> RISK;
+  GOV -> FLOW;
+}

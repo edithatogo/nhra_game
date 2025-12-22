@@ -1,0 +1,19 @@
+flowchart LR
+  ABF["fa:fa-database Provider ABF/coding<br>Classification, coding accuracy, gaming risk"]
+  BARG["fa:fa-handshake Intergovernmental bargaining (repeated)<br>Commonwealth ↔ States<br>% share, caps, indexation"]
+  COMP["fa:fa-shield-alt Compliance &amp; integrity<br>Maintenance-of-effort; audits; allocation"]
+  DEF["fa:fa-balance-scale Definition &amp; measurement<br>NEP vs actual costs; baselines; indexation"]
+  DISC["fa:fa-procedures Discharge/placement<br>Aged Care &amp; NDIS constraints → delayed discharge"]
+  GOV["fa:fa-project-diagram Governance integration<br>Parallel models (e.g., UCCs) vs LHN governance"]
+  OUT["fa:fa-hospital-user Operational pressure &amp; visible failure<br>Exit block → ED overcrowding → ramping<br>Clinical risk &amp; staff harm"]
+  POL["fa:fa-bullhorn Political blame/credit signalling<br>Voters, media, central agencies"]
+  SOFT["fa:fa-life-ring Soft budget constraint<br>Interim top-ups / bailout expectations"]
+  VFI["fa:fa-exchange-alt VFI externality / cost-shifting<br>Upstream levers vs downstream hospital risk"]
+  DEF --> BARG
+  SOFT --> BARG
+  POL --> BARG
+  VFI --> OUT
+  DISC --> OUT
+  ABF --> DEF
+  COMP --> DEF
+  GOV --> VFI

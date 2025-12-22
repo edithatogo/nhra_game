@@ -1,0 +1,7 @@
+{
+  "version":"v19",
+  "date":"2025-12-21",
+  "notes":"v19 consolidates dynamic macro drift (NEP vs input costs) with stage-game equilibrium mapping, intervention packages, and interactive network exports.",
+  "n_mc_base":250,
+  "n_mc_scen":200
+}

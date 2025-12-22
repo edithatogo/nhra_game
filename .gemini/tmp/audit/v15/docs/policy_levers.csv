@@ -1,0 +1,11 @@
+intervention,parameter,delta,notes
+pooled_funding,cost_shifting_intensity,-25%,"Shared accountability reduces spillovers/cost-shifting"
+ucc_integration,fragmentation_index,-20%,"Mandated LHN governance + digital handover reduces fragmentation"
+nep_realism,nep_to_cost_ratio_metro,+0.03,"Indexation/valuation moves NEP closer to input costs"
+nep_realism,nep_to_cost_ratio_regional,+0.04,"Stronger effect where cost premiums are higher"
+nep_realism,nep_to_cost_ratio_remote,+0.05,"Remote/locum premiums better recognised"
+aged_ndis_capacity,discharge_delay_base,-10%,"More aged care / NDIS capacity reduces delayed discharge"
+middle_tier,nep_to_cost_ratio_regional,+0.03,"Better staffing reduces locum premiums"
+middle_tier,nep_to_cost_ratio_remote,+0.04,"Better staffing reduces locum premiums"
+cumulative_cap,cap_growth,+0.005,"Higher average growth; allows catch-up"
+audit_relief,audit_pressure,-30%,"Reduced scrutiny/admin burden"

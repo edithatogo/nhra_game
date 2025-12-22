@@ -1,0 +1,33 @@
+%%{init: {
+  "theme": "base",
+  "themeVariables": {
+    "fontFamily": "Inter, Arial, sans-serif",
+    "fontSize": "14px",
+    "lineColor": "#444444"
+  }
+}}%%
+
+flowchart LR
+  Community["Community"]:::neutral --> GP["GP / primary care"]:::cth
+  Community --> ED_Arrival["ED arrival"]:::neutral
+  GP --> ED_Arrival
+
+  ED_Arrival --> ED_Treat["ED assessment & treatment"]:::state
+  ED_Treat --> Admission["Decision to admit"]:::neutral
+  Admission --> Inpatient["Inpatient stay"]:::state
+  Inpatient --> Ready["Ready for discharge"]:::neutral
+
+  %% Blockages (constraints)
+  Ready --> Block_Aged["Aged care placement<br>(capacity constraint)"]:::risk
+  Ready --> Block_NDIS["NDIS supports / accommodation<br>(delay / mismatch)"]:::risk
+
+  %% Feedback loop (access block mechanism)
+  Block_Aged -.->|"occupancy feedback loop"| Inpatient
+
+  %% Optional: show the ED consequence explicitly
+  Inpatient -.->|"high occupancy limits flow"| ED_Treat
+
+  classDef cth fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#111;
+  classDef state fill:#ffebee,stroke:#b71c1c,stroke-width:2px,color:#111;
+  classDef risk fill:#fff3e0,stroke:#e65100,stroke-width:2px,stroke-dasharray: 6 4,color:#111;
+  classDef neutral fill:#f5f5f5,stroke:#777,color:#111;

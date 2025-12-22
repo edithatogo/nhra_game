@@ -1,0 +1,32 @@
+
+MODEL 1 SUMMARY
+                      Scenario  u_upstream  a_acute  Pressure P
+              Nash (baseline)    2.850000 6.250000    1.126006
+               Social optimum    4.833333 3.666667    0.017578
+Nash (more C internalisation)    5.100000 3.350000    0.005941
+
+MODEL 6 PAYOFFS (U payoff, H payoff)
+Baseline
+             H:I         H:S
+U:I  -2.4, -3.7  -3.2, -3.8
+U:S  -1.2, -6.2  -1.2, -3.8
+
+Penalty for Separate (U)
+             H:I         H:S
+U:I  -2.4, -3.7  -3.2, -3.8
+U:S  -3.8, -6.2  -3.8, -3.8
+
+Subsidy for Integrate (U)
+             H:I         H:S
+U:I   0.1, -3.7  -0.8, -3.8
+U:S  -1.2, -6.2  -1.2, -3.8
+
+MODEL 6 NASH EQUILIBRIA
+Baseline: [('S', 'S')] 
+Penalty: [('I', 'I')] 
+Subsidy: [('I', 'I')]
+
+Done. Plots saved to OUTDIR: .
+
+
+STDERR:

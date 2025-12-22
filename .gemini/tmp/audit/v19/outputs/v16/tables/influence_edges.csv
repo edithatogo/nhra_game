@@ -1,0 +1,6 @@
+source,target,weight
+admin_burden_weight,offload_mean_2030,-0.02400000000000624
+demand_base,offload_mean_2030,0.345600000000001
+discharge_delay_base,offload_mean_2030,0.21271760577599785
+fragmentation_index,offload_mean_2030,2.639999999999999
+nominal_cth_share_target,offload_mean_2030,0.0

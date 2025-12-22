@@ -1,0 +1,9 @@
+
+
+STDERR:
+Traceback (most recent call last):
+  File "/mnt/data/nhra_game_theory_repo_v2_20251220/scripts/run_all.py", line 44, in <module>
+    main()
+  File "/mnt/data/nhra_game_theory_repo_v2_20251220/scripts/run_all.py", line 40, in main
+    raise RuntimeError("MPE run failed (see outputs/mpe_run.log)")
+RuntimeError: MPE run failed (see outputs/mpe_run.log)

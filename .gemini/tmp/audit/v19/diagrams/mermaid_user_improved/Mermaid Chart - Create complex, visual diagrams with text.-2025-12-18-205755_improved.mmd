@@ -1,0 +1,64 @@
+%%{init: {
+  "theme": "base",
+  "flowchart": { "curve": "basis", "nodeSpacing": 60, "rankSpacing": 85, "padding": 10 },
+  "themeVariables": {
+    "fontFamily": "Inter, Arial, sans-serif",
+    "fontSize": "14px",
+    "lineColor": "#333333",
+    "textColor": "#111111"
+  }
+}}%%
+
+flowchart LR
+ subgraph O["WHAT THE PUBLIC SEES (system pressure & clinical risk)"]
+    direction TB
+        OUT["Operational pressure becomes visible<br><b>Exit block</b> → ED overcrowding → ramping<br><b>Clinical risk</b> + staff harm/burnout"]
+  end
+    DEF["Definition &amp; measurement game<br>NEP vs actual costs • baselines • indexation"] -- sets what “45%” means --> BARG["Repeated intergovernmental bargaining<br><b>Commonwealth ↔ States</b><br>% share • caps • indexation • definitions"]
+    SOFT["Soft budget constraint game<br>interim top-ups → bailout expectations"] -- changes bargaining toughness --> BARG
+    COMP["Compliance / integrity game<br>maintenance-of-effort • audits • cost allocation"] -- raises compliance risk / constraints --> BARG
+    GOV["Governance integration game<br>parallel models (e.g., UCCs) vs LHN governance"] -- shifts accountability boundaries --> VFI["Externality / cost-shifting game<br><b>Upstream levers</b> (MBS, Aged Care, NDIS)<br>vs <b>Downstream acute risk</b> (hospitals)"]
+    DISC["Discharge &amp; placement game<br>Aged Care / NDIS constraints → delays"] -- amplifies downstream load --> VFI
+    ABF["Provider ABF/coding game<br>classification • coding burden • gaming risk"] -- feeds data & cost narratives --> DEF
+    BARG -- alters caps / indexation / baselines --> DEF
+    BARG -- tightens or loosens audit regime --> COMP
+    BARG -- creates/extends interim deals --> SOFT
+    BARG -- mandates integration conditions --> GOV
+    VFI -- spillover demand & delayed discharge --> OUT
+    DISC -- "long-stay occupancy loop" --> OUT
+    OUT -- media salience & voter blame --> POL["Political blame/credit signalling<br>voters • media • central agencies"]
+    POL -- public stance hardens/softens --> BARG
+    OUT -- crisis bargaining pressure --> BARG
+    POL -. narrative framing .-> DEF
+
+     BARG:::primary
+     VFI:::primary
+     POL:::primary
+     OUT:::outcome
+     DEF:::secondary
+     SOFT:::secondary
+     COMP:::secondary
+     GOV:::secondary
+     DISC:::secondary
+     ABF:::secondary
+    classDef primary fill:#FFF2CC,stroke:#8A6D00,stroke-width:2px,color:#111,rx:12,ry:12
+    classDef secondary fill:#DFF1FF,stroke:#0B5FA5,stroke-width:1.6px,color:#111,rx:12,ry:12
+    classDef outcome fill:#FFE0E0,stroke:#B23B3B,stroke-width:2px,color:#111,rx:12,ry:12
+    style OUT fill:#FFD6D6,stroke:#8F1F1F,stroke-width:3px
+    style O fill:#FFF2F2,stroke:#E6A1A1,stroke-width:1.5px
+    linkStyle 0 stroke:#8A6D00,stroke-width:2px,fill:none
+    linkStyle 1 stroke:#8A6D00,stroke-width:2px,fill:none
+    linkStyle 2 stroke:#8A6D00,stroke-width:2px,fill:none
+    linkStyle 3 stroke:#0B5FA5,stroke-width:2px,fill:none
+    linkStyle 4 stroke:#0B5FA5,stroke-width:2px,fill:none
+    linkStyle 5 stroke:#0B5FA5,stroke-width:2px,fill:none
+    linkStyle 6 stroke:#0B5FA5,stroke-width:2px,fill:none
+    linkStyle 7 stroke:#0B5FA5,stroke-width:2px,fill:none
+    linkStyle 8 stroke:#0B5FA5,stroke-width:2px,fill:none
+    linkStyle 9 stroke:#0B5FA5,stroke-width:2px,fill:none
+    linkStyle 10 stroke:#B23B3B,stroke-width:2.5px,fill:none
+    linkStyle 11 stroke:#B23B3B,stroke-width:2.5px,fill:none
+    linkStyle 12 stroke:#B23B3B,stroke-width:2.5px,fill:none
+    linkStyle 13 stroke:#8A6D00,stroke-width:2px,fill:none
+    linkStyle 14 stroke:#B23B3B,stroke-width:2.5px,fill:none
+    linkStyle 15 stroke:#666666,stroke-width:1.5px,stroke-dasharray: 5 5,fill:none

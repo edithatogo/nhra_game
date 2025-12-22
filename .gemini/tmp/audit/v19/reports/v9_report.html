@@ -1,0 +1,123 @@
+<!doctype html>
+<html><head><meta charset="utf-8"/>
+<title>NHRA game-theory repo v9 summary</title>
+<style>
+body{font-family:Inter,system-ui,Arial,sans-serif; margin:24px; line-height:1.45;}
+h1,h2,h3{margin-top:1.2em}
+code,pre{background:#f6f6f6; padding:2px 6px; border-radius:8px;}
+pre{padding:12px; overflow:auto}
+table{border-collapse:collapse; width:100%;}
+th,td{border:1px solid #ddd; padding:6px 8px; font-size:12px;}
+th{background:#fafafa}
+img{max-width:100%; border:1px solid #eee; border-radius:14px;}
+.small{font-size:12px;color:#444}
+</style></head><body>
+<h1>v9 repository update: diagrams + engineering + dynamic visualisations</h1>
+<p class="small">Date: 2025-12-20</p>
+
+<h2>Key rendered figures</h2>
+<p><b>Graphical abstract</b></p>
+<img src="../outputs/v9/diagrams/graphical_abstract_v9.png" alt="Graphical abstract"/>
+
+<p><b>Games network (minimal)</b></p>
+<img src="../outputs/v9/diagrams/games_network_minimal_v9.png" alt="Games network"/>
+
+<p><b>Risk pathway</b></p>
+<img src="../outputs/v9/diagrams/risk_pathway_v9.png" alt="Risk pathway"/>
+
+<h2>Scenario endpoints (2030)</h2>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>scenario</th>
+      <th>interventions</th>
+      <th>pressure_2030</th>
+      <th>rr_2030</th>
+      <th>within4_2030</th>
+      <th>offload_2030</th>
+      <th>effshare_nominal_2030</th>
+      <th>effshare_effective_2030</th>
+      <th>effgap_2030</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>baseline</td>
+      <td>(none)</td>
+      <td>1.134</td>
+      <td>1.050</td>
+      <td>0.504</td>
+      <td>17.700</td>
+      <td>0.444</td>
+      <td>0.386</td>
+      <td>0.149</td>
+    </tr>
+    <tr>
+      <td>pooled_funding</td>
+      <td>pooled_funding</td>
+      <td>1.132</td>
+      <td>1.049</td>
+      <td>0.505</td>
+      <td>17.695</td>
+      <td>0.444</td>
+      <td>0.386</td>
+      <td>0.149</td>
+    </tr>
+    <tr>
+      <td>ucc_integration</td>
+      <td>ucc_integration</td>
+      <td>1.112</td>
+      <td>1.040</td>
+      <td>0.515</td>
+      <td>14.782</td>
+      <td>0.444</td>
+      <td>0.386</td>
+      <td>0.149</td>
+    </tr>
+    <tr>
+      <td>nep_realism</td>
+      <td>nep_realism</td>
+      <td>1.126</td>
+      <td>1.047</td>
+      <td>0.508</td>
+      <td>17.639</td>
+      <td>0.436</td>
+      <td>0.394</td>
+      <td>0.106</td>
+    </tr>
+    <tr>
+      <td>discharge_capacity</td>
+      <td>aged_ndis_capacity</td>
+      <td>1.087</td>
+      <td>1.032</td>
+      <td>0.528</td>
+      <td>17.523</td>
+      <td>0.444</td>
+      <td>0.386</td>
+      <td>0.150</td>
+    </tr>
+    <tr>
+      <td>bundle_all</td>
+      <td>pooled_funding, ucc_integration, nep_realism, aged_ndis_capacity, middle_tier, cumulative_cap</td>
+      <td>1.052</td>
+      <td>1.019</td>
+      <td>0.547</td>
+      <td>14.514</td>
+      <td>0.433</td>
+      <td>0.396</td>
+      <td>0.093</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Interactive</h2>
+<p>Open: <code>outputs/v9/interactive/games_network_d3.html</code></p>
+
+<h2>How to reproduce</h2>
+<pre><code>PYTHONPATH=src python scripts/run_v8_all.py
+PYTHONPATH=src python scripts/diagrams/render_all.py
+PYTHONPATH=src python scripts/interactive/make_d3_network_v9.py
+PYTHONPATH=src python scripts/make_additional_plots_v9.py
+</code></pre>
+
+</body></html>
