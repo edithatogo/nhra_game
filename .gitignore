@@ -1,0 +1,21 @@
+# Archives
+*.zip
+*.7z
+*.rar
+*.gz
+*.xlsb
+
+# System
+.DS_Store
+
+# Legacy/Backup Folders
+nhra_game_theory_repo_v*
+!nhra_game_theory_repo_v21_20251221/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.tox/
+.pytest_cache/

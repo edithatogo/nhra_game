@@ -1,7 +1,7 @@
 # Track Plan: Project Consolidation, Cleanup, and Feature Audit
 
 ## Phase 1: Workspace Reorganization & Archiving
-- [ ] **Task 1: Create core directory structure**
+- [~] **Task 1: Create core directory structure**
   - Create `docs/diagrams`, `docs/figures`, `data/raw`, and `archive/legacy_versions`.
 - [ ] **Task 2: Categorize and move loose visual artifacts**
   - Move all Mermaid files (`.mmd`, `.png`) to `docs/diagrams/`.
