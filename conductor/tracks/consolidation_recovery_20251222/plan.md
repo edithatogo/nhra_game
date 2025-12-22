@@ -34,7 +34,7 @@
 - [x] **Task 13: Conductor - User Manual Verification 'Infrastructure Setup' (Protocol in workflow.md)** [checkpoint: 084e26e]
 
 ## Phase 4: Feature Audit
-- [~] **Task 14: Version Comparison Analysis**
+- [x] **Task 14: Version Comparison Analysis** (Audited v1, v5, v9, v15, v19; MC logic stable; calibration gaps found)
   - Sample core logic files from `archive/legacy_versions/` (v10, v15, v19) and compare against root `src/`.
 - [ ] **Task 15: Document Feature Gaps**
   - Create `docs/feature_audit.md` summarizing any dropped features or logic variations.
