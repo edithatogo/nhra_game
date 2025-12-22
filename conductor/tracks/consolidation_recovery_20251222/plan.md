@@ -16,7 +16,7 @@
 ## Phase 2: Root Promotion & Git Initialization
 - [x] **Task 6: Promote v21 to project root** 0f2d9b3
   - Move the contents of `nhra_game_theory_repo_v21_20251221` to the current working directory root.
-- [ ] **Task 7: Initialize Git repository**
+- [x] **Task 7: Initialize Git repository** (Already done in Phase 1, updated .gitignore)
   - Run `git init`.
   - Create a robust `.gitignore` including `archive/`, `.DS_Store`, and temporary files.
 - [ ] **Task 8: Perform initial commit**

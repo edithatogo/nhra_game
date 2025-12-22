@@ -7,10 +7,13 @@
 
 # System
 .DS_Store
+.idea/
+.vscode/
+*.swp
 
 # Legacy/Backup Folders
 nhra_game_theory_repo_v*
-!nhra_game_theory_repo_v21_20251221/
+archive/
 
 # Python
 __pycache__/
@@ -19,3 +22,9 @@ __pycache__/
 venv/
 .tox/
 .pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.mypy_cache/
