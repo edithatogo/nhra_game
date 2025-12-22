@@ -38,4 +38,4 @@
   - Sample core logic files from `archive/legacy_versions/` (v10, v15, v19) and compare against root `src/`.
 - [x] **Task 15: Document Feature Gaps** 7c5bc9a
   - Create `docs/feature_audit.md` summarizing any dropped features or logic variations.
-- [~] **Task 16: Conductor - User Manual Verification 'Feature Audit' (Protocol in workflow.md)**
+- [x] **Task 16: Conductor - User Manual Verification 'Feature Audit' (Protocol in workflow.md)** [checkpoint: e4d7bac]
