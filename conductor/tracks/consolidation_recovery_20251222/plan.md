@@ -36,6 +36,6 @@
 ## Phase 4: Feature Audit
 - [x] **Task 14: Version Comparison Analysis** (Audited v1, v5, v9, v15, v19; MC logic stable; calibration gaps found)
   - Sample core logic files from `archive/legacy_versions/` (v10, v15, v19) and compare against root `src/`.
-- [ ] **Task 15: Document Feature Gaps**
+- [~] **Task 15: Document Feature Gaps**
   - Create `docs/feature_audit.md` summarizing any dropped features or logic variations.
 - [ ] **Task 16: Conductor - User Manual Verification 'Feature Audit' (Protocol in workflow.md)**
