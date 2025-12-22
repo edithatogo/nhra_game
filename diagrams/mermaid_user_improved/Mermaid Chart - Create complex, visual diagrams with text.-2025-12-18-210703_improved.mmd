@@ -1,0 +1,45 @@
+%%{init: {
+  "theme": "base",
+  "flowchart": { "curve": "basis", "nodeSpacing": 60, "rankSpacing": 85, "padding": 10 },
+  "themeVariables": {
+    "fontFamily": "Inter, Arial, sans-serif",
+    "fontSize": "14px",
+    "lineColor": "#333333",
+    "textColor": "#111111"
+  }
+}}%%
+
+flowchart LR
+  Hrule["Rules game"]:::hubA
+  Hpress["Pressure signal"]:::hubB
+
+  Barg["Bargaining game"]:::g
+  Define["Definition game"]:::g
+  Audit["Compliance game"]:::g
+  Code["Coding game"]:::g
+  Bail["Bailout game"]:::g
+
+  Shift["Cost-shifting game"]:::g
+  Place["Placement game"]:::g
+  Signal["Signalling game"]:::g
+  Risk["Clinical risk"]:::o
+  Integr["Integration game"]:::g
+  Define --> Hrule
+  Audit --> Hrule
+  Code --> Define
+  Bail --> Hrule
+  Hrule --> Barg
+  Barg --> Define
+  Barg --> Bail
+  Shift --> Hpress
+  Place --> Hpress
+  Integr --> Shift
+  Hpress --> Risk
+  Hpress --> Signal --> Barg
+  Risk --> Signal
+  Hrule --> Hpress
+
+  classDef g fill:#DFF1FF,stroke:#0B5FA5,stroke-width:1.6px,color:#111,rx:14,ry:14;
+  classDef o fill:#FFE0E0,stroke:#B23B3B,stroke-width:2.6px,color:#111,rx:14,ry:14;
+  classDef hubA fill:#FFF2CC,stroke:#8A6D00,stroke-width:3px,color:#111,rx:18,ry:18;
+  classDef hubB fill:#FFD1D1,stroke:#8F1F1F,stroke-width:3px,color:#111,rx:18,ry:18;

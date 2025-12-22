@@ -1,0 +1,25 @@
+digraph MermaidConverted {
+  rankdir=LR;
+  graph [labelloc="t", label="Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926_improved", fontsize=12];
+  node [shape=box, style="rounded,filled", fillcolor="#F7F7F7", color="#555555", fontname="Inter", fontsize=11];
+  edge [color="#444444", fontname="Inter", fontsize=10];
+  Admission [label="Decision to admit"];
+  Block_Aged [label="Aged care placement\n(capacity constraint)"];
+  Block_NDIS [label="NDIS supports / accommodation\n(delay / mismatch)"];
+  Community [label="Community"];
+  ED_Arrival [label="ED arrival"];
+  ED_Treat [label="ED assessment & treatment"];
+  GP [label="GP / primary care"];
+  Inpatient [label="Inpatient stay"];
+  Ready [label="Ready for discharge"];
+  Community -> ED_Arrival;
+  GP -> ED_Arrival;
+  ED_Arrival -> ED_Treat;
+  ED_Treat -> Admission;
+  Admission -> Inpatient;
+  Inpatient -> Ready;
+  Ready -> Block_Aged;
+  Ready -> Block_NDIS;
+  Block_Aged -> Inpatient [label="occupancy feedback loop", style="dashed"];
+  Inpatient -> ED_Treat [label="high occupancy limits flow", style="dashed"];
+}

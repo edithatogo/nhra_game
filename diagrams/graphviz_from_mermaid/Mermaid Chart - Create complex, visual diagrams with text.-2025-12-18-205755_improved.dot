@@ -1,0 +1,16 @@
+digraph MermaidConverted {
+  rankdir=LR;
+  graph [labelloc="t", label="Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755_improved", fontsize=12];
+  node [shape=box, style="rounded,filled", fillcolor="#F7F7F7", color="#555555", fontname="Inter", fontsize=11];
+  edge [color="#444444", fontname="Inter", fontsize=10];
+  ABF [label="Provider ABF/coding game\nclassification • coding burden • gaming risk"];
+  BARG [label="Repeated intergovernmental bargaining\n<b>Commonwealth ↔ States</b>\n% share • caps • indexation • definitions"];
+  COMP [label="Compliance / integrity game\nmaintenance-of-effort • audits • cost allocation"];
+  DEF [label="Definition &amp; measurement game\nNEP vs actual costs • baselines • indexation"];
+  DISC [label="Discharge &amp; placement game\nAged Care / NDIS constraints → delays"];
+  GOV [label="Governance integration game\nparallel models (e.g., UCCs) vs LHN governance"];
+  OUT [label="Operational pressure becomes visible\n<b>Exit block</b> → ED overcrowding → ramping\n<b>Clinical risk</b> + staff harm/burnout"];
+  POL [label="Political blame/credit signalling\nvoters • media • central agencies"];
+  SOFT [label="Soft budget constraint game\ninterim top-ups → bailout expectations"];
+  VFI [label="Externality / cost-shifting game\n<b>Upstream levers</b> (MBS, Aged Care, NDIS)\nvs <b>Downstream acute risk</b> (hospitals)"];
+}

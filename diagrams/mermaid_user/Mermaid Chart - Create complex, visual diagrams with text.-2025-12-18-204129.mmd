@@ -1,0 +1,63 @@
+---
+config:
+  theme: redux
+  themeVariables:
+    fontFamily: ''
+    fontSize: 14px
+    lineColor: '#444444'
+  layout: elk
+  look: handDrawn
+---
+flowchart TB
+ subgraph C["Commonwealth responsibility (revenue & policy levers)"]
+    direction TB
+        Tax["Tax / Revenue"]
+        MBS["Medicare (MBS)"]
+        GP["General practice policy"]
+        AgedCare["Aged care (places, pricing, market settings)"]
+        NDIS["NDIS (supports, plans, providers)"]
+  end
+ subgraph F["Interface friction (cost shifting / system gaps)"]
+    direction TB
+        Gap1["Primary care access gap"]
+        Gap2["Aged care capacity constraint"]
+        Gap3["NDIS supports delay / mismatch"]
+        ED_Pres["ED presentations (avoidable demand)"]
+        Bed_Occ["Bed occupancy pressure (long-stay)"]
+  end
+ subgraph S["State responsibility (operational delivery & risk)"]
+    direction TB
+        Hosp_Budget["State hospital budgets"]
+        ED["Emergency Department"]
+        Wards["Inpatient wards"]
+        Amb["Ambulance / ramping"]
+  end
+    Tax -- NHRA grants (capped / constrained growth) --> Hosp_Budget
+    MBS -. service availability & affordability .-> Gap1
+    GP -. workforce / access .-> Gap1
+    AgedCare -. capacity / eligibility .-> Gap2
+    NDIS -. supports timing & fit .-> Gap3
+    Gap1 -- shift --> ED_Pres
+    Gap2 -- shift --> Bed_Occ
+    Gap3 -- shift --> Bed_Occ
+    ED_Pres -- demand surge --> ED
+    Bed_Occ -- delayed discharge --> Wards
+    ED -- ambulance holding --> Amb
+
+     Tax:::cth
+     MBS:::cth
+     GP:::cth
+     AgedCare:::cth
+     NDIS:::cth
+     Gap1:::risk
+     Gap2:::risk
+     Gap3:::risk
+     ED_Pres:::risk
+     Bed_Occ:::risk
+     Hosp_Budget:::state
+     ED:::state
+     Wards:::state
+     Amb:::state
+    classDef cth fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#111
+    classDef state fill:#ffebee,stroke:#b71c1c,stroke-width:2px,color:#111
+    classDef risk fill:#fff3e0,stroke:#e65100,stroke-width:2px,stroke-dasharray: 6 4,color:#111

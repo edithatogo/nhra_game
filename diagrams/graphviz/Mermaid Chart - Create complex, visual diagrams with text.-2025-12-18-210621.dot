@@ -1,0 +1,18 @@
+digraph "Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621" {
+  rankdir=LR;
+  node [shape=box, style="rounded"];
+  Define -> Hrule [style="solid"];
+  Audit -> Hrule [style="solid"];
+  Code -> Define [style="solid"];
+  Bail -> Hrule [style="solid"];
+  Hrule -> Barg [style="solid"];
+  Barg -> Define [style="solid"];
+  Barg -> Bail [style="solid"];
+  Shift -> Hpress [style="solid"];
+  Place -> Hpress [style="solid"];
+  Integr -> Shift [style="solid"];
+  Hpress -> Risk [style="solid"];
+  Risk -> Signal [style="solid"];
+  Hrule -> Hpress [style="solid"];
+  Hpress -> Barg [style="solid"];
+}

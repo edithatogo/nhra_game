@@ -1,0 +1,20 @@
+digraph "Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926" {
+  rankdir=LR;
+  node [shape=box, style="rounded"];
+  Admission [label="Decision to admit"];
+  Block_Aged [label="Aged care placement<br>(capacity constraint)"];
+  Block_NDIS [label="NDIS supports / accommodation<br>(delay / mismatch)"];
+  Community [label="Community"];
+  ED_Arrival [label="ED arrival"];
+  ED_Treat [label="ED assessment & treatment"];
+  Inpatient [label="Inpatient stay"];
+  Ready [label="Ready for discharge"];
+  Community -> ED_Arrival [style="solid"];
+  GP -> ED_Arrival [style="solid"];
+  ED_Arrival -> ED_Treat [style="solid"];
+  ED_Treat -> Admission [style="solid"];
+  Admission -> Inpatient [style="solid"];
+  Inpatient -> Ready [style="solid"];
+  Ready -> Block_Aged [style="solid"];
+  Ready -> Block_NDIS [style="solid"];
+}

@@ -1,0 +1,46 @@
+from __future__ import annotations
+
+from pathlib import Path
+import re
+
+INIT_BLOCK = """%%{init: {
+  "theme": "base",
+  "flowchart": { "curve": "basis", "nodeSpacing": 60, "rankSpacing": 85, "padding": 10 },
+  "themeVariables": {
+    "fontFamily": "Inter, Arial, sans-serif",
+    "fontSize": "14px",
+    "lineColor": "#333333",
+    "textColor": "#111111"
+  }
+}}%%"""
+
+def improve(text: str) -> str:
+    if text.lstrip().startswith("---"):
+        parts = text.split("---", 2)
+        if len(parts) >= 3:
+            text = parts[2].lstrip("\n")
+
+    if "%%{init:" not in text:
+        text = INIT_BLOCK + "\n\n" + text.lstrip()
+
+    repls = {
+        r"classDef core fill:[^,;]+": "classDef core fill:#FFF4CC",
+        r"classDef cw fill:[^,;]+": "classDef cw fill:#E8F0FE",
+        r"classDef st fill:[^,;]+": "classDef st fill:#E9FFF1",
+        r"classDef risk fill:[^,;]+": "classDef risk fill:#FFE8E8",
+    }
+    for pat, rep in repls.items():
+        text = re.sub(pat, rep, text)
+    return text
+
+def main() -> None:
+    repo = Path(__file__).resolve().parents[2]
+    src = repo / "diagrams" / "mermaid_user"
+    out = repo / "diagrams" / "mermaid_user_improved"
+    out.mkdir(parents=True, exist_ok=True)
+    for f in src.glob("*.mmd"):
+        (out / f"{f.stem}_improved.mmd").write_text(improve(f.read_text(encoding="utf-8")), encoding="utf-8")
+    print(f"Wrote improved diagrams to: {out}")
+
+if __name__ == "__main__":
+    main()

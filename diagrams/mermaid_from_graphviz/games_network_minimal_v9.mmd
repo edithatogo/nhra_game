@@ -1,0 +1,30 @@
+%%{init: {"theme":"base","flowchart":{"curve":"basis","nodeSpacing":55,"rankSpacing":75},"themeVariables":{"fontFamily":"Inter, Arial, sans-serif","fontSize":"14px","lineColor":"#444444"}}}%%
+flowchart LR
+  BARG["Bargain"]
+  CAP["Cap"]
+  DEF["Define"]
+  DISC["Discharge"]
+  ED["ED≤4h"]
+  FLOW["Flow"]
+  GOV["Govern"]
+  OCC["Occupancy"]
+  OFF["Offload"]
+  PRESS["Pressure"]
+  RISK["Risk"]
+  SHIFT["Shift"]
+  SIGNAL["Signal"]
+
+  BARG --> DEF
+  BARG --> CAP
+  BARG --> GOV
+  SIGNAL --> BARG
+  DEF --> CAP
+  CAP --> SHIFT
+  SHIFT --> PRESS
+  DISC --> OCC
+  FLOW --> ED
+  PRESS --> FLOW
+  OCC --> OFF
+  OFF --> RISK
+  ED --> RISK
+  GOV --> FLOW

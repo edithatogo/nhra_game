@@ -1,0 +1,18 @@
+flowchart LR
+  BAILOUT["Top-ups"]
+  BARG["Bargaining"]
+  CODING["Coding/ABF"]
+  COMPLY["Audits"]
+  EXTERNAL["Cost-shifting"]
+  GOVINT["Integration"]
+  METRICS["Definitions"]
+  SIGNAL["Signalling"]
+  EXTERNAL --> PRESS
+  METRICS --> BARG
+  CODING --> METRICS
+  COMPLY --> METRICS
+  BARG --> METRICS
+  BAILOUT --> BARG
+  BARG --> BAILOUT
+  GOVINT --> EXTERNAL
+  GOVINT --> RISK

@@ -1,0 +1,20 @@
+flowchart LR
+  BAILOUT["Top-ups / precedents"]
+  BARG["Bargaining"]
+  CODING["Coding/ABF"]
+  COMPLY["Audits / MOE"]
+  DISCHARGE["Placement delays"]
+  EXTERNAL["Cost-shifting (VFI)"]
+  GOVINT["Integration / parallelism"]
+  HUBA["Hub A: Rules &amp; money<br>% share • caps • indexation • definitions"]
+  HUBB["Hub B: Visible failure<br>exit block • ED crowding • ramping"]
+  METRICS["Definitions"]
+  METRICS --> HUBA
+  COMPLY --> HUBA
+  CODING --> METRICS
+  BAILOUT --> HUBA
+  HUBA --> BARG
+  EXTERNAL --> HUBB
+  DISCHARGE --> HUBB
+  GOVINT --> EXTERNAL
+  SIGNAL --> BARG

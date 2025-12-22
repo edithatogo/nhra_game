@@ -1,0 +1,17 @@
+flowchart LR
+  Admission["Decision to admit"]
+  Block_Aged["Aged care placement<br>(capacity constraint)"]
+  Block_NDIS["NDIS supports / accommodation<br>(delay / mismatch)"]
+  Community["Community"]
+  ED_Arrival["ED arrival"]
+  ED_Treat["ED assessment & treatment"]
+  Inpatient["Inpatient stay"]
+  Ready["Ready for discharge"]
+  Community --> ED_Arrival
+  GP --> ED_Arrival
+  ED_Arrival --> ED_Treat
+  ED_Treat --> Admission
+  Admission --> Inpatient
+  Inpatient --> Ready
+  Ready --> Block_Aged
+  Ready --> Block_NDIS
