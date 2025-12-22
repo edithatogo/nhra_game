@@ -16,7 +16,7 @@
 - [x] **Task 4: Update Optuna Objective Function (TDD)** (Implemented stochastic MSE + variance penalty)
   - Write tests for the stochastic objective (variance penalization) logic.
   - Integrate historical matching terms and stochastic penalties into the `Optuna` objective function.
-- [ ] **Task: Conductor - User Manual Verification 'Logic Porting & Model Enhancement' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Logic Porting & Model Enhancement' (Protocol in workflow.md)** [checkpoint: 8209007]
 
 ## Phase 3: Advanced Optimization Features
 - [ ] **Task 5: Implement Posterior Sampling**
