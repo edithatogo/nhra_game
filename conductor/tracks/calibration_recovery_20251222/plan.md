@@ -7,7 +7,7 @@
 - [x] **Task 2: Establish Regression Baseline**
   - Execute current `v21` baseline simulation and Optuna runs.
   - Document baseline residuals and equilibrium stability metrics.
-- [ ] **Task: Conductor - User Manual Verification 'Foundation & Data Formalization' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Foundation & Data Formalization' (Protocol in workflow.md)** [checkpoint: 8a35e34]
 
 ## Phase 2: Logic Porting & Model Enhancement
 - [ ] **Task 3: Implement Bargaining Constraints (TDD)**
