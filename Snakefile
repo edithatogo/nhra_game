@@ -1,10 +1,27 @@
 rule all:
     input:
+        "data/calibration_v21/calibration_optuna_best.csv",
+        "data/baseline_v21/trajectory.csv",
         "outputs/v8/plots/tradeoff_scatter.png",
         "outputs/v9/diagrams/games_network_minimal_v9.png",
         "outputs/v9/interactive/games_network_d3.html",
         "context/CONTEXT_PACK.md",
         "context/grounding.ok"
+
+rule calibrate:
+    input:
+        "data/raw/calibration_targets.csv"
+    output:
+        "data/calibration_v21/calibration_optuna_best.csv",
+        "data/calibration_v21/calibration_trials_posterior.csv"
+    shell:
+        "PYTHONPATH=src python scripts/optimize_calibration_v21.py"
+
+rule run_baseline:
+    output:
+        "data/baseline_v21/trajectory.csv"
+    shell:
+        "PYTHONPATH=src python scripts/run_baseline_v21.py"
 
 rule run_v8:
     output:

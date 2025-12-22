@@ -22,7 +22,7 @@
 - [x] **Task 5: Implement Posterior Sampling** (Updated script to save all trials; verified)
   - Update the optimization script to support saving and sampling from the posterior distribution.
   - Write tests to verify the integrity of the generated parameter distributions.
-- [~] **Task 6: Snakemake Integration**
+- [x] **Task 6: Snakemake Integration** (Added 'calibrate' and 'run_baseline' rules)
   - Update `Snakefile` to include the new calibration workflow as a distinct rule.
 - [ ] **Task: Conductor - User Manual Verification 'Advanced Optimization Features' (Protocol in workflow.md)**
 
