@@ -26,7 +26,7 @@
 ## Phase 3: Infrastructure Setup & Baseline Validation
 - [x] **Task 10: Validate dependency management** 83d85b9
   - Ensure `pyproject.toml` is in the root and correctly lists all dependencies identified in the tech stack.
-- [ ] **Task 11: Configure development tooling**
+- [~] **Task 11: Configure development tooling**
   - Initialize/update `.pre-commit-config.yaml`.
   - Verify `Snakefile` paths match the new root structure.
 - [ ] **Task 12: Baseline Quality Check**
