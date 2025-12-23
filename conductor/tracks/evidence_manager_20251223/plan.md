@@ -4,7 +4,7 @@
 - [x] **Task 1: Evidence Registry Schema & Data Model (TDD)** cce3fe2
   - [ ] Sub-task: Write tests for the `Registry` class (CSV/JSON persistence, schema validation).
   - [ ] Sub-task: Implement uncertainty-aware schema (mean, 95% CI, NHMRC grading) in `src/nhra_game_theory/domain/registry.py`.
-- [ ] **Task 2: Structured Data Ingestors (AIHW/ABS/IHACPA)**
+- [x] **Task 2: Structured Data Ingestors (AIHW/ABS/IHACPA)** 2ace7de
   - [ ] Sub-task: Write tests for deterministic scrapers/parsers.
   - [ ] Sub-task: Implement `scripts/ingest_structured.py` to fetch and stage metrics from primary Australian sources.
 - [ ] **Task 3: Unit Safety & Sanity Checks**
