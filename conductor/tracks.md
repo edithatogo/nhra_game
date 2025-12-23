@@ -1,3 +1,10 @@
 # Project Tracks
 
-This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.\n---\n\n## [x] Track: Model Validation & Backtesting (SOTA)\n*Link: [./conductor/tracks/validation_backtesting_20251223/](./conductor/tracks/validation_backtesting_20251223/)*
+This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
+---
+
+## [x] Track: Model Validation & Backtesting (SOTA)
+*Link: [./conductor/tracks/validation_backtesting_20251223/](./conductor/tracks/validation_backtesting_20251223/)*
+
+## [ ] Track: Empirical Spine & Mechanism Refinement (v22)
+*Link: [./conductor/tracks/empirical_spine_mechanism_refinement_v22/](./conductor/tracks/empirical_spine_mechanism_refinement_v22/)*
