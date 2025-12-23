@@ -19,7 +19,9 @@ dependencies = [
   "scipy>=1.10",
   "SALib>=1.4.7",
   "snakemake>=7.32",
-  "streamlit>=1.35"
+  "streamlit>=1.35",
+  "pydantic>=2.0",
+  "pandera>=0.18"
 ]
 
 [project.optional-dependencies]
@@ -30,7 +32,7 @@ dev = [
   "ruff>=0.8",
   "mypy>=1.10",
   "pre-commit>=3.7",
-  "tox>=4.15",
+  "nox>=2024.0",
   "mkdocs>=1.6",
   "mkdocs-material>=9.5",
   "mutmut>=2.4",
