@@ -43,12 +43,17 @@
   - [x] Sub-task: Implement strict 2024–2025 data isolation and "Blind Reveal" test script.
 - [x] **Task: Conductor - User Manual Verification 'Mechanism Validation' (Protocol in workflow.md)**
 
-## Phase 4: Dashboard Integration & Reporting
+## Phase 4: Dashboard Integration & Reporting [checkpoint: 3bffc15]
 - [x] **Task 6: Interactive Validation Dashboard (TDD)**
   - [x] Sub-task: Write tests for Plotly overlay data generation (History vs. Prediction).
   - [x] Sub-task: Implement "Validation Scorecard" and "Ghost Overlay" tabs in Streamlit.
-- [ ] **Task 7: Automated Technical Validation Report & Automation**
-  - [ ] Sub-task: Implement Theil Inequality Decomposition visualization (Bias/Variance/Covariance plots).
-  - [ ] Sub-task: Implement Markdown/PDF report generator meeting STRESS/CHEERS guidelines.
-  - [ ] Sub-task: Add `rule validate` to `Snakefile` for full reproduction.
-- [ ] **Task: Conductor - User Manual Verification 'Dashboard & Reporting' (Protocol in workflow.md)**
+- [x] **Task 7: Automated Technical Validation Report & Automation**
+  - [x] Sub-task: Implement Theil Inequality Decomposition visualization (Bias/Variance/Covariance plots).
+  - [x] Sub-task: Implement Markdown/PDF report generator meeting STRESS/CHEERS guidelines.
+  - [x] Sub-task: Add `rule validate` to `Snakefile` for full reproduction.
+- [x] **Task: Conductor - User Manual Verification 'Dashboard & Reporting' (Protocol in workflow.md)**
+
+---
+**Track Status:** COMPLETED 2025-12-24
+All validation infrastructure, metric engines, and reporting pipelines are fully integrated.
+Note: Initial mechanism validation identified discrepancies in driver rankings (Discharge Delay #2 vs Expected #1) which should be addressed in future parameterisation work.
