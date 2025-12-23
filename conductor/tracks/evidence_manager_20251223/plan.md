@@ -32,7 +32,7 @@
 ## Phase 4: Publication Reporting & Calibration Loop Closure
 - [x] **Task 8: Automated Evidence Grounding Report** 6bdd683
   - [x] Sub-task: Implement Markdown generator for the MJA appendix (including NHMRC grades and hashes).
-- [~] **Task 9: Registry-to-Model Synchronization & Calibration Closure**
-  - [ ] Sub-task: Implement logic to automatically update `data/raw/calibration_targets.csv` from promoted evidence.
-  - [ ] Sub-task: Final regression run to verify model stability with newly grounded data.
+- [x] **Task 9: Registry-to-Model Synchronization & Calibration Closure** d2dec49
+  - [x] Sub-task: Implement logic to automatically update `data/raw/calibration_targets.csv` from promoted evidence.
+  - [x] Sub-task: Final regression run to verify model stability with newly grounded data.
 - [ ] **Task: Conductor - User Manual Verification 'Reporting & Synchronization' (Protocol in workflow.md)**
