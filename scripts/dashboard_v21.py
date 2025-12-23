@@ -17,7 +17,7 @@ from nhra_game_theory.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_game_theory.domain.validation import aggregate_metrics, RecursiveResult
 from nhra_game_theory.domain.stability import analyze_cost_shifting_stability
 from nhra_game_theory.sensitivity import get_parameter_lineage
-from nhra_game_theory.v8 import Params, run_hybrid, summarise_outcome
+from nhra_game_theory.v9 import Params, run_hybrid, summarise_outcome, apply_intervention
 
 def prepare_ghost_overlay_data(historical: pd.DataFrame, recursive_results: list[dict], metric: str) -> pd.DataFrame:
     """Prepare data for historical vs predicted overlay."""
@@ -47,6 +47,37 @@ def prepare_share_drift_data(traj: pd.DataFrame, threshold: float) -> tuple[pd.D
             breaches.append({"year": int(row["year"]), "value": float(row["cth_effective_mean"])})
             
     return df, breaches
+
+def rank_interventions(base_params: Params, intervention_list: list[str]) -> pd.DataFrame:
+    """Ranks interventions by their impact on 2030 pressure."""
+    years = list(range(2025, 2031))
+    
+    # Run Baseline
+    traj_base, _ = run_hybrid(years, base_params, n_mc=50, seed=42)
+    base_pressure = float(traj_base.iloc[-1]["pressure_mean"])
+    
+    results = []
+    for name in intervention_list:
+        # Apply intervention
+        p_iv = apply_intervention(base_params, name)
+        traj_iv, _ = run_hybrid(years, p_iv, n_mc=50, seed=42)
+        
+        iv_pressure = float(traj_iv.iloc[-1]["pressure_mean"])
+        iv_rr = float(traj_iv.iloc[-1]["rr_mean"])
+        
+        # Uncertainty (using p90 - p10 from the trajectory as a proxy for CI width)
+        iv_rr_width = float(traj_iv.iloc[-1]["rr_p90"] - traj_iv.iloc[-1]["rr_p10"])
+        
+        results.append({
+            "Intervention": name,
+            "Pressure (2030)": iv_pressure,
+            "Pressure Impact": base_pressure - iv_pressure,
+            "Relative Risk (2030)": iv_rr,
+            "Uncertainty (90% Width)": iv_rr_width
+        })
+        
+    df = pd.DataFrame(results).sort_values("Pressure Impact", ascending=False)
+    return df
 
 @st.cache_data
 def cached_run_model(p: Params, years: list[int], n_mc: int = 50):
@@ -343,7 +374,31 @@ def main():
                 st.success("✅ No threshold breaches detected in the forecast period.")
 
         with wg_tab3:
-            st.info("Ranked Intervention Table coming in Task 1.2")
+            st.subheader("🏆 Policy Impact Ranking")
+            st.markdown("Simulate multiple intervention packages to identify the most effective levers for reducing pressure.")
+            
+            interventions = [
+                "Pooled Funding", "UCC Integration", "NEP Realism", 
+                "Aged/NDIS Capacity", "Middle Tier Workforce", "Cumulative Cap", "Audit Relief"
+            ]
+            
+            sel_interventions = st.multiselect("Select Interventions to Compare:", interventions, default=interventions[:3])
+            
+            if st.button("Run Ranking Simulation"):
+                with st.spinner(f"Simulating {len(sel_interventions)} scenarios..."):
+                    rank_df = rank_interventions(p_base, sel_interventions)
+                    
+                    st.dataframe(
+                        rank_df.style.format({
+                            "Pressure (2030)": "{:.3f}",
+                            "Pressure Impact": "{:+.3f}",
+                            "Relative Risk (2030)": "{:.3f}",
+                            "Uncertainty (90% Width)": "{:.3f}"
+                        }).background_gradient(subset=["Pressure Impact"], cmap="Greens")
+                    )
+                    
+                    best_iv = rank_df.iloc[0]["Intervention"]
+                    st.success(f"🏅 Most effective intervention: **{best_iv}**")
 
     with tab2:
         st.markdown("### Data & Variable Lineage")

@@ -6,10 +6,10 @@
 - [x] **Task 1.1: Effective Share Drift Threshold Plot**
   - [x] Sub-task: Implement a visualization showing how the "Efficiency Gap" degrades the Commonwealth's effective contribution over time.
   - [x] Sub-task: Add a "Threshold" toggle to show when the effective share drops below critical levels (e.g., 40%).
-- [ ] **Task 1.2: Ranked Intervention Table**
-  - [ ] Sub-task: Implement a table ranking policy interventions (e.g., "Pooled Funding", "Audit Relief") by their impact on `pressure_2030` and `rr_2030`.
-  - [ ] Sub-task: Include uncertainty ranges (95% CI) derived from the PSA engine.
-- [ ] **Task: Conductor - User Manual Verification 'Dashboard Reporting' (Protocol in workflow.md)**
+- [x] **Task 1.2: Ranked Intervention Table**
+  - [x] Sub-task: Implement a table ranking policy interventions (e.g., "Pooled Funding", "Audit Relief") by their impact on `pressure_2030` and `rr_2030`.
+  - [x] Sub-task: Include uncertainty ranges (95% CI) derived from the PSA engine.
+- [x] **Task: Conductor - User Manual Verification 'Dashboard Reporting' (Protocol in workflow.md)**
 
 ## Phase 2: Publication Readiness & Methods
 - [ ] **Task 2.1: Methods Appendix Generator**
