@@ -35,4 +35,4 @@
 - [x] **Task 9: Registry-to-Model Synchronization & Calibration Closure** d2dec49
   - [x] Sub-task: Implement logic to automatically update `data/raw/calibration_targets.csv` from promoted evidence.
   - [x] Sub-task: Final regression run to verify model stability with newly grounded data.
-- [ ] **Task: Conductor - User Manual Verification 'Reporting & Synchronization' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Reporting & Synchronization' (Protocol in workflow.md)** [checkpoint: 789dd86]
