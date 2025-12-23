@@ -59,6 +59,38 @@ class EvidenceRegistry:
             
         return all_entries[-1] # Default to latest
 
+    def generate_grounding_report(self, path: Path | str):
+        """Generates a Markdown report summarizing the evidence grounding."""
+        report = "# Evidence Grounding Report\n\n"
+        report += "| Parameter | Mean | 95% CI | NHMRC Grade | Source |\n"
+        report += "|-----------|------|--------|-------------|--------|\n"
+        
+        # Use promoted/best entries for summary
+        for param in sorted(self.entries.keys()):
+            e = self.get_entry(param)
+            ci_str = f"[{e.lower_ci}, {e.upper_ci}]" if e.lower_ci is not None else "N/A"
+            report += f"| {e.parameter} | {e.mean} | {ci_str} | {e.nhmrc_level} | {e.source_url} |\n"
+            
+        Path(path).write_text(report)
+
+    def sync_to_targets(self, targets_path: Path | str):
+        """Updates the calibration targets CSV with promoted evidence."""
+        df = pd.read_csv(targets_path)
+        for param in self.entries.keys():
+            e = self.get_entry(param)
+            # Match parameter to metric in targets file
+            df.loc[df["metric"] == param, "target"] = e.mean
+        df.to_csv(targets_path, index=False)
+
+    def promote_to_params(self, base_params: Params) -> Params:
+        """Returns a new Params object with all promoted registry values applied."""
+        from dataclasses import replace
+        p_dict = {}
+        for param in self.entries.keys():
+            if hasattr(base_params, param):
+                p_dict[param] = self.get_entry(param).mean
+        return replace(base_params, **p_dict)
+
     def is_sane(self, entry: EvidenceEntry, baseline: Dict[str, float], threshold: float = 0.5) -> bool:
         """Check if an entry's mean deviates more than threshold fraction from a baseline."""
         if entry.parameter not in baseline:
