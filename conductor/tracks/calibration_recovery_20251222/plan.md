@@ -24,7 +24,7 @@
   - Write tests to verify the integrity of the generated parameter distributions.
 - [x] **Task 6: Snakemake Integration** (Added 'calibrate' and 'run_baseline' rules)
   - Update `Snakefile` to include the new calibration workflow as a distinct rule.
-- [ ] **Task: Conductor - User Manual Verification 'Advanced Optimization Features' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Advanced Optimization Features' (Protocol in workflow.md)** [checkpoint: 1b435f1]
 
 ## Phase 4: Validation & Reporting
 - [ ] **Task 7: Generate Sensitivity & Performance Reports**
