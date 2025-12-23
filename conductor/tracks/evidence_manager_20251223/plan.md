@@ -9,7 +9,7 @@
   - [ ] Sub-task: Implement `scripts/ingest_structured.py` to fetch and stage metrics from primary Australian sources.
 - [x] **Task 3: Unit Safety & Sanity Checks** 1684eb2
   - [ ] Sub-task: Implement automated variance flagging (e.g., alert if new data deviates >50% from baseline).
-- [ ] **Task: Conductor - User Manual Verification 'Registry Core' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Registry Core' (Protocol in workflow.md)** [checkpoint: 50b7cde]
 
 ## Phase 2: Hybrid Literature Extraction & Document Integrity
 - [ ] **Task 4: Robust PDF Table Extraction & Hashing**
