@@ -7,7 +7,7 @@
 - [x] **Task 2: Structured Data Ingestors (AIHW/ABS/IHACPA)** 2ace7de
   - [ ] Sub-task: Write tests for deterministic scrapers/parsers.
   - [ ] Sub-task: Implement `scripts/ingest_structured.py` to fetch and stage metrics from primary Australian sources.
-- [ ] **Task 3: Unit Safety & Sanity Checks**
+- [x] **Task 3: Unit Safety & Sanity Checks** 1684eb2
   - [ ] Sub-task: Implement automated variance flagging (e.g., alert if new data deviates >50% from baseline).
 - [ ] **Task: Conductor - User Manual Verification 'Registry Core' (Protocol in workflow.md)**
 
