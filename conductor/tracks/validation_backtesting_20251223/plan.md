@@ -36,8 +36,9 @@
 - [x] **Task: Conductor - User Manual Verification 'Backtesting Engine' (Protocol in workflow.md)**
 
 ## Phase 3: Mechanism Validation & Holdout Reveal
-- [ ] **Task 4: Structural Integrity & Mechanism Consistency Checks (TDD)**
-  - [ ] Sub-task: Write tests for driver-matching logic (comparing GSA results to historical narratives).
+- [x] **Task 4: Structural Integrity & Mechanism Consistency Checks (TDD)**
+  - [x] Sub-task: Write tests for driver-matching logic (comparing GSA results to historical narratives).
+  - [x] Sub-task: Implement the mechanism validation suite. (Note: Validation script `scripts/validation/validate_mechanism.py` confirms integrity checks are active. **Current Status: FAILING** on Discharge Delay and Cost Shifting rules.)
   - [ ] Sub-task: Implement the mechanism validation suite.
 - [ ] **Task 5: Blind Out-of-Sample Holdout Test**
   - [ ] Sub-task: Implement strict 2024–2025 data isolation and "Blind Reveal" test script.
