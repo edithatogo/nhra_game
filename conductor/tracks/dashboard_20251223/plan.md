@@ -10,13 +10,13 @@
 - [x] **Task: Conductor - User Manual Verification 'Scaffolding & Sidebar' (Protocol in workflow.md)** [checkpoint: 93b6d08]
 
 ## Phase 2: Cached Model Engine & Comparison Visuals
-- [ ] **Task 3: Computational Caching & Hybrid-Fidelity Engine**
-  - [ ] Sub-task: Implement `st.cache_data` for model rollouts to ensure UI responsiveness.
-  - [ ] Sub-task: Write tests for the "Low-Latency" rollout interface.
-- [ ] **Task 4: Scenario Comparison Engine**
-  - [ ] Sub-task: Write tests for Plotly data frame generation (Baseline vs. War Game).
-  - [ ] Sub-task: Implement interactive charts meeting MJA academic standards.
-- [ ] **Task: Conductor - User Manual Verification 'Execution Engine & Plots' (Protocol in workflow.md)**
+- [x] **Task 3: Computational Caching & Hybrid-Fidelity Engine** 15eb83b
+  - [x] Sub-task: Implement `st.cache_data` for model rollouts to ensure UI responsiveness.
+  - [x] Sub-task: Write tests for the "Low-Latency" rollout interface.
+- [x] **Task 4: Scenario Comparison Engine** 967cd4a
+  - [x] Sub-task: Write tests for Plotly data frame generation (Baseline vs. War Game).
+  - [x] Sub-task: Implement interactive charts meeting MJA academic standards.
+- [x] **Task: Conductor - User Manual Verification 'Execution Engine & Plots' (Protocol in workflow.md)** [checkpoint: cfc0c6a]
 
 ## Phase 3: Explainability, Lineage & GSA Integration (SOTA)
 - [ ] **Task 5: Data Provenance Mapping**
