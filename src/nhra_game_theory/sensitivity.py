@@ -6,6 +6,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from SALib.sample import morris as morris_sampler
 from SALib.analyze import morris as morris_analyzer
+from SALib.sample import saltelli as sobol_sampler
+from SALib.analyze import sobol as sobol_analyzer
 from nhra_game_theory.v8 import Params
 
 def plot_morris_tornado(df: pd.DataFrame, output_path: Path) -> None:
@@ -117,3 +119,28 @@ def run_morris_analysis(
     }, index=problem["names"])
     
     return df.sort_values("mu_star", ascending=False)
+
+def run_sobol_analysis(
+    problem: Dict[str, Any],
+    model_func: Callable[[np.ndarray], float],
+    n_samples: int = 128,
+    n_procs: int = 4,
+    seed: int = 42
+) -> Dict[str, Any]:
+    """Performs Sobol variance-based sensitivity analysis.
+    
+    Args:
+        n_samples: The number of samples to generate (must be a power of 2).
+        
+    Returns:
+        A dictionary containing S1, ST, and S2 indices.
+    """
+    param_values = sobol_sampler.sample(problem, N=n_samples, calc_second_order=True)
+    
+    # Run the model
+    results = evaluate_parallel(model_func, param_values, n_procs=n_procs)
+    
+    # Perform analysis
+    si = sobol_analyzer.analyze(problem, results, calc_second_order=True, conf_level=0.95, seed=seed)
+    
+    return si

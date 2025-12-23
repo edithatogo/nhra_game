@@ -64,4 +64,19 @@ def test_run_morris_analysis() -> None:
     assert "mu_star" in df.columns
     assert "sigma" in df.columns
     assert len(df) == 2
-    assert list(df.index) == param_list
+    assert set(df.index) == set(param_list)
+
+def test_run_sobol_analysis() -> None:
+    """Verify that Sobol analysis produces a results dictionary with S1 and ST."""
+    from nhra_game_theory.sensitivity import run_sobol_analysis
+    
+    param_list = ["rurality_weight", "cost_shifting_intensity"]
+    problem = get_salib_problem(param_list)
+    
+    # Run with small N for testing (must be power of 2 for Sobol)
+    results_dict = run_sobol_analysis(problem, mock_model, n_samples=8, n_procs=2)
+    
+    assert "S1" in results_dict
+    assert "ST" in results_dict
+    assert len(results_dict["S1"]) == 2
+    assert len(results_dict["ST"]) == 2
