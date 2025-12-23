@@ -19,7 +19,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Morris Method (Screening)' (Protocol in workflow.md)** [checkpoint: 911ca53]
 
 ## Phase 3: Sobol Analysis (Variance Decomposition)
-- [ ] **Task 5: Implement Sobol Analysis**
+- [~] **Task 5: Implement Sobol Analysis**
   - Add Sobol sampling (Saltelli) and analysis logic to `scripts/run_gsa.py`.
   - Implement "Interaction Heatmaps" and "Convergence Diagnostics" plotting.
 - [ ] **Task 6: High-Fidelity GSA Run**
