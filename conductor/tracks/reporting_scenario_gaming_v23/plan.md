@@ -20,9 +20,9 @@
 - [x] **Task: Conductor - User Manual Verification 'Methods Documentation' (Protocol in workflow.md)**
 
 ## Phase 3: Governance & Release
-- [ ] **Task 3.1: Changelog & Context Update**
-  - [ ] Sub-task: Update `CHANGELOG.md` with v21, v22, and v23 features.
-  - [ ] Sub-task: Regenerate `context/CONTEXT_PACK.md`.
+- [x] **Task 3.1: Changelog & Context Update**
+  - [x] Sub-task: Update `CHANGELOG.md` with v21, v22, and v23 features.
+  - [x] Sub-task: Regenerate `context/CONTEXT_PACK.md`.
 - [ ] **Task 3.2: CI & Reproducibility Check**
   - [ ] Sub-task: Verify `just all` runs cleanly (including all new validation scripts).
 - [ ] **Task: Conductor - User Manual Verification 'Release Candidates' (Protocol in workflow.md)**

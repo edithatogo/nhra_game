@@ -1,5 +1,16 @@
 # Changelog
 
+## v23 — 2025-12-24
+- **Dashboard Enhancements:** Added Effective Share Drift analysis and Ranked Intervention Table (with uncertainty).
+- **Reporting:** Automated generation of Methods Appendix and Manuscript Parameter Table (STRESS compliant).
+- **Documentation:** Restructured reporting scripts into `scripts/reporting/`.
+
+## v22 — 2025-12-24
+- **Empirical Spine:** Integrated historical NEP (IHACPA) and WPI (ABS) series to drive efficiency gap drift dynamically.
+- **Mechanism Refinement:** Overhauled Cost Shifting game to correct inert parameter sensitivity.
+- **Stability Analysis:** Added tipping point heatmap and PSA distribution analysis.
+- **Validation:** Implemented Recursive Backtesting Engine (rolling horizon) and Mechanism Validation Suite.
+
 ## v21 — 2025-12-21
 - Added Kiro-style project context artifacts: requirements.md, design.md, tasks.md.
 - Updated context pack builder to include project docs and parameter registry.
