@@ -12,7 +12,7 @@
   - [x] Sub-task: Configure sessions for testing, linting, and reproducibility (dependency matrix).
 - [x] **Task 0.4: Goodconf Environment Management** d2dec49
   - [x] Sub-task: Implement `Settings` class using Goodconf + Pydantic for environment-agnostic configuration (Local vs HPC vs Cloud).
-- [x] **Task: Conductor - User Manual Verification 'Infrastructure Rigor' (Protocol in workflow.md)** [checkpoint: 0ce5d81]
+- [x] **Task: Conductor - User Manual Verification 'Infrastructure Rigor' (Protocol in workflow.md)** [checkpoint: f48928f]
 
 ## Phase 1: Historical Data Ingestion & Pre-processing
 - [~] **Task 1: Ingest and Align Historical NHRA Datasets (TDD)**
