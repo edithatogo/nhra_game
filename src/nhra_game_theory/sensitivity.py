@@ -286,3 +286,38 @@ def run_sobol_analysis(
         si["names"] = problem["names"]
         
     return si
+
+def run_psa(
+    distributions: dict[str, Callable[[int], np.ndarray]],
+    model_func: Callable[[np.ndarray], float],
+    n_samples: int = 1000,
+    n_procs: int = 4
+) -> pd.DataFrame:
+    """Performs Probabilistic Sensitivity Analysis (PSA).
+    
+    Args:
+        distributions: Dict mapping param name to a sampler function (takes N, returns array).
+        model_func: Function taking param array (in order of dict keys) -> scalar result.
+        n_samples: Number of MC samples.
+        
+    Returns:
+        DataFrame with parameters and outcome.
+    """
+    param_names = list(distributions.keys())
+    
+    # Generate samples
+    samples = {}
+    for name, sampler in distributions.items():
+        samples[name] = sampler(n_samples)
+        
+    # Create param array for model_func
+    # shape: (n_samples, n_vars)
+    param_matrix = np.column_stack([samples[name] for name in param_names])
+    
+    # Evaluate
+    outcomes = evaluate_parallel(model_func, param_matrix, n_procs=n_procs)
+    
+    # Build result DF
+    df = pd.DataFrame(samples)
+    df["outcome"] = outcomes
+    return df
