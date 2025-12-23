@@ -50,3 +50,18 @@ def test_evaluate_parallel_basic() -> None:
     assert results[0] == 3.0
     assert results[1] == 7.0
     assert results[2] == 11.0
+
+def test_run_morris_analysis() -> None:
+    """Verify that Morris analysis produces a dataframe with mu_star and sigma."""
+    from nhra_game_theory.sensitivity import run_morris_analysis
+    
+    param_list = ["rurality_weight", "cost_shifting_intensity"]
+    problem = get_salib_problem(param_list)
+    
+    # Run with small N for testing
+    df = run_morris_analysis(problem, mock_model, n_trajectories=4, n_procs=2)
+    
+    assert "mu_star" in df.columns
+    assert "sigma" in df.columns
+    assert len(df) == 2
+    assert list(df.index) == param_list

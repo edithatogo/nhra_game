@@ -2,7 +2,30 @@ from __future__ import annotations
 from typing import List, Dict, Optional, Any, Callable
 from concurrent.futures import ProcessPoolExecutor
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from SALib.sample import morris as morris_sampler
+from SALib.analyze import morris as morris_analyzer
 from nhra_game_theory.v8 import Params
+
+def plot_morris_tornado(df: pd.DataFrame, output_path: Path) -> None:
+    """Generates a Morris Tornado plot (mu_star ranking)."""
+    # Filter non-zero influence if needed, but here we show all
+    df = df.sort_values("mu_star", ascending=True)
+    
+    plt.figure(figsize=(10, 6))
+    plt.barh(df.index, df["mu_star"], xerr=df["mu_star_conf"], color="skyblue", capsize=5)
+    plt.xlabel("mu_star (Absolute mean elementary effect)")
+    plt.ylabel("Parameter")
+    plt.title("Morris Screening: Parameter Influence")
+    plt.grid(axis="x", linestyle="--", alpha=0.7)
+    plt.tight_layout()
+    
+    # Save in multiple formats as per spec
+    plt.savefig(output_path.with_suffix(".png"), dpi=300)
+    plt.savefig(output_path.with_suffix(".svg"))
+    plt.savefig(output_path.with_suffix(".pdf"))
+    plt.close()
 
 def get_salib_problem(
     param_names: List[str], 
@@ -64,3 +87,33 @@ def evaluate_parallel(
         results = list(executor.map(model_func, param_values))
         
     return np.array(results)
+
+def run_morris_analysis(
+    problem: Dict[str, Any],
+    model_func: Callable[[np.ndarray], float],
+    n_trajectories: int = 10,
+    n_procs: int = 4,
+    seed: int = 42
+) -> pd.DataFrame:
+    """Performs Morris analysis (Elementary Effects screening).
+    
+    Returns:
+        A pandas DataFrame with mu_star and sigma indices.
+    """
+    param_values = morris_sampler.sample(problem, N=n_trajectories, seed=seed)
+    
+    # Run the model
+    results = evaluate_parallel(model_func, param_values, n_procs=n_procs)
+    
+    # Perform analysis
+    si = morris_analyzer.analyze(problem, param_values, results, conf_level=0.95, seed=seed)
+    
+    # Convert to DataFrame
+    df = pd.DataFrame({
+        "mu": si["mu"],
+        "mu_star": si["mu_star"],
+        "sigma": si["sigma"],
+        "mu_star_conf": si["mu_star_conf"]
+    }, index=problem["names"])
+    
+    return df.sort_values("mu_star", ascending=False)

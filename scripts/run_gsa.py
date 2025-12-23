@@ -6,13 +6,13 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 from dataclasses import replace
-from concurrent.futures import ProcessPoolExecutor
+from typing import Dict, Any
 
 # Add src to path
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from nhra_game_theory.v8 import Params, run_hybrid, summarise_outcome
-from nhra_game_theory.sensitivity import get_salib_problem, evaluate_parallel
+from nhra_game_theory.sensitivity import get_salib_problem, evaluate_parallel, run_morris_analysis, plot_morris_tornado
 
 def model_wrapper(param_values: np.ndarray, names: list[str], years: list[int]) -> float:
     """Wraps the hybrid model for SALib evaluation.
@@ -25,11 +25,29 @@ def model_wrapper(param_values: np.ndarray, names: list[str], years: list[int]) 
     
     # Run simulation
     # Using a fixed seed for the internal MC logic to ensure stability per parameter set
-    traj, _ = run_hybrid(years, p, seed=42, n_mc=100)
+    traj, _ = run_hybrid(years, p, seed=42, n_mc=50)
     
     # Extract summary
     summary = summarise_outcome(traj)
     return summary["pressure_2030"]
+
+def model_func_for_salib(param_values: np.ndarray) -> float:
+    """Global wrapper for multiprocessing pickling."""
+    # Note: problem_names and years must be defined at the module level or passed
+    # For now, we'll use a hacky global-like access or closure if not using multiprocessing
+    # But since we use ProcessPoolExecutor, we need a clean top-level function.
+    return model_wrapper(param_values, GSA_PARAM_NAMES, GSA_YEARS)
+
+# Globals for multiprocessing pickling
+GSA_PARAM_NAMES = [
+    "rurality_weight",
+    "cost_shifting_intensity",
+    "fragmentation_index",
+    "discharge_delay_base",
+    "admin_burden_weight",
+    "political_salience"
+]
+GSA_YEARS = list(range(2025, 2031))
 
 def mock_func(x):
     return float(np.sum(x))
@@ -43,29 +61,34 @@ def main() -> None:
     
     args = parser.parse_args()
     
-    # Parameters to analyze
-    target_params = [
-        "rurality_weight",
-        "cost_shifting_intensity",
-        "fragmentation_index",
-        "discharge_delay_base",
-        "admin_burden_weight",
-        "political_salience"
-    ]
+    # Ensure output dir exists
+    args.output.parent.mkdir(parents=True, exist_ok=True)
     
-    problem = get_salib_problem(target_params)
-    years = list(range(2025, 2031))
+    problem = get_salib_problem(GSA_PARAM_NAMES)
     
     if args.method == "mock":
         print(f"Running mock parallelism test with {args.procs} processes...")
-        param_values = np.random.rand(args.samples, len(target_params))
-        
+        param_values = np.random.rand(args.samples, len(GSA_PARAM_NAMES))
         results = evaluate_parallel(mock_func, param_values, n_procs=args.procs)
         print(f"Collected {len(results)} mock results.")
         return
 
-    # TODO: Phase 2/3 will add actual SALib sampling and analysis
-    print(f"Method {args.method} sampling not yet implemented. Task 2 complete.")
+    if args.method == "morris":
+        print(f"Running Morris Analysis (N={args.samples}, Procs={args.procs})...")
+        df = run_morris_analysis(problem, model_func_for_salib, n_trajectories=args.samples, n_procs=args.procs)
+        df.to_csv(args.output)
+        
+        # Generate plot
+        plot_path = args.output.parent / "morris_tornado"
+        plot_morris_tornado(df, plot_path)
+        
+        print(f"Morris results saved to {args.output}")
+        print(f"Morris plot saved to {plot_path}.png/.svg/.pdf")
+        print("\nTop influential parameters (mu_star):")
+        print(df.head(10))
+        return
+
+    print(f"Method {args.method} sampling not yet implemented.")
 
 if __name__ == "__main__":
     main()
