@@ -43,7 +43,40 @@ def calculate_hit_rate(actual: np.ndarray, predicted: np.ndarray) -> float:
     hits = np.sign(actual_diff) == np.sign(pred_diff)
     return float(np.mean(hits))
 
-class RecursiveResult(BaseModel):
+class MechanismValidator:
+    """Verifies that model sensitivity aligns with mechanistic/historical narratives."""
+    
+    def __init__(self, gsa_results: pd.DataFrame):
+        self.results = gsa_results.set_index("parameter")
+
+    def verify_rank(self, parameter: str, expected_rank: int) -> bool:
+        """Check if parameter holds a specific rank."""
+        if parameter not in self.results.index:
+            return False
+        return int(self.results.loc[parameter, "rank"]) == expected_rank
+
+    def verify_top_n(self, parameter: str, n: int) -> bool:
+        """Check if parameter is within the top N drivers."""
+        if parameter not in self.results.index:
+            return False
+        return int(self.results.loc[parameter, "rank"]) <= n
+
+    def verify_magnitude(self, parameter: str, threshold: float, comparison: str = ">") -> bool:
+        """Check if parameter influence (mu_star) meets a threshold."""
+        if parameter not in self.results.index:
+            return False
+        val = float(self.results.loc[parameter, "mu_star"])
+        if comparison == ">":
+            return val > threshold
+        return val < threshold
+
+    def verify_inequality(self, param_a: str, param_b: str) -> bool:
+        """Check if param_a has greater influence than param_b."""
+        if param_a not in self.results.index or param_b not in self.results.index:
+            return False
+        val_a = float(self.results.loc[param_a, "mu_star"])
+        val_b = float(self.results.loc[param_b, "mu_star"])
+        return val_a > val_b
     """Container for the results of a single backtest step."""
     model_config = ConfigDict(arbitrary_types_allowed=True)
     
