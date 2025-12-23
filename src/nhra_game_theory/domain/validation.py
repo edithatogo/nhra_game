@@ -77,6 +77,8 @@ class MechanismValidator:
         val_a = float(self.results.loc[param_a, "mu_star"])
         val_b = float(self.results.loc[param_b, "mu_star"])
         return val_a > val_b
+
+class RecursiveResult(BaseModel):
     """Container for the results of a single backtest step."""
     model_config = ConfigDict(arbitrary_types_allowed=True)
     
@@ -153,24 +155,68 @@ class RecursiveBacktest:
             results.append(self.run_step(train_df, test_df))
         return results
 
-    def aggregate_metrics(self, results: list[RecursiveResult]) -> dict[str, dict[str, float]]:
-        """Calculate summary statistics across all backtest steps."""
-        if not results:
-            return {}
-            
-        metrics_summary = {}
-        # Get list of all metrics present in the first result
-        metric_names = results[0].predicted.keys()
+def aggregate_metrics(results: list[RecursiveResult]) -> dict[str, dict[str, float]]:
+    """Calculate summary statistics across all backtest steps."""
+    if not results:
+        return {}
         
-        for m in metric_names:
-            preds = np.array([r.predicted[m] for r in results])
-            actuals = np.array([r.actual[m] for r in results])
+    metrics_summary = {}
+    # Get list of all metrics present in the first result
+    metric_names = results[0].predicted.keys()
+    
+    for m in metric_names:
+        preds = np.array([r.predicted[m] for r in results])
+        actuals = np.array([r.actual[m] for r in results])
+        
+        metrics_summary[m] = {
+            "rmse": calculate_rmse(actuals, preds),
+            "mape": calculate_mape(actuals, preds),
+            "theil_u": calculate_theil_u(actuals, preds),
+            "hit_rate": calculate_hit_rate(actuals, preds)
+        }
+        
+    return metrics_summary
+
+class BlindReveal:
+    """Performs blind holdout validation (e.g., train on <2024, test on 2024-2025)."""
+    
+    def __init__(self, historical_data: pd.DataFrame, holdout_years: list[int], seed: int = 42):
+        self.historical_data = historical_data.sort_values("year")
+        self.holdout_years = sorted(holdout_years)
+        self.seed = seed
+        
+        # Split data
+        self.holdout_df = self.historical_data[self.historical_data["year"].isin(self.holdout_years)]
+        self.train_df = self.historical_data[~self.historical_data["year"].isin(self.holdout_years)]
+        
+    def run_prediction(self) -> list[RecursiveResult]:
+        """Run the model for the holdout period using default (or calibrated) params."""
+        # Note: In a real implementation, we would calibrate p using self.train_df first.
+        # Here we use default params for the MVP.
+        p = Params()
+        
+        # Run model for all holdout years in one go (assuming they are contiguous for now, or just the set)
+        traj, _ = run_hybrid(years=self.holdout_years, p=p, n_mc=100, seed=self.seed)
+        
+        results = []
+        for year in self.holdout_years:
+            # Get prediction
+            pred_row = traj[traj["year"] == year].iloc[0]
             
-            metrics_summary[m] = {
-                "rmse": calculate_rmse(actuals, preds),
-                "mape": calculate_mape(actuals, preds),
-                "theil_u": calculate_theil_u(actuals, preds),
-                "hit_rate": calculate_hit_rate(actuals, preds)
-            }
+            # Get actual
+            actual_row = self.holdout_df[self.holdout_df["year"] == year].iloc[0]
             
-        return metrics_summary
+            results.append(RecursiveResult(
+                test_year=year,
+                predicted={
+                    "within4": pred_row["within4_mean"],
+                    "occupancy": pred_row["occupancy_mean"]
+                },
+                actual={
+                    "within4": actual_row["within4"],
+                    "occupancy": actual_row["occupancy"]
+                },
+                params=p
+            ))
+            
+        return results
