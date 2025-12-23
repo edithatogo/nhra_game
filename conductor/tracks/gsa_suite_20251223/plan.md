@@ -22,7 +22,7 @@
 - [x] **Task 5: Implement Sobol Analysis** 4ab9b1a
   - Add Sobol sampling (Saltelli) and analysis logic to `scripts/run_gsa.py`.
   - Implement "Interaction Heatmaps" and "Convergence Diagnostics" plotting.
-- [ ] **Task 6: High-Fidelity GSA Run**
+- [~] **Task 6: High-Fidelity GSA Run**
   - Execute a larger Sobol run (e.g., 1000+ samples) using the parallel engine.
   - Generate full suite of publication-quality plots (PNG/SVG/PDF).
 - [ ] **Task: Conductor - User Manual Verification 'Sobol Analysis (Variance Decomposition)' (Protocol in workflow.md)**
