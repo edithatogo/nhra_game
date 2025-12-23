@@ -28,7 +28,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Explainability & Lineage' (Protocol in workflow.md)** [checkpoint: 19f9607]
 
 ## Phase 4: Snapshotting & Export
-- [ ] **Task 7: Scenario Snapshot Suite**
+- [~] **Task 7: Scenario Snapshot Suite**
   - [ ] Sub-task: Write tests for JSON serialization of war-game states.
   - [ ] Sub-task: Implement Save/Load functionality.
 - [ ] **Task 8: Final Report Export**

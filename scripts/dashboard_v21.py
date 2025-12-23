@@ -5,6 +5,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 import sys
+import json
 from pathlib import Path
 
 # Add src to path if needed for relative imports
@@ -126,6 +127,33 @@ def main():
         help="The strength of incentives to shift pressures across Commonwealth/State interfaces."
     )
 
+    # Scenario Management
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("💾 Scenario Management")
+    scenario_name = st.sidebar.text_input("Scenario Name", "New War Game")
+    
+    # Snapshot logic
+    snapshot = {
+        "scenario_name": scenario_name,
+        "params": {
+            "nominal_cth_share_target": nominal_share,
+            "nep_annual_growth": nep_growth,
+            "bed_capacity_index": bed_capacity,
+            "discharge_delay_base": discharge_delay,
+            "political_salience": political_salience,
+            "audit_pressure": audit_pressure,
+            "rurality_weight": rurality_weight,
+            "cost_shifting_intensity": cost_shifting
+        }
+    }
+    
+    st.sidebar.download_button(
+        "📥 Download Snapshot (JSON)",
+        data=json.dumps(snapshot, indent=2),
+        file_name=f"{scenario_name.lower().replace(' ', '_')}_snapshot.json",
+        mime="application/json"
+    )
+
     # ----------------------------
     # Model Execution
     # ----------------------------
@@ -221,6 +249,29 @@ def main():
             st.markdown("---")
             narrative = generate_prose_summary(summary_base, summary_game)
             st.markdown(narrative)
+            
+            # Export Suite
+            st.markdown("---")
+            st.markdown("#### 📤 Export Results")
+            col_ex1, col_col_ex2 = st.columns(2)
+            
+            with col_ex1:
+                st.download_button(
+                    "📊 Download Data (CSV)",
+                    data=combined.to_csv(index=False),
+                    file_name=f"{scenario_name.lower().replace(' ', '_')}_results.csv",
+                    mime="text/csv"
+                )
+            
+            with col_col_ex2:
+                # Simple markdown report for now
+                report_text = f"# NHRA War Game Report: {scenario_name}\n\n{narrative}\n\n## Data Summary\n{summary_game}"
+                st.download_button(
+                    "📄 Download Brief (MD)",
+                    data=report_text,
+                    file_name=f"{scenario_name.lower().replace(' ', '_')}_report.md",
+                    mime="text/markdown"
+                )
 
     with tab2:
         st.markdown("### Data & Variable Lineage")

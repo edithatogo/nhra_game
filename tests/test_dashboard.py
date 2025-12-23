@@ -4,6 +4,7 @@ import importlib.util
 from pathlib import Path
 import pandas as pd
 import numpy as np
+import json
 
 def test_dashboard_script_exists():
     """Verify that the dashboard script exists in the expected location."""
@@ -81,3 +82,17 @@ def test_narrative_generator_rules():
         narrative = "System risk is projected to increase"
         
     assert "increase" in narrative
+
+def test_scenario_serialization():
+    """Verify that war-game states can be serialized to JSON."""
+    state = {
+        "nominal_cth_share_target": 0.50,
+        "rurality_weight": 0.40,
+        "scenario_name": "Test Scenario"
+    }
+    
+    serialized = json.dumps(state)
+    deserialized = json.loads(serialized)
+    
+    assert deserialized["nominal_cth_share_target"] == 0.50
+    assert deserialized["scenario_name"] == "Test Scenario"
