@@ -32,7 +32,7 @@
   - Generate the "Parameter Sensitivity Report" ranking importance from posteriors.
 - [x] **Task 8: Update Manuscript Methods** (Updated abstract and methods in mja_mechanism_note_v9_20251220.md)
   - Revise methodology sections in `manuscripts/` to reflect stochastic calibration and v2 behavior re-integration.
-- [~] **Task 9: Final Regression & Compliance Check**
+- [x] **Task 9: Final Regression & Compliance Check** (Completed checklists in docs/checklists_calibration.md)
   - Compare new residuals against Phase 1 baseline.
   - Complete the CHEERS 2022 and STRESS checklists for the calibration track.
 - [ ] **Task: Conductor - User Manual Verification 'Validation & Reporting' (Protocol in workflow.md)**
