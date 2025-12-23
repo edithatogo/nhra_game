@@ -15,7 +15,7 @@
 - [x] **Task 4: Robust PDF Table Extraction & Hashing** ebd8444
   - [ ] Sub-task: Implement SHA-256 document hashing for source archival and reproducibility.
   - [ ] Sub-task: Implement `scripts/extract_tables.py` using `PyMuPDF` or `Camelot`.
-- [ ] **Task 5: Schema-Constrained LLM Parsing**
+- [x] **Task 5: Schema-Constrained LLM Parsing** 8e0aaaf
   - [ ] Sub-task: Implement LLM prompt engineering to map raw table text to the Registry schema.
   - [ ] Sub-task: Write tests to verify extraction of Confidence Intervals and NHMRC grades.
 - [ ] **Task: Conductor - User Manual Verification 'Literature Extraction' (Protocol in workflow.md)**
