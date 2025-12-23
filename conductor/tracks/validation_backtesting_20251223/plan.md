@@ -35,14 +35,13 @@
   - [x] Sub-task: Document profiling workflow in `docs_mkdocs/dev.md`.
 - [x] **Task: Conductor - User Manual Verification 'Backtesting Engine' (Protocol in workflow.md)**
 
-## Phase 3: Mechanism Validation & Holdout Reveal
+## Phase 3: Mechanism Validation & Holdout Reveal [checkpoint: b3a0d24]
 - [x] **Task 4: Structural Integrity & Mechanism Consistency Checks (TDD)**
   - [x] Sub-task: Write tests for driver-matching logic (comparing GSA results to historical narratives).
   - [x] Sub-task: Implement the mechanism validation suite. (Note: Validation script `scripts/validation/validate_mechanism.py` confirms integrity checks are active. **Current Status: FAILING** on Discharge Delay and Cost Shifting rules.)
-  - [ ] Sub-task: Implement the mechanism validation suite.
-- [ ] **Task 5: Blind Out-of-Sample Holdout Test**
-  - [ ] Sub-task: Implement strict 2024–2025 data isolation and "Blind Reveal" test script.
-- [ ] **Task: Conductor - User Manual Verification 'Mechanism Validation' (Protocol in workflow.md)**
+- [x] **Task 5: Blind Out-of-Sample Holdout Test**
+  - [x] Sub-task: Implement strict 2024–2025 data isolation and "Blind Reveal" test script.
+- [x] **Task: Conductor - User Manual Verification 'Mechanism Validation' (Protocol in workflow.md)**
 
 ## Phase 4: Dashboard Integration & Reporting
 - [ ] **Task 6: Interactive Validation Dashboard (TDD)**
