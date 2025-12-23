@@ -27,9 +27,9 @@
   - [x] Sub-task: Write tests for the rolling horizon "Train-Test" loop.
   - [x] Sub-task: Integrate `optimize_calibration_v21.py` into the recursive loop logic. (Note: Stubbed, full integration pending calibration refactor)
   - [x] Sub-task: Implement the recursive loop logic in `src/nhra_game_theory/domain/validation.py`. (Moved from scripts to domain)
-- [ ] **Task 3: Multi-Metric Calculation Engine (TDD)**
-  - [ ] Sub-task: Write tests for RMSE, MAPE, Theil's Coefficient, and HIT Rate logic.
-  - [ ] Sub-task: Implement calculation utilities in `src/nhra_game_theory/domain/validation.py`.
+- [x] **Task 3: Multi-Metric Calculation Engine (TDD)**
+  - [x] Sub-task: Write tests for RMSE, MAPE, Theil's Coefficient, and HIT Rate logic.
+  - [x] Sub-task: Implement calculation utilities in `src/nhra_game_theory/domain/validation.py`.
 - [ ] **Task: Performance Profiling Infrastructure (Scalene)**
   - [ ] Sub-task: Configure Scalene profiling for the recursive backtest loop.
   - [ ] Sub-task: Document profiling workflow in `docs/dev.md`.

@@ -1,9 +1,47 @@
 from __future__ import annotations
 
 from typing import Any
+import numpy as np
 import pandas as pd
 from pydantic import BaseModel, ConfigDict
 from nhra_game_theory.v9 import Params, run_hybrid
+
+def calculate_rmse(actual: np.ndarray, predicted: np.ndarray) -> float:
+    """Calculate Root Mean Square Error."""
+    return float(np.sqrt(np.mean((actual - predicted)**2)))
+
+def calculate_mape(actual: np.ndarray, predicted: np.ndarray) -> float:
+    """Calculate Mean Absolute Percentage Error."""
+    # Avoid division by zero
+    actual_safe = np.where(actual == 0, 1e-9, actual)
+    return float(np.mean(np.abs((actual - predicted) / actual_safe)))
+
+def calculate_theil_u(actual: np.ndarray, predicted: np.ndarray) -> float:
+    """Calculate Theil's U1 inequality coefficient.
+    
+    U = 0: Perfect fit
+    U = 1: Worst possible fit
+    """
+    numerator = np.sqrt(np.mean((actual - predicted)**2))
+    denominator = np.sqrt(np.mean(actual**2)) + np.sqrt(np.mean(predicted**2))
+    if denominator == 0:
+        return 0.0
+    return float(numerator / denominator)
+
+def calculate_hit_rate(actual: np.ndarray, predicted: np.ndarray) -> float:
+    """Calculate Directional Accuracy (Hit Rate).
+    
+    Percentage of steps where predicted change direction matches actual change direction.
+    """
+    if len(actual) < 2:
+        return 1.0
+    
+    actual_diff = np.diff(actual)
+    pred_diff = np.diff(predicted)
+    
+    # Check if signs match (include 0 as a distinct "no change" direction)
+    hits = np.sign(actual_diff) == np.sign(pred_diff)
+    return float(np.mean(hits))
 
 class RecursiveResult(BaseModel):
     """Container for the results of a single backtest step."""
@@ -81,3 +119,25 @@ class RecursiveBacktest:
         for train_df, test_df in self.generate_windows():
             results.append(self.run_step(train_df, test_df))
         return results
+
+    def aggregate_metrics(self, results: list[RecursiveResult]) -> dict[str, dict[str, float]]:
+        """Calculate summary statistics across all backtest steps."""
+        if not results:
+            return {}
+            
+        metrics_summary = {}
+        # Get list of all metrics present in the first result
+        metric_names = results[0].predicted.keys()
+        
+        for m in metric_names:
+            preds = np.array([r.predicted[m] for r in results])
+            actuals = np.array([r.actual[m] for r in results])
+            
+            metrics_summary[m] = {
+                "rmse": calculate_rmse(actuals, preds),
+                "mape": calculate_mape(actuals, preds),
+                "theil_u": calculate_theil_u(actuals, preds),
+                "hit_rate": calculate_hit_rate(actuals, preds)
+            }
+            
+        return metrics_summary
