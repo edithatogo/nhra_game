@@ -7,9 +7,11 @@
 - [x] **Task 0.2: Pandera Data Schema Enforcement (TDD)** d1daf0f
   - [x] Sub-task: Define Pandera `DataFrameSchema` for AIHW and ABS historical data.
   - [ ] Sub-task: Integrate schema validation into the `preprocess_historical.py` pipeline.
-- [ ] **Task 0.3: Nox Environment Orchestration**
-  - [ ] Sub-task: Create `noxfile.py` to replace `tox.ini`.
-  - [ ] Sub-task: Configure sessions for testing, linting, and reproducibility (dependency matrix).
+- [x] **Task 0.3: Nox Environment Orchestration** 126765d
+  - [x] Sub-task: Create `noxfile.py` to replace `tox.ini`.
+  - [x] Sub-task: Configure sessions for testing, linting, and reproducibility (dependency matrix).
+- [x] **Task 0.4: Goodconf Environment Management** d2dec49
+  - [x] Sub-task: Implement `Settings` class using Goodconf + Pydantic for environment-agnostic configuration (Local vs HPC vs Cloud).
 - [ ] **Task: Conductor - User Manual Verification 'Infrastructure Rigor' (Protocol in workflow.md)**
 
 ## Phase 1: Historical Data Ingestion & Pre-processing
