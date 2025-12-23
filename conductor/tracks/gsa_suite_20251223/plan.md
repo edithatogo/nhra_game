@@ -30,6 +30,6 @@
 ## Phase 4: Reporting & Integration
 - [x] **Task 7: Generate Sensitivity Summary Report** 8d81409
   - Create a module to synthesize Morris and Sobol results into a markdown summary (`data/gsa_v21/sensitivity_summary.md`).
-- [~] **Task 8: Snakemake Integration**
+- [x] **Task 8: Snakemake Integration** 8541504
   - Add a `rule gsa` to `Snakefile` to automate the sensitivity workflow.
 - [ ] **Task: Conductor - User Manual Verification 'Reporting & Integration' (Protocol in workflow.md)**

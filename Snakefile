@@ -1,5 +1,6 @@
 rule all:
     input:
+        "data/gsa_v21/sensitivity_summary.md",
         "data/calibration_v21/calibration_optuna_best.csv",
         "data/baseline_v21/trajectory.csv",
         "outputs/v8/plots/tradeoff_scatter.png",
@@ -7,6 +8,22 @@ rule all:
         "outputs/v9/interactive/games_network_d3.html",
         "context/CONTEXT_PACK.md",
         "context/grounding.ok"
+
+rule gsa_morris:
+    output:
+        "data/gsa_v21/morris_results.csv",
+        "data/gsa_v21/morris_tornado.png"
+    shell:
+        "PYTHONPATH=src python scripts/run_gsa.py --method morris --samples 10 --output data/gsa_v21/morris_results.csv"
+
+rule gsa_sobol:
+    input:
+        "data/gsa_v21/morris_results.csv"
+    output:
+        "data/gsa_v21/sobol_results.csv",
+        "data/gsa_v21/sensitivity_summary.md"
+    shell:
+        "PYTHONPATH=src python scripts/run_gsa.py --method sobol --samples 32 --output data/gsa_v21/sobol_results.csv"
 
 rule calibrate:
     input:
