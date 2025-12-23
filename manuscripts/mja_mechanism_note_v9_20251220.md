@@ -6,7 +6,7 @@
 
 ## Abstract (draft)
 
-Debate about the National Health Reform Agreement (NHRA) often pivots on a nominal Commonwealth “share” of public hospital funding (e.g., “45%”). In practice, the *experienced* share depends on definitional choices (what counts as the base), indexation realism, and how pressures are managed across Commonwealth/state interfaces (primary care access, aged care placement/pricing, disability supports, community services, and hospital discharge). We present a **stylised mechanism model** and a companion **game-theory map** that connect negotiation choices (bargaining, definition, caps, cost-shifting, and governance integration) to downstream operational proxies (occupancy, offload delay, ED performance) and a conservative comparative **risk proxy**. The model uses seeded Monte Carlo sampling to illustrate uncertainty without spurious precision, and is paired with publication-ready Mermaid/Graphviz figures and an interactive D3 visualisation to support communication and iteration.
+Debate about the National Health Reform Agreement (NHRA) often pivots on a nominal Commonwealth “share” of public hospital funding (e.g., “45%”). In practice, the *experienced* share depends on definitional choices (what counts as the base), indexation realism, and how pressures are managed across Commonwealth/state interfaces (primary care access, aged care placement/pricing, disability supports, community services, and hospital discharge). We present a **stylised mechanism model** and a companion **game-theory map** that connect negotiation choices (bargaining, definition, caps, cost-shifting, and governance integration) to downstream operational proxies (occupancy, offload delay, ED performance) and a conservative comparative **risk proxy**. The model is stochastically calibrated against historical Australian system metrics (NEP, ED performance, and admitted occupancy) using seeded Monte Carlo sampling to illustrate uncertainty while maintaining alignment with empirical evidence. It is paired with publication-ready Mermaid/Graphviz figures and an interactive D3 visualisation to support communication and iteration.
 
 ## The problem: “share” is a game about definitions
 
@@ -26,7 +26,7 @@ We implement a deliberately conservative hybrid model that:
 - maps pressure into operational proxies (ED within 4 hours; offload delay), with feedback from discharge integration; and  
 - converts pressure + offload into a **relative risk proxy** (a comparative indicator, not a clinical event rate).
 
-The model uses **Monte Carlo** sampling (seeded RNG for reproducibility) to show uncertainty bands and avoid spurious precision.
+The model uses **stochastic calibration** (incorporating variance penalization) and **Monte Carlo** sampling (seeded RNG for reproducibility) to show uncertainty bands and ensure parameter plausibility relative to historical Australian health data.
 
 ## Game-theory map (diagrams)
 
@@ -62,11 +62,12 @@ The model and diagrams provide:
 - Diagrams pipeline: `scripts/diagrams/render_all.py`  
 - Interactive D3 build: `scripts/interactive/make_d3_network_v9.py`  
 - Additional plots: `scripts/make_additional_plots_v9.py`  
+- Stochastic calibration: `scripts/optimize_calibration_v21.py`  
 - Optional optimisation: `scripts/optimize_optuna_v9.py` (install extra: `.[opt]`)
 
 ## Disclosures / limitations (to include)
 
 - Stylised model; not a budget model; not a clinical risk model.  
-- Parameter values are chosen for interpretability and sensitivity exploration, not calibration.  
+- Parameters are stochastically calibrated against historical Australian benchmarks to ensure predictive fidelity, while remaining suitable for broad sensitivity exploration.  
 - Results are sensitive to structural assumptions; the value is in making these explicit.
 
