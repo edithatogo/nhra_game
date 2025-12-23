@@ -35,4 +35,4 @@
 - [x] **Task 9: Final Regression & Compliance Check** (Completed checklists in docs/checklists_calibration.md)
   - Compare new residuals against Phase 1 baseline.
   - Complete the CHEERS 2022 and STRESS checklists for the calibration track.
-- [ ] **Task: Conductor - User Manual Verification 'Validation & Reporting' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Validation & Reporting' (Protocol in workflow.md)** [checkpoint: 86144a2]
