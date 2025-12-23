@@ -25,7 +25,7 @@
 - [x] **Task 6: High-Fidelity GSA Run** 87af234
   - Execute a larger Sobol run (e.g., 1000+ samples) using the parallel engine.
   - Generate full suite of publication-quality plots (PNG/SVG/PDF).
-- [ ] **Task: Conductor - User Manual Verification 'Sobol Analysis (Variance Decomposition)' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Sobol Analysis (Variance Decomposition)' (Protocol in workflow.md)** [checkpoint: e6f08c9]
 
 ## Phase 4: Reporting & Integration
 - [ ] **Task 7: Generate Sensitivity Summary Report**
