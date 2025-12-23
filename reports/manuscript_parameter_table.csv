@@ -1,0 +1,9 @@
+Parameter,Value,Source
+Nominal Cth Share Target,0.45,NHRA
+Nep Annual Growth,0.03,IHACPA
+Input Cost Annual Growth,0.04,ABS
+Discharge Delay Base,1.0,Model Assumption
+Bed Capacity Index,1.0,Model Assumption
+Cost Shifting Intensity,0.35,Model Assumption
+Fragmentation Index,1.0,Model Assumption
+Political Salience,0.3,Model Assumption

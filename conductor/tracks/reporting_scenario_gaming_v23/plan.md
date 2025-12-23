@@ -15,8 +15,8 @@
 - [x] **Task 2.1: Methods Appendix Generator**
   - [x] Sub-task: Create `scripts/reporting/generate_methods_appendix.py` to auto-generate a Markdown appendix based on the current model code (`v9.py`) and parameter registry.
   - [x] Sub-task: Ensure the output meets STRESS/CHEERS reporting standards (e.g., listing all equations and parameter sources).
-- [ ] **Task 2.2: Parameter Registry Export**
-  - [ ] Sub-task: Enhance `make_parameter_registry_v20.py` (or similar) to export a clean, academic-style CSV/PDF table for the manuscript.
+- [x] **Task 2.2: Parameter Registry Export**
+  - [x] Sub-task: Enhance `make_parameter_registry_v20.py` (or similar) to export a clean, academic-style CSV/PDF table for the manuscript.
 - [ ] **Task: Conductor - User Manual Verification 'Methods Documentation' (Protocol in workflow.md)**
 
 ## Phase 3: Governance & Release
