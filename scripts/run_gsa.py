@@ -20,7 +20,8 @@ from nhra_game_theory.sensitivity import (
     run_sobol_analysis,
     plot_sobol_indices,
     plot_sobol_heatmap,
-    export_sensitivity_indices
+    export_sensitivity_indices,
+    generate_sensitivity_summary
 )
 
 def model_wrapper(param_values: np.ndarray, names: list[str], years: list[int]) -> float:
@@ -114,6 +115,15 @@ def main() -> None:
         
         print(f"Sobol results saved to {args.output}")
         print(f"Sobol plots saved to {args.output.parent}/sobol_*.png/.svg/.pdf")
+        
+        # Generate summary (requires both to exist for best result)
+        summary_path = args.output.parent / "sensitivity_summary.md"
+        generate_sensitivity_summary(
+            args.output.parent / "morris_results.csv",
+            args.output.parent / "sobol_results.csv",
+            summary_path
+        )
+        print(f"Summary report generated: {summary_path}")
         return
 
     print(f"Method {args.method} sampling not yet implemented.")

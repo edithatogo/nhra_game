@@ -11,6 +11,41 @@ from SALib.sample import saltelli as sobol_sampler
 from SALib.analyze import sobol as sobol_analyzer
 from nhra_game_theory.v8 import Params
 
+def generate_sensitivity_summary(
+    morris_path: Path, 
+    sobol_path: Path, 
+    output_path: Path
+) -> None:
+    """Synthesizes Morris and Sobol results into a Markdown report."""
+    summary = "# Global Sensitivity Analysis Summary (v21)\n\n"
+    summary += "This report summarizes the findings from the Morris screening and Sobol variance decomposition.\n\n"
+    
+    # Morris Section
+    if morris_path.exists():
+        df_m = pd.read_csv(morris_path, index_col=0)
+        summary += "## 1. Morris Screening (Influence & Non-linearity)\n"
+        summary += "The Morris method identifies parameters with the greatest overall influence (mu_star) and those with non-linear or interactive effects (sigma).\n\n"
+        summary += df_m[["mu_star", "sigma"]].head(5).to_markdown()
+        summary += "\n\n"
+        
+    # Sobol Section
+    if sobol_path.exists():
+        df_s = pd.read_csv(sobol_path)
+        summary += "## 2. Sobol Analysis (Variance Decomposition)\n"
+        summary += "The Sobol method quantifies the percentage of output variance attributable to each parameter (S1) and its total effect including interactions (ST).\n\n"
+        summary += df_s[["Parameter", "S1", "ST"]].sort_values("ST", ascending=False).head(5).to_markdown()
+        summary += "\n\n"
+        
+    summary += "## 3. Key Findings\n"
+    # Logic to identify top driver
+    if sobol_path.exists():
+        top_param = df_s.sort_values("ST", ascending=False).iloc[0]["Parameter"]
+        summary += f"- **Primary Driver:** The most influential parameter in the system is **{top_param}**.\n"
+        
+    summary += "- **Interactions:** High sigma values in Morris or gaps between ST and S1 in Sobol indicate strong parameter interactions.\n"
+
+    output_path.write_text(summary)
+
 def plot_sobol_indices(si: Dict[str, Any], output_path: Path) -> None:
     """Generates Sobol first-order and total sensitivity plots."""
     names = si["names"]
