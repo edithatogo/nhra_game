@@ -80,3 +80,24 @@ def test_run_sobol_analysis() -> None:
     assert "ST" in results_dict
     assert len(results_dict["S1"]) == 2
     assert len(results_dict["ST"]) == 2
+
+def test_generate_sensitivity_summary(tmp_path) -> None:
+    """Verify that the summary report is created with expected content."""
+    from nhra_game_theory.sensitivity import generate_sensitivity_summary
+    import pandas as pd
+    
+    # Create mock CSVs
+    morris_csv = tmp_path / "morris.csv"
+    pd.DataFrame({"mu_star": [0.1], "sigma": [0.01]}, index=["param1"]).to_csv(morris_csv)
+    
+    sobol_csv = tmp_path / "sobol.csv"
+    pd.DataFrame({"Parameter": ["param1"], "S1": [0.1], "ST": [0.2]}).to_csv(sobol_csv, index=False)
+    
+    summary_md = tmp_path / "summary.md"
+    generate_sensitivity_summary(morris_csv, sobol_csv, summary_md)
+    
+    assert summary_md.exists()
+    content = summary_md.read_text()
+    assert "# Global Sensitivity Analysis Summary" in content
+    assert "Morris Screening" in content
+    assert "Sobol Analysis" in content

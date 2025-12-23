@@ -74,12 +74,17 @@ def main() -> None:
     print("Starting Stochastic Calibration...")
     study.optimize(lambda t: objective(t, targets, n_mc=100, seed=42), n_trials=50)
     
+    # Save all trials (Posterior)
+    trials_df = study.trials_dataframe()
+    trials_df.to_csv(out_dir / "calibration_trials_posterior.csv", index=False)
+    
     # Save best
     best_df = pd.DataFrame([study.best_params])
     best_df["best_value"] = study.best_value
     best_df.to_csv(out_dir / "calibration_optuna_best.csv", index=False)
     print(f"Best params: {study.best_params}")
     print(f"Best value: {study.best_value}")
+    print(f"Saved posterior data to: {out_dir / 'calibration_trials_posterior.csv'}")
 
 if __name__ == "__main__":
     main()
