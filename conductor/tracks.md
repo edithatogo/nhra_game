@@ -6,5 +6,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [x] Track: Model Validation & Backtesting (SOTA)
 *Link: [./conductor/tracks/validation_backtesting_20251223/](./conductor/tracks/validation_backtesting_20251223/)*
 
-## [ ] Track: Empirical Spine & Mechanism Refinement (v22)
+## [x] Track: Empirical Spine & Mechanism Refinement (v22)
 *Link: [./conductor/tracks/empirical_spine_mechanism_refinement_v22/](./conductor/tracks/empirical_spine_mechanism_refinement_v22/)*
