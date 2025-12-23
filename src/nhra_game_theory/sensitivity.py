@@ -4,11 +4,95 @@ from concurrent.futures import ProcessPoolExecutor
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 from SALib.sample import morris as morris_sampler
 from SALib.analyze import morris as morris_analyzer
 from SALib.sample import saltelli as sobol_sampler
 from SALib.analyze import sobol as sobol_analyzer
 from nhra_game_theory.v8 import Params
+
+def plot_sobol_indices(si: Dict[str, Any], output_path: Path) -> None:
+    """Generates Sobol first-order and total sensitivity plots."""
+    names = si["names"]
+    s1 = si["S1"]
+    st = si["ST"]
+    s1_conf = si["S1_conf"]
+    st_conf = si["ST_conf"]
+    
+    # First Order (S1)
+    df_s1 = pd.DataFrame({"index": s1, "conf": s1_conf}, index=names).sort_values("index", ascending=True)
+    plt.figure(figsize=(10, 6))
+    plt.barh(df_s1.index, df_s1["index"], xerr=df_s1["conf"], color="lightgreen", capsize=5)
+    plt.xlabel("S1 (First-order sensitivity index)")
+    plt.ylabel("Parameter")
+    plt.title("Sobol Analysis: First-order Effects")
+    plt.grid(axis="x", linestyle="--", alpha=0.7)
+    plt.tight_layout()
+    plt.savefig(output_path.parent / (output_path.name + "_s1.png"), dpi=300)
+    plt.savefig(output_path.parent / (output_path.name + "_s1.svg"))
+    plt.savefig(output_path.parent / (output_path.name + "_s1.pdf"))
+    plt.close()
+    
+    # Total Order (ST)
+    df_st = pd.DataFrame({"index": st, "conf": st_conf}, index=names).sort_values("index", ascending=True)
+    plt.figure(figsize=(10, 6))
+    plt.barh(df_st.index, df_st["index"], xerr=df_st["conf"], color="salmon", capsize=5)
+    plt.xlabel("ST (Total-order sensitivity index)")
+    plt.ylabel("Parameter")
+    plt.title("Sobol Analysis: Total-order Effects")
+    plt.grid(axis="x", linestyle="--", alpha=0.7)
+    plt.tight_layout()
+    plt.savefig(output_path.parent / (output_path.name + "_st.png"), dpi=300)
+    plt.savefig(output_path.parent / (output_path.name + "_st.svg"))
+    plt.savefig(output_path.parent / (output_path.name + "_st.pdf"))
+    plt.close()
+
+def plot_sobol_heatmap(si: Dict[str, Any], output_path: Path) -> None:
+    """Generates a heatmap of second-order interaction indices (S2)."""
+    if "S2" not in si or si["S2"] is None:
+        print("S2 indices not available for heatmap.")
+        return
+        
+    names = si["names"]
+    s2 = si["S2"]
+    
+    # s2 is a square matrix (num_vars, num_vars)
+    # SALib returns a triangular matrix or flattened array depending on version
+    # Let's ensure it's a square matrix for the heatmap
+    n = len(names)
+    s2_matrix = np.zeros((n, n))
+    
+    # SALib typically returns S2 as a 2D array where only the upper triangle is filled
+    # or a 1D array of length n*(n-1)/2. 
+    # In recent versions, it's often a 2D array.
+    if isinstance(s2, np.ndarray) and s2.ndim == 2:
+        s2_matrix = s2
+    else:
+        # Handle flattened case if necessary (legacy SALib)
+        print("Handling flattened S2 not yet implemented.")
+        return
+
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(s2_matrix, annot=True, xticklabels=names, yticklabels=names, cmap="YlGnBu")
+    plt.title("Sobol Analysis: Second-order Interaction Indices (S2)")
+    plt.tight_layout()
+    plt.savefig(output_path.with_suffix(".png"), dpi=300)
+    plt.savefig(output_path.with_suffix(".svg"))
+    plt.savefig(output_path.with_suffix(".pdf"))
+    plt.close()
+
+def export_sensitivity_indices(si: Dict[str, Any], output_path: Path) -> None:
+    """Exports all sensitivity indices to a CSV file."""
+    names = si["names"]
+    data = {
+        "Parameter": names,
+        "S1": si["S1"],
+        "S1_conf": si["S1_conf"],
+        "ST": si["ST"],
+        "ST_conf": si["ST_conf"]
+    }
+    df = pd.DataFrame(data)
+    df.to_csv(output_path, index=False)
 
 def plot_morris_tornado(df: pd.DataFrame, output_path: Path) -> None:
     """Generates a Morris Tornado plot (mu_star ranking)."""
@@ -143,4 +227,8 @@ def run_sobol_analysis(
     # Perform analysis
     si = sobol_analyzer.analyze(problem, results, calc_second_order=True, conf_level=0.95, seed=seed)
     
+    # SALib dict doesn't always have names, so we add them for our utilities
+    if "names" not in si:
+        si["names"] = problem["names"]
+        
     return si

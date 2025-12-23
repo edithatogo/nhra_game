@@ -12,7 +12,16 @@ from typing import Dict, Any
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from nhra_game_theory.v8 import Params, run_hybrid, summarise_outcome
-from nhra_game_theory.sensitivity import get_salib_problem, evaluate_parallel, run_morris_analysis, plot_morris_tornado
+from nhra_game_theory.sensitivity import (
+    get_salib_problem, 
+    evaluate_parallel, 
+    run_morris_analysis, 
+    plot_morris_tornado,
+    run_sobol_analysis,
+    plot_sobol_indices,
+    plot_sobol_heatmap,
+    export_sensitivity_indices
+)
 
 def model_wrapper(param_values: np.ndarray, names: list[str], years: list[int]) -> float:
     """Wraps the hybrid model for SALib evaluation.
@@ -86,6 +95,25 @@ def main() -> None:
         print(f"Morris plot saved to {plot_path}.png/.svg/.pdf")
         print("\nTop influential parameters (mu_star):")
         print(df.head(10))
+        return
+
+    if args.method == "sobol":
+        print(f"Running Sobol Analysis (N={args.samples}, Procs={args.procs})...")
+        # Ensure N is power of 2 for Sobol
+        if not (args.samples > 0 and (args.samples & (args.samples - 1)) == 0):
+            print("Warning: Sobol N should be a power of 2. Results may be sub-optimal.")
+            
+        si = run_sobol_analysis(problem, model_func_for_salib, n_samples=args.samples, n_procs=args.procs)
+        
+        # Export indices
+        export_sensitivity_indices(si, args.output)
+        
+        # Generate plots
+        plot_sobol_indices(si, args.output.parent / "sobol_indices")
+        plot_sobol_heatmap(si, args.output.parent / "sobol_heatmap")
+        
+        print(f"Sobol results saved to {args.output}")
+        print(f"Sobol plots saved to {args.output.parent}/sobol_*.png/.svg/.pdf")
         return
 
     print(f"Method {args.method} sampling not yet implemented.")
