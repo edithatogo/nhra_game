@@ -28,7 +28,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Sobol Analysis (Variance Decomposition)' (Protocol in workflow.md)** [checkpoint: e6f08c9]
 
 ## Phase 4: Reporting & Integration
-- [ ] **Task 7: Generate Sensitivity Summary Report**
+- [~] **Task 7: Generate Sensitivity Summary Report**
   - Create a module to synthesize Morris and Sobol results into a markdown summary (`data/gsa_v21/sensitivity_summary.md`).
 - [ ] **Task 8: Snakemake Integration**
   - Add a `rule gsa` to `Snakefile` to automate the sensitivity workflow.
