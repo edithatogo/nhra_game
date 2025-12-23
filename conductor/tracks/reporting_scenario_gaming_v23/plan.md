@@ -19,10 +19,14 @@
   - [x] Sub-task: Enhance `make_parameter_registry_v20.py` (or similar) to export a clean, academic-style CSV/PDF table for the manuscript.
 - [x] **Task: Conductor - User Manual Verification 'Methods Documentation' (Protocol in workflow.md)**
 
-## Phase 3: Governance & Release
+## Phase 3: Governance & Release [checkpoint: 2647f4d]
 - [x] **Task 3.1: Changelog & Context Update**
   - [x] Sub-task: Update `CHANGELOG.md` with v21, v22, and v23 features.
   - [x] Sub-task: Regenerate `context/CONTEXT_PACK.md`.
 - [x] **Task 3.2: CI & Reproducibility Check**
   - [x] Sub-task: Verify `just all` runs cleanly (including all new validation scripts).
-- [ ] **Task: Conductor - User Manual Verification 'Release Candidates' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Release Candidates' (Protocol in workflow.md)**
+
+---
+**Track Status:** COMPLETED 2025-12-24
+Dashboard enhanced with Negotiation/Fiscal plots and Intervention Ranking. Reporting pipeline automated (Methods/Registry). Governance artifacts updated.
