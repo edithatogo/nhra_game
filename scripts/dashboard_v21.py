@@ -15,6 +15,7 @@ sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from nhra_game_theory.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_game_theory.domain.validation import aggregate_metrics, RecursiveResult
+from nhra_game_theory.domain.stability import analyze_cost_shifting_stability
 from nhra_game_theory.sensitivity import get_parameter_lineage
 from nhra_game_theory.v8 import Params, run_hybrid, summarise_outcome
 
@@ -358,24 +359,51 @@ def main():
         st.markdown("### 🔬 Technical Analytics")
         st.markdown("Mechanism sensitivity and structural integrity checks.")
         
-        gsa_path = Path("data/gsa_v21/morris_results.csv")
-        if gsa_path.exists():
-            df_gsa = pd.read_csv(gsa_path)
-            if "Unnamed: 0" in df_gsa.columns:
-                df_gsa = df_gsa.rename(columns={"Unnamed: 0": "parameter"})
+        tab4_1, tab4_2 = st.tabs(["Stability Regions", "Global Sensitivity"])
+        
+        with tab4_1:
+            st.subheader("🌋 Cost Shifting Tipping Points")
+            st.markdown("Visualizing the Nash Equilibrium stability landscape.")
             
-            st.subheader("🌪️ Morris Tornado (Parameter Importance)")
-            fig_gsa = px.bar(
-                df_gsa.sort_values("mu_star", ascending=True),
-                x="mu_star", y="parameter", orientation="h",
-                title="Global Sensitivity (mu_star)",
-                color="mu_star",
-                color_continuous_scale="Teal"
-            )
-            fig_gsa.update_layout(template="simple_white")
-            st.plotly_chart(fig_gsa, use_container_width=True)
-        else:
-            st.info("GSA results not found. Run `scripts/run_gsa.py` to generate.")
+            if st.button("Generate Stability Heatmap"):
+                with st.spinner("Calculating equilibria..."):
+                    intensities = np.linspace(0.0, 1.0, 21)
+                    pressures = np.linspace(0.8, 1.5, 21)
+                    df_stab = analyze_cost_shifting_stability(intensities, pressures)
+                    
+                    # Pivot for heatmap
+                    pivot_table = df_stab.pivot(index="pressure", columns="cost_shifting_intensity", values="outcome")
+                    
+                    fig_stab = px.imshow(
+                        pivot_table, 
+                        labels=dict(x="Cost Shifting Intensity", y="Pressure Index", color="Strategy"),
+                        x=pivot_table.columns,
+                        y=pivot_table.index,
+                        color_continuous_scale=[[0, "lightgreen"], [1, "salmon"]],
+                        origin="lower"
+                    )
+                    fig_stab.update_layout(title="Region: 0=Invest (Green), 1=Shift (Red)")
+                    st.plotly_chart(fig_stab, use_container_width=True)
+        
+        with tab4_2:
+            gsa_path = Path("data/gsa_v21/morris_results.csv")
+            if gsa_path.exists():
+                df_gsa = pd.read_csv(gsa_path)
+                if "Unnamed: 0" in df_gsa.columns:
+                    df_gsa = df_gsa.rename(columns={"Unnamed: 0": "parameter"})
+                
+                st.subheader("🌪️ Morris Tornado (Parameter Importance)")
+                fig_gsa = px.bar(
+                    df_gsa.sort_values("mu_star", ascending=True),
+                    x="mu_star", y="parameter", orientation="h",
+                    title="Global Sensitivity (mu_star)",
+                    color="mu_star",
+                    color_continuous_scale="Teal"
+                )
+                fig_gsa.update_layout(template="simple_white")
+                st.plotly_chart(fig_gsa, use_container_width=True)
+            else:
+                st.info("GSA results not found. Run `scripts/run_gsa.py` to generate.")
 
     with tab5:
         st.markdown("### 🛡️ Evidence Manager & Auditor")

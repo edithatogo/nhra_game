@@ -25,8 +25,8 @@
 - [x] **Task: Conductor - User Manual Verification 'Mechanism Refinement' (Protocol in workflow.md)**
 
 ## Phase 3: Robustness, Reporting & Governance
-- [ ] **Task 3.1: Tipping Point Analysis & Dashboard**
-  - [ ] Sub-task: Implement a dashboard tab to visualize stability regions and tipping points.
+- [x] **Task 3.1: Tipping Point Analysis & Dashboard**
+  - [x] Sub-task: Implement a dashboard tab to visualize stability regions and tipping points.
 - [ ] **Task 3.2: Probabilistic Sensitivity Analysis (PSA)**
   - [ ] Sub-task: Implement PSA with evidence-based distributions for key parameters.
 - [ ] **Task 3.3: Governance & Decision Logging**
