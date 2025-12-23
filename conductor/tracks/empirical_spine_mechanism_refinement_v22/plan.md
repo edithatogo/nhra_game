@@ -24,11 +24,15 @@
   - [x] Sub-task: Run `scripts/validation/validate_mechanism.py` to confirm fixes (Expect PASS).
 - [x] **Task: Conductor - User Manual Verification 'Mechanism Refinement' (Protocol in workflow.md)**
 
-## Phase 3: Robustness, Reporting & Governance
+## Phase 3: Robustness, Reporting & Governance [checkpoint: edcda2b]
 - [x] **Task 3.1: Tipping Point Analysis & Dashboard**
   - [x] Sub-task: Implement a dashboard tab to visualize stability regions and tipping points.
 - [x] **Task 3.2: Probabilistic Sensitivity Analysis (PSA)**
   - [x] Sub-task: Implement PSA with evidence-based distributions for key parameters.
 - [x] **Task 3.3: Governance & Decision Logging**
   - [x] Sub-task: Document mechanism changes and stability findings in `context/decisions/`.
-- [ ] **Task: Conductor - User Manual Verification 'Robustness & Reporting' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Robustness & Reporting' (Protocol in workflow.md)**
+
+---
+**Track Status:** COMPLETED 2025-12-24
+Model grounded in empirical NEP/WPI series. Mechanism logic refined and validated (Discharge Delay #1). Robustness tools (PSA, Stability Heatmap) implemented.
