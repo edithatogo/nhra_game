@@ -13,7 +13,7 @@
   - [x] Sub-task: Create a validation script to ensure the new economic series aligns temporally with existing activity data (2011–2024).
 - [x] **Task: Conductor - User Manual Verification 'Empirical Integration' (Protocol in workflow.md)**
 
-## Phase 2: Mechanism Logic & Stability Analysis
+## Phase 2: Mechanism Logic & Stability Analysis [checkpoint: 3880b41]
 - [x] **Task 2.1: Subgame Stability Audit**
   - [x] Sub-task: Analyze payoff matrices to identify why Cost Shifting is inert (zero sensitivity).
   - [x] Sub-task: Map stability regions to find "Tipping Points" where strategies should flip. (Finding: Game is "stuck" in 'Invest' strategy for all tested pressures. `cost_shifting_intensity` parameter is unused in game logic.)
