@@ -1,0 +1,35 @@
+# Track Plan: Global Sensitivity Analysis (GSA) Suite
+
+## Phase 1: Foundation & Tooling
+- [x] **Task 1: Define GSA Problem Spec** 8878f9d
+  - Create a utility in `src/nhra_game_theory/sensitivity.py` to define the SALib problem dictionary (param names, bounds) dynamically from the `Params` dataclass.
+  - Write unit tests to verify problem definition accuracy.
+- [ ] **Task 2: Implement Parallel Evaluation Engine**
+  - Build the parallel execution wrapper in `scripts/run_gsa.py` using `multiprocessing`.
+  - Implement a "mock" mode to test parallelism without running the full heavy simulation.
+- [ ] **Task: Conductor - User Manual Verification 'Foundation & Tooling' (Protocol in workflow.md)**
+
+## Phase 2: Morris Method (Screening)
+- [ ] **Task 3: Implement Morris Analysis**
+  - Add Morris sampling and analysis logic to `scripts/run_gsa.py`.
+  - Implement generation of "Tornado Plots" (mu_star vs sigma) using `matplotlib`/`seaborn`.
+- [ ] **Task 4: Morris Validation Run**
+  - Execute a Morris screening run (e.g., 100 trajectories) to identify non-influential parameters.
+  - Verify output CSVs and plots are generated correctly.
+- [ ] **Task: Conductor - User Manual Verification 'Morris Method (Screening)' (Protocol in workflow.md)**
+
+## Phase 3: Sobol Analysis (Variance Decomposition)
+- [ ] **Task 5: Implement Sobol Analysis**
+  - Add Sobol sampling (Saltelli) and analysis logic to `scripts/run_gsa.py`.
+  - Implement "Interaction Heatmaps" and "Convergence Diagnostics" plotting.
+- [ ] **Task 6: High-Fidelity GSA Run**
+  - Execute a larger Sobol run (e.g., 1000+ samples) using the parallel engine.
+  - Generate full suite of publication-quality plots (PNG/SVG/PDF).
+- [ ] **Task: Conductor - User Manual Verification 'Sobol Analysis (Variance Decomposition)' (Protocol in workflow.md)**
+
+## Phase 4: Reporting & Integration
+- [ ] **Task 7: Generate Sensitivity Summary Report**
+  - Create a module to synthesize Morris and Sobol results into a markdown summary (`data/gsa_v21/sensitivity_summary.md`).
+- [ ] **Task 8: Snakemake Integration**
+  - Add a `rule gsa` to `Snakefile` to automate the sensitivity workflow.
+- [ ] **Task: Conductor - User Manual Verification 'Reporting & Integration' (Protocol in workflow.md)**
