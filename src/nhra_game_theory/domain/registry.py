@@ -31,6 +31,16 @@ class EvidenceRegistry:
     def get_entry(self, parameter: str) -> Optional[EvidenceEntry]:
         return self.entries.get(parameter)
         
+    def is_sane(self, entry: EvidenceEntry, baseline: Dict[str, float], threshold: float = 0.5) -> bool:
+        """Check if an entry's mean deviates more than threshold fraction from a baseline."""
+        if entry.parameter not in baseline:
+            return True # No baseline to compare against
+        base_val = baseline[entry.parameter]
+        if base_val == 0:
+            return entry.mean == 0
+        deviation = abs(entry.mean - base_val) / abs(base_val)
+        return deviation <= threshold
+
     def save_to_csv(self, path: Path | str):
         data = [asdict(e) for e in self.entries.values()]
         df = pd.DataFrame(data)

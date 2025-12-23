@@ -48,3 +48,26 @@ def test_registry_validation():
         EvidenceEntry(parameter="test", mean=0.5, lower_ci=0.6)
     with pytest.raises(ValueError, match="upper_ci must be >= mean"):
         EvidenceEntry(parameter="test", mean=0.5, upper_ci=0.4)
+
+def test_registry_sanity_check():
+    """Verify that the registry can flag entries that deviate significantly from a baseline."""
+    registry = EvidenceRegistry()
+    baseline = {"within4_base": 0.53, "zero_param": 0.0}
+    
+    # 10% deviation - should be fine
+    entry_ok = EvidenceEntry(parameter="within4_base", mean=0.55)
+    assert registry.is_sane(entry_ok, baseline, threshold=0.5) == True
+    
+    # 60% deviation - should be flagged
+    entry_bad = EvidenceEntry(parameter="within4_base", mean=0.90)
+    assert registry.is_sane(entry_bad, baseline, threshold=0.5) == False
+    
+    # Parameter not in baseline
+    entry_new = EvidenceEntry(parameter="new_param", mean=1.0)
+    assert registry.is_sane(entry_new, baseline) == True
+    
+    # Base value is zero
+    entry_zero = EvidenceEntry(parameter="zero_param", mean=0.0)
+    assert registry.is_sane(entry_zero, baseline) == True
+    entry_not_zero = EvidenceEntry(parameter="zero_param", mean=1.0)
+    assert registry.is_sane(entry_not_zero, baseline) == False
