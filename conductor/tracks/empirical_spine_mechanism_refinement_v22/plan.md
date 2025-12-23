@@ -17,12 +17,12 @@
 - [x] **Task 2.1: Subgame Stability Audit**
   - [x] Sub-task: Analyze payoff matrices to identify why Cost Shifting is inert (zero sensitivity).
   - [x] Sub-task: Map stability regions to find "Tipping Points" where strategies should flip. (Finding: Game is "stuck" in 'Invest' strategy for all tested pressures. `cost_shifting_intensity` parameter is unused in game logic.)
-- [ ] **Task 2.2: Mechanism Refinement (Cost Shifting & Discharge)**
-  - [ ] Sub-task: Refine `cost_shifting_intensity` logic to influence game tipping points.
-  - [ ] Sub-task: Re-calibrate `discharge_delay` vs. `pressure` coupling to restore its Rank #1 driver status.
-- [ ] **Task 2.3: Verification with Mechanism Suite**
-  - [ ] Sub-task: Run `scripts/validation/validate_mechanism.py` to confirm fixes (Expect PASS).
-- [ ] **Task: Conductor - User Manual Verification 'Mechanism Refinement' (Protocol in workflow.md)**
+- [x] **Task 2.2: Mechanism Refinement (Cost Shifting & Discharge)**
+  - [x] Sub-task: Refine `cost_shifting_intensity` logic to influence game tipping points.
+  - [x] Sub-task: Re-calibrate `discharge_delay` vs. `pressure` coupling to restore its Rank #1 driver status.
+- [x] **Task 2.3: Verification with Mechanism Suite**
+  - [x] Sub-task: Run `scripts/validation/validate_mechanism.py` to confirm fixes (Expect PASS).
+- [x] **Task: Conductor - User Manual Verification 'Mechanism Refinement' (Protocol in workflow.md)**
 
 ## Phase 3: Robustness, Reporting & Governance
 - [ ] **Task 3.1: Tipping Point Analysis & Dashboard**

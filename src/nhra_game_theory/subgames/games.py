@@ -23,6 +23,7 @@ class GameParams:
     discharge_delay: float
     political_salience: float
     audit_pressure: float
+    cost_shifting_intensity: float
 
 
 def definition_game(gp: GameParams) -> TwoPlayerGame:
@@ -89,9 +90,12 @@ def cost_shifting_game(gp: GameParams) -> TwoPlayerGame:
     """Cost shifting game: invest upstream 'I' vs shift downstream 'S'."""
     pr = gp.pressure
     eg = gp.efficiency_gap
+    csi = gp.cost_shifting_intensity
 
     coop_gain = 0.55 + 0.45 * (1.0 - eg)
-    shift_gain = 0.35 + 0.75 * eg
+    # CSI increases the payoff of shifting relative to investing
+    # Boosted to 1.0 to ensure sensitivity visibility
+    shift_gain = 0.35 + 0.75 * eg + 1.0 * csi
     pr_cost = 0.65 * pr
 
     u_row = np.array([

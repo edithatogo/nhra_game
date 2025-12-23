@@ -201,20 +201,47 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
             discharge_delay=float(s.discharge_delay),
             political_salience=float(p.political_salience),
             audit_pressure=float(p.audit_pressure),
+            cost_shifting_intensity=float(p.cost_shifting_intensity),
         )
 
-        def _pick(game):
+        def _solve(game):
             eqs = all_nash(game)
             sel = select_equilibrium(eqs, rule=p.equilibrium_selection_rule, u_row=game.u_row, u_col=game.u_col)
-            a = game.row_actions[int(np.argmax(sel.row))]
-            return a
+            row_a = game.row_actions[int(np.argmax(sel.row))]
+            col_a = game.col_actions[int(np.argmax(sel.col))]
+            return row_a, col_a
 
-        DEF = _pick(definition_game(gp))
-        BARG = _pick(bargaining_game(gp))
-        SHIFT = _pick(cost_shifting_game(gp))
-        DISC = _pick(discharge_coordination_game(gp))
-        GOV = _pick(governance_integration_game(gp))
-        COMP = _pick(compliance_game(gp))
+        # Definition: if either plays E (Strict), the gap widens? 
+        # Or does Cth control definition? Let's say if Cth plays R (Realism), it helps.
+        # But if State plays E (Strict), they demand more?
+        # Current step() logic: if strategies["DEF"] == "R": eff_gap *= 0.93
+        # Let's keep DEF as Row-driven (Cth narrative).
+        r_def, _ = _solve(definition_game(gp))
+        DEF = r_def
+
+        # Bargaining: A if both Agree? If one Defers, delay.
+        # Current: A -> eff_share converges fast. D -> slow.
+        # Ideally, requires mutual agreement.
+        r_barg, c_barg = _solve(bargaining_game(gp))
+        BARG = "A" if (r_barg == "A" and c_barg == "A") else "D"
+
+        # Cost Shifting: S if anyone Shifts.
+        r_shift, c_shift = _solve(cost_shifting_game(gp))
+        SHIFT = "S" if (r_shift == "S" or c_shift == "S") else "I"
+
+        # Discharge: C only if both Coordinate.
+        r_disc, c_disc = _solve(discharge_coordination_game(gp))
+        DISC = "C" if (r_disc == "C" and c_disc == "C") else "F"
+
+        # Governance: I only if both Integrate.
+        r_gov, c_gov = _solve(governance_integration_game(gp))
+        GOV = "I" if (r_gov == "I" and c_gov == "I") else "S"
+
+        # Compliance: Row (Cth) drives audit intensity (T/L). Col (State) just responds.
+        # But step() uses COMP to determine admin burden.
+        # If Cth plays T, burden high.
+        r_comp, _ = _solve(compliance_game(gp))
+        COMP = r_comp
 
     else:
         # Heuristic fallbacks (keep monotone relationships with pressure and efficiency gap)
@@ -314,8 +341,8 @@ def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generat
         demand *= 0.96
         discharge *= 0.97
     else:
-        demand *= 1.02
-        discharge *= 1.01
+        demand *= 1.04
+        discharge *= 1.02
 
     # Compliance increases admin burden which slightly worsens pressure (less clinical time)
     admin_burden = (1.0 + p.admin_burden_weight * (1 if strategies["COMP"] == "T" else -0.25))
@@ -323,7 +350,7 @@ def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generat
 
     # Occupancy update: demand ↑ and discharge delay ↑ increase occupancy; capacity index ↓ worsens
     occ = s.occupancy
-    occ += 0.015 * (demand - 1.0) + 0.020 * (discharge - 1.0) + 0.008 * (admin_burden - 1.0)
+    occ += 0.015 * (demand - 1.0) + 0.035 * (discharge - 1.0) + 0.008 * (admin_burden - 1.0)
     # Efficiency gap acts like a recurrent variance, tightening capacity indirectly (stylised)
     occ += 0.012 * (eff_gap - 0.15)
     occ -= 0.010 * (p.bed_capacity_index - 1.0)

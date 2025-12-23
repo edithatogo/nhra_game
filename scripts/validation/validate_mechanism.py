@@ -51,7 +51,18 @@ def main():
              df = df.reset_index()
     else:
         print("GSA results not found. Running lightweight Morris analysis...")
-        problem = get_salib_problem(GSA_PARAM_NAMES)
+        
+        # Override bounds to ensure we cross tipping points
+        bounds = {
+            "cost_shifting_intensity": [0.05, 0.80],
+            "discharge_delay_base": [0.8, 1.2], # +/- 20% around 1.0
+            "fragmentation_index": [0.8, 1.2],
+            "rurality_weight": [0.2, 0.5],
+            "admin_burden_weight": [0.1, 0.4],
+            "political_salience": [0.1, 0.5]
+        }
+        
+        problem = get_salib_problem(GSA_PARAM_NAMES, bounds_override=bounds)
         df = run_morris_analysis(problem, model_wrapper, n_trajectories=10, n_procs=1)
         
         # Ensure correct column names for validator
