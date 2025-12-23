@@ -21,10 +21,10 @@
 - [x] **Task: Conductor - User Manual Verification 'Literature Extraction' (Protocol in workflow.md)** [checkpoint: d5315fa]
 
 ## Phase 3: Evidence Manager Dashboard & Stochastic Tuning
-- [ ] **Task 6: Audit, Promotion & Stochastic Mapping**
-  - [ ] Sub-task: Implement the "Evidence Manager" tab in `scripts/dashboard_v21.py`.
-  - [ ] Sub-task: Map extracted 95% CIs to parameter-specific simulation noise (replacing global `noise_sd`).
-- [ ] **Task 7: Conflict Resolution & Consensus UI**
+- [x] **Task 6: Audit, Promotion & Stochastic Mapping** d87baec
+  - [x] Sub-task: Implement the "Evidence Manager" tab in `scripts/dashboard_v21.py`.
+  - [x] Sub-task: Map extracted 95% CIs to parameter-specific simulation noise (replacing global `noise_sd`).
+- [~] **Task 7: Conflict Resolution & Consensus UI**
   - [ ] Sub-task: Implement side-by-side comparison for conflicting parameters.
   - [ ] Sub-task: Implement "Select Source" or "Weighted Average" logic.
 - [ ] **Task: Conductor - User Manual Verification 'Dashboard UI' (Protocol in workflow.md)**
