@@ -43,6 +43,39 @@ def calculate_hit_rate(actual: np.ndarray, predicted: np.ndarray) -> float:
     hits = np.sign(actual_diff) == np.sign(pred_diff)
     return float(np.mean(hits))
 
+def calculate_theil_decomposition(actual: np.ndarray, predicted: np.ndarray) -> dict[str, float]:
+    """Calculate Theil Inequality Decomposition (UM, US, UC).
+    
+    UM: Bias proportion (due to mean difference)
+    US: Variance proportion (due to standard deviation difference)
+    UC: Covariance proportion (due to imperfect correlation)
+    
+    UM + US + UC = 1.0
+    """
+    mse = np.mean((actual - predicted)**2)
+    if mse == 0:
+        return {"um": 0.0, "us": 0.0, "uc": 1.0}
+        
+    mean_a = np.mean(actual)
+    mean_p = np.mean(predicted)
+    std_a = np.std(actual)
+    std_p = np.std(predicted)
+    
+    um = (mean_a - mean_p)**2 / mse
+    us = (std_a - std_p)**2 / mse
+    
+    # Covariance term
+    correlation = np.corrcoef(actual, predicted)[0, 1] if std_a > 0 and std_p > 0 else 0
+    uc = 2 * (1 - correlation) * std_a * std_p / mse
+    
+    # Ensure they sum to 1 (handling floating point edge cases)
+    total = um + us + uc
+    return {
+        "um": float(um / total),
+        "us": float(us / total),
+        "uc": float(uc / total)
+    }
+
 class MechanismValidator:
     """Verifies that model sensitivity aligns with mechanistic/historical narratives."""
     

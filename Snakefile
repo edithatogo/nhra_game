@@ -7,7 +7,55 @@ rule all:
         "outputs/v9/diagrams/games_network_minimal_v9.png",
         "outputs/v9/interactive/games_network_d3.html",
         "context/CONTEXT_PACK.md",
-        "context/grounding.ok"
+        "context/grounding.ok",
+        "reports/validation_report_v21.md"
+
+rule preprocess_historical:
+    input:
+        "data/raw/historical_aihw_ed.csv"
+    output:
+        "data/calibration_v21/historical_normalized.csv"
+    shell:
+        "PYTHONPATH=src python scripts/data/preprocess_historical.py"
+
+rule backtest_recursive:
+    input:
+        "data/calibration_v21/historical_normalized.csv"
+    output:
+        "data/calibration_v21/recursive_results.json"
+    shell:
+        "LOGFIRE_SEND_TO_LOGFIRE=false PYTHONPATH=src python scripts/validation/recursive_backtest.py"
+
+rule plot_validation:
+    input:
+        "data/calibration_v21/recursive_results.json"
+    output:
+        "outputs/validation/theil_decomposition.png"
+    shell:
+        "LOGFIRE_SEND_TO_LOGFIRE=false PYTHONPATH=src python scripts/validation/plot_theil_decomposition.py"
+
+rule validate_mechanism_script:
+    input:
+        "data/gsa_v21/morris_results.csv"
+    output:
+        touch("outputs/validation/mechanism.ok")
+    shell:
+        "LOGFIRE_SEND_TO_LOGFIRE=false PYTHONPATH=src python scripts/validation/validate_mechanism.py && touch outputs/validation/mechanism.ok"
+
+rule generate_report:
+    input:
+        "data/calibration_v21/recursive_results.json",
+        "outputs/validation/theil_decomposition.png",
+        "data/gsa_v21/morris_results.csv"
+    output:
+        "reports/validation_report_v21.md"
+    shell:
+        "LOGFIRE_SEND_TO_LOGFIRE=false PYTHONPATH=src python scripts/validation/generate_validation_report.py"
+
+rule validate:
+    input:
+        "reports/validation_report_v21.md",
+        "outputs/validation/mechanism.ok"
 
 rule gsa_morris:
     output:
