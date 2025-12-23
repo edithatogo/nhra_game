@@ -4,7 +4,7 @@
 - [x] **Task 1: Define GSA Problem Spec** 8878f9d
   - Create a utility in `src/nhra_game_theory/sensitivity.py` to define the SALib problem dictionary (param names, bounds) dynamically from the `Params` dataclass.
   - Write unit tests to verify problem definition accuracy.
-- [ ] **Task 2: Implement Parallel Evaluation Engine**
+- [x] **Task 2: Implement Parallel Evaluation Engine** ad6d2a2
   - Build the parallel execution wrapper in `scripts/run_gsa.py` using `multiprocessing`.
   - Implement a "mock" mode to test parallelism without running the full heavy simulation.
 - [ ] **Task: Conductor - User Manual Verification 'Foundation & Tooling' (Protocol in workflow.md)**
