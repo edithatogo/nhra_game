@@ -572,6 +572,21 @@ def run_hybrid(
 
     for r in range(n_mc):
         s = baseline_state(start_year=years[0], p=p)
+        # Record initial state
+        rr = relative_risk(s.pressure, s.offload_min, p)
+        rows.append({
+            "rollout": r,
+            "year": s.year,
+            "pressure": s.pressure,
+            "occupancy": s.occupancy,
+            "offload_min": s.offload_min,
+            "within4": s.within4,
+            "cth_share_nominal": s.effective_cth_share,
+            "cth_share_effective": s.effective_cth_share / (1.0 + s.efficiency_gap),
+            "efficiency_gap": s.efficiency_gap,
+            "discharge_delay": s.discharge_delay,
+            "rr_proxy": rr,
+        })
         # re-seed each rollout deterministically off the main RNG
         sub = np.random.default_rng(rng.integers(1, 2**32 - 1))
         for _ in years[1:]:
@@ -622,12 +637,15 @@ def run_hybrid(
     ).reset_index()
 
     # Strategy frequencies (per year and game)
-    freq = (
-        strat.groupby(["year", "game", "strategy"])
-        .size()
-        .reset_index(name="n")
-    )
-    freq["share"] = freq["n"] / freq.groupby(["year", "game"])["n"].transform("sum")
+    if not strat.empty:
+        freq = (
+            strat.groupby(["year", "game", "strategy"])
+            .size()
+            .reset_index(name="n")
+        )
+        freq["share"] = freq["n"] / freq.groupby(["year", "game"])["n"].transform("sum")
+    else:
+        freq = pd.DataFrame(columns=["year", "game", "strategy", "n", "share"])
 
     return agg, freq
 
