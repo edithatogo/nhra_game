@@ -14,9 +14,9 @@
 - [x] **Task: Conductor - User Manual Verification 'Empirical Integration' (Protocol in workflow.md)**
 
 ## Phase 2: Mechanism Logic & Stability Analysis
-- [ ] **Task 2.1: Subgame Stability Audit**
-  - [ ] Sub-task: Analyze payoff matrices to identify why Cost Shifting is inert (zero sensitivity).
-  - [ ] Sub-task: Map stability regions to find "Tipping Points" where strategies should flip.
+- [x] **Task 2.1: Subgame Stability Audit**
+  - [x] Sub-task: Analyze payoff matrices to identify why Cost Shifting is inert (zero sensitivity).
+  - [x] Sub-task: Map stability regions to find "Tipping Points" where strategies should flip. (Finding: Game is "stuck" in 'Invest' strategy for all tested pressures. `cost_shifting_intensity` parameter is unused in game logic.)
 - [ ] **Task 2.2: Mechanism Refinement (Cost Shifting & Discharge)**
   - [ ] Sub-task: Refine `cost_shifting_intensity` logic to influence game tipping points.
   - [ ] Sub-task: Re-calibrate `discharge_delay` vs. `pressure` coupling to restore its Rank #1 driver status.
