@@ -10,7 +10,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Foundation & Tooling' (Protocol in workflow.md)** [checkpoint: 1c90395]
 
 ## Phase 2: Morris Method (Screening)
-- [ ] **Task 3: Implement Morris Analysis**
+- [~] **Task 3: Implement Morris Analysis**
   - Add Morris sampling and analysis logic to `scripts/run_gsa.py`.
   - Implement generation of "Tornado Plots" (mu_star vs sigma) using `matplotlib`/`seaborn`.
 - [ ] **Task 4: Morris Validation Run**
