@@ -2,16 +2,16 @@
 
 **Goal:** Ground the model in real IHACPA/ABS time series, resolve mechanism validation failures, and implement robust stability analysis.
 
-## Phase 1: Automated Empirical Data Integration
+## Phase 1: Automated Empirical Data Integration [checkpoint: 5b260fb]
 - [x] **Task 1.1: Automated Economic Data Ingestion (TDD)**
   - [x] Sub-task: Create `scripts/data/ingest_economic_spine.py` to ingest historical NEP ($/NWAU) and ABS WPI.
   - [x] Sub-task: Write tests to verify data normalization and schema compliance.
-- [ ] **Task 1.2: Dynamic Efficiency Gap Calculation**
-  - [ ] Sub-task: Update `src/nhra_game_theory/v9.py` to consume the new economic series for drift calculations.
-  - [ ] Sub-task: Verify that the "Efficiency Gap" now reflects the divergence between NEP and WPI.
-- [ ] **Task 1.3: Data Consistency & Alignment Check**
-  - [ ] Sub-task: Create a validation script to ensure the new economic series aligns temporally with existing activity data (2011–2024).
-- [ ] **Task: Conductor - User Manual Verification 'Empirical Integration' (Protocol in workflow.md)**
+- [x] **Task 1.2: Dynamic Efficiency Gap Calculation**
+  - [x] Sub-task: Update `src/nhra_game_theory/v9.py` to consume the new economic series for drift calculations.
+  - [x] Sub-task: Verify that the "Efficiency Gap" now reflects the divergence between NEP and WPI.
+- [x] **Task 1.3: Data Consistency & Alignment Check**
+  - [x] Sub-task: Create a validation script to ensure the new economic series aligns temporally with existing activity data (2011–2024).
+- [x] **Task: Conductor - User Manual Verification 'Empirical Integration' (Protocol in workflow.md)**
 
 ## Phase 2: Mechanism Logic & Stability Analysis
 - [ ] **Task 2.1: Subgame Stability Audit**
