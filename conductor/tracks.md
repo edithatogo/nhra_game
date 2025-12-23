@@ -9,5 +9,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [x] Track: Empirical Spine & Mechanism Refinement (v22)
 *Link: [./conductor/tracks/empirical_spine_mechanism_refinement_v22/](./conductor/tracks/empirical_spine_mechanism_refinement_v22/)*
 
-## [ ] Track: Reporting & Scenario War Gaming (v23)
+## [x] Track: Reporting & Scenario War Gaming (v23)
 *Link: [./conductor/tracks/reporting_scenario_gaming_v23/](./conductor/tracks/reporting_scenario_gaming_v23/)*
