@@ -33,4 +33,4 @@
   - [ ] Sub-task: Implement Save/Load functionality.
 - [ ] **Task 8: Final Report Export**
   - [ ] Sub-task: Implement academic-standard PDF/PNG download suite.
-- [ ] **Task: Conductor - User Manual Verification 'Snapshotting & Export' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Snapshotting & Export' (Protocol in workflow.md)** [checkpoint: 05a961c]
