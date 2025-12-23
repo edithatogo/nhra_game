@@ -1,7 +1,12 @@
 from __future__ import annotations
 import pytest
+import numpy as np
 from nhra_game_theory.v8 import Params
-from nhra_game_theory.sensitivity import get_salib_problem
+from nhra_game_theory.sensitivity import get_salib_problem, evaluate_parallel
+
+def mock_model(params: np.ndarray) -> float:
+    """A simple model function for testing parallelism."""
+    return float(np.sum(params))
 
 def test_get_salib_problem_basic() -> None:
     """Verify that the utility generates a correct SALib problem dictionary."""
@@ -30,3 +35,18 @@ def test_get_salib_problem_custom_bounds() -> None:
     problem = get_salib_problem(param_list, bounds_override=custom_bounds)
     
     assert problem["bounds"][0] == [0.1, 0.9]
+
+def test_evaluate_parallel_basic() -> None:
+    """Verify that the parallel evaluator collects results from a simple function."""
+    param_values = np.array([
+        [1.0, 2.0],
+        [3.0, 4.0],
+        [5.0, 6.0]
+    ])
+    
+    results = evaluate_parallel(mock_model, param_values, n_procs=2)
+    
+    assert len(results) == 3
+    assert results[0] == 3.0
+    assert results[1] == 7.0
+    assert results[2] == 11.0

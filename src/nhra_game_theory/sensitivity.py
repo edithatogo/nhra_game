@@ -1,5 +1,7 @@
 from __future__ import annotations
-from typing import List, Dict, Optional, Any
+from typing import List, Dict, Optional, Any, Callable
+from concurrent.futures import ProcessPoolExecutor
+import numpy as np
 from nhra_game_theory.v8 import Params
 
 def get_salib_problem(
@@ -41,3 +43,24 @@ def get_salib_problem(
         "names": problem_names,
         "bounds": problem_bounds
     }
+
+def evaluate_parallel(
+    model_func: Callable[[np.ndarray], float],
+    param_values: np.ndarray,
+    n_procs: int = 4
+) -> np.ndarray:
+    """Evaluates the model function in parallel across multiple processes.
+    
+    Args:
+        model_func: Function that takes a parameter array and returns a scalar result.
+        param_values: 2D array of shape (n_samples, n_vars).
+        n_procs: Number of worker processes to use.
+        
+    Returns:
+        A 1D array of results.
+    """
+    with ProcessPoolExecutor(max_workers=n_procs) as executor:
+        # map preserves order
+        results = list(executor.map(model_func, param_values))
+        
+    return np.array(results)
