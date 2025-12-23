@@ -36,6 +36,18 @@ def prepare_ghost_overlay_data(historical: pd.DataFrame, recursive_results: list
     
     return pd.concat([hist_subset, pred_df])
 
+def prepare_share_drift_data(traj: pd.DataFrame, threshold: float) -> tuple[pd.DataFrame, list[dict]]:
+    """Calculate effective share drift and identify threshold breaches."""
+    df = traj.copy()
+    df["drift_gap"] = df["cth_nominal_mean"] - df["cth_effective_mean"]
+    
+    breaches = []
+    for _, row in df.iterrows():
+        if row["cth_effective_mean"] < threshold:
+            breaches.append({"year": int(row["year"]), "value": float(row["cth_effective_mean"])})
+            
+    return df, breaches
+
 @st.cache_data
 def cached_run_model(p: Params, years: list[int], n_mc: int = 50):
     """Run the model with caching to ensure responsive UI."""
@@ -212,96 +224,126 @@ def main():
     ])
     
     with tab1:
-        col1, col2 = st.columns([2, 1])
+        st.markdown("#### System Trajectories")
         
-        with col1:
-            st.markdown("#### System Trajectories")
+        wg_tab1, wg_tab2, wg_tab3 = st.tabs(["📉 Risk & Pressure", "💸 Fiscal Impact", "📋 Intervention Ranking"])
+        
+        with wg_tab1:
+            col1, col2 = st.columns([2, 1])
             
-            # Prepare Plotly Data
-            traj_base_p = traj_base.copy()
-            traj_game_p = traj_game.copy()
-            traj_base_p["Scenario"] = "Baseline"
-            traj_game_p["Scenario"] = "War Game"
-            combined = pd.concat([traj_base_p, traj_game_p])
-            
-            # Risk Plot
-            fig_risk = px.line(
-                combined, x="year", y="rr_mean", color="Scenario",
-                title="Relative Risk Proxy (Trajectories)",
-                labels={"rr_mean": "Relative Risk", "year": "Year"},
-                color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
-            )
-            fig_risk.update_layout(template="simple_white", hovermode="x unified")
-            st.plotly_chart(fig_risk, use_container_width=True)
-            
-            # Pressure Plot
-            fig_pres = px.line(
-                combined, x="year", y="pressure_mean", color="Scenario",
-                title="System Pressure Index",
-                labels={"pressure_mean": "Pressure Index", "year": "Year"},
-                color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
-            )
-            fig_pres.update_layout(template="simple_white", hovermode="x unified")
-            st.plotly_chart(fig_pres, use_container_width=True)
-            
-        with col2:
-            st.markdown("#### Executive Summary")
-            
-            # Effective Cth Share
-            share_val = summary_game["effshare_effective_2030"]
-            share_base = summary_base["effshare_effective_2030"]
-            st.metric(
-                "Effective Cth Share (2030)", 
-                f"{share_val*100:.1f}%", 
-                delta=f"{(share_val - share_base)*100:.1f}%"
-            )
-            
-            # Relative Risk
-            risk_val = summary_game["rr_2030"]
-            risk_base = summary_base["rr_2030"]
-            st.metric(
-                "Relative Risk Proxy (2030)", 
-                f"{risk_val:.2f}", 
-                delta=f"{risk_val - risk_base:.2f}",
-                delta_color="inverse"
-            )
-            
-            # Within 4 Hours
-            w4_val = summary_game["within4_2030"]
-            w4_base = summary_base["within4_2030"]
-            st.metric(
-                "Within 4 Hours (2030)", 
-                f"{w4_val*100:.1f}%", 
-                delta=f"{(w4_val - w4_base)*100:.1f}%"
-            )
-            
-            # Narrative Summary
-            st.markdown("---")
-            narrative = generate_prose_summary(summary_base, summary_game)
-            st.markdown(narrative)
-            
-            # Export Suite
-            st.markdown("---")
-            st.markdown("#### 📤 Export Results")
-            col_ex1, col_col_ex2 = st.columns(2)
-            
-            with col_ex1:
-                st.download_button(
-                    "📊 Download Data (CSV)",
-                    data=combined.to_csv(index=False),
-                    file_name=f"{scenario_name.lower().replace(' ', '_')}_results.csv",
-                    mime="text/csv"
+            with col1:
+                # Prepare Plotly Data
+                traj_base_p = traj_base.copy()
+                traj_game_p = traj_game.copy()
+                traj_base_p["Scenario"] = "Baseline"
+                traj_game_p["Scenario"] = "War Game"
+                combined = pd.concat([traj_base_p, traj_game_p])
+                
+                # Risk Plot
+                fig_risk = px.line(
+                    combined, x="year", y="rr_mean", color="Scenario",
+                    title="Relative Risk Proxy (Trajectories)",
+                    labels={"rr_mean": "Relative Risk", "year": "Year"},
+                    color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
                 )
-            
-            with col_col_ex2:
-                # Simple markdown report for now
-                report_text = f"# NHRA War Game Report: {scenario_name}\n\n{narrative}\n\n## Data Summary\n{summary_game}"
-                st.download_button(
-                    "📄 Download Brief (MD)",
-                    data=report_text,
-                    file_name=f"{scenario_name.lower().replace(' ', '_')}_report.md",
-                    mime="text/markdown"
+                fig_risk.update_layout(template="simple_white", hovermode="x unified")
+                st.plotly_chart(fig_risk, use_container_width=True)
+                
+                # Pressure Plot
+                fig_pres = px.line(
+                    combined, x="year", y="pressure_mean", color="Scenario",
+                    title="System Pressure Index",
+                    labels={"pressure_mean": "Pressure Index", "year": "Year"},
+                    color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
                 )
+                fig_pres.update_layout(template="simple_white", hovermode="x unified")
+                st.plotly_chart(fig_pres, use_container_width=True)
+                
+            with col2:
+                st.markdown("#### Executive Summary")
+                
+                # Effective Cth Share
+                share_val = summary_game["effshare_effective_2030"]
+                share_base = summary_base["effshare_effective_2030"]
+                st.metric(
+                    "Effective Cth Share (2030)", 
+                    f"{share_val*100:.1f}%", 
+                    delta=f"{(share_val - share_base)*100:.1f}%"
+                )
+                
+                # Relative Risk
+                risk_val = summary_game["rr_2030"]
+                risk_base = summary_base["rr_2030"]
+                st.metric(
+                    "Relative Risk Proxy (2030)", 
+                    f"{risk_val:.2f}", 
+                    delta=f"{risk_val - risk_base:.2f}",
+                    delta_color="inverse"
+                )
+                
+                # Within 4 Hours
+                w4_val = summary_game["within4_2030"]
+                w4_base = summary_base["within4_2030"]
+                st.metric(
+                    "Within 4 Hours (2030)", 
+                    f"{w4_val*100:.1f}%", 
+                    delta=f"{(w4_val - w4_base)*100:.1f}%"
+                )
+                
+                # Narrative Summary
+                st.markdown("---")
+                narrative = generate_prose_summary(summary_base, summary_game)
+                st.markdown(narrative)
+                
+                # Export Suite
+                st.markdown("---")
+                st.markdown("#### 📤 Export Results")
+                col_ex1, col_col_ex2 = st.columns(2)
+                
+                with col_ex1:
+                    st.download_button(
+                        "📊 Download Data (CSV)",
+                        data=combined.to_csv(index=False),
+                        file_name=f"{scenario_name.lower().replace(' ', '_')}_results.csv",
+                        mime="text/csv"
+                    )
+                
+                with col_col_ex2:
+                    # Simple markdown report for now
+                    report_text = f"# NHRA War Game Report: {scenario_name}\n\n{narrative}\n\n## Data Summary\n{summary_game}"
+                    st.download_button(
+                        "📄 Download Brief (MD)",
+                        data=report_text,
+                        file_name=f"{scenario_name.lower().replace(' ', '_')}_report.md",
+                        mime="text/markdown"
+                    )
+
+        with wg_tab2:
+            st.subheader("Effective Share Drift Analysis")
+            threshold = st.slider("Share Threshold", 0.30, 0.50, 0.40, 0.01)
+            
+            # Use War Game trajectory
+            drift_df, breaches = prepare_share_drift_data(traj_game, threshold)
+            
+            # Plot Nominal vs Effective
+            fig_share = px.line(
+                drift_df, x="year", y=["cth_nominal_mean", "cth_effective_mean"],
+                title="Nominal vs Effective Commonwealth Share",
+                labels={"value": "Share", "year": "Year", "variable": "Type"},
+                color_discrete_map={"cth_nominal_mean": "blue", "cth_effective_mean": "red"}
+            )
+            # Add threshold line
+            fig_share.add_hline(y=threshold, line_dash="dash", line_color="black", annotation_text=f"Threshold {threshold:.0%}")
+            
+            st.plotly_chart(fig_share, use_container_width=True)
+            
+            if breaches:
+                st.error(f"⚠️ Breach Detected: Effective share drops below {threshold:.0%} in {breaches[0]['year']}.")
+            else:
+                st.success("✅ No threshold breaches detected in the forecast period.")
+
+        with wg_tab3:
+            st.info("Ranked Intervention Table coming in Task 1.2")
 
     with tab2:
         st.markdown("### Data & Variable Lineage")
