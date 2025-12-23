@@ -16,7 +16,7 @@
 - [x] **Task 4: Morris Validation Run** 4ab9b1a
   - Execute a Morris screening run (e.g., 100 trajectories) to identify non-influential parameters.
   - Verify output CSVs and plots are generated correctly.
-- [ ] **Task: Conductor - User Manual Verification 'Morris Method (Screening)' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Morris Method (Screening)' (Protocol in workflow.md)** [checkpoint: 911ca53]
 
 ## Phase 3: Sobol Analysis (Variance Decomposition)
 - [ ] **Task 5: Implement Sobol Analysis**
