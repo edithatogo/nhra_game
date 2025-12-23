@@ -30,7 +30,7 @@
 - [x] **Task 7: Generate Sensitivity & Performance Reports** (Generated report in data/calibration_v21/reports/)
   - Execute the full calibration pipeline.
   - Generate the "Parameter Sensitivity Report" ranking importance from posteriors.
-- [ ] **Task 8: Update Manuscript Methods**
+- [~] **Task 8: Update Manuscript Methods**
   - Revise methodology sections in `manuscripts/` to reflect stochastic calibration and v2 behavior re-integration.
 - [ ] **Task 9: Final Regression & Compliance Check**
   - Compare new residuals against Phase 1 baseline.
