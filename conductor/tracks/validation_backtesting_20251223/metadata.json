@@ -1,0 +1,8 @@
+{
+  "track_id": "validation_backtesting_20251223",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2025-12-23T13:00:00Z",
+  "updated_at": "2025-12-23T13:00:00Z",
+  "description": "Model Validation & Backtesting (SOTA)"
+}
