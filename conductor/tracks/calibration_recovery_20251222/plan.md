@@ -27,7 +27,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Advanced Optimization Features' (Protocol in workflow.md)** [checkpoint: 1b435f1]
 
 ## Phase 4: Validation & Reporting
-- [ ] **Task 7: Generate Sensitivity & Performance Reports**
+- [~] **Task 7: Generate Sensitivity & Performance Reports**
   - Execute the full calibration pipeline.
   - Generate the "Parameter Sensitivity Report" ranking importance from posteriors.
 - [ ] **Task 8: Update Manuscript Methods**
