@@ -155,6 +155,20 @@ class RecursiveBacktest:
             results.append(self.run_step(train_df, test_df))
         return results
 
+    def save_results(self, results: list[RecursiveResult], path: str | Path):
+        """Save backtest results to a JSON file."""
+        data = [r.model_dump() for r in results]
+        with open(path, "w") as f:
+            import json
+            # Handle non-serializable objects (like Params) by converting to dict
+            class EnhancedJSONEncoder(json.JSONEncoder):
+                def default(self, o):
+                    if hasattr(o, "__dict__"):
+                        return o.__dict__
+                    return super().default(o)
+            
+            json.dump(data, f, indent=2, cls=EnhancedJSONEncoder)
+
 def aggregate_metrics(results: list[RecursiveResult]) -> dict[str, dict[str, float]]:
     """Calculate summary statistics across all backtest steps."""
     if not results:

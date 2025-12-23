@@ -8,14 +8,32 @@ from pathlib import Path
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import numpy as np
 
 # Add src to path if needed for relative imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from nhra_game_theory.domain.registry import EvidenceEntry, EvidenceRegistry
+from nhra_game_theory.domain.validation import aggregate_metrics, RecursiveResult
 from nhra_game_theory.sensitivity import get_parameter_lineage
 from nhra_game_theory.v8 import Params, run_hybrid, summarise_outcome
 
+def prepare_ghost_overlay_data(historical: pd.DataFrame, recursive_results: list[dict], metric: str) -> pd.DataFrame:
+    """Prepare data for historical vs predicted overlay."""
+    hist_subset = historical[["year", metric]].copy()
+    hist_subset["type"] = "Historical"
+    hist_subset = hist_subset.rename(columns={metric: "value"})
+    
+    pred_data = []
+    for r in recursive_results:
+        pred_data.append({
+            "year": r["test_year"],
+            "value": r["predicted"][metric],
+            "type": "Backtest Prediction"
+        })
+    pred_df = pd.DataFrame(pred_data)
+    
+    return pd.concat([hist_subset, pred_df])
 
 @st.cache_data
 def cached_run_model(p: Params, years: list[int], n_mc: int = 50):
@@ -184,7 +202,13 @@ def main():
     # ----------------------------
     # Main Content Area: Tabs
     # ----------------------------
-    tab1, tab2, tab3, tab4 = st.tabs(["📈 War Game", "🧬 Data Lineage", "🔬 Technical Analytics", "🛡️ Evidence Manager"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "📈 War Game", 
+        "🧬 Data Lineage", 
+        "⚖️ Validation Scorecard", 
+        "🔬 Technical Analytics", 
+        "🛡️ Evidence Manager"
+    ])
     
     with tab1:
         col1, col2 = st.columns([2, 1])
@@ -193,9 +217,11 @@ def main():
             st.markdown("#### System Trajectories")
             
             # Prepare Plotly Data
-            traj_base["Scenario"] = "Baseline"
-            traj_game["Scenario"] = "War Game"
-            combined = pd.concat([traj_base, traj_game])
+            traj_base_p = traj_base.copy()
+            traj_game_p = traj_game.copy()
+            traj_base_p["Scenario"] = "Baseline"
+            traj_game_p["Scenario"] = "War Game"
+            combined = pd.concat([traj_base_p, traj_game_p])
             
             # Risk Plot
             fig_risk = px.line(
@@ -205,7 +231,7 @@ def main():
                 color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
             )
             fig_risk.update_layout(template="simple_white", hovermode="x unified")
-            st.plotly_chart(fig_risk, width="stretch")
+            st.plotly_chart(fig_risk, use_container_width=True)
             
             # Pressure Plot
             fig_pres = px.line(
@@ -215,7 +241,7 @@ def main():
                 color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
             )
             fig_pres.update_layout(template="simple_white", hovermode="x unified")
-            st.plotly_chart(fig_pres, width="stretch")
+            st.plotly_chart(fig_pres, use_container_width=True)
             
         with col2:
             st.markdown("#### Executive Summary")
@@ -286,7 +312,72 @@ def main():
         ])
         st.table(lineage_df)
 
+    with tab3:
+        st.markdown("### ⚖️ Model Validation & Backtesting")
+        st.markdown("Performance of the model against historical NHRA data (2011–2024).")
+        
+        # Load Historical
+        hist_path = Path("data/calibration_v21/historical_normalized.csv")
+        results_path = Path("data/calibration_v21/recursive_results.json")
+        
+        if hist_path.exists() and results_path.exists():
+            df_hist = pd.read_csv(hist_path)
+            with open(results_path) as f:
+                recursive_results = json.load(f)
+            
+            # Aggregate metrics for display
+            res_objs = [RecursiveResult(**r) for r in recursive_results]
+            val_summary = aggregate_metrics(res_objs)
+            
+            col_v1, col_v2 = st.columns(2)
+            with col_v1:
+                st.subheader("🎯 Error Metrics")
+                for metric, vals in val_summary.items():
+                    st.markdown(f"**{metric.upper()}**")
+                    cv1, cv2, cv3 = st.columns(3)
+                    cv1.metric("RMSE", f"{vals['rmse']:.3f}")
+                    cv2.metric("MAPE", f"{vals['mape']*100:.1f}%")
+                    cv3.metric("Theil U", f"{vals['theil_u']:.3f}")
+            
+            with col_v2:
+                st.subheader("👻 Ghost Overlays")
+                sel_metric = st.selectbox("Select Metric for Overlay:", ["within4", "occupancy"])
+                overlay_df = prepare_ghost_overlay_data(df_hist, recursive_results, sel_metric)
+                
+                fig_ghost = px.line(
+                    overlay_df, x="year", y="value", color="type",
+                    title=f"Historical vs Backtest: {sel_metric}",
+                    color_discrete_map={"Historical": "#008080", "Backtest Prediction": "orange"}
+                )
+                fig_ghost.update_layout(template="simple_white")
+                st.plotly_chart(fig_ghost, use_container_width=True)
+        else:
+            st.warning("Validation data not found. Please run `scripts/validation/recursive_backtest.py` first.")
+
     with tab4:
+        st.markdown("### 🔬 Technical Analytics")
+        st.markdown("Mechanism sensitivity and structural integrity checks.")
+        
+        gsa_path = Path("data/gsa_v21/morris_results.csv")
+        if gsa_path.exists():
+            df_gsa = pd.read_csv(gsa_path)
+            if "Unnamed: 0" in df_gsa.columns:
+                df_gsa = df_gsa.rename(columns={"Unnamed: 0": "parameter"})
+            
+            st.subheader("🌪️ Morris Tornado (Parameter Importance)")
+            fig_gsa = px.bar(
+                df_gsa.sort_values("mu_star", ascending=True),
+                x="mu_star", y="parameter", orientation="h",
+                title="Global Sensitivity (mu_star)",
+                color="mu_star",
+                color_continuous_scale="Teal"
+            )
+            fig_gsa.update_layout(template="simple_white")
+            st.plotly_chart(fig_gsa, use_container_width=True)
+        else:
+            st.info("GSA results not found. Run `scripts/run_gsa.py` to generate.")
+
+    with tab5:
         st.markdown("### 🛡️ Evidence Manager & Auditor")
         st.markdown("Review and promote evidence from automated ingestion to the active model.")
         

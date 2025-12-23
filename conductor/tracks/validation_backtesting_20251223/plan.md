@@ -44,9 +44,9 @@
 - [x] **Task: Conductor - User Manual Verification 'Mechanism Validation' (Protocol in workflow.md)**
 
 ## Phase 4: Dashboard Integration & Reporting
-- [ ] **Task 6: Interactive Validation Dashboard (TDD)**
-  - [ ] Sub-task: Write tests for Plotly overlay data generation (History vs. Prediction).
-  - [ ] Sub-task: Implement "Validation Scorecard" and "Ghost Overlay" tabs in Streamlit.
+- [x] **Task 6: Interactive Validation Dashboard (TDD)**
+  - [x] Sub-task: Write tests for Plotly overlay data generation (History vs. Prediction).
+  - [x] Sub-task: Implement "Validation Scorecard" and "Ghost Overlay" tabs in Streamlit.
 - [ ] **Task 7: Automated Technical Validation Report & Automation**
   - [ ] Sub-task: Implement Theil Inequality Decomposition visualization (Bias/Variance/Covariance plots).
   - [ ] Sub-task: Implement Markdown/PDF report generator meeting STRESS/CHEERS guidelines.
