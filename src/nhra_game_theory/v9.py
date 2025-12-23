@@ -105,6 +105,9 @@ class Params:
     # Randomness
     noise_sd: float = 0.03
 
+    # Empirical Spine (optional)
+    economic_spine: pd.DataFrame | None = None
+
 
 @dataclass(frozen=True)
 class State:
@@ -253,9 +256,20 @@ def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generat
     # Funding/valuation effects
     # Definition realism reduces efficiency gap; strict NEP increases it
     # --- Macro drift: input costs vs NEP indexation (annual) ---
-    # Interpret efficiency gap as (cost / NEP) - 1 at the margin. When costs grow faster than NEP,
-    # the gap widens mechanically even if behaviour doesn't change.
-    drift_factor = (1.0 + float(p.input_cost_annual_growth)) / (1.0 + float(p.nep_annual_growth))
+    
+    if p.economic_spine is not None and s.year in p.economic_spine["year"].values and (s.year + 1) in p.economic_spine["year"].values:
+        # Calculate year-on-year growth from spine
+        row_curr = p.economic_spine[p.economic_spine["year"] == s.year].iloc[0]
+        row_next = p.economic_spine[p.economic_spine["year"] == (s.year + 1)].iloc[0]
+        
+        growth_nep = (row_next["nep_per_nwau"] / row_curr["nep_per_nwau"]) - 1.0
+        growth_wpi = (row_next["wpi_health_index"] / row_curr["wpi_health_index"]) - 1.0
+        
+        drift_factor = (1.0 + growth_wpi) / (1.0 + growth_nep)
+    else:
+        # Fallback to constant growth
+        drift_factor = (1.0 + float(p.input_cost_annual_growth)) / (1.0 + float(p.nep_annual_growth))
+        
     # Apply drift to the *level* (1+gap), not just the gap.
     eff_gap = (1.0 + float(s.efficiency_gap)) * drift_factor - 1.0
 
