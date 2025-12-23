@@ -37,7 +37,7 @@ class EvidenceRegistry(BaseModel):
     
     model_config = ConfigDict(validate_assignment=True)
     
-    def add_entry(self, entry: EvidenceEntry):
+    def add_entry(self, entry: EvidenceEntry) -> None:
         if entry.parameter not in self.entries:
             self.entries[entry.parameter] = []
         self.entries[entry.parameter].append(entry)
@@ -64,7 +64,7 @@ class EvidenceRegistry(BaseModel):
             
         return all_entries[-1] # Default to latest
 
-    def generate_grounding_report(self, path: Path | str):
+    def generate_grounding_report(self, path: Path | str) -> None:
         """Generates a Markdown report summarizing the evidence grounding."""
         report = "# Evidence Grounding Report\n\n"
         report += "| Parameter | Mean | 95% CI | NHMRC Grade | Source |\n"
@@ -72,17 +72,20 @@ class EvidenceRegistry(BaseModel):
         
         for param in sorted(self.entries.keys()):
             e = self.get_entry(param)
+            if e is None:
+                continue
             ci_str = f"[{e.lower_ci}, {e.upper_ci}]" if e.lower_ci is not None else "N/A"
             report += f"| {e.parameter} | {e.mean} | {ci_str} | {e.nhmrc_level} | {e.source_url} |\n"
             
         Path(path).write_text(report)
 
-    def sync_to_targets(self, targets_path: Path | str):
+    def sync_to_targets(self, targets_path: Path | str) -> None:
         """Updates the calibration targets CSV with promoted evidence."""
         df = pd.read_csv(targets_path)
         for param in self.entries:
             e = self.get_entry(param)
-            df.loc[df["metric"] == param, "target"] = e.mean
+            if e:
+                df.loc[df["metric"] == param, "target"] = e.mean
         df.to_csv(targets_path, index=False)
 
     def promote_to_params(self, base_params: Any) -> Any:
@@ -90,7 +93,9 @@ class EvidenceRegistry(BaseModel):
         p_dict = {}
         for param in self.entries:
             if hasattr(base_params, param):
-                p_dict[param] = self.get_entry(param).mean
+                e = self.get_entry(param)
+                if e:
+                    p_dict[param] = e.mean
         return base_params.model_copy(update=p_dict)
 
     def is_sane(self, entry: EvidenceEntry, baseline: dict[str, float], threshold: float = 0.5) -> bool:
@@ -103,7 +108,7 @@ class EvidenceRegistry(BaseModel):
         deviation = abs(entry.mean - base_val) / abs(base_val)
         return deviation <= threshold
 
-    def save_to_csv(self, path: Path | str):
+    def save_to_csv(self, path: Path | str) -> None:
         flat_data = []
         for p_entries in self.entries.values():
             for e in p_entries:

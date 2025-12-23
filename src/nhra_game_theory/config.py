@@ -1,9 +1,9 @@
 from __future__ import annotations
-from pydantic import Field, ConfigDict
-from goodconf import GoodConf
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
 
-class Settings(GoodConf):
+class Settings(BaseSettings):
     """Environment-agnostic configuration for the NHRA model."""
     
     # Path settings
@@ -18,10 +18,12 @@ class Settings(GoodConf):
     # Calibration settings
     CALIBRATION_TARGETS_FILE: Path = Field(default=Path("data/raw/calibration_targets.csv"))
     
-    model_config = ConfigDict(frozen=True)
-    
-    class Config:
-        default_files = ["config.yaml", "config.json"]
+    model_config = SettingsConfigDict(
+        frozen=True,
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore"
+    )
 
 # Global settings instance
 settings = Settings()
