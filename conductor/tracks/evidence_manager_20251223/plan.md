@@ -12,7 +12,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Registry Core' (Protocol in workflow.md)** [checkpoint: 50b7cde]
 
 ## Phase 2: Hybrid Literature Extraction & Document Integrity
-- [ ] **Task 4: Robust PDF Table Extraction & Hashing**
+- [x] **Task 4: Robust PDF Table Extraction & Hashing** ebd8444
   - [ ] Sub-task: Implement SHA-256 document hashing for source archival and reproducibility.
   - [ ] Sub-task: Implement `scripts/extract_tables.py` using `PyMuPDF` or `Camelot`.
 - [ ] **Task 5: Schema-Constrained LLM Parsing**
