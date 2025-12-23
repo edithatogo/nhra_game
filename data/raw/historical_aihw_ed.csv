@@ -1,0 +1,7 @@
+Year,Metric,Value,Lower_CI,Upper_CI,Source
+2011,Within 4 Hours,0.70,,,AIHW Historical
+2012,Within 4 Hours,0.68,,,AIHW Historical
+2020,Within 4 Hours,0.67,,,AIHW ED time spent (ED_WITHIN_4H_2020_21)
+2024,Within 4 Hours,0.53,,,AIHW ED time spent (ED_WITHIN_4H_2024_25)
+2011,Occupancy,0.85,,,AIHW Historical
+2024,Occupancy,0.92,,,AIHW Historical
