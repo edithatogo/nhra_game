@@ -18,8 +18,8 @@
 - [x] **Task 1: Ingest and Align Historical NHRA Datasets (TDD)**
   - [x] Sub-task: Write tests for data alignment utility (matching historical years to model steps).
   - [x] Sub-task: Implement `scripts/data/preprocess_historical.py` to normalize 2011–2025 data from AIHW and ABS.
-- [ ] **Task: Turing Way Checklist Verification**
-  - [ ] Sub-task: Audit Phase 1 against `conductor/checklists/turing_way_testing.md`.
+- [x] **Task: Turing Way Checklist Verification**
+  - [x] Sub-task: Audit Phase 1 against `conductor/checklists/turing_way_testing.md`.
 - [~] **Task: Conductor - User Manual Verification 'Historical Data Ingestion' (Protocol in workflow.md)**
 
 ## Phase 2: Recursive Backtesting & Metric Engine
