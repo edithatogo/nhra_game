@@ -24,3 +24,12 @@ class ABSSchema(pa.DataFrameModel):
     class Config:
         strict = True
         coerce = True
+
+class EconomicSpineSchema(pa.DataFrameModel):
+    year: Series[int] = pa.Field(ge=2000, le=2100)
+    nep_per_nwau: Series[float] = pa.Field(ge=4000, le=10000)
+    wpi_health_index: Series[float] = pa.Field(ge=80, le=200)
+
+    class Config:
+        strict = True
+        coerce = True

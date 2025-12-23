@@ -3,9 +3,9 @@
 **Goal:** Ground the model in real IHACPA/ABS time series, resolve mechanism validation failures, and implement robust stability analysis.
 
 ## Phase 1: Automated Empirical Data Integration
-- [ ] **Task 1.1: Automated Economic Data Ingestion (TDD)**
-  - [ ] Sub-task: Create `scripts/data/ingest_economic_spine.py` to ingest historical NEP ($/NWAU) and ABS WPI.
-  - [ ] Sub-task: Write tests to verify data normalization and schema compliance.
+- [x] **Task 1.1: Automated Economic Data Ingestion (TDD)**
+  - [x] Sub-task: Create `scripts/data/ingest_economic_spine.py` to ingest historical NEP ($/NWAU) and ABS WPI.
+  - [x] Sub-task: Write tests to verify data normalization and schema compliance.
 - [ ] **Task 1.2: Dynamic Efficiency Gap Calculation**
   - [ ] Sub-task: Update `src/nhra_game_theory/v9.py` to consume the new economic series for drift calculations.
   - [ ] Sub-task: Verify that the "Efficiency Gap" now reflects the divergence between NEP and WPI.
