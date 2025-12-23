@@ -11,11 +11,35 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from nhra_game_theory.v8 import Params, run_hybrid, summarise_outcome
+from nhra_game_theory.sensitivity import get_parameter_lineage
 
 @st.cache_data
 def cached_run_model(p: Params, years: list[int], n_mc: int = 50):
     """Run the model with caching to ensure responsive UI."""
     return run_hybrid(years, p, seed=42, n_mc=n_mc)
+
+def generate_prose_summary(summary_base, summary_game) -> str:
+    """Generate a rule-based automated prose summary of the war game results."""
+    risk_change = summary_game["rr_2030"] - summary_base["rr_2030"]
+    share_change = summary_game["effshare_effective_2030"] - summary_base["effshare_effective_2030"]
+    
+    narrative = "### 📜 Automated Policy Brief\n"
+    
+    if risk_change > 0.05:
+        narrative += f"⚠️ **Warning:** System risk is projected to increase by {risk_change:.2f} units. "
+    elif risk_change < -0.05:
+        narrative += f"✅ **Improvement:** System risk is projected to decrease by {abs(risk_change):.2f} units. "
+    else:
+        narrative += "⚖️ **Stability:** System risk remains stable under this configuration. "
+        
+    if share_change > 0.02:
+        narrative += f"Despite a {share_change*100:.1f}% gain in Effective Commonwealth Share, "
+    elif share_change < -0.02:
+        narrative += f"Compounded by a {abs(share_change)*100:.1f}% loss in Effective Share, "
+        
+    narrative += "Access Block and ED performance remain the primary drivers of system pressure."
+    
+    return narrative
 
 def apply_custom_theme():
     """Apply Teal/Minimalist Academic theme using custom CSS."""
@@ -127,68 +151,96 @@ def main():
     summary_game = summarise_outcome(traj_game)
 
     # ----------------------------
-    # Main Content Area
+    # Main Content Area: Tabs
     # ----------------------------
-    col1, col2 = st.columns([2, 1])
+    tab1, tab2, tab3 = st.tabs(["📈 War Game", "🧬 Data Lineage", "🔬 Technical Analytics"])
     
-    with col1:
-        st.markdown("#### System Trajectories")
+    with tab1:
+        col1, col2 = st.columns([2, 1])
         
-        # Prepare Plotly Data
-        traj_base["Scenario"] = "Baseline"
-        traj_game["Scenario"] = "War Game"
-        combined = pd.concat([traj_base, traj_game])
+        with col1:
+            st.markdown("#### System Trajectories")
+            
+            # Prepare Plotly Data
+            traj_base["Scenario"] = "Baseline"
+            traj_game["Scenario"] = "War Game"
+            combined = pd.concat([traj_base, traj_game])
+            
+            # Risk Plot
+            fig_risk = px.line(
+                combined, x="year", y="rr_mean", color="Scenario",
+                title="Relative Risk Proxy (Trajectories)",
+                labels={"rr_mean": "Relative Risk", "year": "Year"},
+                color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
+            )
+            fig_risk.update_layout(template="simple_white", hovermode="x unified")
+            st.plotly_chart(fig_risk, width="stretch")
+            
+            # Pressure Plot
+            fig_pres = px.line(
+                combined, x="year", y="pressure_mean", color="Scenario",
+                title="System Pressure Index",
+                labels={"pressure_mean": "Pressure Index", "year": "Year"},
+                color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
+            )
+            fig_pres.update_layout(template="simple_white", hovermode="x unified")
+            st.plotly_chart(fig_pres, width="stretch")
+            
+        with col2:
+            st.markdown("#### Executive Summary")
+            
+            # Effective Cth Share
+            share_val = summary_game["effshare_effective_2030"]
+            share_base = summary_base["effshare_effective_2030"]
+            st.metric(
+                "Effective Cth Share (2030)", 
+                f"{share_val*100:.1f}%", 
+                delta=f"{(share_val - share_base)*100:.1f}%"
+            )
+            
+            # Relative Risk
+            risk_val = summary_game["rr_2030"]
+            risk_base = summary_base["rr_2030"]
+            st.metric(
+                "Relative Risk Proxy (2030)", 
+                f"{risk_val:.2f}", 
+                delta=f"{risk_val - risk_base:.2f}",
+                delta_color="inverse"
+            )
+            
+            # Within 4 Hours
+            w4_val = summary_game["within4_2030"]
+            w4_base = summary_base["within4_2030"]
+            st.metric(
+                "Within 4 Hours (2030)", 
+                f"{w4_val*100:.1f}%", 
+                delta=f"{(w4_val - w4_base)*100:.1f}%"
+            )
+            
+            # Narrative Summary
+            st.markdown("---")
+            narrative = generate_prose_summary(summary_base, summary_game)
+            st.markdown(narrative)
+
+    with tab2:
+        st.markdown("### Data & Variable Lineage")
+        st.markdown("Trace how model parameters are grounded in public evidence.")
         
-        # Risk Plot
-        fig_risk = px.line(
-            combined, x="year", y="rr_mean", color="Scenario",
-            title="Relative Risk Proxy (Trajectories)",
-            labels={"rr_mean": "Relative Risk", "year": "Year"},
-            color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
-        )
-        fig_risk.update_layout(template="simple_white", hovermode="x unified")
-        st.plotly_chart(fig_risk, width="stretch")
+        lineage = get_parameter_lineage()
+        lineage_df = pd.DataFrame([
+            {"Parameter": k, "Evidence Source": v} for k, v in lineage.items()
+        ])
+        st.table(lineage_df)
+
+    with tab3:
+        st.markdown("### Technical Analytics")
+        st.markdown("Global Sensitivity Analysis results (Sobol Method).")
         
-        # Pressure Plot
-        fig_pres = px.line(
-            combined, x="year", y="pressure_mean", color="Scenario",
-            title="System Pressure Index",
-            labels={"pressure_mean": "Pressure Index", "year": "Year"},
-            color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
-        )
-        fig_pres.update_layout(template="simple_white", hovermode="x unified")
-        st.plotly_chart(fig_pres, width="stretch")
-        
-    with col2:
-        st.markdown("#### Executive Summary")
-        
-        # Effective Cth Share
-        share_val = summary_game["effshare_effective_2030"]
-        share_base = summary_base["effshare_effective_2030"]
-        st.metric(
-            "Effective Cth Share (2030)", 
-            f"{share_val*100:.1f}%", 
-            delta=f"{(share_val - share_base)*100:.1f}%"
-        )
-        
-        # Relative Risk
-        risk_val = summary_game["rr_2030"]
-        risk_base = summary_base["rr_2030"]
-        st.metric(
-            "Relative Risk Proxy (2030)", 
-            f"{risk_val:.2f}", 
-            delta=f"{risk_val - risk_base:.2f}",
-            delta_color="inverse"
-        )
-        
-        # Within 4 Hours
-        w4_val = summary_game["within4_2030"]
-        w4_base = summary_base["within4_2030"]
-        st.metric(
-            "Within 4 Hours (2030)", 
-            f"{w4_val*100:.1f}%", 
-            delta=f"{(w4_val - w4_base)*100:.1f}%"
-        )
+        gsa_heatmap = Path("data/gsa_v21/sobol_heatmap.png")
+        if gsa_heatmap.exists():
+            st.image(str(gsa_heatmap), caption="Sobol Interaction Heatmap (S2)")
+        else:
+            st.warning("GSA results not found. Run 'snakemake gsa_sobol' to generate.")
 
 if __name__ == "__main__":
     main()

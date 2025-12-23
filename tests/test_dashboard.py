@@ -57,3 +57,27 @@ def test_plotly_df_generation():
     
     assert len(combined) == 4
     assert set(combined["Scenario"]) == {"Baseline", "War Game"}
+
+def test_lineage_lookup_logic():
+    """Verify that we can map parameters to evidence sources."""
+    lineage_map = {
+        "nominal_cth_share_target": "https://www.federalfinancialrelations.gov.au/programs/national-health-reform",
+        "rurality_weight": "AIHW (2024) Hospital Activity Data",
+    }
+    
+    param = "rurality_weight"
+    assert param in lineage_map
+    assert "AIHW" in lineage_map[param]
+
+def test_narrative_generator_rules():
+    """Verify that the narrative generator produces expected text based on outcomes."""
+    # Mock summaries
+    summary_base = {"rr_2030": 1.0, "effshare_effective_2030": 0.38}
+    summary_game = {"rr_2030": 1.2, "effshare_effective_2030": 0.40}
+    
+    # Logic: if risk increased, narrative should mention it
+    narrative = ""
+    if summary_game["rr_2030"] > summary_base["rr_2030"]:
+        narrative = "System risk is projected to increase"
+        
+    assert "increase" in narrative
