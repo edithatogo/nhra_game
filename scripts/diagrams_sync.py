@@ -11,9 +11,8 @@ It writes:
 """
 from __future__ import annotations
 
-from pathlib import Path
 import re
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MERMAID_DIRS = [ROOT / "diagrams" / "mermaid", ROOT / "diagrams" / "mermaid_user"]
@@ -48,7 +47,7 @@ def mermaid_to_dot(mmd_text: str, name: str) -> str:
         # edge line?
         if "--" in line and ">" in line:
             # normalise tokens around arrow
-            parts = re.split(r"\s+(-+>|-\.->|==>|-+>)\s+", line)
+            re.split(r"\s+(-+>|-\.->|==>|-+>)\s+", line)
             # fall back: use regex
             m = EDGE_PAT.match(line)
             if not m:

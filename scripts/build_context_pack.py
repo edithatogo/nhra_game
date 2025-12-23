@@ -13,8 +13,8 @@ Outputs:
     context/CONTEXT_PACK.md
 """
 
-from pathlib import Path
 from datetime import date
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CTX = ROOT / "context"

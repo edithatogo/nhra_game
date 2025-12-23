@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 import numpy as np
 from nhra_game_theory.v9 import Params, baseline_state, run_hybrid
+
 
 def test_effective_share_v2_structural_parity():
     """Verify that v21 effective share logic matches the v2 mathematical form."""

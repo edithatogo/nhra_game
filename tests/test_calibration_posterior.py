@@ -1,8 +1,9 @@
 from __future__ import annotations
-import pandas as pd
-import numpy as np
-import pytest
+
 from pathlib import Path
+
+import pandas as pd
+
 
 def test_posterior_sampling_logic():
     """Verify that we can sample parameter sets from the trials dataframe."""

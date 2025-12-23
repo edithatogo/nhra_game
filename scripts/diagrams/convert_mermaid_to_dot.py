@@ -21,8 +21,6 @@ Limitations:
 
 import re
 from pathlib import Path
-from typing import Any
-
 
 INLINE_NODE = re.compile(r'(?P<id>[A-Za-z0-9_]+)\s*\[\s*"(?P<label>[^"]+)"\s*\]')
 INLINE_NODE2 = re.compile(r'(?P<id>[A-Za-z0-9_]+)\s*\[\s*(?P<label>[^\]]+)\s*\]')
@@ -99,7 +97,7 @@ def mermaid_to_dot(mmd_text: str, title: str = "Mermaid converted") -> str:
         labels.setdefault(d, d)
 
     # map ids
-    id_map = {nid: _safe_id(nid) for nid in labels.keys()}
+    id_map = {nid: _safe_id(nid) for nid in labels}
 
     dot: list[str] = []
     dot.append("digraph MermaidConverted {")

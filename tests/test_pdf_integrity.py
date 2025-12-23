@@ -1,9 +1,10 @@
 from __future__ import annotations
-import pytest
-from pathlib import Path
+
 import hashlib
+
 # Implementation will be in a new module
 from scripts.extract_tables import PDFTableExtractor
+
 
 def test_pdf_hashing(tmp_path):
     """Verify that we can generate a SHA-256 hash for a PDF file."""

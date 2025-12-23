@@ -1,8 +1,9 @@
 from __future__ import annotations
-import pytest
+
 import numpy as np
-from nhra_game_theory.v8 import Params
-from nhra_game_theory.sensitivity import get_salib_problem, evaluate_parallel
+import pytest
+from nhra_game_theory.sensitivity import evaluate_parallel, get_salib_problem
+
 
 def mock_model(params: np.ndarray) -> float:
     """A simple model function for testing parallelism."""
@@ -83,8 +84,8 @@ def test_run_sobol_analysis() -> None:
 
 def test_generate_sensitivity_summary(tmp_path) -> None:
     """Verify that the summary report is created with expected content."""
-    from nhra_game_theory.sensitivity import generate_sensitivity_summary
     import pandas as pd
+    from nhra_game_theory.sensitivity import generate_sensitivity_summary
     
     # Create mock CSVs
     morris_csv = tmp_path / "morris.csv"

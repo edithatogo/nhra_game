@@ -12,13 +12,12 @@ Run:
   PYTHONPATH=src python scripts/optimize_optuna_v9.py --trials 200
 """
 
+import argparse
 from dataclasses import replace
 from pathlib import Path
-import argparse
 
 import numpy as np
-
-from nhra_game_theory.v8 import Params, run_hybrid, StrategyMix
+from nhra_game_theory.v8 import Params, StrategyMix, run_hybrid
 
 
 def objective_from_summary(summary: dict[str, float]) -> float:
@@ -62,7 +61,7 @@ def main() -> None:
 
     base = Params()
 
-    def trial_objective(trial: "optuna.Trial") -> float:
+    def trial_objective(trial: optuna.Trial) -> float:
         p = replace(
             base,
             # levers

@@ -14,15 +14,15 @@ Limitations:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
-from typing import Dict, List, Tuple, Iterable, Optional
 import math
+from collections.abc import Iterable
+from dataclasses import dataclass, replace
+from typing import Any, cast
+
 import numpy as np
-from numpy.typing import NDArray
-from typing import Any, Mapping, cast
-
 import pandas as pd
-
+from numpy.typing import NDArray
+from pydantic import BaseModel, ConfigDict, Field
 
 # ----------------------------
 # Utilities
@@ -45,62 +45,60 @@ def softmax(u: NDArray[np.floating[Any]], tau: float = 0.25) -> NDArray[np.float
 # Parameters and state
 # ----------------------------
 
-@dataclass(frozen=True)
-class Params:
+class Params(BaseModel):
     # Funding / valuation
-    nep_to_cost_ratio_metro: float = 0.90
-    nep_to_cost_ratio_regional: float = 0.83
-    nep_to_cost_ratio_remote: float = 0.75
+    nep_to_cost_ratio_metro: float = Field(default=0.90, ge=0.5, le=1.0)
+    nep_to_cost_ratio_regional: float = Field(default=0.83, ge=0.5, le=1.0)
+    nep_to_cost_ratio_remote: float = Field(default=0.75, ge=0.5, le=1.0)
 
-    rurality_weight: float = 0.35  # fraction of activity outside metro
-    remote_weight: float = 0.07    # subset weight in remote
+    rurality_weight: float = Field(default=0.35, ge=0.0, le=1.0)
+    remote_weight: float = Field(default=0.07, ge=0.0, le=1.0)
 
-    nominal_cth_share_target: float = 0.45
-    effective_cth_share_base: float = 0.38
+    nominal_cth_share_target: float = Field(default=0.45, ge=0.3, le=0.6)
+    effective_cth_share_base: float = Field(default=0.38, ge=0.2, le=0.6)
 
-    cap_growth: float = 0.065  # "hard cap" annual
+    cap_growth: float = Field(default=0.065, ge=0.0, le=0.2)
     has_cumulative_cap: bool = False
-    use_equilibrium_bargaining: bool = False  # v14 option
-    use_stage_game_equilibria: bool = True  # v15: solve and use all stage-game equilibria
-    equilibrium_selection_rule: str = "payoff_dominant"  # payoff_dominant | row_favourable | random
+    use_equilibrium_bargaining: bool = False
+    use_stage_game_equilibria: bool = True
+    equilibrium_selection_rule: str = "payoff_dominant"
 
-
-    # NEP (National Efficient Price) scaffolding
-    # NOTE: In IHACPA/ABF, NEP is an annual $/NWAU value which is multiplied by a service NWAU weight to form an efficient payment.
-    # In this model, NEP is used mainly for *reporting and scenario comparison* (not detailed ABF accounting).
-    nep_per_nwau_start: float = 1.0  # index units; set to actual $/NWAU if desired
-    nep_annual_growth: float = 0.03
-    representative_nwau: float = 1.0  # a single representative activity weight for illustrative calculations
+    # NEP scaffolding
+    nep_per_nwau_start: float = 1.0
+    nep_annual_growth: float = Field(default=0.03, ge=0.0, le=0.1)
+    representative_nwau: float = 1.0
 
     # System dynamics
     demand_base: float = 1.00
-    avoidable_ed_share: float = 0.18
-    discharge_delay_base: float = 1.00  # multiplier
-    bed_capacity_index: float = 1.00    # 1.0 baseline
+    avoidable_ed_share: float = Field(default=0.18, ge=0.0, le=0.5)
+    discharge_delay_base: float = Field(default=1.00, ge=0.1, le=3.0)
+    bed_capacity_index: float = Field(default=1.00, ge=0.5, le=2.0)
 
     # Couplings
-    cost_shifting_intensity: float = 0.35  # VFI spillover strength
-    fragmentation_index: float = 1.00      # UCC/primary care integration etc
-    audit_pressure: float = 0.50           # compliance scrutiny baseline
-    admin_burden_weight: float = 0.25
+    cost_shifting_intensity: float = Field(default=0.35, ge=0.0, le=1.0)
+    fragmentation_index: float = Field(default=1.00, ge=0.1, le=2.0)
+    audit_pressure: float = Field(default=0.50, ge=0.0, le=1.0)
+    admin_burden_weight: float = Field(default=0.25, ge=0.0, le=1.0)
 
     # Pressure mapping
-    occupancy_base: float = 0.88
-    offload_base_min: float = 18.0  # minutes
-    within4_base: float = 0.53
+    occupancy_base: float = Field(default=0.88, ge=0.5, le=1.0)
+    offload_base_min: float = 18.0
+    within4_base: float = Field(default=0.53, ge=0.0, le=1.0)
 
-    # Risk proxy mapping (relative, not absolute)
+    # Risk proxy mapping
     rr_beta_pressure: float = 0.35
-    rr_beta_offload: float = 0.015  # per minute above threshold (stylised)
+    rr_beta_offload: float = 0.015
     offload_threshold_min: float = 20.0
 
     # Behavioural weights
-    tau: float = 0.25  # softmax temperature
+    tau: float = 0.25
     bargaining_cost: float = 0.12
-    political_salience: float = 0.30
+    political_salience: float = Field(default=0.30, ge=0.0, le=1.0)
 
     # Randomness
-    noise_sd: float = 0.03
+    noise_sd: float = Field(default=0.03, ge=0.0, le=0.5)
+
+    model_config = ConfigDict(frozen=True)
 
 
 @dataclass(frozen=True)
@@ -115,7 +113,9 @@ class State:
     discharge_delay: float
 
 
-def baseline_state(start_year: int = 2025, p: Params = Params()) -> State:
+def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
+    if p is None:
+        p = Params()
     # Efficiency gap implied by rurality mix
     metro_ratio = p.nep_to_cost_ratio_metro
     reg_ratio = p.nep_to_cost_ratio_regional
@@ -176,16 +176,16 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
     signal = "H" if rng.random() < prob_sig[1] else "L"
 
     if p.use_stage_game_equilibria:
-        from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
         from nhra_game_theory.subgames.games import (
             GameParams,
-            definition_game,
             bargaining_game,
+            compliance_game,
             cost_shifting_game,
+            definition_game,
             discharge_coordination_game,
             governance_integration_game,
-            compliance_game,
         )
+        from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
 
         gp = GameParams(
             pressure=float(s.pressure),
@@ -244,7 +244,7 @@ def relative_risk(pidx: float, offload_min: float, p: Params) -> float:
     return rr_p * rr_o
 
 
-def step(s: State, p: Params, strategies: Dict[str, str], rng: np.random.Generator) -> State:
+def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generator) -> State:
     # Funding/valuation effects
     # Definition realism reduces efficiency gap; strict NEP increases it
     eff_gap = s.efficiency_gap
@@ -506,11 +506,11 @@ def probabilistic_sensitivity(
 
 
 def run_hybrid(
-    years: List[int],
+    years: list[int],
     p: Params,
     seed: int = 123,
     n_mc: int = 300
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Monte Carlo rollouts of the hybrid model.
     Returns:
@@ -605,12 +605,12 @@ def sensitivity_sample(base: Params, n: int, seed: int = 1234) -> pd.DataFrame:
     # convert to df
     rows = []
     for i, p in enumerate(samples):
-        rows.append({k: getattr(p, k) for k in Params().__dict__.keys()})
+        rows.append({k: getattr(p, k) for k in Params().__dict__})
         rows[-1]["sample_id"] = i
     return pd.DataFrame(rows)
 
 
-def summarise_outcome(agg: pd.DataFrame) -> Dict[str, float]:
+def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
     # take 2030 values as headline
     last = agg.sort_values("year").iloc[-1]
     return {

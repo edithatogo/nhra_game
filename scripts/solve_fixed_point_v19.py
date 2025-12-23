@@ -5,18 +5,18 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
-
-from nhra_game_theory.v9 import Params, State, baseline_state, step
-from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
 from nhra_game_theory.subgames.games import (
     GameParams,
-    definition_game,
     bargaining_game,
+    compliance_game,
     cost_shifting_game,
+    definition_game,
     discharge_coordination_game,
     governance_integration_game,
-    compliance_game,
 )
+from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
+from nhra_game_theory.v9 import Params, State, baseline_state, step
+
 
 class DetermRNG:
     """Deterministic RNG stand-in for fixed-point runs (always returns zero noise)."""

@@ -1,18 +1,21 @@
 from __future__ import annotations
-import streamlit as st
-import pandas as pd
-import numpy as np
-import plotly.express as px
-import plotly.graph_objects as go
-import sys
+
 import json
+import sys
+from dataclasses import asdict
 from pathlib import Path
+
+import pandas as pd
+import plotly.express as px
+import streamlit as st
 
 # Add src to path if needed for relative imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-from nhra_game_theory.v8 import Params, run_hybrid, summarise_outcome
+from nhra_game_theory.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_game_theory.sensitivity import get_parameter_lineage
+from nhra_game_theory.v8 import Params, run_hybrid, summarise_outcome
+
 
 @st.cache_data
 def cached_run_model(p: Params, years: list[int], n_mc: int = 50):
@@ -181,7 +184,7 @@ def main():
     # ----------------------------
     # Main Content Area: Tabs
     # ----------------------------
-    tab1, tab2, tab3 = st.tabs(["📈 War Game", "🧬 Data Lineage", "🔬 Technical Analytics"])
+    tab1, tab2, tab3, tab4 = st.tabs(["📈 War Game", "🧬 Data Lineage", "🔬 Technical Analytics", "🛡️ Evidence Manager"])
     
     with tab1:
         col1, col2 = st.columns([2, 1])
@@ -283,15 +286,44 @@ def main():
         ])
         st.table(lineage_df)
 
-    with tab3:
-        st.markdown("### Technical Analytics")
-        st.markdown("Global Sensitivity Analysis results (Sobol Method).")
+    with tab4:
+        st.markdown("### 🛡️ Evidence Manager & Auditor")
+        st.markdown("Review and promote evidence from automated ingestion to the active model.")
         
-        gsa_heatmap = Path("data/gsa_v21/sobol_heatmap.png")
-        if gsa_heatmap.exists():
-            st.image(str(gsa_heatmap), caption="Sobol Interaction Heatmap (S2)")
+        # Load Registry (Placeholder file for now)
+        reg_path = Path("data/registry/staging.csv")
+        if not reg_path.exists():
+            # Create a mock entry for demo purposes
+            reg_path.parent.mkdir(parents=True, exist_ok=True)
+            mock_reg = EvidenceRegistry()
+            mock_reg.add_entry(EvidenceEntry(parameter="within4_base", mean=0.53, source_url="AIHW 2024", nhmrc_level="III-2"))
+            mock_reg.add_entry(EvidenceEntry(parameter="within4_base", mean=0.55, source_url="Scholarly Study 2025", nhmrc_level="I"))
+            mock_reg.save_to_csv(reg_path)
+            
+        registry = EvidenceRegistry.load_from_csv(reg_path)
+        
+        # Conflict Resolver Section
+        st.subheader("🕵️ Conflict Resolver")
+        params_with_multiple = [p for p, entries in registry.entries.items() if len(entries) > 1]
+        
+        if params_with_multiple:
+            selected_param = st.selectbox("Resolve Conflict for Parameter:", params_with_multiple)
+            entries = registry.get_all_entries(selected_param)
+            
+            st.markdown(f"**Sources for {selected_param}:**")
+            for i, e in enumerate(entries):
+                col_a, col_b = st.columns([3, 1])
+                with col_a:
+                    st.write(f"Source {i+1}: {e.source_url} (Grade: {e.nhmrc_level}) - Mean: {e.mean}")
+                with col_b:
+                    if st.button(f"Promote Source {i+1}", key=f"prom_{i}"):
+                        st.success(f"Source {i+1} promoted to active model configuration.")
         else:
-            st.warning("GSA results not found. Run 'snakemake gsa_sobol' to generate.")
+            st.info("No parameter conflicts detected.")
+
+        st.markdown("---")
+        st.subheader("📋 Pending Ingestions")
+        st.dataframe(pd.DataFrame([asdict(e) for p_entries in registry.entries.values() for e in p_entries]))
 
 if __name__ == "__main__":
     main()

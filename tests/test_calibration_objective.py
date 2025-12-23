@@ -1,6 +1,7 @@
 from __future__ import annotations
+
 import numpy as np
-import pytest
+
 
 def stochastic_objective(means: np.ndarray, targets: np.ndarray, variances: np.ndarray, lam: float = 0.5) -> float:
     """Composite objective: MSE of means plus lambda * average variance."""

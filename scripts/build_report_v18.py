@@ -52,7 +52,7 @@ def main() -> None:
         .agg(n_grid_points=("n_equilibria", "size"), mean_n=("n_equilibria", "mean"), any_mixed=("has_mixed", "max"))
         .reset_index()
     )
-    eqcount = (
+    (
         eq_year.groupby(["year", "game"])["n_equilibria_in_game"]
         .max()
         .reset_index()

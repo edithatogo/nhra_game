@@ -4,18 +4,17 @@ from dataclasses import replace
 from pathlib import Path
 
 import pandas as pd
-
-from nhra_game_theory.v8 import Params, run_hybrid, nep_series
-from nhra_game_theory.subgames.nash import all_nash
 from nhra_game_theory.subgames.games import (
     GameParams,
-    definition_game,
     bargaining_game,
+    compliance_game,
     cost_shifting_game,
+    definition_game,
     discharge_coordination_game,
     governance_integration_game,
-    compliance_game,
 )
+from nhra_game_theory.subgames.nash import all_nash
+from nhra_game_theory.v8 import Params, nep_series, run_hybrid
 
 
 def equilibria_snapshot(p: Params) -> pd.DataFrame:

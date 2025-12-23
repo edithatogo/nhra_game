@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 import numpy as np
-
-from nhra_game_theory.subgames.nash import TwoPlayerGame, all_nash, mixed_nash_2x2, select_equilibrium
+from nhra_game_theory.subgames.nash import (
+    TwoPlayerGame,
+    all_nash,
+    mixed_nash_2x2,
+    select_equilibrium,
+)
 
 
 def test_all_nash_pure_exists() -> None:

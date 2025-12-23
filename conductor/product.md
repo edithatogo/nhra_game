@@ -26,3 +26,7 @@ To develop a State-of-the-Art (SOTA) predictive game-theory model of the Nationa
 2.  **Scenario "War Gaming" Mode:** Interactive counterfactuals to simulate negotiation outcomes and strategy shifts.
 3.  **Interactive Web Dashboard:** A user-friendly interface (e.g., Streamlit/Dash) for policy engagement.
 4.  **Automated Data Pipelines:** Robust ingestion of public health data (AIHW/ABS) to maintain model currency.
+5.  **Modular Pipeline Execution (GUI):** Capability to select individual "games" from the strategic map (Mermaid/Graphviz) via the dashboard to isolate their impact on system performance.
+6.  **Real-time Simulation Visualization:** Live visual feedback of agent behaviors and state transitions while the simulation is executing.
+7.  **Performance Profiling & Benchmarking Suite:** Automated profiling (e.g., using `pyinstrument` or `scalene`) to ensure computational efficiency as MC rollouts scale.
+8.  **Automated Quality & Security Audits:** Formalized mutation testing (mutmut) and security scanning (bandit/safety) integrated into the CI pipeline.

@@ -24,7 +24,6 @@ import csv
 import sys
 from dataclasses import fields
 from pathlib import Path
-from typing import Any
 
 URL_PREFIXES = ("http://", "https://")
 EVIDENCE_TYPES_NEED_URL = {"primary", "secondary", "calibrated"}

@@ -17,8 +17,8 @@ This is best-effort: complex Mermaid features may not convert perfectly.
 import subprocess
 from pathlib import Path
 
-from convert_mermaid_to_dot import mermaid_to_dot
 from convert_dot_to_mermaid import dot_to_mermaid
+from convert_mermaid_to_dot import mermaid_to_dot
 
 
 def render_dot(dot_path: Path, out_dir: Path) -> None:

@@ -1,10 +1,12 @@
 from __future__ import annotations
-import pytest
+
+import contextlib
 import importlib.util
-from pathlib import Path
-import pandas as pd
-import numpy as np
 import json
+from pathlib import Path
+
+import pandas as pd
+
 
 def test_dashboard_script_exists():
     """Verify that the dashboard script exists in the expected location."""
@@ -16,10 +18,8 @@ def test_dashboard_loadable():
     dashboard_path = Path("scripts/dashboard_v21.py")
     spec = importlib.util.spec_from_file_location("dashboard_v21", dashboard_path)
     module = importlib.util.module_from_spec(spec)
-    try:
+    with contextlib.suppress(Exception):
         spec.loader.exec_module(module)
-    except Exception:
-        pass
     assert module is not None
 
 def test_parameter_mapping_logic():

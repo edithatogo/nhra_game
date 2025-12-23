@@ -1,10 +1,10 @@
 from __future__ import annotations
-import pytest
-from pathlib import Path
+
 import pandas as pd
-import json
-from nhra_game_theory.domain.registry import EvidenceRegistry, EvidenceEntry
+import pytest
+from nhra_game_theory.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_game_theory.v8 import Params
+
 
 def test_evidence_entry_creation():
     """Verify that an EvidenceEntry can be created with full provenance and uncertainty."""
@@ -95,17 +95,17 @@ def test_registry_sanity_checks():
     }
     
     # 1. Parameter missing from baseline (hits line 94)
-    assert registry.is_sane(EvidenceEntry(parameter="missing", mean=100), baseline) == True
+    assert registry.is_sane(EvidenceEntry(parameter="missing", mean=100), baseline)
     
     # 2. Base value is zero, entry is zero (hits line 97)
-    assert registry.is_sane(EvidenceEntry(parameter="zero_param", mean=0.0), baseline) == True
+    assert registry.is_sane(EvidenceEntry(parameter="zero_param", mean=0.0), baseline)
     
     # 3. Base value is zero, entry is non-zero (hits line 97)
-    assert registry.is_sane(EvidenceEntry(parameter="zero_param", mean=1.0), baseline) == False
+    assert not registry.is_sane(EvidenceEntry(parameter="zero_param", mean=1.0), baseline)
     
     # 4. Standard deviation check (hits lines 101-102)
-    assert registry.is_sane(EvidenceEntry(parameter="ok_param", mean=1.1), baseline, threshold=0.5) == True
-    assert registry.is_sane(EvidenceEntry(parameter="bad_param", mean=2.0), baseline, threshold=0.5) == False
+    assert registry.is_sane(EvidenceEntry(parameter="ok_param", mean=1.1), baseline, threshold=0.5)
+    assert not registry.is_sane(EvidenceEntry(parameter="bad_param", mean=2.0), baseline, threshold=0.5)
 
 def test_evidence_to_noise_mapping():
     """Verify that we can map 95% CI to standard deviation."""

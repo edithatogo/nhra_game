@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+
 import pandas as pd
 
 DATE = "20251221"
@@ -15,14 +16,14 @@ def main() -> None:
     rep_dir = Path("reports")
     rep_dir.mkdir(exist_ok=True)
 
-    traj = pd.read_csv(tables / "trajectory.csv")
+    pd.read_csv(tables / "trajectory.csv")
     scen = pd.read_csv(tables / "scenario_summary.csv")
-    eq_year = pd.read_csv(tables / "equilibria_by_year.csv")
-    sens = pd.read_csv(tables / "sensitivity_oneway.csv")
-    infl = pd.read_csv(tables / "influence_edges.csv")
+    pd.read_csv(tables / "equilibria_by_year.csv")
+    pd.read_csv(tables / "sensitivity_oneway.csv")
+    pd.read_csv(tables / "influence_edges.csv")
 
     md = []
-    md.append(f"# NHRA game-theory modelling report (v16)\n\n**Date:** 21 December 2025\n\n")
+    md.append("# NHRA game-theory modelling report (v16)\n\n**Date:** 21 December 2025\n\n")
     md.append("## Abbreviations\n")
     md.append("- **NHRA**: National Health Reform Agreement\n- **NEP**: National Efficient Price (annual $/NWAU)\n- **NWAU**: National Weighted Activity Unit\n- **VFI**: Vertical fiscal imbalance\n- **UCC**: Medicare Urgent Care Clinic\n")
     md.append("\n## 1. What this model is for\n")

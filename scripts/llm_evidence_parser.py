@@ -1,12 +1,15 @@
 from __future__ import annotations
-from typing import Dict, Any
+
+from typing import Any
+
 from nhra_game_theory.domain.registry import EvidenceEntry
+
 
 class LLMEvidenceExtractor:
     def __init__(self, model_name: str = "gpt-4"):
         self.model_name = model_name
         
-    def _call_llm(self, raw_text: str) -> Dict[str, Any]:
+    def _call_llm(self, raw_text: str) -> dict[str, Any]:
         """Internal method to call the LLM API.
         
         Note: In production, this would use an actual LLM client.

@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from nhra_game_theory.subgames.games import (
     GameParams,
-    definition_game,
     bargaining_game,
+    compliance_game,
     cost_shifting_game,
+    definition_game,
     discharge_coordination_game,
     governance_integration_game,
-    compliance_game,
 )
 from nhra_game_theory.subgames.nash import all_nash
 

@@ -1,10 +1,12 @@
 from __future__ import annotations
-import pytest
+
 import pandas as pd
-import pandera.pandas as pa
-from pandera.errors import SchemaError
+import pytest
+
 # Implementation will be in a new module
-from nhra_game_theory.domain.schemas import AIHWSchema, ABSSchema
+from nhra_game_theory.domain.schemas import ABSSchema, AIHWSchema
+from pandera.errors import SchemaError
+
 
 def test_aihw_schema_validation():
     """Verify that the AIHW schema enforces column presence and types."""

@@ -8,17 +8,25 @@ Usage:
 """
 from __future__ import annotations
 
-from pathlib import Path
 import base64
 from datetime import date
+from pathlib import Path
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-
-from nhra_game_theory.v8 import Params, scenario_params, run_hybrid, summarise_outcome, sensitivity_sample
 from nhra_game_theory.plotting import (
-    plot_trajectory, plot_strategy_heatmap, tornado_from_rankcorr, render_games_graph_interactive
+    plot_strategy_heatmap,
+    plot_trajectory,
+    render_games_graph_interactive,
+    tornado_from_rankcorr,
+)
+from nhra_game_theory.v8 import (
+    Params,
+    run_hybrid,
+    scenario_params,
+    sensitivity_sample,
+    summarise_outcome,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -117,7 +125,7 @@ def run_sensitivity():
     samples = sensitivity_sample(base, n=40, seed=20251220)
     outcomes = []
     for _, row in samples.iterrows():
-        p = Params(**{k: row[k] for k in Params().__dict__.keys()})
+        p = Params(**{k: row[k] for k in Params().__dict__})
         agg, _ = run_hybrid(years, p, seed=1000 + int(row["sample_id"]), n_mc=70)
         outcomes.append({"sample_id": int(row["sample_id"]), **summarise_outcome(agg)})
 

@@ -1,15 +1,12 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Tuple, Optional, List
 
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
 import networkx as nx
+import pandas as pd
 import plotly.graph_objects as go
+from matplotlib.figure import Figure
 
 from .v8 import GAME_NODES
 
@@ -25,8 +22,8 @@ def plot_trajectory(
     y: str,
     ylab: str,
     outpath: Path,
-    qlo: Optional[str] = None,
-    qhi: Optional[str] = None,
+    qlo: str | None = None,
+    qhi: str | None = None,
 ) -> None:
     fig = plt.figure()
     ax = fig.gca()
@@ -64,7 +61,7 @@ def plot_strategy_heatmap(freq: pd.DataFrame, outpath: Path) -> None:
     savefig(fig, outpath)
 
 
-def tornado_from_rankcorr(df: pd.DataFrame, outcome_col: str, params: List[str], outpath: Path, topk: int = 10) -> None:
+def tornado_from_rankcorr(df: pd.DataFrame, outcome_col: str, params: list[str], outpath: Path, topk: int = 10) -> None:
     """
     Rank-correlation tornado using Spearman rho.
     """
@@ -114,7 +111,7 @@ def build_games_graph() -> nx.DiGraph:
     return G
 
 
-def render_games_graph_interactive(outpath_html: Path) -> Tuple[nx.DiGraph, Path]:
+def render_games_graph_interactive(outpath_html: Path) -> tuple[nx.DiGraph, Path]:
     G = build_games_graph()
     pos = nx.spring_layout(G, seed=7, k=1.1)
 

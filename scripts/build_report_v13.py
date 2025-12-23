@@ -5,8 +5,8 @@ Usage:
 """
 from __future__ import annotations
 
-from pathlib import Path
 from datetime import date
+from pathlib import Path
 
 import pandas as pd
 
@@ -24,7 +24,7 @@ def main() -> None:
     plots = root / "outputs" / "v12" / "plots"
 
     scen = pd.read_csv(tables / "scenario_summary.csv")
-    traj = pd.read_csv(tables / "trajectory_derived.csv")
+    pd.read_csv(tables / "trajectory_derived.csv")
 
     html = []
     html.append("<!doctype html><html><head><meta charset='utf-8'/>")

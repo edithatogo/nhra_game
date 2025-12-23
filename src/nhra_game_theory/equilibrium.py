@@ -8,8 +8,8 @@ The main use in v14 is to stabilise the bargaining node (E vs A) via a temperatu
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
 import math
+from dataclasses import dataclass
 
 
 def logistic(x: float) -> float:

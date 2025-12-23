@@ -15,9 +15,9 @@ Usage:
 No network calls are performed.
 """
 
+import csv
 from dataclasses import fields
 from pathlib import Path
-import csv
 
 
 def main() -> None:
@@ -107,7 +107,7 @@ def main() -> None:
             row["plausible_range"] = "(scenario)"
         else:
             # Provide parameter-specific plausible ranges where helpful
-            if isinstance(value, (int, float)):
+            if isinstance(value, int | float):
                 if name.endswith("_growth"):
                     row["plausible_range"] = "0.00–0.08"
                 elif "share" in name:

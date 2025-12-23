@@ -1,14 +1,16 @@
 from __future__ import annotations
+
 from pathlib import Path
+
 import pandas as pd
-from typing import List
 from nhra_game_theory.domain.registry import EvidenceEntry
+
 
 class AIHWIngestor:
     def __init__(self, source_path: Path):
         self.source_path = source_path
         
-    def extract_entries(self) -> List[EvidenceEntry]:
+    def extract_entries(self) -> list[EvidenceEntry]:
         df = pd.read_csv(self.source_path)
         # Filter for latest year
         latest_year = df["Year"].max()
@@ -33,7 +35,7 @@ class ABSIngestor:
     def __init__(self, source_path: Path):
         self.source_path = source_path
         
-    def extract_entries(self) -> List[EvidenceEntry]:
+    def extract_entries(self) -> list[EvidenceEntry]:
         df = pd.read_csv(self.source_path)
         latest_year = df["Year"].max()
         latest_df = df[(df["Year"] == latest_year) & (df["State"] == "Australia")]

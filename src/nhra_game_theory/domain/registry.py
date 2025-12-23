@@ -1,50 +1,55 @@
 from __future__ import annotations
-from dataclasses import dataclass, field, asdict
-from typing import Optional, Dict, List
-import pandas as pd
-from pathlib import Path
 
-@dataclass(frozen=True)
-class EvidenceEntry:
+from pathlib import Path
+from typing import Any
+
+import pandas as pd
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+
+class EvidenceEntry(BaseModel):
     parameter: str
     mean: float
-    lower_ci: Optional[float] = None
-    upper_ci: Optional[float] = None
+    lower_ci: float | None = None
+    upper_ci: float | None = None
     source_url: str = ""
     nhmrc_level: str = "IV"
     unit: str = "absolute"
     access_date: str = ""
     
-    def __post_init__(self):
+    @model_validator(mode="after")
+    def validate_ci_bounds(self) -> EvidenceEntry:
         if self.lower_ci is not None and self.lower_ci > self.mean:
             raise ValueError("lower_ci must be <= mean")
         if self.upper_ci is not None and self.upper_ci < self.mean:
             raise ValueError("upper_ci must be >= mean")
+        return self
 
-    def get_sigma(self) -> Optional[float]:
+    def get_sigma(self) -> float | None:
         """Calculates standard deviation from 95% CI (Normal approximation)."""
         if self.lower_ci is None or self.upper_ci is None:
             return None
         return (self.upper_ci - self.lower_ci) / 3.92
 
-@dataclass
-class EvidenceRegistry:
+class EvidenceRegistry(BaseModel):
     # Key is parameter name, value is a list of entries
-    entries: Dict[str, List[EvidenceEntry]] = field(default_factory=dict)
+    entries: dict[str, list[EvidenceEntry]] = Field(default_factory=dict)
+    
+    model_config = ConfigDict(validate_assignment=True)
     
     def add_entry(self, entry: EvidenceEntry):
         if entry.parameter not in self.entries:
             self.entries[entry.parameter] = []
         self.entries[entry.parameter].append(entry)
         
-    def get_all_entries(self, parameter: str) -> List[EvidenceEntry]:
+    def get_all_entries(self, parameter: str) -> list[EvidenceEntry]:
         return self.entries.get(parameter, [])
         
-    def get_entry(self, parameter: str) -> Optional[EvidenceEntry]:
+    def get_entry(self, parameter: str) -> EvidenceEntry | None:
         """Returns the best entry based on NHMRC grading."""
         return self.resolve_conflict(parameter, method="best_grade")
         
-    def resolve_conflict(self, parameter: str, method: str = "best_grade") -> Optional[EvidenceEntry]:
+    def resolve_conflict(self, parameter: str, method: str = "best_grade") -> EvidenceEntry | None:
         """Resolves multiple evidence sources into a single entry."""
         all_entries = self.get_all_entries(parameter)
         if not all_entries:
@@ -65,7 +70,6 @@ class EvidenceRegistry:
         report += "| Parameter | Mean | 95% CI | NHMRC Grade | Source |\n"
         report += "|-----------|------|--------|-------------|--------|\n"
         
-        # Use promoted/best entries for summary
         for param in sorted(self.entries.keys()):
             e = self.get_entry(param)
             ci_str = f"[{e.lower_ci}, {e.upper_ci}]" if e.lower_ci is not None else "N/A"
@@ -76,22 +80,20 @@ class EvidenceRegistry:
     def sync_to_targets(self, targets_path: Path | str):
         """Updates the calibration targets CSV with promoted evidence."""
         df = pd.read_csv(targets_path)
-        for param in self.entries.keys():
+        for param in self.entries:
             e = self.get_entry(param)
-            # Match parameter to metric in targets file
             df.loc[df["metric"] == param, "target"] = e.mean
         df.to_csv(targets_path, index=False)
 
-    def promote_to_params(self, base_params: Params) -> Params:
+    def promote_to_params(self, base_params: Any) -> Any:
         """Returns a new Params object with all promoted registry values applied."""
-        from dataclasses import replace
         p_dict = {}
-        for param in self.entries.keys():
+        for param in self.entries:
             if hasattr(base_params, param):
                 p_dict[param] = self.get_entry(param).mean
-        return replace(base_params, **p_dict)
+        return base_params.model_copy(update=p_dict)
 
-    def is_sane(self, entry: EvidenceEntry, baseline: Dict[str, float], threshold: float = 0.5) -> bool:
+    def is_sane(self, entry: EvidenceEntry, baseline: dict[str, float], threshold: float = 0.5) -> bool:
         """Check if an entry's mean deviates more than threshold fraction from a baseline."""
         if entry.parameter not in baseline:
             return True
@@ -105,7 +107,7 @@ class EvidenceRegistry:
         flat_data = []
         for p_entries in self.entries.values():
             for e in p_entries:
-                flat_data.append(asdict(e))
+                flat_data.append(e.model_dump())
         df = pd.DataFrame(flat_data)
         df.to_csv(path, index=False)
         

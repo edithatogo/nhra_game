@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from nhra_game_theory.equilibrium import bargaining_from_state, mixed_strategy_logit, logistic
+from nhra_game_theory.equilibrium import bargaining_from_state, logistic, mixed_strategy_logit
 
 
 def test_mixed_strategy_logit_bounds() -> None:

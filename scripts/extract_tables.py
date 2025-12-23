@@ -1,7 +1,9 @@
 from __future__ import annotations
-from pathlib import Path
+
 import hashlib
-from typing import List, Any
+from pathlib import Path
+from typing import Any
+
 
 class PDFTableExtractor:
     def __init__(self, pdf_path: Path):
@@ -15,7 +17,7 @@ class PDFTableExtractor:
                 sha256_hash.update(byte_block)
         return sha256_hash.hexdigest()
         
-    def extract_raw_tables(self) -> List[Any]:
+    def extract_raw_tables(self) -> list[Any]:
         """Extract tables from the PDF.
         
         Note: Actual implementation would use Camelot or PyMuPDF.

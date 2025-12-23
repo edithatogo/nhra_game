@@ -24,9 +24,8 @@ Run:
   python nhra_games_v2_calibrated.py
 """
 
-import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 np.random.seed(42)
 OUTDIR = "."

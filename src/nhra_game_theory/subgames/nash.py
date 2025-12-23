@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Tuple, Optional
 
 import numpy as np
 
@@ -25,8 +24,8 @@ class TwoPlayerGame:
     """Normal-form game with payoffs for row and column players."""
     u_row: np.ndarray  # shape (n,m)
     u_col: np.ndarray  # shape (n,m)
-    row_actions: Tuple[str, ...]
-    col_actions: Tuple[str, ...]
+    row_actions: tuple[str, ...]
+    col_actions: tuple[str, ...]
 
 
 def _best_responses_row(game: TwoPlayerGame) -> np.ndarray:
@@ -50,11 +49,11 @@ def _best_responses_col(game: TwoPlayerGame) -> np.ndarray:
     return br
 
 
-def pure_nash(game: TwoPlayerGame) -> List[NashEquilibrium]:
+def pure_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
     br_r = _best_responses_row(game)
     br_c = _best_responses_col(game)
     n, m = game.u_row.shape
-    eqs: List[NashEquilibrium] = []
+    eqs: list[NashEquilibrium] = []
     for i in range(n):
         for j in range(m):
             if br_r[i, j] and br_c[i, j]:
@@ -64,7 +63,7 @@ def pure_nash(game: TwoPlayerGame) -> List[NashEquilibrium]:
     return eqs
 
 
-def mixed_nash_2x2(game: TwoPlayerGame) -> Optional[NashEquilibrium]:
+def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
     """Solve mixed Nash for 2x2 games, returning None if degenerate."""
     if game.u_row.shape != (2, 2):
         return None
@@ -89,7 +88,7 @@ def mixed_nash_2x2(game: TwoPlayerGame) -> Optional[NashEquilibrium]:
     return NashEquilibrium(kind="mixed", row=row, col=col)
 
 
-def all_nash(game: TwoPlayerGame) -> List[NashEquilibrium]:
+def all_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
     eqs = pure_nash(game)
     if game.u_row.shape == (2, 2):
         m = mixed_nash_2x2(game)
@@ -99,7 +98,7 @@ def all_nash(game: TwoPlayerGame) -> List[NashEquilibrium]:
     return eqs
 
 
-def select_equilibrium(eqs: List[NashEquilibrium], rule: str = "payoff_dominant",
+def select_equilibrium(eqs: list[NashEquilibrium], rule: str = "payoff_dominant",
                        u_row: np.ndarray | None = None, u_col: np.ndarray | None = None) -> NashEquilibrium:
     """Select one equilibrium from a set.
 
@@ -114,17 +113,14 @@ def select_equilibrium(eqs: List[NashEquilibrium], rule: str = "payoff_dominant"
         raise ValueError("No equilibria to select from")
     if rule == "random" or u_row is None or u_col is None:
         return eqs[0]
-    def exp_pay(eq: NashEquilibrium) -> Tuple[float, float]:
+    def exp_pay(eq: NashEquilibrium) -> tuple[float, float]:
         r = float(eq.row @ u_row @ eq.col)
         c = float(eq.row @ u_col @ eq.col)
         return r, c
     scores = []
     for eq in eqs:
         r, c = exp_pay(eq)
-        if rule == "row_favourable":
-            s = r
-        else:
-            s = r + c
+        s = r if rule == "row_favourable" else r + c
         scores.append(s)
     idx = int(np.argmax(np.array(scores)))
     return eqs[idx]

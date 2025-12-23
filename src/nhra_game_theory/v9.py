@@ -14,15 +14,14 @@ Limitations:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
-from typing import Dict, List, Tuple, Iterable, Optional
 import math
+from collections.abc import Iterable
+from dataclasses import dataclass, replace
+from typing import Any, cast
+
 import numpy as np
-from numpy.typing import NDArray
-from typing import Any, Mapping, cast
-
 import pandas as pd
-
+from numpy.typing import NDArray
 
 # ----------------------------
 # Utilities
@@ -119,7 +118,9 @@ class State:
     discharge_delay: float
 
 
-def baseline_state(start_year: int = 2025, p: Params = Params()) -> State:
+def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
+    if p is None:
+        p = Params()
     # Efficiency gap implied by rurality mix
     metro_ratio = p.nep_to_cost_ratio_metro
     reg_ratio = p.nep_to_cost_ratio_regional
@@ -180,16 +181,16 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
     signal = "H" if rng.random() < prob_sig[1] else "L"
 
     if p.use_stage_game_equilibria:
-        from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
         from nhra_game_theory.subgames.games import (
             GameParams,
-            definition_game,
             bargaining_game,
+            compliance_game,
             cost_shifting_game,
+            definition_game,
             discharge_coordination_game,
             governance_integration_game,
-            compliance_game,
         )
+        from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
 
         gp = GameParams(
             pressure=float(s.pressure),
@@ -248,7 +249,7 @@ def relative_risk(pidx: float, offload_min: float, p: Params) -> float:
     return rr_p * rr_o
 
 
-def step(s: State, p: Params, strategies: Dict[str, str], rng: np.random.Generator) -> State:
+def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generator) -> State:
     # Funding/valuation effects
     # Definition realism reduces efficiency gap; strict NEP increases it
     # --- Macro drift: input costs vs NEP indexation (annual) ---
@@ -554,11 +555,11 @@ def probabilistic_sensitivity(
 
 
 def run_hybrid(
-    years: List[int],
+    years: list[int],
     p: Params,
     seed: int = 123,
     n_mc: int = 300
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Monte Carlo rollouts of the hybrid model.
     Returns:
@@ -653,12 +654,12 @@ def sensitivity_sample(base: Params, n: int, seed: int = 1234) -> pd.DataFrame:
     # convert to df
     rows = []
     for i, p in enumerate(samples):
-        rows.append({k: getattr(p, k) for k in Params().__dict__.keys()})
+        rows.append({k: getattr(p, k) for k in Params().__dict__})
         rows[-1]["sample_id"] = i
     return pd.DataFrame(rows)
 
 
-def summarise_outcome(agg: pd.DataFrame) -> Dict[str, float]:
+def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
     # take 2030 values as headline
     last = agg.sort_values("year").iloc[-1]
     return {

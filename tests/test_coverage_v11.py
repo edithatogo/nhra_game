@@ -4,14 +4,13 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-
 from nhra_game_theory import v8
 from nhra_game_theory.plotting import (
-    plot_trajectory,
-    plot_strategy_heatmap,
-    tornado_from_rankcorr,
     build_games_graph,
+    plot_strategy_heatmap,
+    plot_trajectory,
     render_games_graph_interactive,
+    tornado_from_rankcorr,
 )
 
 

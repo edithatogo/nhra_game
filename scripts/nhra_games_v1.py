@@ -14,9 +14,9 @@ Run:
   python nhra_games_v1.py
 """
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 # Reproducibility
 np.random.seed(42)

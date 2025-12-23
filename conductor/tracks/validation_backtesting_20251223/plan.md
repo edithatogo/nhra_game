@@ -15,7 +15,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Infrastructure Rigor' (Protocol in workflow.md)** [checkpoint: 0ce5d81]
 
 ## Phase 1: Historical Data Ingestion & Pre-processing
-- [ ] **Task 1: Ingest and Align Historical NHRA Datasets (TDD)**
+- [~] **Task 1: Ingest and Align Historical NHRA Datasets (TDD)**
   - [ ] Sub-task: Write tests for data alignment utility (matching historical years to model steps).
   - [ ] Sub-task: Implement `scripts/data/preprocess_historical.py` to normalize 2011–2025 data from AIHW/RoGS.
 - [ ] **Task: Conductor - User Manual Verification 'Historical Data Ingestion' (Protocol in workflow.md)**

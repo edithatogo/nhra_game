@@ -7,12 +7,16 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pandas as pd
-
-from nhra_game_theory.v8 import Params, nep_series, run_hybrid, scenario_summary, one_way_sensitivity, probabilistic_sensitivity
-from nhra_game_theory.plotting import plot_trajectory
-
 import matplotlib.pyplot as plt
+from nhra_game_theory.plotting import plot_trajectory
+from nhra_game_theory.v8 import (
+    Params,
+    nep_series,
+    one_way_sensitivity,
+    probabilistic_sensitivity,
+    run_hybrid,
+    scenario_summary,
+)
 
 
 def main() -> None:

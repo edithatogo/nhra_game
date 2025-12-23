@@ -1,28 +1,29 @@
 from __future__ import annotations
+
 import argparse
 import os
 import sys
-import numpy as np
-import pandas as pd
-from pathlib import Path
 from dataclasses import replace
-from typing import Dict, Any
+from pathlib import Path
+
+import numpy as np
 
 # Add src to path
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-from nhra_game_theory.v8 import Params, run_hybrid, summarise_outcome
 from nhra_game_theory.sensitivity import (
-    get_salib_problem, 
-    evaluate_parallel, 
-    run_morris_analysis, 
-    plot_morris_tornado,
-    run_sobol_analysis,
-    plot_sobol_indices,
-    plot_sobol_heatmap,
+    evaluate_parallel,
     export_sensitivity_indices,
-    generate_sensitivity_summary
+    generate_sensitivity_summary,
+    get_salib_problem,
+    plot_morris_tornado,
+    plot_sobol_heatmap,
+    plot_sobol_indices,
+    run_morris_analysis,
+    run_sobol_analysis,
 )
+from nhra_game_theory.v8 import Params, run_hybrid, summarise_outcome
+
 
 def model_wrapper(param_values: np.ndarray, names: list[str], years: list[int]) -> float:
     """Wraps the hybrid model for SALib evaluation.
@@ -30,7 +31,7 @@ def model_wrapper(param_values: np.ndarray, names: list[str], years: list[int]) 
     Returns a single scalar outcome (e.g., pressure_2030).
     """
     # Create Params object
-    p_dict = {name: val for name, val in zip(names, param_values)}
+    p_dict = {name: val for name, val in zip(names, param_values, strict=False)}
     p = replace(Params(), **p_dict)
     
     # Run simulation

@@ -8,9 +8,8 @@ This makes the diagram "dynamic" in the sense that:
 - node colouring is driven by scenario-year values exported from the simulation
 """
 
-from pathlib import Path
 import json
-import math
+from pathlib import Path
 
 import pandas as pd
 

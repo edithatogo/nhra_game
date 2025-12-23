@@ -1,10 +1,10 @@
 from __future__ import annotations
-import pytest
-from pathlib import Path
+
 import pandas as pd
-from nhra_game_theory.domain.registry import EvidenceRegistry, EvidenceEntry
+
 # I'll implement these ingestors in a new module
-from scripts.ingest_structured import AIHWIngestor, ABSIngestor
+from scripts.ingest_structured import ABSIngestor, AIHWIngestor
+
 
 def test_aihw_ingestor_mock_file(tmp_path):
     """Verify that the AIHW ingestor can parse a simulated CSV and return EvidenceEntries."""

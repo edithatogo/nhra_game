@@ -1,8 +1,10 @@
 from __future__ import annotations
+
 import pytest
-from nhra_game_theory.domain.registry import EvidenceEntry
+
 # Implementation will be in a new module
 from scripts.llm_evidence_parser import LLMEvidenceExtractor
+
 
 def test_llm_parsing_to_schema(mocker):
     """Verify that the LLM parser maps raw text to the EvidenceEntry schema."""
