@@ -19,13 +19,13 @@
 - [x] **Task: Conductor - User Manual Verification 'Execution Engine & Plots' (Protocol in workflow.md)** [checkpoint: cfc0c6a]
 
 ## Phase 3: Explainability, Lineage & GSA Integration (SOTA)
-- [ ] **Task 5: Data Provenance Mapping**
-  - [ ] Sub-task: Write tests for the lineage lookup logic (mapping parameters back to `context/`).
-  - [ ] Sub-task: Implement the "Lineage View" in the dashboard.
-- [ ] **Task 6: Narrative Generator & GSA Integration**
-  - [ ] Sub-task: Implement rule-based automated prose summary.
-  - [ ] Sub-task: Integrate Sobol Interaction Heatmaps from previous GSA runs into the "Analytics" tab.
-- [ ] **Task: Conductor - User Manual Verification 'Explainability & Lineage' (Protocol in workflow.md)**
+- [x] **Task 5: Data Provenance Mapping** 376875b
+  - [x] Sub-task: Write tests for the lineage lookup logic (mapping parameters back to `context/`).
+  - [x] Sub-task: Implement the "Lineage View" in the dashboard.
+- [x] **Task 6: Narrative Generator & GSA Integration** cef5bd6
+  - [x] Sub-task: Implement rule-based automated prose summary.
+  - [x] Sub-task: Integrate Sobol Interaction Heatmaps from previous GSA runs into the \"Analytics\" tab.
+- [x] **Task: Conductor - User Manual Verification 'Explainability & Lineage' (Protocol in workflow.md)** [checkpoint: 19f9607]
 
 ## Phase 4: Snapshotting & Export
 - [ ] **Task 7: Scenario Snapshot Suite**
