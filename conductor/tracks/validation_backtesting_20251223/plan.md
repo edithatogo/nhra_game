@@ -22,7 +22,7 @@
   - [x] Sub-task: Audit Phase 1 against `conductor/checklists/turing_way_testing.md`.
 - [x] **Task: Conductor - User Manual Verification 'Historical Data Ingestion' (Protocol in workflow.md)**
 
-## Phase 2: Recursive Backtesting & Metric Engine
+## Phase 2: Recursive Backtesting & Metric Engine [checkpoint: 8cb857d]
 - [x] **Task 2: Recursive Rolling Horizon Validation Engine (TDD)**
   - [x] Sub-task: Write tests for the rolling horizon "Train-Test" loop.
   - [x] Sub-task: Integrate `optimize_calibration_v21.py` into the recursive loop logic. (Note: Stubbed, full integration pending calibration refactor)
@@ -30,10 +30,10 @@
 - [x] **Task 3: Multi-Metric Calculation Engine (TDD)**
   - [x] Sub-task: Write tests for RMSE, MAPE, Theil's Coefficient, and HIT Rate logic.
   - [x] Sub-task: Implement calculation utilities in `src/nhra_game_theory/domain/validation.py`.
-- [ ] **Task: Performance Profiling Infrastructure (Scalene)**
-  - [ ] Sub-task: Configure Scalene profiling for the recursive backtest loop.
-  - [ ] Sub-task: Document profiling workflow in `docs/dev.md`.
-- [ ] **Task: Conductor - User Manual Verification 'Backtesting Engine' (Protocol in workflow.md)**
+- [x] **Task: Performance Profiling Infrastructure (Scalene)**
+  - [x] Sub-task: Configure Scalene profiling for the recursive backtest loop.
+  - [x] Sub-task: Document profiling workflow in `docs_mkdocs/dev.md`.
+- [x] **Task: Conductor - User Manual Verification 'Backtesting Engine' (Protocol in workflow.md)**
 
 ## Phase 3: Mechanism Validation & Holdout Reveal
 - [ ] **Task 4: Structural Integrity & Mechanism Consistency Checks (TDD)**
