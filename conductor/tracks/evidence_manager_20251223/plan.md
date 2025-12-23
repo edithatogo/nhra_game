@@ -24,10 +24,10 @@
 - [x] **Task 6: Audit, Promotion & Stochastic Mapping** d87baec
   - [x] Sub-task: Implement the "Evidence Manager" tab in `scripts/dashboard_v21.py`.
   - [x] Sub-task: Map extracted 95% CIs to parameter-specific simulation noise (replacing global `noise_sd`).
-- [~] **Task 7: Conflict Resolution & Consensus UI**
-  - [ ] Sub-task: Implement side-by-side comparison for conflicting parameters.
-  - [ ] Sub-task: Implement "Select Source" or "Weighted Average" logic.
-- [ ] **Task: Conductor - User Manual Verification 'Dashboard UI' (Protocol in workflow.md)**
+- [x] **Task 7: Conflict Resolution & Consensus UI** 6b8c72d
+  - [x] Sub-task: Implement side-by-side comparison for conflicting parameters.
+  - [x] Sub-task: Implement \"Select Source\" or \"Weighted Average\" logic.
+- [x] **Task: Conductor - User Manual Verification 'Dashboard UI' (Protocol in workflow.md)** [checkpoint: 6b8c72d]
 
 ## Phase 4: Publication Reporting & Calibration Loop Closure
 - [ ] **Task 8: Automated Evidence Grounding Report**
