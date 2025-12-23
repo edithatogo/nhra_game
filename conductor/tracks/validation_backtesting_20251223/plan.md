@@ -14,13 +14,13 @@
   - [x] Sub-task: Implement `Settings` class using `pydantic-settings` for environment-agnostic configuration.
 - [x] **Task: Conductor - User Manual Verification 'Infrastructure Rigor' (Protocol in workflow.md)** [checkpoint: f48928f]
 
-## Phase 1: Historical Data Ingestion & Pre-processing
+## Phase 1: Historical Data Ingestion & Pre-processing [checkpoint: 236e5f2]
 - [x] **Task 1: Ingest and Align Historical NHRA Datasets (TDD)**
   - [x] Sub-task: Write tests for data alignment utility (matching historical years to model steps).
   - [x] Sub-task: Implement `scripts/data/preprocess_historical.py` to normalize 2011–2025 data from AIHW and ABS.
 - [x] **Task: Turing Way Checklist Verification**
   - [x] Sub-task: Audit Phase 1 against `conductor/checklists/turing_way_testing.md`.
-- [~] **Task: Conductor - User Manual Verification 'Historical Data Ingestion' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Historical Data Ingestion' (Protocol in workflow.md)**
 
 ## Phase 2: Recursive Backtesting & Metric Engine
 - [ ] **Task 2: Recursive Rolling Horizon Validation Engine (TDD)**
