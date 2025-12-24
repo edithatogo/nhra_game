@@ -20,10 +20,14 @@
   - [x] Sub-task: Integrate citations into `generate_methods_appendix.py` and the Dashboard 'Data Lineage' tab.
 - [x] **Task: Conductor - User Manual Verification 'Bibliography System' (Protocol in workflow.md)**
 
-## Phase 3: Experiment Audit & Provenance
+## Phase 3: Experiment Audit & Provenance [checkpoint: 1ff2060]
 - [x] **Task 3.1: Structured Experiment Recording**
   - [x] Sub-task: Implement a `Recorder` class to log Monte Carlo rollout metadata (seed, git-hash, timing).
   - [x] Sub-task: Integrate logging into `run_hybrid` and save to `outputs/audit/`.
 - [x] **Task 3.2: Publication-Ready Methods Update**
   - [x] Sub-task: Regenerate `methods_appendix.md` with full academic citations and API provenance notes.
 - [x] **Task: Conductor - User Manual Verification 'Audit & Metadata' (Protocol in workflow.md)**
+
+---
+**Track Status:** COMPLETED 2025-12-24
+Automated ingestion from AIHW MyHospitals API established. Academic bibliography engine implemented with Endnote-style citations and RIS/ENW/BIB exports. Experiment audit trails active.
