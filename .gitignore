@@ -29,3 +29,11 @@ build/
 *.egg-info/
 .mypy_cache/.gemini/
 .nox/
+
+# OpenMemory - IDE/Assistant specific rules
+.qoder/rules/openmemory.md
+AGENTS.md
+
+# Reports and logs
+coverage.json
+mypy_errors.log

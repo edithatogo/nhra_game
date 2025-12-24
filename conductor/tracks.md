@@ -26,3 +26,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ## [x] Track: Refactoring, Visualization & Forensic Polish (v27)
 *Link: [./conductor/tracks/refactoring_polish_v27/](./conductor/tracks/refactoring_polish_v27/)*
+
+---
+
+## [~] Track: Release Polish & Workflow Integrity
+*Link: [./conductor/tracks/release_polish_20251225/](./conductor/tracks/release_polish_20251225/)*

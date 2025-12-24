@@ -1,6 +1,6 @@
 # tasks.md — Roadmap and implementation plan (v21)
 
-**Version:** v21  
+**Version:** v21
 **Date:** 2025-12-21
 
 ## Completed in v21
