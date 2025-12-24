@@ -1,0 +1,99 @@
+Assuming unrestricted shared filesystem usage.
+host: Pleiades-M1-14-MBP.local
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                   count
+------------------  -------
+all                       1
+backtest_recursive        1
+generate_report           1
+plot_validation           1
+total                     4
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Dec 25 07:26:53 2025]
+localrule backtest_recursive:
+    input: data/calibration_v21/historical_normalized.csv
+    output: data/calibration_v21/recursive_results.json
+    jobid: 11
+    reason: Updated input files: data/calibration_v21/historical_normalized.csv
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+Starting Recursive Backtest (Rolling Horizon)...
+Saved 9 steps to data/calibration_v21/recursive_results.json
+
+Results:
+Year   | Metric     | Pred   | Actual | Error 
+---------------------------------------------
+2016   | within4    | 0.530 | 0.675 | -0.145
+2016   | occupancy  | 0.880 | 0.877 | +0.003
+2017   | within4    | 0.530 | 0.674 | -0.144
+2017   | occupancy  | 0.880 | 0.882 | -0.002
+2018   | within4    | 0.530 | 0.673 | -0.143
+2018   | occupancy  | 0.880 | 0.888 | -0.008
+2019   | within4    | 0.530 | 0.671 | -0.141
+2019   | occupancy  | 0.880 | 0.893 | -0.013
+2020   | within4    | 0.530 | 0.670 | -0.140
+2020   | occupancy  | 0.880 | 0.898 | -0.018
+2021   | within4    | 0.530 | 0.635 | -0.105
+2021   | occupancy  | 0.880 | 0.904 | -0.024
+2022   | within4    | 0.530 | 0.600 | -0.070
+2022   | occupancy  | 0.880 | 0.909 | -0.029
+2023   | within4    | 0.530 | 0.565 | -0.035
+2023   | occupancy  | 0.880 | 0.915 | -0.035
+2024   | within4    | 0.530 | 0.530 | +0.000
+2024   | occupancy  | 0.880 | 0.920 | -0.040
+
+Overall Performance Summary:
+Metric     | RMSE   | MAPE   | Theil U  | HitRate 
+-------------------------------------------------------
+within4    | 0.115 | 0.156 | 0.099 | 0.000
+occupancy  | 0.023 | 0.021 | 0.013 | 0.000
+[Thu Dec 25 07:26:55 2025]
+Finished jobid: 11 (Rule: backtest_recursive)
+1 of 4 steps (25%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Dec 25 07:26:55 2025]
+localrule plot_validation:
+    input: data/calibration_v21/recursive_results.json
+    output: outputs/validation/theil_decomposition.png
+    jobid: 13
+    reason: Input files updated by another job: data/calibration_v21/recursive_results.json
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+Saved Theil decomposition plot to outputs/validation/theil_decomposition.png
+[Thu Dec 25 07:26:56 2025]
+Finished jobid: 13 (Rule: plot_validation)
+2 of 4 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Dec 25 07:26:56 2025]
+localrule generate_report:
+    input: data/calibration_v21/recursive_results.json, outputs/validation/theil_decomposition.png, data/gsa_v21/morris_results.csv
+    output: reports/validation_report_v21.md
+    jobid: 10
+    reason: Input files updated by another job: data/calibration_v21/recursive_results.json, outputs/validation/theil_decomposition.png
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+Generated validation report at reports/validation_report_v21.md
+[Thu Dec 25 07:26:57 2025]
+Finished jobid: 10 (Rule: generate_report)
+3 of 4 steps (75%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Thu Dec 25 07:26:57 2025]
+localrule all:
+    input: data/gsa_v21/sensitivity_summary.md, data/calibration_v21/calibration_optuna_best.csv, data/baseline_v21/tables/trajectory.csv, outputs/v8/plots/tradeoff_scatter.png, outputs/v9/diagrams/games_network_minimal_v9.png, outputs/v9/interactive/games_network_d3.html, context/CONTEXT_PACK.md, context/grounding.ok, reports/validation_report_v21.md
+    jobid: 0
+    reason: Input files updated by another job: reports/validation_report_v21.md
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+[Thu Dec 25 07:26:57 2025]
+Finished jobid: 0 (Rule: all)
+4 of 4 steps (100%) done
+Complete log(s): /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/.snakemake/log/2025-12-25T072653.592459.snakemake.log

@@ -215,8 +215,8 @@ def get_salib_problem(
 
 
 def evaluate_parallel(
-    model_func: Callable[[np.ndarray], float], param_values: np.ndarray, n_procs: int = 4
-) -> np.ndarray:
+    model_func: Callable[[np.ndarray[Any, Any]], float], param_values: np.ndarray[Any, Any], n_procs: int = 4
+) -> np.ndarray[Any, Any]:
     """Evaluates the model function in parallel across multiple processes.
 
     Args:
@@ -236,7 +236,7 @@ def evaluate_parallel(
 
 def run_morris_analysis(
     problem: dict[str, Any],
-    model_func: Callable[[np.ndarray], float],
+    model_func: Callable[[np.ndarray[Any, Any]], float],
     n_trajectories: int = 10,
     n_procs: int = 4,
     seed: int = 42,
@@ -270,7 +270,7 @@ def run_morris_analysis(
 
 def run_sobol_analysis(
     problem: dict[str, Any],
-    model_func: Callable[[np.ndarray], float],
+    model_func: Callable[[np.ndarray[Any, Any]], float],
     n_samples: int = 128,
     n_procs: int = 4,
     seed: int = 42,
@@ -301,8 +301,8 @@ def run_sobol_analysis(
 
 
 def run_psa(
-    distributions: dict[str, Callable[[int], np.ndarray]],
-    model_func: Callable[[np.ndarray], float],
+    distributions: dict[str, Callable[[int], np.ndarray[Any, Any]]],
+    model_func: Callable[[np.ndarray[Any, Any]], float],
     n_samples: int = 1000,
     n_procs: int = 4,
 ) -> pd.DataFrame:

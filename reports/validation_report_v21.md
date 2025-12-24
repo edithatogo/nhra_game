@@ -1,5 +1,5 @@
 # NHRA Model Technical Validation Report
-**Date:** 2025-12-24 05:49:09
+**Date:** 2025-12-25 07:26:57
 
 ## 1. Executive Summary
 Model Status: **STABLE**
@@ -14,16 +14,16 @@ Model Status: **STABLE**
 ![Theil Decomposition](../outputs/validation/theil_decomposition.png)
 
 ## 4. Mechanism Integrity (GSA)
-Top mechanistic driver (mu_star): **fragmentation_index**
+Top mechanistic driver (mu_star): **discharge_delay_base**
 
 | Parameter | mu_star | Rank |
 | :--- | :--- | :--- |
-| fragmentation_index | 0.0386 | 1 |
-| discharge_delay_base | 0.0263 | 2 |
-| admin_burden_weight | 0.0023 | 3 |
-| rurality_weight | 0.0014 | 4 |
-| cost_shifting_intensity | 0.0000 | 5 |
-| political_salience | 0.0000 | 5 |
+| discharge_delay_base | 0.0809 | 1 |
+| cost_shifting_intensity | 0.0448 | 2 |
+| fragmentation_index | 0.0412 | 3 |
+| admin_burden_weight | 0.0069 | 4 |
+| rurality_weight | 0.0032 | 5 |
+| political_salience | 0.0000 | 6 |
 
 ## 5. Compliance Notes
 - [x] STRESS Guidelines: Model structure and equations documented.

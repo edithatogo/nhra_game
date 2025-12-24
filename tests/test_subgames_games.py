@@ -20,6 +20,7 @@ def test_each_game_has_equilibrium() -> None:
         political_salience=0.4,
         audit_pressure=0.5,
         cost_shifting_intensity=0.5,
+        political_capital=0.5,
     )
     games = [
         definition_game(gp),

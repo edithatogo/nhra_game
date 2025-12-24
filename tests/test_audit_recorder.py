@@ -5,7 +5,10 @@ import json
 from nhra_game_theory.domain.audit import Recorder
 
 
-def test_recorder_captures_metadata_and_versioned_path(tmp_path):
+from typing import Any
+
+
+def test_recorder_captures_metadata_and_versioned_path(tmp_path: Any) -> None:
     """Verify that Recorder correctly logs execution metadata and manages paths."""
     exp_dir = tmp_path / "experiments"
     recorder = Recorder(base_output_dir=exp_dir)

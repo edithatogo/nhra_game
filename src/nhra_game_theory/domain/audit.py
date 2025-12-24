@@ -23,7 +23,7 @@ class Recorder:
         except Exception:
             return "unknown"
 
-    def start_experiment(self, experiment_name: str, **metadata):
+    def start_experiment(self, experiment_name: str, **metadata: Any) -> None:
         """Starts a new experiment record and creates a timestamped directory."""
         now = datetime.now()
         date_str = now.strftime("%Y-%m-%d")
@@ -49,7 +49,7 @@ class Recorder:
             raise RuntimeError("Experiment not started. Call start_experiment first.")
         return self.experiment_dir / filename
 
-    def end_experiment(self):
+    def end_experiment(self) -> None:
         """Ends the current experiment record and saves metadata to disk."""
         if not self.current_experiment or not self.experiment_dir:
             return

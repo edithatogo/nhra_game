@@ -10,4 +10,4 @@ The v8 hybrid model combines:
 - patient-flow proxies (occupancy, offload, ED≤4h)
 - a conservative harm index (comparative proxy only)
 
-See: `src/nhra_game_theory/v8.py` and `scripts/run_v8_all.py`.
+See: `src/nhra_game_theory/legacy_engine.py` and `scripts/run_v8_all.py`.

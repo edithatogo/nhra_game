@@ -3,8 +3,10 @@ from __future__ import annotations
 import numpy as np
 
 
+from typing import Any
+
 def stochastic_objective(
-    means: np.ndarray, targets: np.ndarray, variances: np.ndarray, lam: float = 0.5
+    means: np.ndarray[Any, Any], targets: np.ndarray[Any, Any], variances: np.ndarray[Any, Any], lam: float = 0.5
 ) -> float:
     """Composite objective: MSE of means plus lambda * average variance."""
     mse = np.mean((means - targets) ** 2)
@@ -12,7 +14,7 @@ def stochastic_objective(
     return float(mse + penalty)
 
 
-def test_stochastic_objective_penalizes_variance():
+def test_stochastic_objective_penalizes_variance() -> None:
     """Verify that higher variance results in a higher (worse) objective score."""
     targets = np.array([0.5, 0.5])
     means = np.array([0.5, 0.5])  # Perfect mean match
@@ -29,7 +31,7 @@ def test_stochastic_objective_penalizes_variance():
     assert score_high > score_low
 
 
-def test_stochastic_objective_mean_drift():
+def test_stochastic_objective_mean_drift() -> None:
     """Verify that mean error still drives the score."""
     targets = np.array([0.5])
     var = np.array([0.0])

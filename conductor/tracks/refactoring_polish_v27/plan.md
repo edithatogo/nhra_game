@@ -33,7 +33,7 @@
 - [x] **Task 3.2: Publication Polish**
   - [x] Sub-task: Update dashboard theme to be strictly academic (clean, vector-friendly).
   - [x] Sub-task: Ensure all plots output SVG/PDF. (Note: Toolbar buttons enabled; Teal/Tealrose themes applied).
-- [ ] **Task 3.3: End-to-End Integrity**
-  - [ ] Sub-task: Run the full `snakemake` pipeline.
-  - [ ] Sub-task: Fix any broken links or deprecated calls.
+- [x] **Task 3.3: End-to-End Integrity**
+  - [x] Sub-task: Run the full `snakemake` pipeline.
+  - [x] Sub-task: Fix any broken links or deprecated calls.
 - [ ] **Task: Conductor - User Manual Verification 'Gold Master Polish' (Protocol in workflow.md)**

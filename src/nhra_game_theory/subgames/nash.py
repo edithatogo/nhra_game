@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
 import numpy as np
 
@@ -16,21 +17,21 @@ class NashEquilibrium:
     """
 
     kind: str
-    row: np.ndarray
-    col: np.ndarray
+    row: np.ndarray[Any, Any]
+    col: np.ndarray[Any, Any]
 
 
 @dataclass(frozen=True)
 class TwoPlayerGame:
     """Normal-form game with payoffs for row and column players."""
 
-    u_row: np.ndarray  # shape (n,m)
-    u_col: np.ndarray  # shape (n,m)
+    u_row: np.ndarray[Any, Any]  # shape (n,m)
+    u_col: np.ndarray[Any, Any]  # shape (n,m)
     row_actions: tuple[str, ...]
     col_actions: tuple[str, ...]
 
 
-def _best_responses_row(game: TwoPlayerGame) -> np.ndarray:
+def _best_responses_row(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
     # boolean matrix (n,m): row action i is best response to column action j
     A = game.u_row
     n, m = A.shape
@@ -41,7 +42,7 @@ def _best_responses_row(game: TwoPlayerGame) -> np.ndarray:
     return br
 
 
-def _best_responses_col(game: TwoPlayerGame) -> np.ndarray:
+def _best_responses_col(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
     B = game.u_col
     n, m = B.shape
     br = np.zeros((n, m), dtype=bool)
@@ -105,8 +106,8 @@ def all_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
 def select_equilibrium(
     eqs: list[NashEquilibrium],
     rule: str = "payoff_dominant",
-    u_row: np.ndarray | None = None,
-    u_col: np.ndarray | None = None,
+    u_row: np.ndarray[Any, Any] | None = None,
+    u_col: np.ndarray[Any, Any] | None = None,
 ) -> NashEquilibrium:
     """Select one equilibrium from a set.
 

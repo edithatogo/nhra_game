@@ -203,6 +203,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
             political_salience=float(p.political_salience),
             audit_pressure=float(p.audit_pressure),
             cost_shifting_intensity=float(p.cost_shifting_intensity),
+            political_capital=1.0,
         )
 
         def _pick(game):

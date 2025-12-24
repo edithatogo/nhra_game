@@ -22,6 +22,7 @@ def analyze_cost_shifting_stability(
                 political_salience=0.3,
                 audit_pressure=0.5,
                 cost_shifting_intensity=float(csi),
+                political_capital=1.0,
             )
 
             game = cost_shifting_game(gp)
