@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
-from typing import Any
 import plotly.graph_objects as go
 from matplotlib.figure import Figure
 
