@@ -17,7 +17,7 @@ from nhra_game_theory.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_game_theory.domain.validation import aggregate_metrics, RecursiveResult
 from nhra_game_theory.domain.stability import analyze_cost_shifting_stability
 from nhra_game_theory.sensitivity import get_parameter_lineage
-from nhra_game_theory.v9 import Params, run_hybrid, summarise_outcome, apply_intervention
+from nhra_game_theory.engine import Params, run_hybrid, summarise_outcome, apply_intervention
 
 def prepare_ghost_overlay_data(historical: pd.DataFrame, recursive_results: list[dict], metric: str) -> pd.DataFrame:
     """Prepare data for historical vs predicted overlay."""

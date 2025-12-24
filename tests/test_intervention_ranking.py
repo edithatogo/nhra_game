@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import pandas as pd
-from nhra_game_theory.v9 import Params
+from nhra_game_theory.engine import Params
 
 from scripts.dashboard_v21 import rank_interventions
 

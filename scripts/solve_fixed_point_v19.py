@@ -15,7 +15,7 @@ from nhra_game_theory.subgames.games import (
     governance_integration_game,
 )
 from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
-from nhra_game_theory.v9 import Params, State, baseline_state, step
+from nhra_game_theory.engine import Params, State, baseline_state, step
 
 
 class DetermRNG:

@@ -29,7 +29,7 @@ def main() -> None:
     import sys
 
     sys.path.insert(0, str(repo / "src"))
-    from nhra_game_theory.v9 import Params  # type: ignore
+    from nhra_game_theory.engine import Params  # type: ignore
 
     p = Params()
 

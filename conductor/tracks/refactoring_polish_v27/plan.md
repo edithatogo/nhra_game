@@ -3,15 +3,17 @@
 **Goal:** Polish the codebase for publication, recover lost features via forensic audit, and create high-impact visualizations (animations).
 
 ## Phase 1: Core Refactoring & JAX Foundation
-- [ ] **Task 1.1: Intuitive Renaming**
-  - [ ] Sub-task: Rename `v9.py` -> `engine.py`.
-  - [ ] Sub-task: Rename `v8.py` -> `legacy_engine.py` (or archive).
-  - [ ] Sub-task: Update all imports in tests and scripts.
-- [ ] **Task 1.2: Artifact Versioning**
-  - [ ] Sub-task: Update `Recorder` to enforcing timestamped output paths (`outputs/experiments/YYYY-MM-DD/`).
-- [ ] **Task 1.3: NumPyro Definition**
-  - [ ] Sub-task: Create `src/nhra_game_theory/calibration/bayesian.py` defining the model as a NumPyro probabilistic program (preparation for calibration track).
-- [ ] **Task: Conductor - User Manual Verification 'Refactoring' (Protocol in workflow.md)**
+- [x] **Task 1.0: Benchmark Baseline**
+  - [x] Sub-task: Create `scripts/benchmarks/benchmark_engine.py` to record current simulation speed (samples/second). (Result: ~1047 steps/sec)
+- [x] **Task 1.1: Intuitive Renaming**
+  - [x] Sub-task: Rename `v9.py` -> `engine.py`.
+  - [x] Sub-task: Rename `v8.py` -> `legacy_engine.py`.
+  - [x] Sub-task: Update all imports in tests and scripts.
+- [x] **Task 1.2: Artifact Versioning**
+  - [x] Sub-task: Update `Recorder` to enforcing timestamped output paths (`outputs/experiments/YYYY-MM-DD/`).
+- [x] **Task 1.3: NumPyro Definition**
+  - [x] Sub-task: Create `src/nhra_game_theory/calibration/bayesian.py` defining the model as a NumPyro probabilistic program (preparation for calibration track).
+- [x] **Task: Conductor - User Manual Verification 'Refactoring' (Protocol in workflow.md)**
 
 ## Phase 2: Forensic Deep Dive (Code Investigator)
 - [ ] **Task 2.1: Automated Legacy Audit**

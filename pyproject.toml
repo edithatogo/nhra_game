@@ -19,9 +19,6 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Mathematics",
 ]
-[project.urls]
-Repository = "https://github.com/edithatogo/nhra_game"
-Documentation = "https://edithatogo.github.io/nhra_game/"
 dependencies = [
   "numpy>=1.24",
   "pandas>=2.0",
@@ -37,12 +34,17 @@ dependencies = [
   "pydantic-settings>=2.0"
 ]
 
+[project.urls]
+Repository = "https://github.com/edithatogo/nhra_game"
+Documentation = "https://edithatogo.github.io/nhra_game/"
+
 [project.optional-dependencies]
 opt = ["optuna>=3.6"]
 accel = [
   "jax>=0.4",
   "jaxlib>=0.4",
   "jaxtyping>=0.2",
+  "numpyro>=0.13",
   "polars>=0.20"
 ]
 dev = [

@@ -7,7 +7,7 @@ This enforces that every parameter used by the model is documented in
 use publicly retrievable sources (http/https URLs).
 
 Rules:
-- Registry must contain exactly the parameters in `nhra_game_theory.v9.Params`
+- Registry must contain exactly the parameters in `nhra_game_theory.engine.Params`
 - For `source_type` in {"primary","secondary","calibrated"}:
     - `citation_or_file` must be a public URL (http/https)
     - `locator` must be non-empty
@@ -76,9 +76,9 @@ def main() -> None:
     # Import model parameters
     sys.path.insert(0, str(root / "src"))
     try:
-        from nhra_game_theory.v9 import Params  # type: ignore
+        from nhra_game_theory.engine import Params  # type: ignore
     except Exception as e:
-        die(f"Could not import nhra_game_theory.v9.Params: {e}")
+        die(f"Could not import nhra_game_theory.engine.Params: {e}")
 
     model_params = {f.name for f in fields(Params)}
 

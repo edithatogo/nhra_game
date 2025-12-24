@@ -9,7 +9,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 from nhra_game_theory.plotting import plot_trajectory
-from nhra_game_theory.v8 import (
+from nhra_game_theory.legacy_engine import (
     Params,
     nep_series,
     one_way_sensitivity,

@@ -4,7 +4,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from nhra_game_theory import v8
+from nhra_game_theory import legacy_engine as v8
 from nhra_game_theory.plotting import (
     build_games_graph,
     plot_strategy_heatmap,

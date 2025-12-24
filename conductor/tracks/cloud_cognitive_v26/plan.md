@@ -3,7 +3,7 @@
 **Goal:** Evolve the NHRA model into a "Cognitive Digital Twin" using LLM-driven agents and operationalize it for cloud deployment.
 
 ## Phase 1: Cognitive Simulation (LLM Agents)
-- [ ] **Task 1.1: Agent Interface Design**
+- [~] **Task 1.1: Agent Interface Design**
   - [ ] Sub-task: Define `Agent` abstract base class in `src/nhra_game_theory/agents/base.py`.
   - [ ] Sub-task: Implement `HeuristicAgent` (wrapping current logic) to ensure backward compatibility.
 - [ ] **Task 1.2: LLM Negotiator Implementation**

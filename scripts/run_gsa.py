@@ -22,7 +22,7 @@ from nhra_game_theory.sensitivity import (
     run_morris_analysis,
     run_sobol_analysis,
 )
-from nhra_game_theory.v8 import Params, run_hybrid, summarise_outcome
+from nhra_game_theory.legacy_engine import Params, run_hybrid, summarise_outcome
 
 
 def model_wrapper(param_values: np.ndarray, names: list[str], years: list[int]) -> float:

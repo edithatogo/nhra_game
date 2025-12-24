@@ -8,7 +8,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from matplotlib.figure import Figure
 
-from .v8 import GAME_NODES
+from .legacy_engine import GAME_NODES
 
 
 def savefig(fig: Figure, path: Path) -> None:

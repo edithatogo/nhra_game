@@ -4,7 +4,7 @@ import csv
 from dataclasses import fields
 from pathlib import Path
 import pandas as pd
-from nhra_game_theory.v9 import Params
+from nhra_game_theory.engine import Params
 
 def generate_full_registry(output_path: Path):
     """Generates the comprehensive parameter registry."""

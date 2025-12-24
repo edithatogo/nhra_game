@@ -13,7 +13,7 @@ from nhra_game_theory.subgames.games import (
     governance_integration_game,
 )
 from nhra_game_theory.subgames.nash import all_nash
-from nhra_game_theory.v8 import Params, run_hybrid
+from nhra_game_theory.legacy_engine import Params, run_hybrid
 
 
 def equilibria_snapshot(p: Params) -> pd.DataFrame:

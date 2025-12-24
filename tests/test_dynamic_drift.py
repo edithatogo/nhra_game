@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 import pytest
-from nhra_game_theory.v9 import Params, baseline_state, step
+from nhra_game_theory.engine import Params, baseline_state, step
 
 
 def test_dynamic_drift_calculation():

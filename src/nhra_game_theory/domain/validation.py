@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from pydantic import BaseModel, ConfigDict
 
-from nhra_game_theory.v9 import Params, run_hybrid
+from nhra_game_theory.engine import Params, run_hybrid
 
 
 def calculate_rmse(actual: np.ndarray, predicted: np.ndarray) -> float:
