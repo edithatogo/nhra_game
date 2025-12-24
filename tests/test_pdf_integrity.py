@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 import hashlib
+from typing import Any
 
 # Implementation will be in a new module
 from scripts.extract_tables import PDFTableExtractor
 
-
-from typing import Any
 
 def test_pdf_hashing(tmp_path: Any) -> None:
     """Verify that we can generate a SHA-256 hash for a PDF file."""

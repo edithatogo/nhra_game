@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 
 
-from typing import Any
-
 def stochastic_objective(
-    means: np.ndarray[Any, Any], targets: np.ndarray[Any, Any], variances: np.ndarray[Any, Any], lam: float = 0.5
+    means: np.ndarray[Any, Any],
+    targets: np.ndarray[Any, Any],
+    variances: np.ndarray[Any, Any],
+    lam: float = 0.5,
 ) -> float:
     """Composite objective: MSE of means plus lambda * average variance."""
     mse = np.mean((means - targets) ** 2)
