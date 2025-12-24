@@ -18,3 +18,18 @@ LOGFIRE_SEND_TO_LOGFIRE=false PYTHONPATH=src scalene --cli --profile-all scripts
 ```
 
 Scalene will provide a detailed breakdown of time spent in `v9.py` (simulations) vs `validation.py` (logic).
+
+## JAX Acceleration
+The project is prepared for JAX-based acceleration.
+
+### Requirements
+Ensure the `accel` extra is installed:
+```bash
+pip install ".[accel]"
+```
+
+### Compliance Testing
+Verify JAX compatibility using the dedicated test suite:
+```bash
+pytest tests/test_jax_compliance.py
+```
