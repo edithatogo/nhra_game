@@ -17,7 +17,7 @@
   - [x] Sub-task: Add `jax`, `jaxlib`, and `jaxtyping` to dependencies.
 - [x] **Task 2.2: Solver Validation Harness**
   - [x] Sub-task: Create a test harness comparing current Numpy solvers against a (future) JAX implementation.
-- [ ] **Task: Conductor - User Manual Verification 'JAX Prep' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'JAX Prep' (Protocol in workflow.md)** 7165eaa
 
 ## Phase 3: CI Hardening
 - [x] **Task 3.1: Matrix Testing**
