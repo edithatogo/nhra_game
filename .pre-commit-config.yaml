@@ -16,13 +16,14 @@ repos:
     rev: v1.13.0
     hooks:
       - id: mypy
-        additional_dependencies: [types-requests, types-setuptools, pandas-stubs]
+        additional_dependencies: [types-requests, types-setuptools, pandas-stubs, pydantic, pandera, types-PyYAML]
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.0
     hooks:
       - id: bandit
         args: ["-c", "pyproject.toml", "-r", "src"]
         additional_dependencies: ["bandit[toml]"]
+        exclude: ^tests/
   - repo: local
     hooks:
       - id: deptry
