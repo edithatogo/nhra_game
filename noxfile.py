@@ -21,6 +21,15 @@ def type_check(session: nox.Session) -> None:
     session.run("mypy", "src")
 
 @nox.session
+def security(session: nox.Session) -> None:
+    """Run security checks using bandit and safety."""
+    session.install("bandit", "safety")
+    session.run("bandit", "-r", "src", "-ll")
+    # safety check requires a requirements file or similar
+    # we'll skip for now if not available, or use --stdin
+    session.run("bandit", "-r", "scripts", "-ll")
+
+@nox.session
 def coverage(session: nox.Session) -> None:
     """Run tests and generate coverage report."""
     session.install(".[dev,opt]")

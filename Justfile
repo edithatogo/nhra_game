@@ -28,6 +28,10 @@ test:
 docs:
   mkdocs build -q
 
+# run mutation tests to verify test suite quality
+mutate:
+  mutmut run
+
 all:
   just format
   just lint
