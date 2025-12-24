@@ -15,20 +15,33 @@
 2. **Automated Methods:** Implemented `generate_methods_appendix.py` and academic-style parameter exports.
 3. **Refined Mechanisms:** Resolved validation discrepancies; model now aligns with historical Rank #1 driver (Discharge Delay).
 
-## Next (v24) — Automated Evidence & API Integration
+## Completed in v24/v25 — Evidence, Security & Release
+1. **Empirical API:** Automated ingestion from AIHW MyHospitals API (ED performance).
+2. **Bibliography Engine:** Implemented academic citation manager with RIS/ENW/BIB exports.
+3. **Security Hardening:** Integrated Bandit security scanning, Mutmut mutation testing, and pinned `requirements.lock`.
+4. **Audit Trails:** Implemented `Recorder` for high-fidelity experiment provenance.
+5. **Gold Master:** Released v25.0.0 with optimized Docker environment.
 
-### Empirical API Integration
-- **MyHospitals API:** Implement `scripts/data/ingest_aihw_api.py` to fetch facility-level and quarterly metrics directly from AIHW {Australian Institute of Health and Welfare, 2024 @AIHW_MyHospitals #101}.
-- **Dynamic Calibration:** Automate model re-calibration when API data updates.
+## Next (v26) — Cloud & Cognitive Agents (Future Vision)
 
-### Evidence & Bibliography Engine
-- **Automated Citations:** Implement a robust bibliography manager supporting Endnote style `{Author, YYYY @Label #RecordNumber}`.
-- **Reference Exports:** Generate `.ris`, `.enw`, and `.bib` files with full metadata and validated DOIs/URLs.
-- **Academic Standards:** Ensure all model evidence is linked to high-impact, recent literature (e.g., MJA, Science, J Simulation).
+### Cognitive Simulation
+- **LLM Agents:** Replace heuristic game strategies with LLM-driven agents that negotiate based on actual policy documents (RAG).
+- **Narrative Generation:** Auto-generate policy briefs explaining *why* a specific equilibrium was reached.
 
-### Audit & Metadata
-- **Experiment Logging:** Implement structured metadata recording for every Monte Carlo run (seed, git-hash, compute-time, token-usage).
-- **Provenance Tracking:** Automate the 'Data Lineage' tab in the dashboard using the new API ingestor.
+### Operationalisation
+- **Cloud Deployment:** Terraform/IaC for deploying the Streamlit dashboard to AWS Fargate or Azure Container Apps.
+- **Continuous Data:** GitHub Actions workflow to run `ingest_aihw_api.py` weekly and commit fresh data.
+
+### Advanced Calibration
+- **Bayesian Inference:** Move from TPESampler to fully Bayesian calibration (PyMC/Stan) for posterior uncertainty estimation.
+
+## Governance and maintenance
+
+- Maintain a `decisions/` log for major modelling choices.
+- Ensure each version update:
+  - increments CHANGELOG,
+  - regenerates CONTEXT_PACK.md/json,
+  - re-runs `just all` in CI.
 
 ## Governance and maintenance
 
