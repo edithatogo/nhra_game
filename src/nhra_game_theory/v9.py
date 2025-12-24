@@ -101,6 +101,14 @@ class Params:
     tau: float = 0.25  # softmax temperature
     bargaining_cost: float = 0.12
     political_salience: float = 0.30
+    
+    # Bounded Rationality (v25 re-integration)
+    use_quantal_response: bool = False  # If True, use logit-response instead of pure Nash
+    qre_lambda: float = 4.0             # Sensitivity of response to payoff differences
+
+    # Audit Burden Feedback Loop (v25 re-integration)
+    use_burden_feedback: bool = False   # If True, pressure increases admin burden B_t
+    burden_to_throughput_beta: float = 0.06 # Sensitivity of throughput to burden B_t
 
     # Randomness
     noise_sd: float = 0.03
@@ -205,11 +213,28 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
         )
 
         def _solve(game):
-            eqs = all_nash(game)
-            sel = select_equilibrium(eqs, rule=p.equilibrium_selection_rule, u_row=game.u_row, u_col=game.u_col)
-            row_a = game.row_actions[int(np.argmax(sel.row))]
-            col_a = game.col_actions[int(np.argmax(sel.col))]
-            return row_a, col_a
+            if p.use_quantal_response:
+                # Quantal Response Equilibrium (v25 re-integration)
+                # We use a simplified logit response to the minimax/dominant payoffs
+                # for 2x2 games to ensure smooth transitions.
+                # P(action) ~ exp(lambda * expected_payoff)
+                
+                # Assume opponent plays uniform random for the first-order response
+                u_row_expected = np.mean(game.u_row, axis=1)
+                u_col_expected = np.mean(game.u_col, axis=0)
+                
+                prob_row = softmax(u_row_expected, tau=1.0/max(1e-9, p.qre_lambda))
+                prob_col = softmax(u_col_expected, tau=1.0/max(1e-9, p.qre_lambda))
+                
+                row_a = game.row_actions[1] if rng.random() < prob_row[1] else game.row_actions[0]
+                col_a = game.col_actions[1] if rng.random() < prob_col[1] else game.col_actions[0]
+                return row_a, col_a
+            else:
+                eqs = all_nash(game)
+                sel = select_equilibrium(eqs, rule=p.equilibrium_selection_rule, u_row=game.u_row, u_col=game.u_col)
+                row_a = game.row_actions[int(np.argmax(sel.row))]
+                col_a = game.col_actions[int(np.argmax(sel.col))]
+                return row_a, col_a
 
         # Definition: if either plays E (Strict), the gap widens? 
         # Or does Cth control definition? Let's say if Cth plays R (Realism), it helps.
@@ -321,6 +346,12 @@ def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generat
         discharge *= 0.90
     else:
         discharge *= 1.02
+    
+    # Audit Burden Feedback (v25 re-integration)
+    if p.use_burden_feedback:
+        # Pressure increases admin complexity, reducing effective discharge throughput
+        discharge *= math.exp(p.burden_to_throughput_beta * max(0.0, s.pressure - 1.0))
+        
     discharge = clamp(discharge, 0.75, 1.50)
 
     # Integration affects avoidable demand and fragmentation (externalities)

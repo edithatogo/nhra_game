@@ -2,13 +2,13 @@
 
 **Goal:** Forensic audit of legacy versions to recover lost mechanics and hardening of the codebase for public release.
 
-## Phase 1: Forensic Feature Audit
-- [ ] **Task 1.1: Semantic Logic Gap Analysis (AST)**
-  - [ ] Sub-task: Develop `scripts/audit/compare_ast.py` to map the function/class hierarchy of legacy versions vs `v9.py`.
-  - [ ] Sub-task: Identify "orphaned mechanisms" (logic present in v5/v15 but absent in v24).
-- [ ] **Task 1.2: Re-integration**
-  - [ ] Sub-task: Present a "Recovery Candidate List" for user approval.
-  - [ ] Sub-task: Implement approved restorations.
+## Phase 1: Forensic Feature Audit [checkpoint: 3d0b741]
+- [x] **Task 1.1: Semantic Logic Gap Analysis (AST)**
+  - [x] Sub-task: Develop `scripts/audit/compare_ast.py` to map the function/class hierarchy of legacy versions vs `v9.py`.
+  - [x] Sub-task: Identify "orphaned mechanisms" (logic present in v5/v15 but absent in v24). (Finding: QRE Logit solver and Admin Burden feedback loop identified.)
+- [x] **Task 1.2: Re-integration**
+  - [x] Sub-task: Present a "Recovery Candidate List" for user approval. (Done: QRE and Admin Burden Feedback selected).
+  - [x] Sub-task: Implement approved restorations. (Done: Updated v9.py with QRE solver and reinforcing burden loop).
 - [ ] **Task: Conductor - User Manual Verification 'Feature Audit' (Protocol in workflow.md)**
 
 ## Phase 2: Security & Supply Chain
