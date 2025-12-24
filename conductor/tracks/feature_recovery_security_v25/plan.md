@@ -1,0 +1,29 @@
+# Track Plan: Feature Recovery & Security Hardening (v25)
+
+**Goal:** Forensic audit of legacy versions to recover lost mechanics and hardening of the codebase for public release.
+
+## Phase 1: Forensic Feature Audit
+- [ ] **Task 1.1: Semantic Logic Gap Analysis (AST)**
+  - [ ] Sub-task: Develop `scripts/audit/compare_ast.py` to map the function/class hierarchy of legacy versions vs `v9.py`.
+  - [ ] Sub-task: Identify "orphaned mechanisms" (logic present in v5/v15 but absent in v24).
+- [ ] **Task 1.2: Re-integration**
+  - [ ] Sub-task: Present a "Recovery Candidate List" for user approval.
+  - [ ] Sub-task: Implement approved restorations.
+- [ ] **Task: Conductor - User Manual Verification 'Feature Audit' (Protocol in workflow.md)**
+
+## Phase 2: Security & Supply Chain
+- [ ] **Task 2.1: Automated Security Audit (Bandit)**
+  - [ ] Sub-task: Integrate `bandit` into CI to catch security flaws.
+- [ ] **Task 2.2: Mutation Testing (Mutmut)**
+  - [ ] Sub-task: Apply `mutmut` to the `domain/` and `subgames/` modules to verify test efficacy.
+- [ ] **Task 2.3: Supply Chain Security (SBOM/Lock)**
+  - [ ] Sub-task: Generate pinned `requirements.txt` with hashes using `pip-tools`.
+  - [ ] Sub-task: Generate an SBOM (Software Bill of Materials) using `cyclonedx-py`.
+- [ ] **Task: Conductor - User Manual Verification 'Security & Supply Chain' (Protocol in workflow.md)**
+
+## Phase 3: Production Release
+- [ ] **Task 3.1: Docker Optimization**
+  - [ ] Sub-task: Optimize `Dockerfile` for size and security (non-root user).
+- [ ] **Task 3.2: Gold Master Tag**
+  - [ ] Sub-task: Final full-system verification and release `v25.0.0`.
+- [ ] **Task: Conductor - User Manual Verification 'Gold Master' (Protocol in workflow.md)**
