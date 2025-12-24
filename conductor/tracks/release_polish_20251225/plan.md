@@ -8,8 +8,10 @@
   - [ ] Sub-task: Run each workflow in `/.github/workflows/` using `act` and resolve any environment or secret-related failures.
 - [x] **Task 1.2: Workflow Permissions Audit** ab4cebd
   - [x] Sub-task: Update all GitHub Action YAML files to include explicit `permissions:` blocks at the job or workflow level, following the Principle of Least Privilege.
-- [ ] **Task 1.3: Quality Tools Audit & Sync**
-  - [ ] Sub-task: Review current `ruff`, `mypy`, and `bandit` configurations for any gaps.
+- [x] **Task 1.3: Quality Tools Audit & Sync** 24365c8
+  - [x] Sub-task: Review current `ruff`, `mypy`, and `bandit` configurations for any gaps.
+  - [x] Sub-task: Ensure the test suite maintains >95% success and broad coverage.
+  - [x] Sub-task: Synchronize `.pre-commit-config.yaml` to match the strictest CI settings (versions and arguments).
   - [ ] Sub-task: Ensure the test suite maintains >95% success and broad coverage.
   - [ ] Sub-task: Synchronize `.pre-commit-config.yaml` to match the strictest CI settings (versions and arguments).
 - [ ] **Task: Conductor - User Manual Verification 'Workflow Hardening' (Protocol in workflow.md)**
