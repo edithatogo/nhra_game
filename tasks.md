@@ -22,18 +22,40 @@
 4. **Audit Trails:** Implemented `Recorder` for high-fidelity experiment provenance.
 5. **Gold Master:** Released v25.0.0 with optimized Docker environment.
 
-## Next (v26) — Cloud & Cognitive Agents (Future Vision)
+## Completed in v26 — Codebase Maturity
+1. **Modern Tooling:** Prepared dependencies for JAX acceleration.
+2. **Community Standards:** Added CONTRIBUTING/CODE_OF_CONDUCT and automated docs deployment.
+3. **CI Hardening:** Expanded testing matrix to Ubuntu/macOS/Windows.
 
-### Cognitive Simulation
-- **LLM Agents:** Replace heuristic game strategies with LLM-driven agents that negotiate based on actual policy documents (RAG).
-- **Narrative Generation:** Auto-generate policy briefs explaining *why* a specific equilibrium was reached.
+## Next (v27) — Refactoring, Visualization & Deep Audit (Polishing the Core)
 
-### Operationalisation
-- **Cloud Deployment:** Terraform/IaC for deploying the Streamlit dashboard to AWS Fargate or Azure Container Apps.
-- **Continuous Data:** GitHub Actions workflow to run `ingest_aihw_api.py` weekly and commit fresh data.
+### Core Refactoring
+- **Naming Convention:** Rename opaque files (e.g., `v9.py` -> `engine.py`) for intuitive navigation.
+- **Artifact Versioning:** Implement timestamped output directories (`outputs/experiments/YYYY-MM-DD/...`) to prevent overwrites.
 
-### Advanced Calibration
-- **Bayesian Inference:** Move from TPESampler to fully Bayesian calibration (PyMC/Stan) for posterior uncertainty estimation.
+### Visualization & Polish
+- **Dynamic Animation:** Generate GIFs/Videos of simulation trajectories (Pressure/Risk over time).
+- **Publication Polish:** Ensure all dashboard plots and exported figures meet high-impact journal standards (vector graphics, colorblind safe).
+
+### Forensic Deep Dive
+- **Code Investigator:** Systematically audit all legacy versions using AI agents to recover any missed logic or "ghost" features.
+- **Library Review:** Evaluate integration of new libraries (e.g., Mesa, PyGambit) vs current custom implementations.
+
+## Future Track: Advanced Calibration & Validation
+- **Bayesian Inference:** Move from TPESampler to fully Bayesian calibration (PyMC/Stan).
+- **Counterfactual Validation:** Test model against historical shocks not in training data.
+
+## Future Track: Enhanced User Experience
+- **Interactive Scenarios:** Allow policymakers to build intervention bundles via UI drag-and-drop.
+- **Explainable AI:** Add tooltips and narrative generation explaining *why* a specific outcome occurred.
+
+## Future Track: Cloud & Cognitive Agents (On Hold)
+- **Simulation Visualization:** Live visual feedback during execution.
+- **LLM Agent Sophistication:**
+    - **Debate Loop:** Cth/State agents exchange structured arguments.
+    - **RAG Integration:** Agents cite specific NHRA clauses from `context/`.
+    - **Multi-Agent Negotiation:** Enable dynamic adaptation beyond static parameters.
+- **Cloud Operations:** Terraform/Docker hardening for AWS/Azure.
 
 ## Governance and maintenance
 

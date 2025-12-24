@@ -12,7 +12,7 @@ from dataclasses import replace
 sys.path.append("src")
 
 from nhra_game_theory.sensitivity import run_psa
-from nhra_game_theory.v9 import Params, run_hybrid, summarise_outcome
+from nhra_game_theory.engine import Params, run_hybrid, summarise_outcome
 
 # Define PSA Parameters
 PSA_PARAMS = [

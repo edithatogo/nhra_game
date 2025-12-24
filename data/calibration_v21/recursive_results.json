@@ -44,7 +44,12 @@
       "tau": 0.25,
       "bargaining_cost": 0.12,
       "political_salience": 0.3,
-      "noise_sd": 0.03
+      "use_quantal_response": false,
+      "qre_lambda": 4.0,
+      "use_burden_feedback": false,
+      "burden_to_throughput_beta": 0.06,
+      "noise_sd": 0.03,
+      "economic_spine": null
     }
   },
   {
@@ -92,7 +97,12 @@
       "tau": 0.25,
       "bargaining_cost": 0.12,
       "political_salience": 0.3,
-      "noise_sd": 0.03
+      "use_quantal_response": false,
+      "qre_lambda": 4.0,
+      "use_burden_feedback": false,
+      "burden_to_throughput_beta": 0.06,
+      "noise_sd": 0.03,
+      "economic_spine": null
     }
   },
   {
@@ -140,7 +150,12 @@
       "tau": 0.25,
       "bargaining_cost": 0.12,
       "political_salience": 0.3,
-      "noise_sd": 0.03
+      "use_quantal_response": false,
+      "qre_lambda": 4.0,
+      "use_burden_feedback": false,
+      "burden_to_throughput_beta": 0.06,
+      "noise_sd": 0.03,
+      "economic_spine": null
     }
   },
   {
@@ -188,7 +203,12 @@
       "tau": 0.25,
       "bargaining_cost": 0.12,
       "political_salience": 0.3,
-      "noise_sd": 0.03
+      "use_quantal_response": false,
+      "qre_lambda": 4.0,
+      "use_burden_feedback": false,
+      "burden_to_throughput_beta": 0.06,
+      "noise_sd": 0.03,
+      "economic_spine": null
     }
   },
   {
@@ -236,7 +256,12 @@
       "tau": 0.25,
       "bargaining_cost": 0.12,
       "political_salience": 0.3,
-      "noise_sd": 0.03
+      "use_quantal_response": false,
+      "qre_lambda": 4.0,
+      "use_burden_feedback": false,
+      "burden_to_throughput_beta": 0.06,
+      "noise_sd": 0.03,
+      "economic_spine": null
     }
   },
   {
@@ -284,7 +309,12 @@
       "tau": 0.25,
       "bargaining_cost": 0.12,
       "political_salience": 0.3,
-      "noise_sd": 0.03
+      "use_quantal_response": false,
+      "qre_lambda": 4.0,
+      "use_burden_feedback": false,
+      "burden_to_throughput_beta": 0.06,
+      "noise_sd": 0.03,
+      "economic_spine": null
     }
   },
   {
@@ -332,7 +362,12 @@
       "tau": 0.25,
       "bargaining_cost": 0.12,
       "political_salience": 0.3,
-      "noise_sd": 0.03
+      "use_quantal_response": false,
+      "qre_lambda": 4.0,
+      "use_burden_feedback": false,
+      "burden_to_throughput_beta": 0.06,
+      "noise_sd": 0.03,
+      "economic_spine": null
     }
   },
   {
@@ -380,7 +415,12 @@
       "tau": 0.25,
       "bargaining_cost": 0.12,
       "political_salience": 0.3,
-      "noise_sd": 0.03
+      "use_quantal_response": false,
+      "qre_lambda": 4.0,
+      "use_burden_feedback": false,
+      "burden_to_throughput_beta": 0.06,
+      "noise_sd": 0.03,
+      "economic_spine": null
     }
   },
   {
@@ -428,7 +468,12 @@
       "tau": 0.25,
       "bargaining_cost": 0.12,
       "political_salience": 0.3,
-      "noise_sd": 0.03
+      "use_quantal_response": false,
+      "qre_lambda": 4.0,
+      "use_burden_feedback": false,
+      "burden_to_throughput_beta": 0.06,
+      "noise_sd": 0.03,
+      "economic_spine": null
     }
   }
 ]

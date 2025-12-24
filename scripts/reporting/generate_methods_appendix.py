@@ -3,7 +3,7 @@ from __future__ import annotations
 import pandas as pd
 import json
 from pathlib import Path
-from nhra_game_theory.v9 import Params
+from nhra_game_theory.engine import Params
 from nhra_game_theory.domain.bibliography import Reference, BibliographyManager
 
 def generate_appendix(registry_path: Path, output_path: Path, references_path: Path):

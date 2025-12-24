@@ -10,6 +10,15 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Dylan A Mordaunt (RACMA working draft)" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
 dependencies = [
   "numpy>=1.24",
   "pandas>=2.0",
@@ -25,8 +34,19 @@ dependencies = [
   "pydantic-settings>=2.0"
 ]
 
+[project.urls]
+Repository = "https://github.com/edithatogo/nhra_game"
+Documentation = "https://edithatogo.github.io/nhra_game/"
+
 [project.optional-dependencies]
 opt = ["optuna>=3.6"]
+accel = [
+  "jax>=0.4",
+  "jaxlib>=0.4",
+  "jaxtyping>=0.2",
+  "numpyro>=0.13",
+  "polars>=0.20"
+]
 dev = [
   "pytest>=7.4",
   "hypothesis>=6.100",

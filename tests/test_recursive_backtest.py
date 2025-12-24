@@ -7,7 +7,7 @@ import pytest
 
 # We'll implement this in Phase 2/3
 from nhra_game_theory.domain.validation import RecursiveBacktest, RecursiveResult
-from nhra_game_theory.v9 import Params
+from nhra_game_theory.engine import Params
 
 
 @pytest.fixture

@@ -2,7 +2,7 @@ rule all:
     input:
         "data/gsa_v21/sensitivity_summary.md",
         "data/calibration_v21/calibration_optuna_best.csv",
-        "data/baseline_v21/trajectory.csv",
+        "data/baseline_v21/tables/trajectory.csv",
         "outputs/v8/plots/tradeoff_scatter.png",
         "outputs/v9/diagrams/games_network_minimal_v9.png",
         "outputs/v9/interactive/games_network_d3.html",
@@ -84,7 +84,7 @@ rule calibrate:
 
 rule run_baseline:
     output:
-        "data/baseline_v21/trajectory.csv"
+        "data/baseline_v21/tables/trajectory.csv"
     shell:
         "PYTHONPATH=src python scripts/run_baseline_v21.py"
 

@@ -1,5 +1,5 @@
 """
-NHRA stylised hybrid model (v9) — dynamic NEP vs input cost drift
+NHRA stylised hybrid model (v8)
 
 This is a *mechanism* model: it encodes several strategic "games" and a simple system-dynamics backbone.
 
@@ -16,12 +16,13 @@ from __future__ import annotations
 
 import math
 from collections.abc import Iterable
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from typing import Any, cast
 
 import numpy as np
 import pandas as pd
 from numpy.typing import NDArray
+from pydantic import BaseModel, ConfigDict, Field
 
 # ----------------------------
 # Utilities
@@ -48,78 +49,60 @@ def softmax(u: NDArray[np.floating[Any]], tau: float = 0.25) -> NDArray[np.float
 # ----------------------------
 
 
-@dataclass(frozen=True)
-class Params:
+class Params(BaseModel):
     # Funding / valuation
-    nep_to_cost_ratio_metro: float = 0.90
-    nep_to_cost_ratio_regional: float = 0.83
-    nep_to_cost_ratio_remote: float = 0.75
+    nep_to_cost_ratio_metro: float = Field(default=0.90, ge=0.5, le=1.0)
+    nep_to_cost_ratio_regional: float = Field(default=0.83, ge=0.5, le=1.0)
+    nep_to_cost_ratio_remote: float = Field(default=0.75, ge=0.5, le=1.0)
 
-    rurality_weight: float = 0.35  # fraction of activity outside metro
-    remote_weight: float = 0.07  # subset weight in remote
+    rurality_weight: float = Field(default=0.35, ge=0.0, le=1.0)
+    remote_weight: float = Field(default=0.07, ge=0.0, le=1.0)
 
-    nominal_cth_share_target: float = 0.45
-    effective_cth_share_base: float = 0.38
+    nominal_cth_share_target: float = Field(default=0.45, ge=0.3, le=0.6)
+    effective_cth_share_base: float = Field(default=0.38, ge=0.2, le=0.6)
 
-    cap_growth: float = 0.065  # "hard cap" annual
+    cap_growth: float = Field(default=0.065, ge=0.0, le=0.2)
     has_cumulative_cap: bool = False
-    use_equilibrium_bargaining: bool = False  # v14 option
-    use_stage_game_equilibria: bool = True  # v15: solve and use all stage-game equilibria
-    equilibrium_selection_rule: str = "payoff_dominant"  # payoff_dominant | row_favourable | random
+    use_equilibrium_bargaining: bool = False
+    use_stage_game_equilibria: bool = True
+    equilibrium_selection_rule: str = "payoff_dominant"
 
-    # NEP (National Efficient Price) scaffolding
-    # NOTE: In IHACPA/ABF, NEP is an annual $/NWAU value which is multiplied by a service NWAU weight to form an efficient payment.
-    # In this model, NEP is used mainly for *reporting and scenario comparison* (not detailed ABF accounting).
-    nep_per_nwau_start: float = 1.0  # index units; set to actual $/NWAU if desired
-    nep_annual_growth: float = 0.03
-    representative_nwau: float = (
-        1.0  # a single representative activity weight for illustrative calculations
-    )
-
-    # Input costs (index units per NWAU; proxies workforce + supply costs)
-    input_cost_per_nwau_start: float = 1.0
-    input_cost_annual_growth: float = 0.04
+    # NEP scaffolding
+    nep_per_nwau_start: float = 1.0
+    nep_annual_growth: float = Field(default=0.03, ge=0.0, le=0.1)
+    representative_nwau: float = 1.0
 
     # System dynamics
     demand_base: float = 1.00
-    avoidable_ed_share: float = 0.18
-    discharge_delay_base: float = 1.00  # multiplier
-    bed_capacity_index: float = 1.00  # 1.0 baseline
+    avoidable_ed_share: float = Field(default=0.18, ge=0.0, le=0.5)
+    discharge_delay_base: float = Field(default=1.00, ge=0.1, le=3.0)
+    bed_capacity_index: float = Field(default=1.00, ge=0.5, le=2.0)
 
     # Couplings
-    cost_shifting_intensity: float = 0.35  # VFI spillover strength
-    fragmentation_index: float = 1.00  # UCC/primary care integration etc
-    audit_pressure: float = 0.50  # compliance scrutiny baseline
-    admin_burden_weight: float = 0.25
+    cost_shifting_intensity: float = Field(default=0.35, ge=0.0, le=1.0)
+    fragmentation_index: float = Field(default=1.00, ge=0.1, le=2.0)
+    audit_pressure: float = Field(default=0.50, ge=0.0, le=1.0)
+    admin_burden_weight: float = Field(default=0.25, ge=0.0, le=1.0)
 
     # Pressure mapping
-    occupancy_base: float = 0.88
-    offload_base_min: float = 18.0  # minutes
-    within4_base: float = 0.53
+    occupancy_base: float = Field(default=0.88, ge=0.5, le=1.0)
+    offload_base_min: float = 18.0
+    within4_base: float = Field(default=0.53, ge=0.0, le=1.0)
 
-    # Risk proxy mapping (relative, not absolute)
+    # Risk proxy mapping
     rr_beta_pressure: float = 0.35
-    rr_beta_offload: float = 0.015  # per minute above threshold (stylised)
+    rr_beta_offload: float = 0.015
     offload_threshold_min: float = 20.0
 
     # Behavioural weights
-    tau: float = 0.25  # softmax temperature
+    tau: float = 0.25
     bargaining_cost: float = 0.12
-    political_salience: float = 0.30
-
-    # Bounded Rationality (v25 re-integration)
-    use_quantal_response: bool = False  # If True, use logit-response instead of pure Nash
-    qre_lambda: float = 4.0  # Sensitivity of response to payoff differences
-
-    # Audit Burden Feedback Loop (v25 re-integration)
-    use_burden_feedback: bool = False  # If True, pressure increases admin burden B_t
-    burden_to_throughput_beta: float = 0.06  # Sensitivity of throughput to burden B_t
+    political_salience: float = Field(default=0.30, ge=0.0, le=1.0)
 
     # Randomness
-    noise_sd: float = 0.03
+    noise_sd: float = Field(default=0.03, ge=0.0, le=0.5)
 
-    # Empirical Spine (optional)
-    economic_spine: pd.DataFrame | None = None
+    model_config = ConfigDict(frozen=True)
 
 
 @dataclass(frozen=True)
@@ -211,7 +194,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
             discharge_coordination_game,
             governance_integration_game,
         )
-        from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
+        from nhra_game_theory.subgames.nash import TwoPlayerGame, all_nash, select_equilibrium
 
         gp = GameParams(
             pressure=float(s.pressure),
@@ -220,65 +203,23 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
             political_salience=float(p.political_salience),
             audit_pressure=float(p.audit_pressure),
             cost_shifting_intensity=float(p.cost_shifting_intensity),
+            political_capital=1.0,
         )
 
-        def _solve(game):
-            if p.use_quantal_response:
-                # Quantal Response Equilibrium (v25 re-integration)
-                # We use a simplified logit response to the minimax/dominant payoffs
-                # for 2x2 games to ensure smooth transitions.
-                # P(action) ~ exp(lambda * expected_payoff)
+        def _pick(game: TwoPlayerGame) -> str:
+            eqs = all_nash(game)
+            sel = select_equilibrium(
+                eqs, rule=p.equilibrium_selection_rule, u_row=game.u_row, u_col=game.u_col
+            )
+            a = game.row_actions[int(np.argmax(sel.row))]
+            return a
 
-                # Assume opponent plays uniform random for the first-order response
-                u_row_expected = np.mean(game.u_row, axis=1)
-                u_col_expected = np.mean(game.u_col, axis=0)
-
-                prob_row = softmax(u_row_expected, tau=1.0 / max(1e-9, p.qre_lambda))
-                prob_col = softmax(u_col_expected, tau=1.0 / max(1e-9, p.qre_lambda))
-
-                row_a = game.row_actions[1] if rng.random() < prob_row[1] else game.row_actions[0]
-                col_a = game.col_actions[1] if rng.random() < prob_col[1] else game.col_actions[0]
-                return row_a, col_a
-            else:
-                eqs = all_nash(game)
-                sel = select_equilibrium(
-                    eqs, rule=p.equilibrium_selection_rule, u_row=game.u_row, u_col=game.u_col
-                )
-                row_a = game.row_actions[int(np.argmax(sel.row))]
-                col_a = game.col_actions[int(np.argmax(sel.col))]
-                return row_a, col_a
-
-        # Definition: if either plays E (Strict), the gap widens?
-        # Or does Cth control definition? Let's say if Cth plays R (Realism), it helps.
-        # But if State plays E (Strict), they demand more?
-        # Current step() logic: if strategies["DEF"] == "R": eff_gap *= 0.93
-        # Let's keep DEF as Row-driven (Cth narrative).
-        r_def, _ = _solve(definition_game(gp))
-        DEF = r_def
-
-        # Bargaining: A if both Agree? If one Defers, delay.
-        # Current: A -> eff_share converges fast. D -> slow.
-        # Ideally, requires mutual agreement.
-        r_barg, c_barg = _solve(bargaining_game(gp))
-        BARG = "A" if (r_barg == "A" and c_barg == "A") else "D"
-
-        # Cost Shifting: S if anyone Shifts.
-        r_shift, c_shift = _solve(cost_shifting_game(gp))
-        SHIFT = "S" if (r_shift == "S" or c_shift == "S") else "I"
-
-        # Discharge: C only if both Coordinate.
-        r_disc, c_disc = _solve(discharge_coordination_game(gp))
-        DISC = "C" if (r_disc == "C" and c_disc == "C") else "F"
-
-        # Governance: I only if both Integrate.
-        r_gov, c_gov = _solve(governance_integration_game(gp))
-        GOV = "I" if (r_gov == "I" and c_gov == "I") else "S"
-
-        # Compliance: Row (Cth) drives audit intensity (T/L). Col (State) just responds.
-        # But step() uses COMP to determine admin burden.
-        # If Cth plays T, burden high.
-        r_comp, _ = _solve(compliance_game(gp))
-        COMP = r_comp
+        DEF = _pick(definition_game(gp))
+        BARG = _pick(bargaining_game(gp))
+        SHIFT = _pick(cost_shifting_game(gp))
+        DISC = _pick(discharge_coordination_game(gp))
+        GOV = _pick(governance_integration_game(gp))
+        COMP = _pick(compliance_game(gp))
 
     else:
         # Heuristic fallbacks (keep monotone relationships with pressure and efficiency gap)
@@ -351,30 +292,7 @@ def relative_risk(pidx: float, offload_min: float, p: Params) -> float:
 def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generator) -> State:
     # Funding/valuation effects
     # Definition realism reduces efficiency gap; strict NEP increases it
-    # --- Macro drift: input costs vs NEP indexation (annual) ---
-
-    if (
-        p.economic_spine is not None
-        and s.year in p.economic_spine["year"].values
-        and (s.year + 1) in p.economic_spine["year"].values
-    ):
-        # Calculate year-on-year growth from spine
-        row_curr = p.economic_spine[p.economic_spine["year"] == s.year].iloc[0]
-        row_next = p.economic_spine[p.economic_spine["year"] == (s.year + 1)].iloc[0]
-
-        growth_nep = (row_next["nep_per_nwau"] / row_curr["nep_per_nwau"]) - 1.0
-        growth_wpi = (row_next["wpi_health_index"] / row_curr["wpi_health_index"]) - 1.0
-
-        drift_factor = (1.0 + growth_wpi) / (1.0 + growth_nep)
-    else:
-        # Fallback to constant growth
-        drift_factor = (1.0 + float(p.input_cost_annual_growth)) / (
-            1.0 + float(p.nep_annual_growth)
-        )
-
-    # Apply drift to the *level* (1+gap), not just the gap.
-    eff_gap = (1.0 + float(s.efficiency_gap)) * drift_factor - 1.0
-
+    eff_gap = s.efficiency_gap
     if strategies["DEF"] == "R":
         eff_gap *= 0.93
     else:
@@ -396,12 +314,6 @@ def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generat
         discharge *= 0.90
     else:
         discharge *= 1.02
-
-    # Audit Burden Feedback (v25 re-integration)
-    if p.use_burden_feedback:
-        # Pressure increases admin complexity, reducing effective discharge throughput
-        discharge *= math.exp(p.burden_to_throughput_beta * max(0.0, s.pressure - 1.0))
-
     discharge = clamp(discharge, 0.75, 1.50)
 
     # Integration affects avoidable demand and fragmentation (externalities)
@@ -422,8 +334,8 @@ def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generat
         demand *= 0.96
         discharge *= 0.97
     else:
-        demand *= 1.04
-        discharge *= 1.02
+        demand *= 1.02
+        discharge *= 1.01
 
     # Compliance increases admin burden which slightly worsens pressure (less clinical time)
     admin_burden = 1.0 + p.admin_burden_weight * (1 if strategies["COMP"] == "T" else -0.25)
@@ -431,7 +343,7 @@ def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generat
 
     # Occupancy update: demand ↑ and discharge delay ↑ increase occupancy; capacity index ↓ worsens
     occ = s.occupancy
-    occ += 0.015 * (demand - 1.0) + 0.035 * (discharge - 1.0) + 0.008 * (admin_burden - 1.0)
+    occ += 0.015 * (demand - 1.0) + 0.020 * (discharge - 1.0) + 0.008 * (admin_burden - 1.0)
     # Efficiency gap acts like a recurrent variance, tightening capacity indirectly (stylised)
     occ += 0.012 * (eff_gap - 0.15)
     occ -= 0.010 * (p.bed_capacity_index - 1.0)
@@ -466,36 +378,43 @@ def apply_intervention(p: Params, name: str) -> Params:
     """
     Map policy interventions to parameter shifts.
     """
-    name = name.lower().strip().replace(" ", "_")
+    name = name.lower().strip()
     if name in {"pooled_funding", "pooled"}:
-        return replace(
-            p, cost_shifting_intensity=clamp(p.cost_shifting_intensity * 0.75, 0.05, 0.60)
+        return p.model_copy(
+            update={"cost_shifting_intensity": clamp(p.cost_shifting_intensity * 0.75, 0.05, 0.60)}
         )
     if name in {"ucc_integration", "integration"}:
-        return replace(p, fragmentation_index=clamp(p.fragmentation_index * 0.80, 0.60, 1.50))
+        return p.model_copy(
+            update={"fragmentation_index": clamp(p.fragmentation_index * 0.80, 0.60, 1.50)}
+        )
     if name in {"nep_realism", "indexation"}:
-        return replace(
-            p,
-            nep_to_cost_ratio_metro=clamp(p.nep_to_cost_ratio_metro + 0.03, 0.6, 1.0),
-            nep_to_cost_ratio_regional=clamp(p.nep_to_cost_ratio_regional + 0.04, 0.6, 1.0),
-            nep_to_cost_ratio_remote=clamp(p.nep_to_cost_ratio_remote + 0.05, 0.6, 1.0),
+        return p.model_copy(
+            update={
+                "nep_to_cost_ratio_metro": clamp(p.nep_to_cost_ratio_metro + 0.03, 0.6, 1.0),
+                "nep_to_cost_ratio_regional": clamp(p.nep_to_cost_ratio_regional + 0.04, 0.6, 1.0),
+                "nep_to_cost_ratio_remote": clamp(p.nep_to_cost_ratio_remote + 0.05, 0.6, 1.0),
+            }
         )
     if name in {"aged_ndis_capacity", "discharge"}:
-        return replace(p, discharge_delay_base=clamp(p.discharge_delay_base * 0.90, 0.6, 1.4))
+        return p.model_copy(
+            update={"discharge_delay_base": clamp(p.discharge_delay_base * 0.90, 0.6, 1.4)}
+        )
     if name in {"middle_tier", "workforce"}:
         # reduces remote/regional cost penalties
-        return replace(
-            p,
-            nep_to_cost_ratio_regional=clamp(p.nep_to_cost_ratio_regional + 0.03, 0.6, 1.0),
-            nep_to_cost_ratio_remote=clamp(p.nep_to_cost_ratio_remote + 0.04, 0.6, 1.0),
+        return p.model_copy(
+            update={
+                "nep_to_cost_ratio_regional": clamp(p.nep_to_cost_ratio_regional + 0.03, 0.6, 1.0),
+                "nep_to_cost_ratio_remote": clamp(p.nep_to_cost_ratio_remote + 0.04, 0.6, 1.0),
+            }
         )
     if name in {"cumulative_cap", "cap"}:
-        return replace(p, has_cumulative_cap=True, cap_growth=0.070)
+        return p.model_copy(update={"has_cumulative_cap": True, "cap_growth": 0.070})
     if name in {"audit_relief"}:
-        return replace(
-            p,
-            audit_pressure=clamp(p.audit_pressure * 0.70, 0.05, 1.0),
-            admin_burden_weight=clamp(p.admin_burden_weight * 0.8, 0.05, 0.6),
+        return p.model_copy(
+            update={
+                "audit_pressure": clamp(p.audit_pressure * 0.70, 0.05, 1.0),
+                "admin_burden_weight": clamp(p.admin_burden_weight * 0.8, 0.05, 0.6),
+            }
         )
     return p
 
@@ -534,44 +453,6 @@ def nep_series(years: list[int], p: Params) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def input_cost_series(years: list[int], p: Params) -> pd.DataFrame:
-    """Return an illustrative input-cost series (index units per NWAU).
-
-    This is intended as a proxy for the *average* input cost per NWAU (wages, agency premiums,
-    supplies). In an empirically grounded build, `input_cost_annual_growth` should be set using
-    an evidence-based proxy (e.g., ABS Wage Price Index for Health Care & Social Assistance plus
-    a locum/agency premium series where available).
-
-    Returns columns:
-      - year
-      - input_cost_per_nwau
-    """
-    cost = float(p.input_cost_per_nwau_start)
-    rows = []
-    for i, y in enumerate(years):
-        if i > 0:
-            cost *= 1.0 + float(p.input_cost_annual_growth)
-        rows.append({"year": int(y), "input_cost_per_nwau": float(cost)})
-    return pd.DataFrame(rows)
-
-
-def nep_vs_cost_series(years: list[int], p: Params) -> pd.DataFrame:
-    """Combine NEP and input-cost indices.
-
-    Adds:
-      - nep_per_nwau
-      - input_cost_per_nwau
-      - nep_to_cost_ratio_index = nep / cost
-      - cost_over_nep_index = cost / nep
-    """
-    nep_df = nep_series(years, p)[["year", "nep_per_nwau"]]
-    cost_df = input_cost_series(years, p)
-    out = nep_df.merge(cost_df, on="year", how="inner")
-    out["nep_to_cost_ratio_index"] = out["nep_per_nwau"] / out["input_cost_per_nwau"]
-    out["cost_over_nep_index"] = out["input_cost_per_nwau"] / out["nep_per_nwau"]
-    return out
-
-
 def apply_intervention_partial(base: Params, name: str, strength: float) -> Params:
     """Apply an intervention at partial strength (0..1).
 
@@ -582,19 +463,23 @@ def apply_intervention_partial(base: Params, name: str, strength: float) -> Para
         return base
     full = apply_intervention(base, name)
     # Linear interpolation of a subset of key parameters used in intervention mappings.
-    return replace(
-        base,
-        cost_shifting_intensity=base.cost_shifting_intensity
-        + strength * (full.cost_shifting_intensity - base.cost_shifting_intensity),
-        fragmentation_index=base.fragmentation_index
-        + strength * (full.fragmentation_index - base.fragmentation_index),
-        discharge_delay_base=base.discharge_delay_base
-        + strength * (full.discharge_delay_base - base.discharge_delay_base),
-        has_cumulative_cap=full.has_cumulative_cap if strength >= 0.5 else base.has_cumulative_cap,
-        cap_growth=base.cap_growth + strength * (full.cap_growth - base.cap_growth),
-        audit_pressure=base.audit_pressure + strength * (full.audit_pressure - base.audit_pressure),
-        admin_burden_weight=base.admin_burden_weight
-        + strength * (full.admin_burden_weight - base.admin_burden_weight),
+    return base.model_copy(
+        update={
+            "cost_shifting_intensity": base.cost_shifting_intensity
+            + strength * (full.cost_shifting_intensity - base.cost_shifting_intensity),
+            "fragmentation_index": base.fragmentation_index
+            + strength * (full.fragmentation_index - base.fragmentation_index),
+            "discharge_delay_base": base.discharge_delay_base
+            + strength * (full.discharge_delay_base - base.discharge_delay_base),
+            "has_cumulative_cap": full.has_cumulative_cap
+            if strength >= 0.5
+            else base.has_cumulative_cap,
+            "cap_growth": base.cap_growth + strength * (full.cap_growth - base.cap_growth),
+            "audit_pressure": base.audit_pressure
+            + strength * (full.audit_pressure - base.audit_pressure),
+            "admin_burden_weight": base.admin_burden_weight
+            + strength * (full.admin_burden_weight - base.admin_burden_weight),
+        }
     )
 
 
@@ -640,7 +525,7 @@ def one_way_sensitivity(
     rows: list[dict[str, float | str]] = []
     for param, values in grid.items():
         for v in values:
-            p = replace(base, **{param: float(v)}) if hasattr(base, param) else base
+            p = base.model_copy(update={param: float(v)}) if hasattr(base, param) else base
             traj, _ = run_hybrid(years, p, seed=seed, n_mc=n_mc)
             end = traj.iloc[-1]
             rows.append(
@@ -668,15 +553,18 @@ def probabilistic_sensitivity(
     rng = np.random.default_rng(seed)
     rows: list[dict[str, float]] = []
     for i in range(int(n_param)):
-        p = replace(
-            base,
-            noise_sd=float(np.clip(rng.normal(base.noise_sd, base.noise_sd * 0.25), 0.001, 0.2)),
-            discharge_delay_base=float(
-                np.clip(rng.normal(base.discharge_delay_base, 0.15), 0.5, 2.0)
-            ),
-            cost_shifting_intensity=float(
-                np.clip(rng.normal(base.cost_shifting_intensity, 0.08), 0.05, 0.8)
-            ),
+        p = base.model_copy(
+            update={
+                "noise_sd": float(
+                    np.clip(rng.normal(base.noise_sd, base.noise_sd * 0.25), 0.001, 0.2)
+                ),
+                "discharge_delay_base": float(
+                    np.clip(rng.normal(base.discharge_delay_base, 0.15), 0.5, 2.0)
+                ),
+                "cost_shifting_intensity": float(
+                    np.clip(rng.normal(base.cost_shifting_intensity, 0.08), 0.05, 0.8)
+                ),
+            }
         )
         p = scenario_params(p, interventions)
         traj, _ = run_hybrid(years, p, seed=int(seed + i), n_mc=n_mc)
@@ -693,7 +581,7 @@ def probabilistic_sensitivity(
 
 
 def run_hybrid(
-    years: list[int], p: Params, seed: int = 123, n_mc: int = 300, recorder: Any | None = None
+    years: list[int], p: Params, seed: int = 123, n_mc: int = 300
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Monte Carlo rollouts of the hybrid model.
@@ -701,37 +589,12 @@ def run_hybrid(
       - trajectories: mean + quantiles by year
       - strategy_freq: frequency table by year & game
     """
-    if recorder:
-        recorder.start_experiment(
-            experiment_name=f"hybrid_sim_{years[0]}_{years[-1]}",
-            seed=seed,
-            n_mc=n_mc,
-            params=p.__dict__ if hasattr(p, "__dict__") else str(p),
-        )
-
     rng = np.random.default_rng(seed)
     rows = []
     strat_rows = []
 
     for r in range(n_mc):
         s = baseline_state(start_year=years[0], p=p)
-        # Record initial state
-        rr = relative_risk(s.pressure, s.offload_min, p)
-        rows.append(
-            {
-                "rollout": r,
-                "year": s.year,
-                "pressure": s.pressure,
-                "occupancy": s.occupancy,
-                "offload_min": s.offload_min,
-                "within4": s.within4,
-                "cth_share_nominal": s.effective_cth_share,
-                "cth_share_effective": s.effective_cth_share / (1.0 + s.efficiency_gap),
-                "efficiency_gap": s.efficiency_gap,
-                "discharge_delay": s.discharge_delay,
-                "rr_proxy": rr,
-            }
-        )
         # re-seed each rollout deterministically off the main RNG
         sub = np.random.default_rng(rng.integers(1, 2**32 - 1))
         for _ in years[1:]:
@@ -788,14 +651,8 @@ def run_hybrid(
     )
 
     # Strategy frequencies (per year and game)
-    if not strat.empty:
-        freq = strat.groupby(["year", "game", "strategy"]).size().reset_index(name="n")
-        freq["share"] = freq["n"] / freq.groupby(["year", "game"])["n"].transform("sum")
-    else:
-        freq = pd.DataFrame(columns=["year", "game", "strategy", "n", "share"])
-
-    if recorder:
-        recorder.end_experiment()
+    freq = strat.groupby(["year", "game", "strategy"]).size().reset_index(name="n")
+    freq["share"] = freq["n"] / freq.groupby(["year", "game"])["n"].transform("sum")
 
     return agg, freq
 
@@ -807,24 +664,31 @@ def sensitivity_sample(base: Params, n: int, seed: int = 1234) -> pd.DataFrame:
     rng = np.random.default_rng(seed)
     samples = []
     for _ in range(n):
-        p = replace(
-            base,
-            rurality_weight=float(clamp(rng.normal(base.rurality_weight, 0.08), 0.05, 0.70)),
-            cost_shifting_intensity=float(
-                clamp(rng.normal(base.cost_shifting_intensity, 0.10), 0.05, 0.80)
-            ),
-            fragmentation_index=float(
-                clamp(rng.normal(base.fragmentation_index, 0.12), 0.60, 1.50)
-            ),
-            discharge_delay_base=float(
-                clamp(rng.normal(base.discharge_delay_base, 0.10), 0.70, 1.30)
-            ),
-            admin_burden_weight=float(
-                clamp(rng.normal(base.admin_burden_weight, 0.08), 0.05, 0.60)
-            ),
-            political_salience=float(clamp(rng.normal(base.political_salience, 0.12), 0.05, 0.80)),
-            rr_beta_pressure=float(clamp(rng.normal(base.rr_beta_pressure, 0.08), 0.10, 0.70)),
-            rr_beta_offload=float(clamp(rng.normal(base.rr_beta_offload, 0.005), 0.002, 0.040)),
+        p = base.model_copy(
+            update={
+                "rurality_weight": float(clamp(rng.normal(base.rurality_weight, 0.08), 0.05, 0.70)),
+                "cost_shifting_intensity": float(
+                    clamp(rng.normal(base.cost_shifting_intensity, 0.10), 0.05, 0.80)
+                ),
+                "fragmentation_index": float(
+                    clamp(rng.normal(base.fragmentation_index, 0.12), 0.60, 1.50)
+                ),
+                "discharge_delay_base": float(
+                    clamp(rng.normal(base.discharge_delay_base, 0.10), 0.70, 1.30)
+                ),
+                "admin_burden_weight": float(
+                    clamp(rng.normal(base.admin_burden_weight, 0.08), 0.05, 0.60)
+                ),
+                "political_salience": float(
+                    clamp(rng.normal(base.political_salience, 0.12), 0.05, 0.80)
+                ),
+                "rr_beta_pressure": float(
+                    clamp(rng.normal(base.rr_beta_pressure, 0.08), 0.10, 0.70)
+                ),
+                "rr_beta_offload": float(
+                    clamp(rng.normal(base.rr_beta_offload, 0.005), 0.002, 0.040)
+                ),
+            }
         )
         samples.append(p)
     # convert to df

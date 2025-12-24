@@ -1,4 +1,4 @@
-from nhra_game_theory.v9 import Params, apply_intervention
+from nhra_game_theory.engine import Params, apply_intervention
 
 p = Params()
 print(f"Original: {p.cost_shifting_intensity}")

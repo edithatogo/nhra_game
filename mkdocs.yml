@@ -12,12 +12,12 @@ nav:
   - Models: models.md
   - Diagrams: diagrams.md
   - Development: dev.md
-markdown_extensions:
-  - admonition
-  - toc:
-      permalink: true
-
   - Project docs:
       - Requirements: requirements.md
       - Design: design.md
       - Tasks: tasks.md
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true

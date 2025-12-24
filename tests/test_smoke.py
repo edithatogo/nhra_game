@@ -1,4 +1,4 @@
-from nhra_game_theory.v8 import (
+from nhra_game_theory.legacy_engine import (
     Params,
     one_way_sensitivity,
     probabilistic_sensitivity,

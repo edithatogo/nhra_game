@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
+
 from nhra_game_theory.sensitivity import evaluate_parallel, get_salib_problem
 
 
@@ -88,6 +89,7 @@ def test_run_sobol_analysis() -> None:
 def test_generate_sensitivity_summary(tmp_path) -> None:
     """Verify that the summary report is created with expected content."""
     import pandas as pd
+
     from nhra_game_theory.sensitivity import generate_sensitivity_summary
 
     # Create mock CSVs

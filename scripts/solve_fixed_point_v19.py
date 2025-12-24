@@ -15,7 +15,7 @@ from nhra_game_theory.subgames.games import (
     governance_integration_game,
 )
 from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
-from nhra_game_theory.v9 import Params, State, baseline_state, step
+from nhra_game_theory.engine import Params, State, baseline_state, step
 
 
 class DetermRNG:
@@ -45,6 +45,8 @@ def deterministic_strategies(s: State, p: Params) -> dict[str, str]:
         discharge_delay=float(s.discharge_delay),
         political_salience=float(p.political_salience),
         audit_pressure=float(p.audit_pressure),
+        cost_shifting_intensity=float(p.cost_shifting_intensity),
+        political_capital=float(s.political_capital),
     )
 
     def _pick(game):

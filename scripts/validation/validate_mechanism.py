@@ -13,7 +13,7 @@ from nhra_game_theory.sensitivity import (
     run_morris_analysis
 )
 
-from nhra_game_theory.v9 import Params, run_hybrid, summarise_outcome
+from nhra_game_theory.engine import Params, run_hybrid, summarise_outcome
 from dataclasses import replace
 import numpy as np
 

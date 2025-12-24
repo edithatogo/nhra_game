@@ -14,7 +14,7 @@ from nhra_game_theory.subgames.games import (
     governance_integration_game,
 )
 from nhra_game_theory.subgames.nash import all_nash
-from nhra_game_theory.v9 import Params, nep_series, nep_vs_cost_series, run_hybrid
+from nhra_game_theory.engine import Params, nep_series, nep_vs_cost_series, run_hybrid
 
 
 def equilibria_snapshot(p: Params) -> pd.DataFrame:
@@ -30,6 +30,8 @@ def equilibria_snapshot(p: Params) -> pd.DataFrame:
                 discharge_delay=1.0,
                 political_salience=p.political_salience,
                 audit_pressure=p.audit_pressure,
+                cost_shifting_intensity=p.cost_shifting_intensity,
+                political_capital=1.0,
             )
             games = {
                 "DEF": definition_game(gp),
@@ -63,6 +65,8 @@ def equilibria_by_year(df: pd.DataFrame, p: Params) -> pd.DataFrame:
             discharge_delay=float(row["discharge_mean"]),
             political_salience=p.political_salience,
             audit_pressure=p.audit_pressure,
+                cost_shifting_intensity=p.cost_shifting_intensity,
+                political_capital=1.0,
         )
         games = {
             "DEF": definition_game(gp),

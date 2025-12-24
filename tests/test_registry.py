@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import pandas as pd
 import pytest
+
 from nhra_game_theory.domain.registry import EvidenceEntry, EvidenceRegistry
-from nhra_game_theory.v8 import Params
+from nhra_game_theory.legacy_engine import Params
 
 
 def test_evidence_entry_creation():

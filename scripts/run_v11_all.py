@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pandas as pd
 from nhra_game_theory.plotting import plot_strategy_heatmap, plot_trajectory
-from nhra_game_theory.v8 import (
+from nhra_game_theory.legacy_engine import (
     Params,
     apply_intervention_partial,
     nep_series,

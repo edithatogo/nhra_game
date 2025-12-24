@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import numpy as np
-from nhra_game_theory.v8 import Params, baseline_state, step
+
+from nhra_game_theory.legacy_engine import Params, baseline_state, step
 
 
 def test_step_covers_else_branches() -> None:

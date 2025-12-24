@@ -1,28 +1,29 @@
 from __future__ import annotations
 
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import pandas as pd
 from pydantic import BaseModel, ConfigDict
 
-from nhra_game_theory.v9 import Params, run_hybrid
+from nhra_game_theory.engine import Params, run_hybrid
 
 
-def calculate_rmse(actual: np.ndarray, predicted: np.ndarray) -> float:
+def calculate_rmse(actual: np.ndarray[Any, Any], predicted: np.ndarray[Any, Any]) -> float:
     """Calculate Root Mean Square Error."""
     return float(np.sqrt(np.mean((actual - predicted) ** 2)))
 
 
-def calculate_mape(actual: np.ndarray, predicted: np.ndarray) -> float:
+def calculate_mape(actual: np.ndarray[Any, Any], predicted: np.ndarray[Any, Any]) -> float:
     """Calculate Mean Absolute Percentage Error."""
     # Avoid division by zero
     actual_safe = np.where(actual == 0, 1e-9, actual)
     return float(np.mean(np.abs((actual - predicted) / actual_safe)))
 
 
-def calculate_theil_u(actual: np.ndarray, predicted: np.ndarray) -> float:
+def calculate_theil_u(actual: np.ndarray[Any, Any], predicted: np.ndarray[Any, Any]) -> float:
     """Calculate Theil's U1 inequality coefficient.
 
     U = 0: Perfect fit
@@ -35,7 +36,7 @@ def calculate_theil_u(actual: np.ndarray, predicted: np.ndarray) -> float:
     return float(numerator / denominator)
 
 
-def calculate_hit_rate(actual: np.ndarray, predicted: np.ndarray) -> float:
+def calculate_hit_rate(actual: np.ndarray[Any, Any], predicted: np.ndarray[Any, Any]) -> float:
     """Calculate Directional Accuracy (Hit Rate).
 
     Percentage of steps where predicted change direction matches actual change direction.
@@ -51,7 +52,9 @@ def calculate_hit_rate(actual: np.ndarray, predicted: np.ndarray) -> float:
     return float(np.mean(hits))
 
 
-def calculate_theil_decomposition(actual: np.ndarray, predicted: np.ndarray) -> dict[str, float]:
+def calculate_theil_decomposition(
+    actual: np.ndarray[Any, Any], predicted: np.ndarray[Any, Any]
+) -> dict[str, float]:
     """Calculate Theil Inequality Decomposition (UM, US, UC).
 
     UM: Bias proportion (due to mean difference)
@@ -91,19 +94,19 @@ class MechanismValidator:
         """Check if parameter holds a specific rank."""
         if parameter not in self.results.index:
             return False
-        return int(self.results.loc[parameter, "rank"]) == expected_rank
+        return int(cast(Any, self.results.loc[parameter, "rank"])) == expected_rank
 
     def verify_top_n(self, parameter: str, n: int) -> bool:
         """Check if parameter is within the top N drivers."""
         if parameter not in self.results.index:
             return False
-        return int(self.results.loc[parameter, "rank"]) <= n
+        return int(cast(Any, self.results.loc[parameter, "rank"])) <= n
 
     def verify_magnitude(self, parameter: str, threshold: float, comparison: str = ">") -> bool:
         """Check if parameter influence (mu_star) meets a threshold."""
         if parameter not in self.results.index:
             return False
-        val = float(self.results.loc[parameter, "mu_star"])
+        val = float(cast(Any, self.results.loc[parameter, "mu_star"]))
         if comparison == ">":
             return val > threshold
         return val < threshold
@@ -112,8 +115,8 @@ class MechanismValidator:
         """Check if param_a has greater influence than param_b."""
         if param_a not in self.results.index or param_b not in self.results.index:
             return False
-        val_a = float(self.results.loc[param_a, "mu_star"])
-        val_b = float(self.results.loc[param_b, "mu_star"])
+        val_a = float(cast(Any, self.results.loc[param_a, "mu_star"]))
+        val_b = float(cast(Any, self.results.loc[param_b, "mu_star"]))
         return val_a > val_b
 
 
@@ -143,7 +146,7 @@ class RecursiveBacktest:
         self.test_window = test_window
         self.seed = seed
 
-    def generate_windows(self):
+    def generate_windows(self) -> Iterator[tuple[pd.DataFrame, pd.DataFrame]]:
         """Generator for (train_df, test_df) pairs."""
         n = len(self.historical_data)
         for i in range(n - self.train_window - self.test_window + 1):
@@ -193,7 +196,7 @@ class RecursiveBacktest:
             results.append(self.run_step(train_df, test_df))
         return results
 
-    def save_results(self, results: list[RecursiveResult], path: str | Path):
+    def save_results(self, results: list[RecursiveResult], path: str | Path) -> None:
         """Save backtest results to a JSON file."""
         data = [r.model_dump() for r in results]
         with open(path, "w") as f:
@@ -201,7 +204,7 @@ class RecursiveBacktest:
 
             # Handle non-serializable objects (like Params) by converting to dict
             class EnhancedJSONEncoder(json.JSONEncoder):
-                def default(self, o):
+                def default(self, o: Any) -> Any:
                     if hasattr(o, "__dict__"):
                         return o.__dict__
                     return super().default(o)

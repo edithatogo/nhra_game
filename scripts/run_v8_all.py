@@ -21,7 +21,7 @@ from nhra_game_theory.plotting import (
     render_games_graph_interactive,
     tornado_from_rankcorr,
 )
-from nhra_game_theory.v8 import (
+from nhra_game_theory.legacy_engine import (
     Params,
     run_hybrid,
     scenario_params,

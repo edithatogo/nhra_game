@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 import optuna
 import pandas as pd
-from nhra_game_theory.v9 import Params, run_hybrid
+from nhra_game_theory.engine import Params, run_hybrid
 
 
 def load_targets(path: Path) -> dict[str, float]:

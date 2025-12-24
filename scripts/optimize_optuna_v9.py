@@ -17,7 +17,7 @@ from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
-from nhra_game_theory.v8 import Params, StrategyMix, run_hybrid
+from nhra_game_theory.legacy_engine import Params, StrategyMix, run_hybrid
 
 
 def objective_from_summary(summary: dict[str, float]) -> float:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from nhra_game_theory.v8 import Params, run_hybrid
+from nhra_game_theory.legacy_engine import Params, run_hybrid
 
 
 def test_run_hybrid_with_equilibria() -> None:

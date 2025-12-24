@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
+
 from nhra_game_theory.domain.validation import calculate_theil_decomposition
 
 
