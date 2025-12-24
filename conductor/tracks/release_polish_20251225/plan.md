@@ -17,8 +17,9 @@
 - [ ] **Task: Conductor - User Manual Verification 'Workflow Hardening' (Protocol in workflow.md)**
 
 ## Phase 2: Repository Health & Polish
-- [~] **Task 2.1: File & Directory Reorganization**
-  - [ ] Sub-task: Tidy the project root; move any stray artifacts into appropriate subdirectories.
+- [x] **Task 2.1: File & Directory Reorganization** b850628
+  - [x] Sub-task: Tidy the project root; move any stray artifacts into appropriate subdirectories.
+  - [x] Sub-task: Verify presence and correctness of `LICENSE`, `CONTRIBUTING.md`, and `CODE_OF_CONDUCT.md`.
   - [ ] Sub-task: Verify presence and correctness of `LICENSE`, `CONTRIBUTING.md`, and `CODE_OF_CONDUCT.md`.
 - [ ] **Task 2.2: GitHub Homepage & Metadata Update**
   - [ ] Sub-task: Update the repository "About" section with the live website URL, description, and relevant tags.
