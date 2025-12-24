@@ -6,9 +6,9 @@
 - [x] **Task 1.1: AIHW API Client Implementation (TDD)**
   - [x] Sub-task: Develop `src/nhra_game_theory/domain/aihw_api.py` to interface with the MyHospitals API.
   - [x] Sub-task: Implement facility-level and quarterly metric fetching (ED within 4h, Admitted Occupancy).
-- [ ] **Task 1.2: API Data Schema Alignment**
-  - [ ] Sub-task: Update `EconomicSpineSchema` or create `ActivityAPISchema` to handle granular API data.
-  - [ ] Sub-task: Implement `scripts/data/ingest_aihw_api.py` to refresh `data/raw/` via API calls.
+- [x] **Task 1.2: API Data Schema Alignment**
+  - [x] Sub-task: Update `EconomicSpineSchema` or create `ActivityAPISchema` to handle granular API data.
+  - [x] Sub-task: Implement `scripts/data/ingest_aihw_api.py` to refresh `data/raw/` via API calls.
 - [ ] **Task: Conductor - User Manual Verification 'API Integration' (Protocol in workflow.md)**
 
 ## Phase 2: Bibliography & Citation Engine

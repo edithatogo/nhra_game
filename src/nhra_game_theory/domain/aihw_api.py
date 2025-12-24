@@ -11,12 +11,19 @@ class AIHWClient:
     
     def __init__(self):
         self.session = requests.Session()
+        self.session.headers.update({
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "application/json"
+        })
 
     def _get(self, endpoint: str) -> Any:
         url = f"{self.BASE_URL}/{endpoint.lstrip('/')}"
         response = self.session.get(url)
         response.raise_for_status()
-        return response.json()
+        data = response.json()
+        if isinstance(data, dict) and "result" in data:
+            return data["result"]
+        return data
 
     def get_measures(self) -> list[dict[str, Any]]:
         """Fetch all available measures."""
