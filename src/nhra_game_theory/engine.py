@@ -652,7 +652,7 @@ def one_way_sensitivity(
     rows: list[dict[str, float | str]] = []
     for param, values in grid.items():
         for v in values:
-            p = replace(base, **{param: float(v)}) if hasattr(base, param) else base
+            p = replace(base, **{param: float(v)}) if hasattr(base, param) else base  # type: ignore
             traj, _ = run_hybrid(years, p, seed=seed, n_mc=n_mc)
             end = traj.iloc[-1]
             rows.append(

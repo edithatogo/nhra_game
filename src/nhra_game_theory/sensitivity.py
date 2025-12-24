@@ -299,7 +299,7 @@ def run_sobol_analysis(
     if "names" not in si:
         si["names"] = problem["names"]
 
-    return si
+    return dict(si)
 
 
 def run_psa(

@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
+from typing import Any
 
 from nhra_game_theory.subgames.games import GameParams, cost_shifting_game
 from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
 
 
 def analyze_cost_shifting_stability(
-    intensities: np.ndarray, pressures: np.ndarray, efficiency_gap: float = 0.20
+    intensities: np.ndarray[Any, Any], pressures: np.ndarray[Any, Any], efficiency_gap: float = 0.20
 ) -> pd.DataFrame:
     """Performs a grid search to map stability regions of the Cost Shifting game."""
     results = []

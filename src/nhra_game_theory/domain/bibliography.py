@@ -50,10 +50,10 @@ def parse_endnote_token(token: str) -> dict[str, Any]:
 class BibliographyManager:
     """Manages a collection of academic references and exports to various formats."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.references: dict[int, Reference] = {}
 
-    def add_reference(self, ref: Reference):
+    def add_reference(self, ref: Reference) -> None:
         self.references[ref.record_number] = ref
 
     def to_ris(self) -> str:

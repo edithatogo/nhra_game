@@ -4,9 +4,10 @@ import jax
 import jax.numpy as jnp
 import numpyro
 import numpyro.distributions as dist
+from typing import Any
 
 
-def nhra_model(years: jnp.ndarray, observed_data: dict[str, jnp.ndarray] | None = None):
+def nhra_model(years: jnp.ndarray, observed_data: dict[str, jnp.ndarray] | None = None) -> None:
     """NumPyro implementation of the NHRA simulation for Bayesian inference."""
 
     # --- Priors ---
@@ -22,7 +23,7 @@ def nhra_model(years: jnp.ndarray, observed_data: dict[str, jnp.ndarray] | None 
     # Note: Transition logic must be written in pure JAX (no side effects, no mutation)
     # Using jax.lax.scan for the time-series rollout.
 
-    def transition_fn(state, year):
+    def transition_fn(state: Any, year: Any) -> tuple[Any, Any]:
         # Placeholder for step() logic translated to JAX
         # next_state = jax_step(state, params, year)
         return state, state
@@ -37,7 +38,7 @@ def nhra_model(years: jnp.ndarray, observed_data: dict[str, jnp.ndarray] | None 
         pass
 
 
-def run_inference(years, data, num_samples=1000, num_warmup=500):
+def run_inference(years: Any, data: Any, num_samples: int = 1000, num_warmup: int = 500) -> Any:
     """Runs MCMC to infer parameter posteriors."""
     from numpyro.infer import MCMC, NUTS
 

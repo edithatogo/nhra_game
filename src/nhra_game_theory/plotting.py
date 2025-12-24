@@ -5,6 +5,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
+from typing import Any
 import plotly.graph_objects as go
 from matplotlib.figure import Figure
 
@@ -72,8 +73,10 @@ def tornado_from_rankcorr(
     # scipy not required; use pandas spearman correlation
     rows = []
     for p in params:
-        rho = float(df[[p, outcome_col]].corr(method="spearman").iloc[0, 1])
-        rows.append((p, float(rho)))
+        # Cast to float explicitly to avoid mypy generic union confusion
+        val = df[[p, outcome_col]].corr(method="spearman").iloc[0, 1]
+        rho = float(val)  # type: ignore
+        rows.append((p, rho))
     rows.sort(key=lambda x: abs(x[1]), reverse=True)
     rows = rows[:topk]
     labels = [r[0] for r in rows][::-1]
@@ -89,11 +92,11 @@ def tornado_from_rankcorr(
     savefig(fig, outpath)
 
 
-def build_games_graph() -> nx.DiGraph:
+def build_games_graph() -> nx.DiGraph[Any]:
     """
     Network used for the interactive visual. Edges reflect influence pathways (conceptual).
     """
-    G = nx.DiGraph()
+    G: nx.DiGraph[Any] = nx.DiGraph()
     for k, v in GAME_NODES.items():
         G.add_node(k, label=v)
 
@@ -115,7 +118,7 @@ def build_games_graph() -> nx.DiGraph:
     return G
 
 
-def render_games_graph_interactive(outpath_html: Path) -> tuple[nx.DiGraph, Path]:
+def render_games_graph_interactive(outpath_html: Path) -> tuple[nx.DiGraph[Any], Path]:
     G = build_games_graph()
     pos = nx.spring_layout(G, seed=7, k=1.1)
 

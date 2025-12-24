@@ -14,7 +14,7 @@ except ImportError:
 
 
 @pytest.mark.skipif(not HAS_JAX, reason="JAX not installed")
-def test_jax_array_compatibility():
+def test_jax_array_compatibility() -> None:
     """Verify that we can create JAX arrays from numpy arrays."""
     arr = np.array([1.0, 2.0, 3.0])
     jarr = jnp.array(arr)
@@ -22,7 +22,7 @@ def test_jax_array_compatibility():
 
 
 @pytest.mark.skipif(not HAS_JAX, reason="JAX not installed")
-def test_nash_solver_placeholder():
+def test_nash_solver_placeholder() -> None:
     """Placeholder for JAX-based Nash solver verification."""
     # Future: implement projected gradient descent here
     pass

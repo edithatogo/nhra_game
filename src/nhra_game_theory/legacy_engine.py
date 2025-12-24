@@ -194,7 +194,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
             discharge_coordination_game,
             governance_integration_game,
         )
-        from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
+        from nhra_game_theory.subgames.nash import TwoPlayerGame, all_nash, select_equilibrium
 
         gp = GameParams(
             pressure=float(s.pressure),
@@ -206,7 +206,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
             political_capital=1.0,
         )
 
-        def _pick(game):
+        def _pick(game: TwoPlayerGame) -> str:
             eqs = all_nash(game)
             sel = select_equilibrium(
                 eqs, rule=p.equilibrium_selection_rule, u_row=game.u_row, u_col=game.u_col

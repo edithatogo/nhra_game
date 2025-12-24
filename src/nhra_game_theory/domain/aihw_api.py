@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 import pandas as pd
 import requests
@@ -11,7 +11,7 @@ class AIHWClient:
 
     BASE_URL = "https://myhospitalsapi.aihw.gov.au/api/v1"
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.session = requests.Session()
         self.session.headers.update(
             {
@@ -31,7 +31,7 @@ class AIHWClient:
 
     def get_measures(self) -> list[dict[str, Any]]:
         """Fetch all available measures."""
-        return self._get("/measures")
+        return cast(list[dict[str, Any]], self._get("/measures"))
 
     def get_measure_data(self, measure_code: str) -> pd.DataFrame:
         """Fetch data items for a specific measure code."""
@@ -41,4 +41,4 @@ class AIHWClient:
 
     def get_reporting_units(self) -> list[dict[str, Any]]:
         """Fetch all available reporting units."""
-        return self._get("/reporting-units")
+        return cast(list[dict[str, Any]], self._get("/reporting-units"))
