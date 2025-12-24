@@ -2,6 +2,12 @@ from __future__ import annotations
 
 import pandas as pd
 
+import sys
+from pathlib import Path
+
+# Add project root to path so 'scripts' can be imported
+sys.path.append(str(Path(__file__).parent.parent))
+
 from scripts.dashboard_v21 import prepare_ghost_overlay_data
 
 
