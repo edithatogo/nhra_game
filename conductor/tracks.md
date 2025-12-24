@@ -15,5 +15,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [x] Track: Automated Evidence & API Integration (v24)
 *Link: [./conductor/tracks/automated_evidence_api_v24/](./conductor/tracks/automated_evidence_api_v24/)*
 
-## [ ] Track: Feature Recovery & Security Hardening (v25)
+## [x] Track: Feature Recovery & Security Hardening (v25)
 *Link: [./conductor/tracks/feature_recovery_security_v25/](./conductor/tracks/feature_recovery_security_v25/)*
