@@ -22,7 +22,7 @@
 - [x] **Task 2.2: Library Evaluation**
   - [x] Sub-task: Review `nash.py` vs `pygambit` suitability. (Verdict: Use PyGambit for Validation Oracle; keep custom logic for JAX simulation).
   - [x] Sub-task: Review custom loop vs `mesa` suitability. (Verdict: Keep custom loop for JAX speed; adopt Agent-based classes for structure).
-- [ ] **Task: Conductor - User Manual Verification 'Forensic Audit' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Forensic Audit' (Protocol in workflow.md)**
 
 ## Phase 3: Visualization & Polish
 - [x] **Task 3.0: Mechanism Re-integration (from Forensic Audit)**
@@ -36,4 +36,22 @@
 - [x] **Task 3.3: End-to-End Integrity**
   - [x] Sub-task: Run the full `snakemake` pipeline.
   - [x] Sub-task: Fix any broken links or deprecated calls.
-- [ ] **Task: Conductor - User Manual Verification 'Gold Master Polish' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Gold Master Polish' (Protocol in workflow.md)**
+
+## Phase 4: Tooling & Dependency Hygiene
+- [x] **Task 4.0: Modernize Build System**
+  - [x] Sub-task: Migrate `pyproject.toml` from Hatch to Poetry.
+  - [x] Sub-task: Generate `poetry.lock`.
+- [x] **Task 4.1: Dependency Audit (Deptry)**
+  - [x] Sub-task: Add `deptry` to dev dependencies.
+  - [x] Sub-task: Configure `deptry` in `pyproject.toml` (ignore `scripts` folder issues if necessary).
+- [x] **Task 4.2: Dead Code Elimination (Vulture)**
+  - [x] Sub-task: Add `vulture` to dev dependencies.
+  - [x] Sub-task: Configure `vulture` (whitelist known false positives).
+- [x] **Task 4.3: Security & Quality Hardening**
+  - [x] Sub-task: Add `bandit` to dev dependencies and pre-commit hooks.
+  - [x] Sub-task: Update `.pre-commit-config.yaml` to include `deptry` (system hook) and `bandit`.
+- [x] **Task 4.4: Documentation Upgrades**
+  - [x] Sub-task: Install `mkdocstrings[python]` and `mkdocs-gen-files` for auto-documentation.
+  - [x] Sub-task: Update `mkdocs.yml` to use `mkdocstrings`.
+- [x] **Task: Conductor - User Manual Verification 'Tooling' (Protocol in workflow.md)**

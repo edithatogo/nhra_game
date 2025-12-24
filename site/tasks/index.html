@@ -1,0 +1,1071 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Stylised mechanism models for governance and policy reasoning (not a forecast).">
+      
+      
+      
+      
+        <link rel="prev" href="../design/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Tasks - NHRA mechanism models and game-theory maps</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#tasksmd-roadmap-and-implementation-plan-v21" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="NHRA mechanism models and game-theory maps" class="md-header__button md-logo" aria-label="NHRA mechanism models and game-theory maps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NHRA mechanism models and game-theory maps
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tasks
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="NHRA mechanism models and game-theory maps" class="md-nav__button md-logo" aria-label="NHRA mechanism models and game-theory maps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NHRA mechanism models and game-theory maps
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Context
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../requirements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requirements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tasks
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#completed-in-v21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Completed in v21
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#completed-in-v23-reporting-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Completed in v23 — Reporting &amp; Scenarios
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#completed-in-v24v25-evidence-security-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Completed in v24/v25 — Evidence, Security &amp; Release
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#completed-in-v26-codebase-maturity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Completed in v26 — Codebase Maturity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-v27-refactoring-visualization-deep-audit-polishing-the-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next (v27) — Refactoring, Visualization &amp; Deep Audit (Polishing the Core)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Next (v27) — Refactoring, Visualization &amp; Deep Audit (Polishing the Core)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-refactoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Refactoring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visualization-polish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visualization &amp; Polish
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forensic-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forensic Deep Dive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-track-advanced-calibration-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Track: Advanced Calibration &amp; Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-track-enhanced-user-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Track: Enhanced User Experience
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-track-cloud-cognitive-agents-on-hold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Track: Cloud &amp; Cognitive Agents (On Hold)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#governance-and-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Governance and maintenance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#governance-and-maintenance_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Governance and maintenance
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#completed-in-v21" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Completed in v21
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#completed-in-v23-reporting-scenarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Completed in v23 — Reporting &amp; Scenarios
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#completed-in-v24v25-evidence-security-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Completed in v24/v25 — Evidence, Security &amp; Release
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#completed-in-v26-codebase-maturity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Completed in v26 — Codebase Maturity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-v27-refactoring-visualization-deep-audit-polishing-the-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next (v27) — Refactoring, Visualization &amp; Deep Audit (Polishing the Core)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Next (v27) — Refactoring, Visualization &amp; Deep Audit (Polishing the Core)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-refactoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Refactoring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visualization-polish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visualization &amp; Polish
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forensic-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forensic Deep Dive
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-track-advanced-calibration-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Track: Advanced Calibration &amp; Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-track-enhanced-user-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Track: Enhanced User Experience
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-track-cloud-cognitive-agents-on-hold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Future Track: Cloud &amp; Cognitive Agents (On Hold)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#governance-and-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Governance and maintenance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#governance-and-maintenance_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Governance and maintenance
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="tasksmd-roadmap-and-implementation-plan-v21">tasks.md — Roadmap and implementation plan (v21)<a class="headerlink" href="#tasksmd-roadmap-and-implementation-plan-v21" title="Permanent link">&para;</a></h1>
+<p><strong>Version:</strong> v21<br />
+<strong>Date:</strong> 2025-12-21</p>
+<h2 id="completed-in-v21">Completed in v21<a class="headerlink" href="#completed-in-v21" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Added <strong>requirements.md</strong>, <strong>design.md</strong>, <strong>tasks.md</strong> as durable context artifacts.</li>
+<li>Extended the <strong>context pack</strong> to incorporate these artifacts.</li>
+<li>Tightened the grounding system to enforce <strong>publicly retrievable sources only</strong>.</li>
+<li>Updated developer workflows (<code>just</code>, <code>snakemake</code>) to build the context pack and run grounding checks.</li>
+</ol>
+<h2 id="completed-in-v23-reporting-scenarios">Completed in v23 — Reporting &amp; Scenarios<a class="headerlink" href="#completed-in-v23-reporting-scenarios" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Negotiation Dashboard:</strong> Added Effective Share Drift analysis and Ranked Intervention Table.</li>
+<li><strong>Automated Methods:</strong> Implemented <code>generate_methods_appendix.py</code> and academic-style parameter exports.</li>
+<li><strong>Refined Mechanisms:</strong> Resolved validation discrepancies; model now aligns with historical Rank #1 driver (Discharge Delay).</li>
+</ol>
+<h2 id="completed-in-v24v25-evidence-security-release">Completed in v24/v25 — Evidence, Security &amp; Release<a class="headerlink" href="#completed-in-v24v25-evidence-security-release" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Empirical API:</strong> Automated ingestion from AIHW MyHospitals API (ED performance).</li>
+<li><strong>Bibliography Engine:</strong> Implemented academic citation manager with RIS/ENW/BIB exports.</li>
+<li><strong>Security Hardening:</strong> Integrated Bandit security scanning, Mutmut mutation testing, and pinned <code>requirements.lock</code>.</li>
+<li><strong>Audit Trails:</strong> Implemented <code>Recorder</code> for high-fidelity experiment provenance.</li>
+<li><strong>Gold Master:</strong> Released v25.0.0 with optimized Docker environment.</li>
+</ol>
+<h2 id="completed-in-v26-codebase-maturity">Completed in v26 — Codebase Maturity<a class="headerlink" href="#completed-in-v26-codebase-maturity" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Modern Tooling:</strong> Prepared dependencies for JAX acceleration.</li>
+<li><strong>Community Standards:</strong> Added CONTRIBUTING/CODE_OF_CONDUCT and automated docs deployment.</li>
+<li><strong>CI Hardening:</strong> Expanded testing matrix to Ubuntu/macOS/Windows.</li>
+</ol>
+<h2 id="next-v27-refactoring-visualization-deep-audit-polishing-the-core">Next (v27) — Refactoring, Visualization &amp; Deep Audit (Polishing the Core)<a class="headerlink" href="#next-v27-refactoring-visualization-deep-audit-polishing-the-core" title="Permanent link">&para;</a></h2>
+<h3 id="core-refactoring">Core Refactoring<a class="headerlink" href="#core-refactoring" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Naming Convention:</strong> Rename opaque files (e.g., <code>v9.py</code> -&gt; <code>engine.py</code>) for intuitive navigation.</li>
+<li><strong>Artifact Versioning:</strong> Implement timestamped output directories (<code>outputs/experiments/YYYY-MM-DD/...</code>) to prevent overwrites.</li>
+</ul>
+<h3 id="visualization-polish">Visualization &amp; Polish<a class="headerlink" href="#visualization-polish" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Dynamic Animation:</strong> Generate GIFs/Videos of simulation trajectories (Pressure/Risk over time).</li>
+<li><strong>Publication Polish:</strong> Ensure all dashboard plots and exported figures meet high-impact journal standards (vector graphics, colorblind safe).</li>
+</ul>
+<h3 id="forensic-deep-dive">Forensic Deep Dive<a class="headerlink" href="#forensic-deep-dive" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Code Investigator:</strong> Systematically audit all legacy versions using AI agents to recover any missed logic or "ghost" features.</li>
+<li><strong>Library Review:</strong> Evaluate integration of new libraries (e.g., Mesa, PyGambit) vs current custom implementations.</li>
+</ul>
+<h2 id="future-track-advanced-calibration-validation">Future Track: Advanced Calibration &amp; Validation<a class="headerlink" href="#future-track-advanced-calibration-validation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Bayesian Inference:</strong> Move from TPESampler to fully Bayesian calibration (PyMC/Stan).</li>
+<li><strong>Counterfactual Validation:</strong> Test model against historical shocks not in training data.</li>
+</ul>
+<h2 id="future-track-enhanced-user-experience">Future Track: Enhanced User Experience<a class="headerlink" href="#future-track-enhanced-user-experience" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Interactive Scenarios:</strong> Allow policymakers to build intervention bundles via UI drag-and-drop.</li>
+<li><strong>Explainable AI:</strong> Add tooltips and narrative generation explaining <em>why</em> a specific outcome occurred.</li>
+</ul>
+<h2 id="future-track-cloud-cognitive-agents-on-hold">Future Track: Cloud &amp; Cognitive Agents (On Hold)<a class="headerlink" href="#future-track-cloud-cognitive-agents-on-hold" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Simulation Visualization:</strong> Live visual feedback during execution.</li>
+<li><strong>LLM Agent Sophistication:</strong><ul>
+<li><strong>Debate Loop:</strong> Cth/State agents exchange structured arguments.</li>
+<li><strong>RAG Integration:</strong> Agents cite specific NHRA clauses from <code>context/</code>.</li>
+<li><strong>Multi-Agent Negotiation:</strong> Enable dynamic adaptation beyond static parameters.</li>
+</ul>
+</li>
+<li><strong>Cloud Operations:</strong> Terraform/Docker hardening for AWS/Azure.</li>
+</ul>
+<h2 id="governance-and-maintenance">Governance and maintenance<a class="headerlink" href="#governance-and-maintenance" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Maintain a <code>decisions/</code> log for major modelling choices.</li>
+<li>Ensure each version update:</li>
+<li>increments CHANGELOG,</li>
+<li>regenerates CONTEXT_PACK.md/json,</li>
+<li>re-runs <code>just all</code> in CI.</li>
+</ul>
+<h2 id="governance-and-maintenance_1">Governance and maintenance<a class="headerlink" href="#governance-and-maintenance_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Maintain a <code>decisions/</code> log for major modelling choices.</li>
+<li>Ensure each version update:</li>
+<li>increments CHANGELOG,</li>
+<li>regenerates CONTEXT_PACK.md/json,</li>
+<li>re-runs <code>just all</code> in CI.</li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-datetime" title="December 24, 2025 21:10:26 UTC">December 24, 2025 21:10:26</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

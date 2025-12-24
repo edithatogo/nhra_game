@@ -1,15 +1,11 @@
-[build-system]
-requires = ["hatchling>=1.25"]
-build-backend = "hatchling.build"
-
-[project]
+[tool.poetry]
 name = "nhra-game-theory"
 version = "0.20.0"
 description = "Stylised game-theory mechanism models for NHRA negotiations and downstream system pressure"
+authors = ["Dylan A Mordaunt (RACMA working draft)"]
 readme = "README.md"
-requires-python = ">=3.10"
-license = { text = "MIT" }
-authors = [{ name = "Dylan A Mordaunt (RACMA working draft)" }]
+packages = [{include = "nhra_game_theory", from = "src"}]
+license = "MIT"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
@@ -19,52 +15,61 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Mathematics",
 ]
-dependencies = [
-  "numpy>=1.24",
-  "pandas>=2.0",
-  "matplotlib>=3.7",
-  "networkx>=3.2",
-  "plotly>=5.18",
-  "scipy>=1.10",
-  "SALib>=1.4.7",
-  "snakemake>=7.32",
-  "streamlit>=1.35",
-  "pydantic>=2.0",
-  "pandera>=0.18",
-  "pydantic-settings>=2.0"
-]
 
-[project.urls]
-Repository = "https://github.com/edithatogo/nhra_game"
-Documentation = "https://edithatogo.github.io/nhra_game/"
+[tool.poetry.dependencies]
+python = ">=3.10,<3.14"
+numpy = ">=1.24"
+pandas = ">=2.0"
+matplotlib = ">=3.7"
+networkx = ">=3.2"
+plotly = ">=5.18"
+scipy = ">=1.10"
+SALib = ">=1.4.7"
+snakemake = ">=7.32"
+streamlit = ">=1.35"
+pydantic = ">=2.0"
+pandera = ">=0.18"
+pydantic-settings = ">=2.0"
+seaborn = "*"
+requests = "*"
 
-[project.optional-dependencies]
-opt = ["optuna>=3.6"]
-accel = [
-  "jax>=0.4",
-  "jaxlib>=0.4",
-  "jaxtyping>=0.2",
-  "numpyro>=0.13",
-  "polars>=0.20"
-]
-dev = [
-  "pytest>=7.4",
-  "hypothesis>=6.100",
-  "ruff>=0.8",
-  "mypy>=1.10",
-  "pre-commit>=3.7",
-  "nox>=2024.0",
-  "mkdocs>=1.6",
-  "mkdocs-material>=9.5",
-  "mutmut>=2.4",
-  "pytest-mock",
-  "pytest-cov",
-  "logfire>=0.46",
-  "scalene>=1.5"
-]
+# Optional dependencies (extras)
+optuna = { version = ">=3.6", optional = true }
+jax = { version = ">=0.4", optional = true }
+jaxlib = { version = ">=0.4", optional = true }
+jaxtyping = { version = ">=0.2", optional = true }
+numpyro = { version = ">=0.13", optional = true }
+polars = { version = ">=0.20", optional = true }
+logfire = { version = ">=0.46", optional = true }
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/nhra_game_theory"]
+[tool.poetry.extras]
+opt = ["optuna"]
+accel = ["jax", "jaxlib", "jaxtyping", "numpyro", "polars"]
+observability = ["logfire"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=7.4"
+hypothesis = ">=6.100"
+ruff = ">=0.8"
+mypy = ">=1.10"
+pre-commit = ">=3.7"
+nox = ">=2024.0"
+mkdocs = ">=1.6"
+mkdocs-material = ">=9.5"
+mutmut = ">=2.4"
+pytest-mock = "*"
+pytest-cov = "*"
+scalene = ">=1.5"
+deptry = "*"
+vulture = "*"
+bandit = "^1.9.2"
+mkdocstrings-python = "^2.0.1"
+mkdocs-gen-files = "^0.6.0"
+mkdocs-git-revision-date-localized-plugin = "^1.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 line-length = 100
@@ -94,3 +99,16 @@ ignore = ["E501"]
 quote-style = "double"
 indent-style = "space"
 line-ending = "lf"
+
+[tool.deptry]
+ignore_notebooks = true
+
+[tool.deptry.per_rule_ignores]
+DEP001 = ["scripts/*", "tests/*", "src/nhra_game_theory/*"]
+DEP002 = ["scipy", "snakemake", "jaxlib", "jaxtyping", "polars"]
+DEP004 = ["nox", "pytest", "hypothesis", "logfire"]
+
+[tool.vulture]
+exclude = [".nox", ".gemini", "outputs", "reports", "docs", "archive", "build", "dist"]
+min_confidence = 80
+paths = ["src", "scripts"]

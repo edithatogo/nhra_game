@@ -27,4 +27,5 @@ htmlcov/
 dist/
 build/
 *.egg-info/
-.mypy_cache/
+.mypy_cache/.gemini/
+.nox/

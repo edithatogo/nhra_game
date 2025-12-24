@@ -17,6 +17,15 @@ nav:
       - Design: design.md
       - Tasks: tasks.md
 
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+  - git-revision-date-localized:
+      type: datetime
+
 markdown_extensions:
   - admonition
   - toc:
