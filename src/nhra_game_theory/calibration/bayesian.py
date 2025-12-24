@@ -4,19 +4,19 @@ import jax
 import jax.numpy as jnp
 import numpyro
 import numpyro.distributions as dist
-from typing import Any
+
 
 def nhra_model(years: jnp.ndarray, observed_data: dict[str, jnp.ndarray] | None = None):
     """NumPyro implementation of the NHRA simulation for Bayesian inference."""
     
     # --- Priors ---
-    cost_shifting_intensity = numpyro.sample("cost_shifting_intensity", dist.Uniform(0.05, 0.80))
-    fragmentation_index = numpyro.sample("fragmentation_index", dist.Uniform(0.60, 1.50))
-    discharge_delay_base = numpyro.sample("discharge_delay_base", dist.Uniform(0.60, 1.40))
-    political_salience = numpyro.sample("political_salience", dist.Uniform(0.05, 0.90))
+    cost_shifting_intensity = numpyro.sample("cost_shifting_intensity", dist.Uniform(0.05, 0.80))  # noqa: F841
+    fragmentation_index = numpyro.sample("fragmentation_index", dist.Uniform(0.60, 1.50))  # noqa: F841
+    discharge_delay_base = numpyro.sample("discharge_delay_base", dist.Uniform(0.60, 1.40))  # noqa: F841
+    political_salience = numpyro.sample("political_salience", dist.Uniform(0.05, 0.90))  # noqa: F841
     
     # Observation noise
-    sigma = numpyro.sample("sigma", dist.HalfNormal(0.1))
+    sigma = numpyro.sample("sigma", dist.HalfNormal(0.1))  # noqa: F841
     
     # --- Simulation Loop (Skeleton) ---
     # Note: Transition logic must be written in pure JAX (no side effects, no mutation)

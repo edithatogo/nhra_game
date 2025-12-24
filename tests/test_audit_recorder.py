@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import pytest
 import json
-from pathlib import Path
+
 from nhra_game_theory.domain.audit import Recorder
+
 
 def test_recorder_captures_metadata_and_versioned_path(tmp_path):
     """Verify that Recorder correctly logs execution metadata and manages paths."""

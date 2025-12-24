@@ -30,6 +30,8 @@ def equilibria_snapshot(p: Params) -> pd.DataFrame:
                 discharge_delay=1.0,
                 political_salience=p.political_salience,
                 audit_pressure=p.audit_pressure,
+                cost_shifting_intensity=p.cost_shifting_intensity,
+                political_capital=1.0,
             )
             games = {
                 "DEF": definition_game(gp),
@@ -63,6 +65,8 @@ def equilibria_by_year(df: pd.DataFrame, p: Params) -> pd.DataFrame:
             discharge_delay=float(row["discharge_mean"]),
             political_salience=p.political_salience,
             audit_pressure=p.audit_pressure,
+                cost_shifting_intensity=p.cost_shifting_intensity,
+                political_capital=1.0,
         )
         games = {
             "DEF": definition_game(gp),

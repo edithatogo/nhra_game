@@ -25,6 +25,7 @@ class GameParams:
     political_salience: float
     audit_pressure: float
     cost_shifting_intensity: float
+    political_capital: float
 
 
 def definition_game(gp: GameParams) -> TwoPlayerGame:
@@ -76,8 +77,10 @@ def bargaining_game(gp: GameParams) -> TwoPlayerGame:
     """
     pr = gp.pressure
     ps = gp.political_salience
+    pc = gp.political_capital
 
-    converge_gain = 0.45 + 0.25 * (pr - 1.0)
+    # Political capital boosts the effectiveness of agreement (v25 re-integration)
+    converge_gain = 0.45 + 0.25 * (pr - 1.0) + 0.20 * pc
     conflict_cost = 0.55 + 0.90 * pr
     narrative_gain = 0.25 + 0.50 * ps
 

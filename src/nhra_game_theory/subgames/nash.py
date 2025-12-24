@@ -134,3 +134,25 @@ def select_equilibrium(
         scores.append(s)
     idx = int(np.argmax(np.array(scores)))
     return eqs[idx]
+
+
+def get_best_response_path(game: TwoPlayerGame, max_iter: int = 10) -> list[tuple[int, int]]:
+    """Simulates iterative best response from a starting position.
+
+    Used for visualizing the path to equilibrium (v25 re-integration).
+    """
+    row_idx, col_idx = 0, 0
+    path = [(row_idx, col_idx)]
+
+    for _ in range(max_iter):
+        # Row responds to Col
+        new_row = int(np.argmax(game.u_row[:, col_idx]))
+        # Col responds to Row
+        new_col = int(np.argmax(game.u_col[new_row, :]))
+
+        if (new_row, new_col) == path[-1]:
+            break
+        path.append((new_row, new_col))
+        row_idx, col_idx = new_row, new_col
+
+    return path

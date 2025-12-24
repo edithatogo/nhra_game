@@ -275,7 +275,7 @@ def main():
                     combined, x="year", y="rr_mean", color="Scenario",
                     title="Relative Risk Proxy (Trajectories)",
                     labels={"rr_mean": "Relative Risk", "year": "Year"},
-                    color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
+                    color_discrete_map={"Baseline": "#A9A9A9", "War Game": "#008080"}
                 )
                 fig_risk.update_layout(template="simple_white", hovermode="x unified")
                 st.plotly_chart(fig_risk, use_container_width=True)
@@ -285,7 +285,7 @@ def main():
                     combined, x="year", y="pressure_mean", color="Scenario",
                     title="System Pressure Index",
                     labels={"pressure_mean": "Pressure Index", "year": "Year"},
-                    color_discrete_map={"Baseline": "grey", "War Game": "#008080"}
+                    color_discrete_map={"Baseline": "#A9A9A9", "War Game": "#008080"}
                 )
                 fig_pres.update_layout(template="simple_white", hovermode="x unified")
                 st.plotly_chart(fig_pres, use_container_width=True)
@@ -444,10 +444,10 @@ def main():
                 
                 fig_ghost = px.line(
                     overlay_df, x="year", y="value", color="type",
-                    title=f"Historical vs Backtest: {sel_metric}",
-                    color_discrete_map={"Historical": "#008080", "Backtest Prediction": "orange"}
+                    title=f"Forecasting Check: {sel_metric} (Ghost Overlay)",
+                    color_discrete_map={"Historical": "#008080", "Backtest Prediction": "#FF7F50"}
                 )
-                fig_ghost.update_layout(template="simple_white")
+                fig_ghost.update_layout(template="simple_white", hovermode="x unified")
                 st.plotly_chart(fig_ghost, use_container_width=True)
         else:
             st.warning("Validation data not found. Please run `scripts/validation/recursive_backtest.py` first.")
@@ -476,10 +476,10 @@ def main():
                         labels=dict(x="Cost Shifting Intensity", y="Pressure Index", color="Strategy"),
                         x=pivot_table.columns,
                         y=pivot_table.index,
-                        color_continuous_scale=[[0, "lightgreen"], [1, "salmon"]],
+                        color_continuous_scale="Tealrose",
                         origin="lower"
                     )
-                    fig_stab.update_layout(title="Region: 0=Invest (Green), 1=Shift (Red)")
+                    fig_stab.update_layout(title="Stability Landscape: 0=Invest (Teal), 1=Shift (Rose)")
                     st.plotly_chart(fig_stab, use_container_width=True)
         
         with tab4_2:

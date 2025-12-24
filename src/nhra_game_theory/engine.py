@@ -132,6 +132,7 @@ class State:
     effective_cth_share: float
     efficiency_gap: float
     discharge_delay: float
+    political_capital: float
 
 
 def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
@@ -158,6 +159,7 @@ def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
         * (1.0 + efficiency_gap),  # store nominal share
         efficiency_gap=efficiency_gap,
         discharge_delay=p.discharge_delay_base,
+        political_capital=1.0,
     )
 
 
@@ -220,6 +222,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
             political_salience=float(p.political_salience),
             audit_pressure=float(p.audit_pressure),
             cost_shifting_intensity=float(p.cost_shifting_intensity),
+            political_capital=float(s.political_capital),
         )
 
         def _solve(game):
@@ -445,6 +448,14 @@ def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generat
     pidx = pressure_index(occ, off, discharge)
     w4 = within4_from_pressure(pidx)
 
+    # Political Capital update (v25 re-integration)
+    pol_cap = s.political_capital
+    if strategies["BARG"] == "A":
+        pol_cap += 0.05  # Agreement restores capital
+    else:
+        pol_cap -= 0.10  # Conflict depletes capital
+    pol_cap = clamp(pol_cap, 0.0, 2.0)
+
     return State(
         year=s.year + 1,
         pressure=pidx,
@@ -454,6 +465,7 @@ def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generat
         effective_cth_share=eff_share,
         efficiency_gap=eff_gap,
         discharge_delay=discharge,
+        political_capital=pol_cap,
     )
 
 
@@ -729,6 +741,7 @@ def run_hybrid(
                 "cth_share_effective": s.effective_cth_share / (1.0 + s.efficiency_gap),
                 "efficiency_gap": s.efficiency_gap,
                 "discharge_delay": s.discharge_delay,
+                "political_capital": s.political_capital,
                 "rr_proxy": rr,
             }
         )
@@ -753,6 +766,7 @@ def run_hybrid(
                     "cth_share_effective": s.effective_cth_share / (1.0 + s.efficiency_gap),
                     "efficiency_gap": s.efficiency_gap,
                     "discharge_delay": s.discharge_delay,
+                    "political_capital": s.political_capital,
                     "rr_proxy": rr,
                 }
             )
@@ -783,6 +797,7 @@ def run_hybrid(
             cth_effective_mean=("cth_share_effective", "mean"),
             effgap_mean=("efficiency_gap", "mean"),
             discharge_mean=("discharge_delay", "mean"),
+            polcap_mean=("political_capital", "mean"),
         )
         .reset_index()
     )

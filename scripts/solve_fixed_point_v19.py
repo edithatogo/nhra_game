@@ -45,6 +45,8 @@ def deterministic_strategies(s: State, p: Params) -> dict[str, str]:
         discharge_delay=float(s.discharge_delay),
         political_salience=float(p.political_salience),
         audit_pressure=float(p.audit_pressure),
+        cost_shifting_intensity=float(p.cost_shifting_intensity),
+        political_capital=float(s.political_capital),
     )
 
     def _pick(game):
