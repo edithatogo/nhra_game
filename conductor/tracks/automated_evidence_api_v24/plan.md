@@ -12,13 +12,13 @@
 - [x] **Task: Conductor - User Manual Verification 'API Integration' (Protocol in workflow.md)**
 
 ## Phase 2: Bibliography & Citation Engine
-- [ ] **Task 2.1: Bibliography Domain Model (TDD)**
-  - [ ] Sub-task: Implement `Reference` Pydantic model in `src/nhra_game_theory/domain/bibliography.py`.
-  - [ ] Sub-task: Add parsing for Endnote style `{Author, YYYY @Label #RecordNumber}` tokens.
-- [ ] **Task 2.2: Academic Export Suite**
-  - [ ] Sub-task: Implement generators for `.ris`, `.enw`, and `.bib` formats.
-  - [ ] Sub-task: Integrate citations into `generate_methods_appendix.py` and the Dashboard 'Data Lineage' tab.
-- [ ] **Task: Conductor - User Manual Verification 'Bibliography System' (Protocol in workflow.md)**
+- [x] **Task 2.1: Bibliography Domain Model (TDD)**
+  - [x] Sub-task: Implement `Reference` Pydantic model in `src/nhra_game_theory/domain/bibliography.py`.
+  - [x] Sub-task: Add parsing for Endnote style `{Author, YYYY @Label #RecordNumber}` tokens.
+- [x] **Task 2.2: Academic Export Suite**
+  - [x] Sub-task: Implement generators for `.ris`, `.enw`, and `.bib` formats.
+  - [x] Sub-task: Integrate citations into `generate_methods_appendix.py` and the Dashboard 'Data Lineage' tab.
+- [x] **Task: Conductor - User Manual Verification 'Bibliography System' (Protocol in workflow.md)**
 
 ## Phase 3: Experiment Audit & Provenance
 - [ ] **Task 3.1: Structured Experiment Recording**

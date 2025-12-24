@@ -1,0 +1,37 @@
+[
+  {
+    "record_number": 101,
+    "label": "AIHW_MyHospitals",
+    "author": "Australian Institute of Health and Welfare",
+    "year": 2024,
+    "title": "MyHospitals API: Accessing national hospital data",
+    "publisher": "Australian Government",
+    "url": "https://www.aihw.gov.au/hospitals/other-resources/myhospitals-api"
+  },
+  {
+    "record_number": 102,
+    "label": "BedBlock_Seasonality",
+    "author": "Duckett, Stephen",
+    "year": 2021,
+    "title": "Vicious cycles: Hospital bed block and the National Health Reform Agreement",
+    "journal": "Medical Journal of Australia",
+    "volume": "214",
+    "issue": "8",
+    "pages": "348-350",
+    "doi": "10.5694/mja2.51007",
+    "url": "https://www.mja.com.au/journal/2021/214/8/vicious-cycles-hospital-bed-block-and-national-health-reform-agreement"
+  },
+  {
+    "record_number": 103,
+    "label": "STRESS_Guidelines",
+    "author": "Monks, Thomas; Currie, Christine S. M.; Ong, Gheong O.; Robinson, Stewart; Kentalis, Korina; Taylor, Simon J. E.",
+    "year": 2019,
+    "title": "Strengthening The Reporting of Empirical Simulation Studies (STRESS)",
+    "journal": "Journal of Simulation",
+    "volume": "13",
+    "issue": "1",
+    "pages": "55-67",
+    "doi": "10.1080/17477778.2018.1442155",
+    "url": "https://www.tandfonline.com/doi/full/10.1080/17477778.2018.1442155"
+  }
+]

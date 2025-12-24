@@ -1,0 +1,33 @@
+%0 Journal Article
+%A Australian Institute of Health and Welfare
+%D 2024
+%T MyHospitals API: Accessing national hospital data
+%U https://www.aihw.gov.au/hospitals/other-resources/myhospitals-api
+%F AIHW_MyHospitals
+%M 101
+
+%0 Journal Article
+%A Duckett, Stephen
+%D 2021
+%T Vicious cycles: Hospital bed block and the National Health Reform Agreement
+%J Medical Journal of Australia
+%V 214
+%N 8
+%P 348-350
+%R 10.5694/mja2.51007
+%U https://www.mja.com.au/journal/2021/214/8/vicious-cycles-hospital-bed-block-and-national-health-reform-agreement
+%F BedBlock_Seasonality
+%M 102
+
+%0 Journal Article
+%A Monks, Thomas; Currie, Christine S. M.; Ong, Gheong O.; Robinson, Stewart; Kentalis, Korina; Taylor, Simon J. E.
+%D 2019
+%T Strengthening The Reporting of Empirical Simulation Studies (STRESS)
+%J Journal of Simulation
+%V 13
+%N 1
+%P 55-67
+%R 10.1080/17477778.2018.1442155
+%U https://www.tandfonline.com/doi/full/10.1080/17477778.2018.1442155
+%F STRESS_Guidelines
+%M 103
