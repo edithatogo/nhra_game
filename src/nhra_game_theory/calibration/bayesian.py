@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+from typing import Any
+
 import jax
 import jax.numpy as jnp
 import numpyro
 import numpyro.distributions as dist
-from typing import Any
 
 
 def nhra_model(years: jnp.ndarray, observed_data: dict[str, jnp.ndarray] | None = None) -> None:
