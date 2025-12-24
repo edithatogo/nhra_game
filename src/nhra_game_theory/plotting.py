@@ -75,7 +75,7 @@ def tornado_from_rankcorr(
     for p in params:
         # Cast to float explicitly to avoid mypy generic union confusion
         val = df[[p, outcome_col]].corr(method="spearman").iloc[0, 1]
-        rho = float(val)  # type: ignore
+        rho = float(val)
         rows.append((p, rho))
     rows.sort(key=lambda x: abs(x[1]), reverse=True)
     rows = rows[:topk]
