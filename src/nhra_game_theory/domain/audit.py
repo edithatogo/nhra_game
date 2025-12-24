@@ -28,11 +28,11 @@ class Recorder:
         now = datetime.now()
         date_str = now.strftime("%Y-%m-%d")
         time_str = now.strftime("%H%M%S")
-        
+
         # Structure: outputs/experiments/YYYY-MM-DD/experiment_name_HHMMSS/
         self.experiment_dir = self.base_output_dir / date_str / f"{experiment_name}_{time_str}"
         self.experiment_dir.mkdir(parents=True, exist_ok=True)
-        
+
         self.current_experiment = {
             "experiment_name": experiment_name,
             "timestamp": now.isoformat(),

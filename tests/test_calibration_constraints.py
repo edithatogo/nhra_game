@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+
 from nhra_game_theory.engine import Params, baseline_state, run_hybrid
 
 

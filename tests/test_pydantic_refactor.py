@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import pytest
+from pydantic import ValidationError
+
 from nhra_game_theory.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_game_theory.legacy_engine import Params
-from pydantic import ValidationError
 
 
 def test_params_pydantic_validation():

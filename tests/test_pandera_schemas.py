@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import pandas as pd
 import pytest
+from pandera.errors import SchemaError
 
 # Implementation will be in a new module
 from nhra_game_theory.domain.schemas import ABSSchema, AIHWSchema
-from pandera.errors import SchemaError
 
 
 def test_aihw_schema_validation():
