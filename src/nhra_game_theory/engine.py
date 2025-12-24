@@ -213,7 +213,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
             discharge_coordination_game,
             governance_integration_game,
         )
-        from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
+        from nhra_game_theory.subgames.nash import TwoPlayerGame, all_nash, select_equilibrium
 
         gp = GameParams(
             pressure=float(s.pressure),
@@ -225,7 +225,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
             political_capital=float(s.political_capital),
         )
 
-        def _solve(game):
+        def _solve(game: TwoPlayerGame) -> tuple[str, str]:
             if p.use_quantal_response:
                 # Quantal Response Equilibrium (v25 re-integration)
                 # We use a simplified logit response to the minimax/dominant payoffs
