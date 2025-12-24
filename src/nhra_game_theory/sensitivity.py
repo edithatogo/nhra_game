@@ -215,7 +215,9 @@ def get_salib_problem(
 
 
 def evaluate_parallel(
-    model_func: Callable[[np.ndarray[Any, Any]], float], param_values: np.ndarray[Any, Any], n_procs: int = 4
+    model_func: Callable[[np.ndarray[Any, Any]], float],
+    param_values: np.ndarray[Any, Any],
+    n_procs: int = 4,
 ) -> np.ndarray[Any, Any]:
     """Evaluates the model function in parallel across multiple processes.
 
