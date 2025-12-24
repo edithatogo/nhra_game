@@ -89,7 +89,7 @@ exclude = ["scripts/", "outputs/", "reports/"]
 plugins = ["pydantic.mypy", "pandera.mypy"]
 
 [tool.ruff.lint]
-select = ["E","F","I","B","UP","SIM"]
+select = ["E","F","I","B","UP","SIM","A","C4","N","PT"]
 ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
@@ -112,3 +112,7 @@ DEP004 = ["nox", "pytest", "hypothesis", "logfire"]
 exclude = [".nox", ".gemini", "outputs", "reports", "docs", "archive", "build", "dist"]
 min_confidence = 80
 paths = ["src", "scripts"]
+
+[tool.bandit]
+exclude_dirs = ["tests", ".nox", ".gemini", "outputs", "reports", "docs", "archive", "build", "dist"]
+skips = ["B101"]
