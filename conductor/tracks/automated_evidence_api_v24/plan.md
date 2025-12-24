@@ -11,7 +11,7 @@
   - [x] Sub-task: Implement `scripts/data/ingest_aihw_api.py` to refresh `data/raw/` via API calls.
 - [x] **Task: Conductor - User Manual Verification 'API Integration' (Protocol in workflow.md)**
 
-## Phase 2: Bibliography & Citation Engine
+## Phase 2: Bibliography & Citation Engine [checkpoint: ee33c12]
 - [x] **Task 2.1: Bibliography Domain Model (TDD)**
   - [x] Sub-task: Implement `Reference` Pydantic model in `src/nhra_game_theory/domain/bibliography.py`.
   - [x] Sub-task: Add parsing for Endnote style `{Author, YYYY @Label #RecordNumber}` tokens.
@@ -21,9 +21,9 @@
 - [x] **Task: Conductor - User Manual Verification 'Bibliography System' (Protocol in workflow.md)**
 
 ## Phase 3: Experiment Audit & Provenance
-- [ ] **Task 3.1: Structured Experiment Recording**
-  - [ ] Sub-task: Implement a `Recorder` class to log Monte Carlo rollout metadata (seed, git-hash, timing).
-  - [ ] Sub-task: Integrate logging into `run_hybrid` and save to `outputs/audit/`.
-- [ ] **Task 3.2: Publication-Ready Methods Update**
-  - [ ] Sub-task: Regenerate `methods_appendix.md` with full academic citations and API provenance notes.
-- [ ] **Task: Conductor - User Manual Verification 'Audit & Metadata' (Protocol in workflow.md)**
+- [x] **Task 3.1: Structured Experiment Recording**
+  - [x] Sub-task: Implement a `Recorder` class to log Monte Carlo rollout metadata (seed, git-hash, timing).
+  - [x] Sub-task: Integrate logging into `run_hybrid` and save to `outputs/audit/`.
+- [x] **Task 3.2: Publication-Ready Methods Update**
+  - [x] Sub-task: Regenerate `methods_appendix.md` with full academic citations and API provenance notes.
+- [x] **Task: Conductor - User Manual Verification 'Audit & Metadata' (Protocol in workflow.md)**

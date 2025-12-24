@@ -384,7 +384,7 @@ def apply_intervention(p: Params, name: str) -> Params:
     """
     Map policy interventions to parameter shifts.
     """
-    name = name.lower().strip()
+    name = name.lower().strip().replace(" ", "_")
     if name in {"pooled_funding", "pooled"}:
         return replace(p, cost_shifting_intensity=clamp(p.cost_shifting_intensity * 0.75, 0.05, 0.60))
     if name in {"ucc_integration", "integration"}:
@@ -599,7 +599,8 @@ def run_hybrid(
     years: list[int],
     p: Params,
     seed: int = 123,
-    n_mc: int = 300
+    n_mc: int = 300,
+    recorder: Any | None = None
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Monte Carlo rollouts of the hybrid model.
@@ -607,6 +608,14 @@ def run_hybrid(
       - trajectories: mean + quantiles by year
       - strategy_freq: frequency table by year & game
     """
+    if recorder:
+        recorder.start_experiment(
+            experiment_name=f"hybrid_sim_{years[0]}_{years[-1]}",
+            seed=seed,
+            n_mc=n_mc,
+            params=p.__dict__ if hasattr(p, "__dict__") else str(p)
+        )
+        
     rng = np.random.default_rng(seed)
     rows = []
     strat_rows = []
@@ -687,6 +696,9 @@ def run_hybrid(
         freq["share"] = freq["n"] / freq.groupby(["year", "game"])["n"].transform("sum")
     else:
         freq = pd.DataFrame(columns=["year", "game", "strategy", "n", "share"])
+
+    if recorder:
+        recorder.end_experiment()
 
     return agg, freq
 
