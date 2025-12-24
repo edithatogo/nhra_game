@@ -23,7 +23,7 @@ lint:
   mypy --strict src/nhra_game_theory
 
 test:
-  pytest -q
+  PYTHONPATH=src:. pytest -q
 
 docs:
   mkdocs build -q

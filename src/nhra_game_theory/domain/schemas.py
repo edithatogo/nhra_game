@@ -16,14 +16,18 @@ class AIHWSchema(pa.DataFrameModel):
         strict = True
         coerce = True
 
+
 class ABSSchema(pa.DataFrameModel):
-    State: Series[str] = pa.Field(isin=["Australia", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"])
+    State: Series[str] = pa.Field(
+        isin=["Australia", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"]
+    )
     Year: Series[int] = pa.Field(ge=2000, le=2100)
     Growth_Rate: Series[float] = pa.Field(ge=-0.1, le=0.1)
 
     class Config:
         strict = True
         coerce = True
+
 
 class EconomicSpineSchema(pa.DataFrameModel):
     year: Series[int] = pa.Field(ge=2000, le=2100)

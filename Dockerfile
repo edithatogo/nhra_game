@@ -1,5 +1,5 @@
-# Minimal reproducible environment for NHRA mechanism models
-FROM python:3.10-slim
+# SOTA environment for NHRA mechanism models
+FROM python:3.13-slim
 
 # System deps for graphviz + build tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -8,12 +8,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     make \
     && rm -rf /var/lib/apt/lists/*
 
+# Create non-root user
+RUN useradd -m nhra_user
 WORKDIR /app
-COPY . /app
 
-# Install package + optional dev deps (ruff/mypy/pytest)
+# Pin dependencies first for caching
+COPY requirements.lock /app/
 RUN pip install --no-cache-dir -U pip \
- && pip install --no-cache-dir -e ".[dev]"
+ && pip install --no-cache-dir -r requirements.lock
 
-# Default: run v8 pipeline (fast)
-CMD ["bash", "-lc", "PYTHONPATH=src python scripts/run_v8_all.py && PYTHONPATH=src python scripts/diagrams/render_all.py && PYTHONPATH=src python scripts/interactive/make_d3_network_v9.py"]
+# Copy source
+COPY . /app
+RUN pip install --no-cache-dir -e "."
+
+# Switch to non-root user
+USER nhra_user
+
+# Default: run full Snakemake pipeline (v25)
+CMD ["snakemake", "--cores", "1", "all"]

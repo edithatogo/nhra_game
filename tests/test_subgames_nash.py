@@ -33,7 +33,9 @@ def test_all_nash_mixed_for_matching_pennies_is_none() -> None:
 def test_mixed_nash_rejects_non_2x2() -> None:
     u_r = np.zeros((3, 3), dtype=float)
     u_c = np.zeros((3, 3), dtype=float)
-    g = TwoPlayerGame(u_row=u_r, u_col=u_c, row_actions=("A","B","C"), col_actions=("A","B","C"))
+    g = TwoPlayerGame(
+        u_row=u_r, u_col=u_c, row_actions=("A", "B", "C"), col_actions=("A", "B", "C")
+    )
     assert mixed_nash_2x2(g) is None
 
 
@@ -41,14 +43,14 @@ def test_mixed_nash_rejects_degenerate() -> None:
     # denom_q == 0
     u_r = np.array([[1, 1], [1, 1]], dtype=float)
     u_c = np.array([[1, 0], [0, 1]], dtype=float)
-    g = TwoPlayerGame(u_row=u_r, u_col=u_c, row_actions=("A","B"), col_actions=("A","B"))
+    g = TwoPlayerGame(u_row=u_r, u_col=u_c, row_actions=("A", "B"), col_actions=("A", "B"))
     assert mixed_nash_2x2(g) is None
 
 
 def test_select_equilibrium_rules() -> None:
     u_r = np.array([[2, 0], [0, 1]], dtype=float)
     u_c = np.array([[1, 0], [0, 2]], dtype=float)
-    g = TwoPlayerGame(u_row=u_r, u_col=u_c, row_actions=("A","B"), col_actions=("A","B"))
+    g = TwoPlayerGame(u_row=u_r, u_col=u_c, row_actions=("A", "B"), col_actions=("A", "B"))
     eqs = all_nash(g)
     # random rule returns first (deterministic behaviour in our implementation)
     e0 = select_equilibrium(eqs, rule="random", u_row=u_r, u_col=u_c)

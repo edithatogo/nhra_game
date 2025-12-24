@@ -15,7 +15,6 @@ def test_bargaining_from_state_monotone() -> None:
     assert high > low
 
 
-
 def test_logistic_negative_branch() -> None:
     v = logistic(-1.0)
     assert 0.0 < v < 0.5

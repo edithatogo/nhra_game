@@ -1,36 +1,37 @@
 parameter,default,unit,evidence_source,evidence_note,status
-nep_to_cost_ratio_metro,0.90,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-nep_to_cost_ratio_regional,0.83,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-nep_to_cost_ratio_remote,0.75,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-rurality_weight,0.35  # fraction of activity outside metro,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-remote_weight,0.07    # subset weight in remote,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-nominal_cth_share_target,0.45,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-effective_cth_share_base,0.38,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-cap_growth,"0.065  # ""hard cap"" annual",,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-has_cumulative_cap,False,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-use_equilibrium_bargaining,False  # v14 option,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-use_stage_game_equilibria,True  # v15: solve and use all stage-game equilibria,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-equilibrium_selection_rule,"""payoff_dominant""  # payoff_dominant | row_favourable | random",,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-nep_per_nwau_start,1.0  # index units; set to actual $/NWAU if desired,,MODEL_DEFAULT / ASSUMPTION,NEP is annual $/NWAU (IHACPA). Model uses index discipline; set to IHACPA NEP series for empirical runs.,assumption
-nep_annual_growth,0.03,,MODEL_DEFAULT / ASSUMPTION,NEP is annual $/NWAU (IHACPA). Model uses index discipline; set to IHACPA NEP series for empirical runs.,assumption
-representative_nwau,1.0  # a single representative activity weight for illustrative calculations,,MODEL_DEFAULT / ASSUMPTION,NEP is annual $/NWAU (IHACPA). Model uses index discipline; set to IHACPA NEP series for empirical runs.,assumption
-input_cost_per_nwau_start,1.0,,MODEL_DEFAULT / ASSUMPTION,Proxy for average input cost per NWAU (wages + supply). Recommend ABS WPI (Health Care & Social Assistance) + locum/agency premium where available.,assumption
-input_cost_annual_growth,0.04,,MODEL_DEFAULT / ASSUMPTION,Proxy for average input cost per NWAU (wages + supply). Recommend ABS WPI (Health Care & Social Assistance) + locum/agency premium where available.,assumption
-demand_base,1.00,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-avoidable_ed_share,0.18,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-discharge_delay_base,1.00  # multiplier,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-bed_capacity_index,1.00    # 1.0 baseline,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-cost_shifting_intensity,0.35  # VFI spillover strength,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-fragmentation_index,1.00      # UCC/primary care integration etc,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-audit_pressure,0.50           # compliance scrutiny baseline,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-admin_burden_weight,0.25,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-occupancy_base,0.88,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-offload_base_min,18.0  # minutes,,MODEL_DEFAULT / ASSUMPTION,Proxy baseline ambulance offload delay; should be set from jurisdictional ambulance/hospital reporting where available.,assumption
-within4_base,0.53,,MODEL_DEFAULT / ASSUMPTION,Baseline within-4-hours is set to 0.53 in the brief; should be set from AIHW/Performance reporting for the chosen baseline year.,assumption
-rr_beta_pressure,0.35,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-rr_beta_offload,0.015  # per minute above threshold (stylised),,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-offload_threshold_min,20.0,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-tau,0.25  # softmax temperature,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-bargaining_cost,0.12,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-political_salience,0.30,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
-noise_sd,0.03,,MODEL_DEFAULT / ASSUMPTION,Stylised default; replace with empirical estimate where available.,assumption
+nep_to_cost_ratio_metro,0.9,,IHACPA/ABS,Autogenerated from v9.Params,active
+nep_to_cost_ratio_regional,0.83,,IHACPA/ABS,Autogenerated from v9.Params,active
+nep_to_cost_ratio_remote,0.75,,IHACPA/ABS,Autogenerated from v9.Params,active
+rurality_weight,0.35,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+remote_weight,0.07,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+nominal_cth_share_target,0.45,,NHRA,Autogenerated from v9.Params,active
+effective_cth_share_base,0.38,,NHRA,Autogenerated from v9.Params,active
+cap_growth,0.065,,IHACPA/ABS,Autogenerated from v9.Params,active
+has_cumulative_cap,False,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+use_equilibrium_bargaining,False,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+use_stage_game_equilibria,True,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+equilibrium_selection_rule,payoff_dominant,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+nep_per_nwau_start,1.0,,IHACPA/ABS,Autogenerated from v9.Params,active
+nep_annual_growth,0.03,,IHACPA/ABS,Autogenerated from v9.Params,active
+representative_nwau,1.0,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+input_cost_per_nwau_start,1.0,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+input_cost_annual_growth,0.04,,IHACPA/ABS,Autogenerated from v9.Params,active
+demand_base,1.0,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+avoidable_ed_share,0.18,,NHRA,Autogenerated from v9.Params,active
+discharge_delay_base,1.0,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+bed_capacity_index,1.0,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+cost_shifting_intensity,0.35,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+fragmentation_index,1.0,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+audit_pressure,0.5,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+admin_burden_weight,0.25,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+occupancy_base,0.88,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+offload_base_min,18.0,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+within4_base,0.53,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+rr_beta_pressure,0.35,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+rr_beta_offload,0.015,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+offload_threshold_min,20.0,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+tau,0.25,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+bargaining_cost,0.12,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+political_salience,0.3,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+noise_sd,0.03,,MODEL_DEFAULT / ASSUMPTION,Autogenerated from v9.Params,active
+economic_spine,(DataFrame),,Generated from IHACPA/ABS Data,Autogenerated from v9.Params,active

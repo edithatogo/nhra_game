@@ -6,6 +6,7 @@ This module is intentionally small:
 
 The main use in v14 is to stabilise the bargaining node (E vs A) via a temperature/response parameter.
 """
+
 from __future__ import annotations
 
 import math

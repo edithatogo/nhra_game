@@ -16,7 +16,7 @@ class EvidenceEntry(BaseModel):
     nhmrc_level: str = "IV"
     unit: str = "absolute"
     access_date: str = ""
-    
+
     @model_validator(mode="after")
     def validate_ci_bounds(self) -> EvidenceEntry:
         if self.lower_ci is not None and self.lower_ci > self.mean:
@@ -31,24 +31,25 @@ class EvidenceEntry(BaseModel):
             return None
         return (self.upper_ci - self.lower_ci) / 3.92
 
+
 class EvidenceRegistry(BaseModel):
     # Key is parameter name, value is a list of entries
     entries: dict[str, list[EvidenceEntry]] = Field(default_factory=dict)
-    
+
     model_config = ConfigDict(validate_assignment=True)
-    
+
     def add_entry(self, entry: EvidenceEntry) -> None:
         if entry.parameter not in self.entries:
             self.entries[entry.parameter] = []
         self.entries[entry.parameter].append(entry)
-        
+
     def get_all_entries(self, parameter: str) -> list[EvidenceEntry]:
         return self.entries.get(parameter, [])
-        
+
     def get_entry(self, parameter: str) -> EvidenceEntry | None:
         """Returns the best entry based on NHMRC grading."""
         return self.resolve_conflict(parameter, method="best_grade")
-        
+
     def resolve_conflict(self, parameter: str, method: str = "best_grade") -> EvidenceEntry | None:
         """Resolves multiple evidence sources into a single entry."""
         all_entries = self.get_all_entries(parameter)
@@ -56,27 +57,29 @@ class EvidenceRegistry(BaseModel):
             return None
         if len(all_entries) == 1:
             return all_entries[0]
-            
+
         if method == "best_grade":
             # Level I > II > III > IV
             grade_map = {"I": 1, "II": 2, "III-1": 3, "III-2": 4, "III-3": 5, "IV": 6}
             return min(all_entries, key=lambda e: grade_map.get(e.nhmrc_level, 99))
-            
-        return all_entries[-1] # Default to latest
+
+        return all_entries[-1]  # Default to latest
 
     def generate_grounding_report(self, path: Path | str) -> None:
         """Generates a Markdown report summarizing the evidence grounding."""
         report = "# Evidence Grounding Report\n\n"
         report += "| Parameter | Mean | 95% CI | NHMRC Grade | Source |\n"
         report += "|-----------|------|--------|-------------|--------|\n"
-        
+
         for param in sorted(self.entries.keys()):
             e = self.get_entry(param)
             if e is None:
                 continue
             ci_str = f"[{e.lower_ci}, {e.upper_ci}]" if e.lower_ci is not None else "N/A"
-            report += f"| {e.parameter} | {e.mean} | {ci_str} | {e.nhmrc_level} | {e.source_url} |\n"
-            
+            report += (
+                f"| {e.parameter} | {e.mean} | {ci_str} | {e.nhmrc_level} | {e.source_url} |\n"
+            )
+
         Path(path).write_text(report)
 
     def sync_to_targets(self, targets_path: Path | str) -> None:
@@ -98,7 +101,9 @@ class EvidenceRegistry(BaseModel):
                     p_dict[param] = e.mean
         return base_params.model_copy(update=p_dict)
 
-    def is_sane(self, entry: EvidenceEntry, baseline: dict[str, float], threshold: float = 0.5) -> bool:
+    def is_sane(
+        self, entry: EvidenceEntry, baseline: dict[str, float], threshold: float = 0.5
+    ) -> bool:
         """Check if an entry's mean deviates more than threshold fraction from a baseline."""
         if entry.parameter not in baseline:
             return True
@@ -115,7 +120,7 @@ class EvidenceRegistry(BaseModel):
                 flat_data.append(e.model_dump())
         df = pd.DataFrame(flat_data)
         df.to_csv(path, index=False)
-        
+
     @classmethod
     def load_from_csv(cls, path: Path | str) -> EvidenceRegistry:
         df = pd.read_csv(path)
@@ -130,7 +135,7 @@ class EvidenceRegistry(BaseModel):
                 source_url=str(row["source_url"]) if row["source_url"] else "",
                 nhmrc_level=str(row["nhmrc_level"]),
                 unit=str(row["unit"]),
-                access_date=str(row["access_date"])
+                access_date=str(row["access_date"]),
             )
             registry.add_entry(entry)
         return registry

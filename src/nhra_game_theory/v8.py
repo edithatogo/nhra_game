@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Iterable
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from typing import Any, cast
 
 import numpy as np
@@ -28,11 +28,14 @@ from pydantic import BaseModel, ConfigDict, Field
 # Utilities
 # ----------------------------
 
+
 def clamp(x: float, lo: float, hi: float) -> float:
     return max(lo, min(hi, x))
 
+
 def logistic(x: float) -> float:
     return 1.0 / (1.0 + math.exp(-x))
+
 
 def softmax(u: NDArray[np.floating[Any]], tau: float = 0.25) -> NDArray[np.floating[Any]]:
     u = np.asarray(u, dtype=float)
@@ -44,6 +47,7 @@ def softmax(u: NDArray[np.floating[Any]], tau: float = 0.25) -> NDArray[np.float
 # ----------------------------
 # Parameters and state
 # ----------------------------
+
 
 class Params(BaseModel):
     # Funding / valuation
@@ -120,7 +124,11 @@ def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
     metro_ratio = p.nep_to_cost_ratio_metro
     reg_ratio = p.nep_to_cost_ratio_regional
     rem_ratio = p.nep_to_cost_ratio_remote
-    ratio = (1 - p.rurality_weight) * metro_ratio + (p.rurality_weight - p.remote_weight) * reg_ratio + p.remote_weight * rem_ratio
+    ratio = (
+        (1 - p.rurality_weight) * metro_ratio
+        + (p.rurality_weight - p.remote_weight) * reg_ratio
+        + p.remote_weight * rem_ratio
+    )
     efficiency_gap = 1.0 / max(1e-9, ratio) - 1.0  # e.g., 0.20 means costs 20% above NEP
 
     return State(
@@ -129,8 +137,8 @@ def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
         occupancy=p.occupancy_base,
         offload_min=p.offload_base_min,
         within4=p.within4_base,
-        effective_cth_share=p.effective_cth_share_base * (1.0 + efficiency_gap),  # store nominal share
-
+        effective_cth_share=p.effective_cth_share_base
+        * (1.0 + efficiency_gap),  # store nominal share
         efficiency_gap=efficiency_gap,
         discharge_delay=p.discharge_delay_base,
     )
@@ -149,6 +157,7 @@ GAME_NODES = {
     "COMP": "Compliance",
     "SIGNAL": "Signalling",
 }
+
 
 def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str, str]:
     """Choose strategies for the interacting 'games' layer.
@@ -198,7 +207,9 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
 
         def _pick(game):
             eqs = all_nash(game)
-            sel = select_equilibrium(eqs, rule=p.equilibrium_selection_rule, u_row=game.u_row, u_col=game.u_col)
+            sel = select_equilibrium(
+                eqs, rule=p.equilibrium_selection_rule, u_row=game.u_row, u_col=game.u_col
+            )
             a = game.row_actions[int(np.argmax(sel.row))]
             return a
 
@@ -211,14 +222,46 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
 
     else:
         # Heuristic fallbacks (keep monotone relationships with pressure and efficiency gap)
-        DEF = "R" if rng.random() < logistic(1.3 * (s.efficiency_gap - 0.25) + 0.9 * (s.pressure - 1.0)) else "E"
-        BARG = "A" if rng.random() < logistic(0.6 * (1.2 - s.pressure) - 0.4 * p.political_salience) else "D"
-        SHIFT = "I" if rng.random() < logistic(-1.1 * (s.pressure - 1.0) - 1.0 * s.efficiency_gap) else "S"
-        DISC = "C" if rng.random() < logistic(-0.9 * (s.discharge_delay - 1.0) - 0.8 * (s.pressure - 1.0)) else "F"
-        GOV = "I" if rng.random() < logistic(-0.8 * (s.pressure - 1.0) - 0.7 * p.political_salience) else "S"
-        COMP = "T" if rng.random() < logistic(0.9 * p.audit_pressure - 0.7 * s.efficiency_gap) else "L"
+        DEF = (
+            "R"
+            if rng.random() < logistic(1.3 * (s.efficiency_gap - 0.25) + 0.9 * (s.pressure - 1.0))
+            else "E"
+        )
+        BARG = (
+            "A"
+            if rng.random() < logistic(0.6 * (1.2 - s.pressure) - 0.4 * p.political_salience)
+            else "D"
+        )
+        SHIFT = (
+            "I"
+            if rng.random() < logistic(-1.1 * (s.pressure - 1.0) - 1.0 * s.efficiency_gap)
+            else "S"
+        )
+        DISC = (
+            "C"
+            if rng.random() < logistic(-0.9 * (s.discharge_delay - 1.0) - 0.8 * (s.pressure - 1.0))
+            else "F"
+        )
+        GOV = (
+            "I"
+            if rng.random() < logistic(-0.8 * (s.pressure - 1.0) - 0.7 * p.political_salience)
+            else "S"
+        )
+        COMP = (
+            "T" if rng.random() < logistic(0.9 * p.audit_pressure - 0.7 * s.efficiency_gap) else "L"
+        )
 
-    return {"SIGNAL": signal, "DEF": DEF, "BARG": BARG, "SHIFT": SHIFT, "DISC": DISC, "GOV": GOV, "COMP": COMP}
+    return {
+        "SIGNAL": signal,
+        "DEF": DEF,
+        "BARG": BARG,
+        "SHIFT": SHIFT,
+        "DISC": DISC,
+        "GOV": GOV,
+        "COMP": COMP,
+    }
+
+
 def pressure_index(occupancy: float, offload_min: float, discharge_delay: float) -> float:
     """
     Simple composite pressure index:
@@ -294,7 +337,7 @@ def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generat
         discharge *= 1.01
 
     # Compliance increases admin burden which slightly worsens pressure (less clinical time)
-    admin_burden = (1.0 + p.admin_burden_weight * (1 if strategies["COMP"] == "T" else -0.25))
+    admin_burden = 1.0 + p.admin_burden_weight * (1 if strategies["COMP"] == "T" else -0.25)
     admin_burden = clamp(admin_burden, 0.85, 1.35)
 
     # Occupancy update: demand ↑ and discharge delay ↑ increase occupancy; capacity index ↓ worsens
@@ -329,36 +372,49 @@ def step(s: State, p: Params, strategies: dict[str, str], rng: np.random.Generat
 # Scenarios & interventions
 # ----------------------------
 
+
 def apply_intervention(p: Params, name: str) -> Params:
     """
     Map policy interventions to parameter shifts.
     """
     name = name.lower().strip()
     if name in {"pooled_funding", "pooled"}:
-        return p.model_copy(update={"cost_shifting_intensity": clamp(p.cost_shifting_intensity * 0.75, 0.05, 0.60)})
+        return p.model_copy(
+            update={"cost_shifting_intensity": clamp(p.cost_shifting_intensity * 0.75, 0.05, 0.60)}
+        )
     if name in {"ucc_integration", "integration"}:
-        return p.model_copy(update={"fragmentation_index": clamp(p.fragmentation_index * 0.80, 0.60, 1.50)})
+        return p.model_copy(
+            update={"fragmentation_index": clamp(p.fragmentation_index * 0.80, 0.60, 1.50)}
+        )
     if name in {"nep_realism", "indexation"}:
-        return p.model_copy(update={
-            "nep_to_cost_ratio_metro": clamp(p.nep_to_cost_ratio_metro + 0.03, 0.6, 1.0),
-            "nep_to_cost_ratio_regional": clamp(p.nep_to_cost_ratio_regional + 0.04, 0.6, 1.0),
-            "nep_to_cost_ratio_remote": clamp(p.nep_to_cost_ratio_remote + 0.05, 0.6, 1.0)
-        })
+        return p.model_copy(
+            update={
+                "nep_to_cost_ratio_metro": clamp(p.nep_to_cost_ratio_metro + 0.03, 0.6, 1.0),
+                "nep_to_cost_ratio_regional": clamp(p.nep_to_cost_ratio_regional + 0.04, 0.6, 1.0),
+                "nep_to_cost_ratio_remote": clamp(p.nep_to_cost_ratio_remote + 0.05, 0.6, 1.0),
+            }
+        )
     if name in {"aged_ndis_capacity", "discharge"}:
-        return p.model_copy(update={"discharge_delay_base": clamp(p.discharge_delay_base * 0.90, 0.6, 1.4)})
+        return p.model_copy(
+            update={"discharge_delay_base": clamp(p.discharge_delay_base * 0.90, 0.6, 1.4)}
+        )
     if name in {"middle_tier", "workforce"}:
         # reduces remote/regional cost penalties
-        return p.model_copy(update={
-            "nep_to_cost_ratio_regional": clamp(p.nep_to_cost_ratio_regional + 0.03, 0.6, 1.0),
-            "nep_to_cost_ratio_remote": clamp(p.nep_to_cost_ratio_remote + 0.04, 0.6, 1.0)
-        })
+        return p.model_copy(
+            update={
+                "nep_to_cost_ratio_regional": clamp(p.nep_to_cost_ratio_regional + 0.03, 0.6, 1.0),
+                "nep_to_cost_ratio_remote": clamp(p.nep_to_cost_ratio_remote + 0.04, 0.6, 1.0),
+            }
+        )
     if name in {"cumulative_cap", "cap"}:
         return p.model_copy(update={"has_cumulative_cap": True, "cap_growth": 0.070})
     if name in {"audit_relief"}:
-        return p.model_copy(update={
-            "audit_pressure": clamp(p.audit_pressure * 0.70, 0.05, 1.0),
-            "admin_burden_weight": clamp(p.admin_burden_weight * 0.8, 0.05, 0.6)
-        })
+        return p.model_copy(
+            update={
+                "audit_pressure": clamp(p.audit_pressure * 0.70, 0.05, 1.0),
+                "admin_burden_weight": clamp(p.admin_burden_weight * 0.8, 0.05, 0.6),
+            }
+        )
     return p
 
 
@@ -384,7 +440,7 @@ def nep_series(years: list[int], p: Params) -> pd.DataFrame:
     rows = []
     for i, y in enumerate(years):
         if i > 0:
-            nep *= (1.0 + float(p.nep_annual_growth))
+            nep *= 1.0 + float(p.nep_annual_growth)
         rows.append(
             {
                 "year": int(y),
@@ -406,15 +462,24 @@ def apply_intervention_partial(base: Params, name: str, strength: float) -> Para
         return base
     full = apply_intervention(base, name)
     # Linear interpolation of a subset of key parameters used in intervention mappings.
-    return base.model_copy(update={
-        "cost_shifting_intensity": base.cost_shifting_intensity + strength * (full.cost_shifting_intensity - base.cost_shifting_intensity),
-        "fragmentation_index": base.fragmentation_index + strength * (full.fragmentation_index - base.fragmentation_index),
-        "discharge_delay_base": base.discharge_delay_base + strength * (full.discharge_delay_base - base.discharge_delay_base),
-        "has_cumulative_cap": full.has_cumulative_cap if strength >= 0.5 else base.has_cumulative_cap,
-        "cap_growth": base.cap_growth + strength * (full.cap_growth - base.cap_growth),
-        "audit_pressure": base.audit_pressure + strength * (full.audit_pressure - base.audit_pressure),
-        "admin_burden_weight": base.admin_burden_weight + strength * (full.admin_burden_weight - base.admin_burden_weight)
-    })
+    return base.model_copy(
+        update={
+            "cost_shifting_intensity": base.cost_shifting_intensity
+            + strength * (full.cost_shifting_intensity - base.cost_shifting_intensity),
+            "fragmentation_index": base.fragmentation_index
+            + strength * (full.fragmentation_index - base.fragmentation_index),
+            "discharge_delay_base": base.discharge_delay_base
+            + strength * (full.discharge_delay_base - base.discharge_delay_base),
+            "has_cumulative_cap": full.has_cumulative_cap
+            if strength >= 0.5
+            else base.has_cumulative_cap,
+            "cap_growth": base.cap_growth + strength * (full.cap_growth - base.cap_growth),
+            "audit_pressure": base.audit_pressure
+            + strength * (full.audit_pressure - base.audit_pressure),
+            "admin_burden_weight": base.admin_burden_weight
+            + strength * (full.admin_burden_weight - base.admin_burden_weight),
+        }
+    )
 
 
 def scenario_summary(
@@ -487,11 +552,19 @@ def probabilistic_sensitivity(
     rng = np.random.default_rng(seed)
     rows: list[dict[str, float]] = []
     for i in range(int(n_param)):
-        p = base.model_copy(update={
-            "noise_sd": float(np.clip(rng.normal(base.noise_sd, base.noise_sd * 0.25), 0.001, 0.2)),
-            "discharge_delay_base": float(np.clip(rng.normal(base.discharge_delay_base, 0.15), 0.5, 2.0)),
-            "cost_shifting_intensity": float(np.clip(rng.normal(base.cost_shifting_intensity, 0.08), 0.05, 0.8))
-        })
+        p = base.model_copy(
+            update={
+                "noise_sd": float(
+                    np.clip(rng.normal(base.noise_sd, base.noise_sd * 0.25), 0.001, 0.2)
+                ),
+                "discharge_delay_base": float(
+                    np.clip(rng.normal(base.discharge_delay_base, 0.15), 0.5, 2.0)
+                ),
+                "cost_shifting_intensity": float(
+                    np.clip(rng.normal(base.cost_shifting_intensity, 0.08), 0.05, 0.8)
+                ),
+            }
+        )
         p = scenario_params(p, interventions)
         traj, _ = run_hybrid(years, p, seed=int(seed + i), n_mc=n_mc)
         end = traj.iloc[-1]
@@ -507,10 +580,7 @@ def probabilistic_sensitivity(
 
 
 def run_hybrid(
-    years: list[int],
-    p: Params,
-    seed: int = 123,
-    n_mc: int = 300
+    years: list[int], p: Params, seed: int = 123, n_mc: int = 300
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Monte Carlo rollouts of the hybrid model.
@@ -533,52 +603,54 @@ def run_hybrid(
                 strat_rows.append({"rollout": r, "year": s.year, "game": g, "strategy": lab})
             s = step(s, p, strategies, sub)
             rr = relative_risk(s.pressure, s.offload_min, p)
-            rows.append({
-                "rollout": r,
-                "year": s.year,
-                "pressure": s.pressure,
-                "occupancy": s.occupancy,
-                "offload_min": s.offload_min,
-                "within4": s.within4,
-                "cth_share_nominal": s.effective_cth_share,
-                "cth_share_effective": s.effective_cth_share / (1.0 + s.efficiency_gap),
-                "efficiency_gap": s.efficiency_gap,
-                "discharge_delay": s.discharge_delay,
-                "rr_proxy": rr,
-            })
+            rows.append(
+                {
+                    "rollout": r,
+                    "year": s.year,
+                    "pressure": s.pressure,
+                    "occupancy": s.occupancy,
+                    "offload_min": s.offload_min,
+                    "within4": s.within4,
+                    "cth_share_nominal": s.effective_cth_share,
+                    "cth_share_effective": s.effective_cth_share / (1.0 + s.efficiency_gap),
+                    "efficiency_gap": s.efficiency_gap,
+                    "discharge_delay": s.discharge_delay,
+                    "rr_proxy": rr,
+                }
+            )
 
     df = pd.DataFrame(rows)
     strat = pd.DataFrame(strat_rows)
 
     # Aggregate trajectories
-    agg = df.groupby("year").agg(
-        pressure_mean=("pressure", "mean"),
-        pressure_p10=("pressure", lambda x: x.quantile(0.10)),
-        pressure_p90=("pressure", lambda x: x.quantile(0.90)),
-        occupancy_mean=("occupancy", "mean"),
-        occupancy_p10=("occupancy", lambda x: x.quantile(0.10)),
-        occupancy_p90=("occupancy", lambda x: x.quantile(0.90)),
-        offload_mean=("offload_min", "mean"),
-        offload_p10=("offload_min", lambda x: x.quantile(0.10)),
-        offload_p90=("offload_min", lambda x: x.quantile(0.90)),
-        within4_mean=("within4", "mean"),
-        within4_p10=("within4", lambda x: x.quantile(0.10)),
-        within4_p90=("within4", lambda x: x.quantile(0.90)),
-        rr_mean=("rr_proxy", "mean"),
-        rr_p10=("rr_proxy", lambda x: x.quantile(0.10)),
-        rr_p90=("rr_proxy", lambda x: x.quantile(0.90)),
-        cth_nominal_mean=("cth_share_nominal", "mean"),
-        cth_effective_mean=("cth_share_effective", "mean"),
-        effgap_mean=("efficiency_gap", "mean"),
-        discharge_mean=("discharge_delay", "mean"),
-    ).reset_index()
+    agg = (
+        df.groupby("year")
+        .agg(
+            pressure_mean=("pressure", "mean"),
+            pressure_p10=("pressure", lambda x: x.quantile(0.10)),
+            pressure_p90=("pressure", lambda x: x.quantile(0.90)),
+            occupancy_mean=("occupancy", "mean"),
+            occupancy_p10=("occupancy", lambda x: x.quantile(0.10)),
+            occupancy_p90=("occupancy", lambda x: x.quantile(0.90)),
+            offload_mean=("offload_min", "mean"),
+            offload_p10=("offload_min", lambda x: x.quantile(0.10)),
+            offload_p90=("offload_min", lambda x: x.quantile(0.90)),
+            within4_mean=("within4", "mean"),
+            within4_p10=("within4", lambda x: x.quantile(0.10)),
+            within4_p90=("within4", lambda x: x.quantile(0.90)),
+            rr_mean=("rr_proxy", "mean"),
+            rr_p10=("rr_proxy", lambda x: x.quantile(0.10)),
+            rr_p90=("rr_proxy", lambda x: x.quantile(0.90)),
+            cth_nominal_mean=("cth_share_nominal", "mean"),
+            cth_effective_mean=("cth_share_effective", "mean"),
+            effgap_mean=("efficiency_gap", "mean"),
+            discharge_mean=("discharge_delay", "mean"),
+        )
+        .reset_index()
+    )
 
     # Strategy frequencies (per year and game)
-    freq = (
-        strat.groupby(["year", "game", "strategy"])
-        .size()
-        .reset_index(name="n")
-    )
+    freq = strat.groupby(["year", "game", "strategy"]).size().reset_index(name="n")
     freq["share"] = freq["n"] / freq.groupby(["year", "game"])["n"].transform("sum")
 
     return agg, freq
@@ -590,17 +662,33 @@ def sensitivity_sample(base: Params, n: int, seed: int = 1234) -> pd.DataFrame:
     """
     rng = np.random.default_rng(seed)
     samples = []
-    for i in range(n):
-        p = base.model_copy(update={
-            "rurality_weight": float(clamp(rng.normal(base.rurality_weight, 0.08), 0.05, 0.70)),
-            "cost_shifting_intensity": float(clamp(rng.normal(base.cost_shifting_intensity, 0.10), 0.05, 0.80)),
-            "fragmentation_index": float(clamp(rng.normal(base.fragmentation_index, 0.12), 0.60, 1.50)),
-            "discharge_delay_base": float(clamp(rng.normal(base.discharge_delay_base, 0.10), 0.70, 1.30)),
-            "admin_burden_weight": float(clamp(rng.normal(base.admin_burden_weight, 0.08), 0.05, 0.60)),
-            "political_salience": float(clamp(rng.normal(base.political_salience, 0.12), 0.05, 0.80)),
-            "rr_beta_pressure": float(clamp(rng.normal(base.rr_beta_pressure, 0.08), 0.10, 0.70)),
-            "rr_beta_offload": float(clamp(rng.normal(base.rr_beta_offload, 0.005), 0.002, 0.040))
-        })
+    for _ in range(n):
+        p = base.model_copy(
+            update={
+                "rurality_weight": float(clamp(rng.normal(base.rurality_weight, 0.08), 0.05, 0.70)),
+                "cost_shifting_intensity": float(
+                    clamp(rng.normal(base.cost_shifting_intensity, 0.10), 0.05, 0.80)
+                ),
+                "fragmentation_index": float(
+                    clamp(rng.normal(base.fragmentation_index, 0.12), 0.60, 1.50)
+                ),
+                "discharge_delay_base": float(
+                    clamp(rng.normal(base.discharge_delay_base, 0.10), 0.70, 1.30)
+                ),
+                "admin_burden_weight": float(
+                    clamp(rng.normal(base.admin_burden_weight, 0.08), 0.05, 0.60)
+                ),
+                "political_salience": float(
+                    clamp(rng.normal(base.political_salience, 0.12), 0.05, 0.80)
+                ),
+                "rr_beta_pressure": float(
+                    clamp(rng.normal(base.rr_beta_pressure, 0.08), 0.10, 0.70)
+                ),
+                "rr_beta_offload": float(
+                    clamp(rng.normal(base.rr_beta_offload, 0.005), 0.002, 0.040)
+                ),
+            }
+        )
         samples.append(p)
     # convert to df
     rows = []

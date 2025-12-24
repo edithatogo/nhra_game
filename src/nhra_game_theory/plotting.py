@@ -49,7 +49,9 @@ def plot_strategy_heatmap(freq: pd.DataFrame, outpath: Path) -> None:
     for i, g in enumerate(games, start=1):
         ax = fig.add_subplot(len(games), 1, i)
         sub = freq[freq["game"] == g].copy()
-        pivot = sub.pivot_table(index="year", columns="strategy", values="share", aggfunc="mean").fillna(0)
+        pivot = sub.pivot_table(
+            index="year", columns="strategy", values="share", aggfunc="mean"
+        ).fillna(0)
         for col in pivot.columns:
             ax.plot(pivot.index, pivot[col], label=f"{g}:{col}", linewidth=2)
         ax.set_ylim(0, 1)
@@ -61,14 +63,16 @@ def plot_strategy_heatmap(freq: pd.DataFrame, outpath: Path) -> None:
     savefig(fig, outpath)
 
 
-def tornado_from_rankcorr(df: pd.DataFrame, outcome_col: str, params: list[str], outpath: Path, topk: int = 10) -> None:
+def tornado_from_rankcorr(
+    df: pd.DataFrame, outcome_col: str, params: list[str], outpath: Path, topk: int = 10
+) -> None:
     """
     Rank-correlation tornado using Spearman rho.
     """
     # scipy not required; use pandas spearman correlation
     rows = []
     for p in params:
-        rho = float(df[[p, outcome_col]].corr(method="spearman").iloc[0,1])
+        rho = float(df[[p, outcome_col]].corr(method="spearman").iloc[0, 1])
         rows.append((p, float(rho)))
     rows.sort(key=lambda x: abs(x[1]), reverse=True)
     rows = rows[:topk]
@@ -124,9 +128,7 @@ def render_games_graph_interactive(outpath_html: Path) -> tuple[nx.DiGraph, Path
         edge_x += [x0, x1, None]
         edge_y += [y0, y1, None]
 
-    edge_trace = go.Scatter(
-        x=edge_x, y=edge_y, line=dict(width=2), hoverinfo="none", mode="lines"
-    )
+    edge_trace = go.Scatter(x=edge_x, y=edge_y, line=dict(width=2), hoverinfo="none", mode="lines")
 
     # Node traces
     node_x = []
@@ -145,13 +147,14 @@ def render_games_graph_interactive(outpath_html: Path) -> tuple[nx.DiGraph, Path
     sizes = [18 + 40 * cent[n] for n in G.nodes()]
 
     node_trace = go.Scatter(
-        x=node_x, y=node_y,
+        x=node_x,
+        y=node_y,
         mode="markers+text",
         text=node_text,
         textposition="top center",
         hovertext=node_label,
         hoverinfo="text",
-        marker=dict(size=sizes, line=dict(width=2))
+        marker=dict(size=sizes, line=dict(width=2)),
     )
 
     fig = go.Figure(data=[edge_trace, node_trace])

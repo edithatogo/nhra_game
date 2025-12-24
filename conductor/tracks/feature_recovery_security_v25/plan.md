@@ -22,8 +22,12 @@
 - [x] **Task: Conductor - User Manual Verification 'Security & Supply Chain' (Protocol in workflow.md)**
 
 ## Phase 3: Production Release
-- [ ] **Task 3.1: Docker Optimization**
-  - [ ] Sub-task: Optimize `Dockerfile` for size and security (non-root user).
-- [ ] **Task 3.2: Gold Master Tag**
-  - [ ] Sub-task: Final full-system verification and release `v25.0.0`.
-- [ ] **Task: Conductor - User Manual Verification 'Gold Master' (Protocol in workflow.md)**
+- [x] **Task 3.1: Docker Optimization**
+  - [x] Sub-task: Optimize `Dockerfile` for size and security (non-root user). (Done: Updated to 3.13-slim, added nhra_user, and pinned requirements)
+- [x] **Task 3.2: Gold Master Tag**
+  - [x] Sub-task: Final full-system verification and release `v25.0.0`. (Done: Verified with just all, grounding passed, 110 tests passed)
+- [x] **Task: Conductor - User Manual Verification 'Gold Master' (Protocol in workflow.md)**
+
+---
+**Track Status:** COMPLETED 2025-12-24
+Legacy features (QRE, Admin Burden Feedback) recovered and integrated. Codebase hardened with bandit security scanning and mutation testing hooks. supply chain locked with requirements.lock. v25.0.0 released.

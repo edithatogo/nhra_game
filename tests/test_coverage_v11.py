@@ -20,13 +20,23 @@ def test_nep_series_increases() -> None:
     df = v8.nep_series(years, p)
     assert list(df["year"]) == years
     assert df["nep_per_nwau"].iloc[2] > df["nep_per_nwau"].iloc[0]
-    assert float(df["efficient_payment"].iloc[0]) == float(df["nep_per_nwau"].iloc[0] * p.representative_nwau)
+    assert float(df["efficient_payment"].iloc[0]) == float(
+        df["nep_per_nwau"].iloc[0] * p.representative_nwau
+    )
 
 
 def test_interventions_cover_branches() -> None:
     base = v8.Params()
     # cover apply_intervention branches
-    for iv in ["pooled", "integration", "indexation", "discharge", "workforce", "cap", "audit_relief"]:
+    for iv in [
+        "pooled",
+        "integration",
+        "indexation",
+        "discharge",
+        "workforce",
+        "cap",
+        "audit_relief",
+    ]:
         p2 = v8.apply_intervention(base, iv)
         assert isinstance(p2, v8.Params)
     # scenario_params chaining
@@ -68,7 +78,13 @@ def test_sensitivity_helpers() -> None:
     years = [2025, 2026, 2027]
     base = v8.Params()
 
-    scen = v8.scenario_summary(years, base, {"baseline": [], "bundle": ["pooled", "discharge", "indexation"]}, seed=1, n_mc=20)
+    scen = v8.scenario_summary(
+        years,
+        base,
+        {"baseline": [], "bundle": ["pooled", "discharge", "indexation"]},
+        seed=1,
+        n_mc=20,
+    )
     assert len(scen) == 2
 
     grid = {"noise_sd": [0.01, 0.03], "discharge_delay_base": [0.8, 1.2]}
@@ -89,7 +105,14 @@ def test_sensitivity_helpers() -> None:
 
 def test_plotting_functions(tmp_path: Path) -> None:
     # trajectory plots (with and without bands)
-    df = pd.DataFrame({"year": [2025, 2026, 2027], "pressure_mean": [1.0, 1.1, 1.2], "pressure_p10": [0.9, 1.0, 1.1], "pressure_p90": [1.1, 1.2, 1.3]})
+    df = pd.DataFrame(
+        {
+            "year": [2025, 2026, 2027],
+            "pressure_mean": [1.0, 1.1, 1.2],
+            "pressure_p10": [0.9, 1.0, 1.1],
+            "pressure_p90": [1.1, 1.2, 1.3],
+        }
+    )
     out1 = tmp_path / "traj.png"
     plot_trajectory(df, "pressure_mean", "Pressure", out1, "pressure_p10", "pressure_p90")
     assert out1.exists() and out1.stat().st_size > 0

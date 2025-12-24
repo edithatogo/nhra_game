@@ -1,20 +1,24 @@
 from __future__ import annotations
 
-import requests
-import pandas as pd
 from typing import Any
+
+import pandas as pd
+import requests
+
 
 class AIHWClient:
     """Client for the AIHW MyHospitals API (v1)."""
-    
+
     BASE_URL = "https://myhospitalsapi.aihw.gov.au/api/v1"
-    
+
     def __init__(self):
         self.session = requests.Session()
-        self.session.headers.update({
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "Accept": "application/json"
-        })
+        self.session.headers.update(
+            {
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+                "Accept": "application/json",
+            }
+        )
 
     def _get(self, endpoint: str) -> Any:
         url = f"{self.BASE_URL}/{endpoint.lstrip('/')}"

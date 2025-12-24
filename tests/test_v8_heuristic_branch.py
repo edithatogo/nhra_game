@@ -10,4 +10,4 @@ def test_decide_strategies_heuristic_branch_runs() -> None:
     rng = np.random.default_rng(7)
     strat = decide_strategies(s, p, rng)
     # v8 returns a dictionary of stage-game strategies
-    assert {"DEF","BARG","SHIFT","DISC","GOV","COMP","SIGNAL"} <= set(strat.keys())
+    assert {"DEF", "BARG", "SHIFT", "DISC", "GOV", "COMP", "SIGNAL"} <= set(strat.keys())

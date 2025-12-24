@@ -14,6 +14,7 @@ class NashEquilibrium:
         row: row strategy (probabilities over actions)
         col: col strategy (probabilities over actions)
     """
+
     kind: str
     row: np.ndarray
     col: np.ndarray
@@ -22,6 +23,7 @@ class NashEquilibrium:
 @dataclass(frozen=True)
 class TwoPlayerGame:
     """Normal-form game with payoffs for row and column players."""
+
     u_row: np.ndarray  # shape (n,m)
     u_col: np.ndarray  # shape (n,m)
     row_actions: tuple[str, ...]
@@ -57,8 +59,10 @@ def pure_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
     for i in range(n):
         for j in range(m):
             if br_r[i, j] and br_c[i, j]:
-                row = np.zeros(n, dtype=float); row[i] = 1.0
-                col = np.zeros(m, dtype=float); col[j] = 1.0
+                row = np.zeros(n, dtype=float)
+                row[i] = 1.0
+                col = np.zeros(m, dtype=float)
+                col[j] = 1.0
                 eqs.append(NashEquilibrium(kind="pure", row=row, col=col))
     return eqs
 
@@ -71,8 +75,8 @@ def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
     B = game.u_col
 
     # Mixed equilibrium makes each player indifferent.
-    denom_q = (A[0, 0] - A[0, 1] - A[1, 0] + A[1, 1])
-    denom_p = (B[0, 0] - B[1, 0] - B[0, 1] + B[1, 1])
+    denom_q = A[0, 0] - A[0, 1] - A[1, 0] + A[1, 1]
+    denom_p = B[0, 0] - B[1, 0] - B[0, 1] + B[1, 1]
 
     if np.isclose(denom_q, 0.0) or np.isclose(denom_p, 0.0):
         return None
@@ -98,8 +102,12 @@ def all_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
     return eqs
 
 
-def select_equilibrium(eqs: list[NashEquilibrium], rule: str = "payoff_dominant",
-                       u_row: np.ndarray | None = None, u_col: np.ndarray | None = None) -> NashEquilibrium:
+def select_equilibrium(
+    eqs: list[NashEquilibrium],
+    rule: str = "payoff_dominant",
+    u_row: np.ndarray | None = None,
+    u_col: np.ndarray | None = None,
+) -> NashEquilibrium:
     """Select one equilibrium from a set.
 
     Rules:
@@ -113,10 +121,12 @@ def select_equilibrium(eqs: list[NashEquilibrium], rule: str = "payoff_dominant"
         raise ValueError("No equilibria to select from")
     if rule == "random" or u_row is None or u_col is None:
         return eqs[0]
+
     def exp_pay(eq: NashEquilibrium) -> tuple[float, float]:
         r = float(eq.row @ u_row @ eq.col)
         c = float(eq.row @ u_col @ eq.col)
         return r, c
+
     scores = []
     for eq in eqs:
         r, c = exp_pay(eq)

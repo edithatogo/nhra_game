@@ -7,9 +7,10 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+
 class Recorder:
     """Records structured audit trails for simulation experiments."""
-    
+
     def __init__(self, output_dir: str | Path = "outputs/audit"):
         self.output_dir = Path(output_dir)
         self.current_experiment: dict[str, Any] | None = None
@@ -28,26 +29,26 @@ class Recorder:
             "timestamp": datetime.now().isoformat(),
             "git_hash": self._get_git_hash(),
             "start_time": time.time(),
-            **metadata
+            **metadata,
         }
 
     def end_experiment(self):
         """Ends the current experiment record and saves to disk."""
         if not self.current_experiment:
             return
-            
+
         self.current_experiment["end_time"] = time.time()
         self.current_experiment["duration_seconds"] = (
             self.current_experiment["end_time"] - self.current_experiment["start_time"]
         )
-        
+
         # Save to JSON
         self.output_dir.mkdir(parents=True, exist_ok=True)
         filename = f"{self.current_experiment['experiment_name']}_{int(time.time())}.json"
         filepath = self.output_dir / filename
-        
+
         with open(filepath, "w") as f:
             json.dump(self.current_experiment, f, indent=2)
-            
+
         print(f"Audit record saved to {filepath}")
         self.current_experiment = None
