@@ -22,7 +22,12 @@
 4. **Audit Trails:** Implemented `Recorder` for high-fidelity experiment provenance.
 5. **Gold Master:** Released v25.0.0 with optimized Docker environment.
 
-## Next (v26) — Cloud & Cognitive Agents (Future Vision)
+## Completed in v26 — Codebase Maturity
+1. **Modern Tooling:** Prepared dependencies for JAX acceleration.
+2. **Community Standards:** Added CONTRIBUTING/CODE_OF_CONDUCT and automated docs deployment.
+3. **CI Hardening:** Expanded testing matrix to Ubuntu/macOS/Windows.
+
+## Next (v27) — Cloud & Cognitive Agents (Future Vision)
 
 ### Cognitive Simulation
 - **LLM Agents:** Replace heuristic game strategies with LLM-driven agents that negotiate based on actual policy documents (RAG).

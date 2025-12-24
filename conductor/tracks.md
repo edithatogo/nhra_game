@@ -18,5 +18,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [x] Track: Feature Recovery & Security Hardening (v25)
 *Link: [./conductor/tracks/feature_recovery_security_v25/](./conductor/tracks/feature_recovery_security_v25/)*
 
-## [ ] Track: Cloud & Cognitive Agents (v26)
-*Link: [./conductor/tracks/cloud_cognitive_v26/](./conductor/tracks/cloud_cognitive_v26/)*
+## [ ] Track: Codebase Maturity & Modernization (v26)
+*Link: [./conductor/tracks/codebase_maturity_v26/](./conductor/tracks/codebase_maturity_v26/)*

@@ -24,8 +24,9 @@ def test_generate_appendix(tmp_path):
     refs_path = tmp_path / "refs.json"
     with open(refs_path, "w") as f:
         import json
+
         json.dump([], f)
-    
+
     generate_appendix(registry_path, out_file, refs_path)
 
     assert out_file.exists()
