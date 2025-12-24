@@ -3,7 +3,7 @@ __version__="0.20.0"
 
 try:
     import logfire
-    logfire.configure()
-    logfire.instrument_pydantic()
+    # logfire.configure()
+    # logfire.instrument_pydantic()
 except ImportError:
     pass
