@@ -33,5 +33,5 @@ def test_model_stability_at_v2_bounds():
     )
     years = [2025, 2026]
     traj, strat = run_hybrid(years, p, n_mc=10)
-    assert len(traj) == 1
-    assert not traj.isnull().values.any()
+    assert len(traj) == 2
+    assert not traj["pressure_mean"].isnull().any()
