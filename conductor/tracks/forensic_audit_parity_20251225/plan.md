@@ -32,9 +32,9 @@
   - [x] Sub-task: Identify "Orphaned Logic" (e.g., specific subgames or feedback loops present in old versions/diagrams but absent in `engine.py`).
 - [x] **Task: Conductor - User Manual Verification 'Parity Matrix' (Protocol in workflow.md)**
 
-## Phase 5: Reporting & Finalization
+## Phase 5: Reporting & Finalization [checkpoint: 09b9d07]
 - [x] **Task 5.1: Comprehensive Audit Report** 87ef7ac
   - [x] Sub-task: Generate the new `reports/lost_features_audit.md` synthesizing findings from the matrix and traceability report.
 - [x] **Task 5.2: Recovery Candidate List** 87ef7ac
   - [x] Sub-task: Prepare a prioritized list of missing features for user approval to begin Phase 6 (Implementation).
-- [~] **Task: Conductor - User Manual Verification 'Audit Finalization' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Audit Finalization' (Protocol in workflow.md)**
