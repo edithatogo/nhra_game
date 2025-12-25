@@ -1,0 +1,6 @@
+Priority,Feature,Source,Reason,Recommendation
+1,Bargaining Outside Option (Schedule K),Diagrams,Crucial for modeling negotiation impasse,Add 'Schedule K' node to Bargaining Game payoffs
+2,Granular Audit Game (Coding vs Intensity),Legacy Zips,Provides more nuanced incentive modeling,Refactor COMP node into dual-effort stage game
+3,Multi-Equilibrium Stability Analysis,Legacy Zips,Required for robust policy inference,Re-implement legacy stability solver in current engine
+4,Discharge/Placement Strategic Node,Diagrams,Explicitly modeled in design but implicit in code,Promote discharge delay to a strategic game node
+5,D3 Interactive Network (Full v9),Intent,Required for stakeholder communication,Update interactive visual to use v9 game interplay
