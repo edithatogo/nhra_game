@@ -1,12 +1,11 @@
 # Plan: SOTA Game-Theory Model Baseline Upgrade
 
-## Phase 1: Inventory & Core Hygiene (Items E, I + Security)
+## Phase 1: Inventory & Core Hygiene (Items E, I + Security) [checkpoint: 134e9f1]
 - [x] Task: Inventory - Inspect existing tooling and dependencies
     - [x] Sub-task: Analyze `pyproject.toml`, `setup.cfg`, `requirements.txt`
     - [x] Sub-task: Detect existing linters, formatters, and CI workflows
     - [x] Sub-task: Generate inventory summary report
     <!-- Summary: Project uses Poetry. Ruff, Mypy (strict), Pytest, Nox, Pre-commit, and CI are present. Missing: Ruff security rules, Benchmarking tools, Profiling tools, aligned Nox sessions. -->
-- [ ] Task: Dev Task Runner - Implement `nox`
 - [x] Task: Dev Task Runner - Implement `nox`
     - [x] Sub-task: Create `noxfile.py` with sessions: `lint`, `tests`, `docs`
     - [x] Sub-task: Ensure idempotency (check if file exists)
@@ -17,7 +16,7 @@
 - [x] Task: CI - Establish GitHub Actions
     - [x] Sub-task: Create `.github/workflows/ci.yml` (lint + test + type)
     - [x] Sub-task: Verify CI runs on push/PR
-- [ ] Task: Conductor - User Manual Verification 'Inventory & Core Hygiene' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Inventory & Core Hygiene' (Protocol in workflow.md)
 
 ## Phase 2: Typing & Validation (Items A, B, C, K)
 - [ ] Task: Static Typing - Configure `pyright`/`mypy`
@@ -45,7 +44,7 @@
 - [ ] Task: Coverage - Configuration
     - [ ] Sub-task: Add `pytest-cov` to dev-dependencies
     - [ ] Sub-task: Configure coverage in `pyproject.toml`
-    - [ ] Sub-task: Update `nox` session to produce coverage reports
+    - [ ] Sub-task: Update `nox session to produce coverage reports
     - [ ] Sub-task: Update `.gitignore` (`htmlcov/`, `.coverage`)
 - [ ] Task: Conductor - User Manual Verification 'Testing & Coverage' (Protocol in workflow.md)
 
