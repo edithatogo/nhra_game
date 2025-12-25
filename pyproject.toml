@@ -53,7 +53,8 @@ dev = [
     "pytest", "hypothesis", "hypothesis-auto", "icontract-hypothesis", 
     "icontract", "locust", "atheris", "ruff", "mypy", "pre-commit", 
     "nox", "mkdocs", "mkdocs-material", "mutmut", "pytest-mock", 
-    "pytest-cov", "scalene", "deptry", "vulture", "bandit", "pyright",
+    "pytest-cov", "scalene", "pyinstrument", "py-spy", "memray",
+    "pytest-benchmark", "asv", "deptry", "vulture", "bandit", "pyright",
     "beartype", "typeguard", "mkdocstrings-python"
 ]
 

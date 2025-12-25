@@ -6,6 +6,9 @@ theme:
   name: material
 nav:
   - Home: index.md
+  - API Reference: api.md
+  - Testing & Verification: testing.md
+  - Performance Profiling: profiling.md
   - Context: context.md
   - Parameters: parameters.md
   - Usage: usage.md

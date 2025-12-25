@@ -1,0 +1,15 @@
+{
+    "version": 1,
+    "project": "nhra-game-theory",
+    "project_url": "https://github.com/RACMA/nhra-game-theory",
+    "repo": ".",
+    "pythons": ["3.10", "3.11", "3.12"],
+    "matrix": {
+        "numpy": [""],
+        "pandas": [""]
+    },
+    "benchmark_dir": "benchmarks",
+    "env_dir": ".asv/env",
+    "results_dir": ".asv/results",
+    "html_dir": ".asv/html"
+}

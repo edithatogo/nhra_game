@@ -40,3 +40,5 @@ mypy_errors.log
 htmlcov/
 .coverage
 coverage.xml
+profiles/
+.asv/

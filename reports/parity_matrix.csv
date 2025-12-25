@@ -1,0 +1,12 @@
+Feature,Category,Status,Source,Notes
+Influence: VFI -> Pressure,Visual,[Implemented],Diagrams,VFI spillovers into hospital
+Influence: AgedCare -> Discharge,Visual,[Implemented],Diagrams,Aged care constraints affect discharge
+Influence: Audit -> Burden,Visual,[Implemented],Diagrams,Audits increase admin burden
+Influence: Pressure -> Signalling,Visual,[Implemented],Diagrams,System pressure drives political signalling
+Logic: solve_equilibrium,Logic,[Refactored],Legacy Zips,Legacy engine component
+Logic: nash_manager,Logic,[Refactored],Legacy Zips,Legacy engine component
+Logic: monte_carlo_rollout,Logic,[Refactored],Legacy Zips,Legacy engine component
+Intent: Vertical Fiscal Imbalance,Intent,[Implemented],ChatGPT Context,Core structural framing
+Intent: Efficiency Gap,Intent,[Implemented],ChatGPT Context,Rural/regional underfunding
+Intent: Clinical Governance,Intent,[Implemented],ChatGPT Context,Safety integration condition
+Intent: Hatch/pyOpenSci,Intent,[Implemented],ChatGPT Context,Packaging standards

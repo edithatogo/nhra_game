@@ -14,4 +14,8 @@
 ## Development & Quality Assurance
 - **Build System:** Hatch
 - **Environment Orchestration:** Nox (Replacing Tox)
-- **Linting & Formatting:** Ruff
+- **Linting & Formatting:** Ruff, Bandit
+- **Static Analysis:** Pyright (Strict), Mypy, Deptry (Dependency Audit)
+- **Advanced Testing:** Hypothesis (PBT), Atheris (Fuzzing), Locust (Load), Mutmut (Mutation Testing)
+- **Runtime Verification:** Icontract (Design-by-Contract), Beartype, Typeguard
+- **Documentation:** MkDocs, Mkdocstrings
