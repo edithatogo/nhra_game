@@ -1,0 +1,4 @@
+# file: /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/src/nhra_game_theory/domain/validation.py
+# hypothesis_version: 6.148.8
+
+[0.0, 1e-09, 1.0, 100, '>', '__dict__', 'hit_rate', 'mape', 'mu_star', 'occupancy', 'occupancy_mean', 'parameter', 'rank', 'rmse', 'theil_u', 'uc', 'um', 'us', 'w', 'within4', 'within4_mean', 'year']

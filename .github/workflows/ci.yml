@@ -41,6 +41,9 @@ jobs:
       - name: Tests
         run: |
           pytest -q
+      - name: Verify Pipeline (Snakemake)
+        run: |
+          snakemake --cores 1 run_baseline context_pack --forceall
       - name: Build docs
         run: |
           mkdocs build -q

@@ -24,11 +24,11 @@ HAS_JAXTYPING = has_jaxtyping
 @runtime_checkable
 class Strategy(Protocol):
     """ Protocol for a game-theory strategy (e.g., mixed or pure). """
-    def sample(self) -> Any:
+    def sample(self) -> Any:  # pragma: no cover
         """ Sample an action from the strategy. """
         ...
 
-    def probability(self, action: Any) -> float:
+    def probability(self, action: Any) -> float:  # pragma: no cover
         """ Get the probability of a specific action. """
         ...
 
@@ -36,11 +36,11 @@ class Strategy(Protocol):
 class NormalFormGame(Protocol):
     """ Protocol for a normal-form game container. """
     @property
-    def num_players(self) -> int:
+    def num_players(self) -> int:  # pragma: no cover
         """ Number of players in the game. """
         ...
 
-    def payoffs(self, actions: IntArray) -> FloatArray:
+    def payoffs(self, actions: IntArray) -> FloatArray:  # pragma: no cover
         """ 
         Calculate payoffs for all players given an action profile.
         
@@ -55,6 +55,6 @@ class NormalFormGame(Protocol):
 @runtime_checkable
 class ExtensiveFormGame(Protocol):
     """ Protocol for an extensive-form (tree) game. """
-    def is_terminal(self, state: Any) -> bool: ...
-    def get_payoffs(self, state: Any) -> FloatArray: ...
-    def get_legal_actions(self, state: Any) -> list[Any]: ...
+    def is_terminal(self, state: Any) -> bool: ...  # pragma: no cover
+    def get_payoffs(self, state: Any) -> FloatArray: ...  # pragma: no cover
+    def get_legal_actions(self, state: Any) -> list[Any]: ...  # pragma: no cover

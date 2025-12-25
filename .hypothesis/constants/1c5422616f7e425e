@@ -1,0 +1,4 @@
+# file: /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/scripts/audit/inventory_sources.py
+# hypothesis_version: 6.148.8
+
+['*.dot', '*.mmd', '*.zip', '.', '.gemini', '.git', '.mypy_cache', '.nox', '.pytest_cache', '.ruff_cache', 'Corrupt Zips:', '__main__', '__pycache__', 'corrupt_zips', 'diagrams', 'r', 'site', 'valid_zips', 'zips']

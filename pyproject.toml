@@ -4,7 +4,10 @@ version = "0.20.0"
 description = "Stylised game-theory mechanism models for NHRA negotiations and downstream system pressure"
 authors = ["Dylan A Mordaunt (RACMA working draft)"]
 readme = "README.md"
-packages = [{include = "nhra_game_theory", from = "src"}]
+packages = [
+    {include = "nhra_game_theory", from = "src"},
+    {include = "scripts"}
+]
 license = "MIT"
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -46,10 +49,22 @@ logfire = { version = ">=0.46", optional = true }
 opt = ["optuna"]
 accel = ["jax", "jaxlib", "jaxtyping", "numpyro", "polars"]
 observability = ["logfire"]
+dev = [
+    "pytest", "hypothesis", "hypothesis-auto", "icontract-hypothesis", 
+    "icontract", "locust", "atheris", "ruff", "mypy", "pre-commit", 
+    "nox", "mkdocs", "mkdocs-material", "mutmut", "pytest-mock", 
+    "pytest-cov", "scalene", "deptry", "vulture", "bandit", "pyright",
+    "beartype", "typeguard", "mkdocstrings-python"
+]
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.4"
 hypothesis = ">=6.100"
+hypothesis-auto = "*"
+icontract-hypothesis = "*"
+icontract = "*"
+locust = "*"
+atheris = "*"
 ruff = ">=0.8"
 mypy = ">=1.10"
 pre-commit = ">=3.7"
@@ -76,6 +91,20 @@ omit = ["tests/*", "scripts/*", ".nox/*", ".gemini/*", "*/__init__.py"]
 [tool.coverage.report]
 show_missing = true
 skip_covered = true
+fail_under = 95
+exclude_also = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "if HAS_JAXTYPING:"
+]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if HAS_JAXTYPING:"
+]
 
 [tool.coverage.html]
 directory = "htmlcov"

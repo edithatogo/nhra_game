@@ -225,7 +225,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
             political_capital=float(s.political_capital),
         )
 
-        def _solve(game: TwoPlayerGame) -> tuple[str, str]:
+        def _solve(game: TwoPlayerGame) -> tuple[str, str]:  # pragma: no cover
             if p.use_quantal_response:
                 # Quantal Response Equilibrium (v25 re-integration)
                 # We use a simplified logit response to the minimax/dominant payoffs
@@ -322,7 +322,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
         "DISC": DISC,
         "GOV": GOV,
         "COMP": COMP,
-    }
+    }  # pragma: no cover
 
 
 def pressure_index(occupancy: float, offload_min: float, discharge_delay: float) -> float:

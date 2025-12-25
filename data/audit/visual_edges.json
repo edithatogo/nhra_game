@@ -1,0 +1,4396 @@
+{
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230.dot": [],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926.dot": [
+    {
+      "source": "Community",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "GP",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "ED_Arrival",
+      "target": "ED_Treat",
+      "label": ""
+    },
+    {
+      "source": "ED_Treat",
+      "target": "Admission",
+      "label": ""
+    },
+    {
+      "source": "Admission",
+      "target": "Inpatient",
+      "label": ""
+    },
+    {
+      "source": "Inpatient",
+      "target": "Ready",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_Aged",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_NDIS",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-204129.dot": [],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755.dot": [],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805.dot": [
+    {
+      "source": "DEF",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "SOFT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "POL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "VFI",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "DISC",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "ABF",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "COMP",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "GOV",
+      "target": "VFI",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935.dot": [],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210135.dot": [],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210248.dot": [
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318.dot": [
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210459.dot": [
+    {
+      "source": "METRICS",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "HUBA",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210553.dot": [
+    {
+      "source": "Place",
+      "target": "Press",
+      "label": ""
+    },
+    {
+      "source": "Signal",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Define",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621.dot": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Barg",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210703.dot": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230.dot": [],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230_improved.dot": [],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926.dot": [
+    {
+      "source": "Community",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "GP",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "ED_Arrival",
+      "target": "ED_Treat",
+      "label": ""
+    },
+    {
+      "source": "ED_Treat",
+      "target": "Admission",
+      "label": ""
+    },
+    {
+      "source": "Admission",
+      "target": "Inpatient",
+      "label": ""
+    },
+    {
+      "source": "Inpatient",
+      "target": "Ready",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_Aged",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_NDIS",
+      "label": ""
+    },
+    {
+      "source": "Block_Aged",
+      "target": "Inpatient",
+      "label": "occupancy feedback loop"
+    },
+    {
+      "source": "Inpatient",
+      "target": "ED_Treat",
+      "label": "high occupancy limits flow"
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926_improved.dot": [
+    {
+      "source": "Community",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "GP",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "ED_Arrival",
+      "target": "ED_Treat",
+      "label": ""
+    },
+    {
+      "source": "ED_Treat",
+      "target": "Admission",
+      "label": ""
+    },
+    {
+      "source": "Admission",
+      "target": "Inpatient",
+      "label": ""
+    },
+    {
+      "source": "Inpatient",
+      "target": "Ready",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_Aged",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_NDIS",
+      "label": ""
+    },
+    {
+      "source": "Block_Aged",
+      "target": "Inpatient",
+      "label": "occupancy feedback loop"
+    },
+    {
+      "source": "Inpatient",
+      "target": "ED_Treat",
+      "label": "high occupancy limits flow"
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-204129.dot": [],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-204129_improved.dot": [],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755.dot": [],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755_improved.dot": [],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805.dot": [
+    {
+      "source": "DEF",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "SOFT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "POL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "VFI",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "DISC",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "ABF",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "COMP",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "GOV",
+      "target": "VFI",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805_improved.dot": [
+    {
+      "source": "DEF",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "SOFT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "POL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "VFI",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "DISC",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "ABF",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "COMP",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "GOV",
+      "target": "VFI",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935.dot": [],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935_improved.dot": [],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210135.dot": [
+    {
+      "source": "EXTERNAL",
+      "target": "DISCHARGE",
+      "label": "spillovers"
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "PRESS",
+      "label": "delayed discharge"
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": "downstream load"
+    },
+    {
+      "source": "PRESS",
+      "target": "RISK",
+      "label": "overcrowding + holds"
+    },
+    {
+      "source": "PRESS",
+      "target": "SIGNAL",
+      "label": "media salience"
+    },
+    {
+      "source": "RISK",
+      "target": "SIGNAL",
+      "label": "safety narrative"
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": "hardens/softens stance"
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": "defines \u201c45%\u201d"
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": "data quality affects"
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": "audit rules affect"
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": "sets rules for"
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": "bailout expectations"
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": "interim extensions"
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": "fragmentation \u2191"
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": "handover continuity"
+    },
+    {
+      "source": "PRESS",
+      "target": "COMPLY",
+      "label": "scrutiny \u2191"
+    },
+    {
+      "source": "COMPLY",
+      "target": "PRESS",
+      "label": "admin burden \u2191"
+    },
+    {
+      "source": "LEVER1",
+      "target": "EXTERNAL",
+      "label": "internalise externalities"
+    },
+    {
+      "source": "LEVER1",
+      "target": "BARG",
+      "label": "reduce cost-shift payoff"
+    },
+    {
+      "source": "LEVER2",
+      "target": "GOVINT",
+      "label": "reduces parallelism"
+    },
+    {
+      "source": "LEVER2",
+      "target": "RISK",
+      "label": "improves continuity"
+    },
+    {
+      "source": "LEVER3",
+      "target": "METRICS",
+      "label": "narrows gap"
+    },
+    {
+      "source": "LEVER3",
+      "target": "PRESS",
+      "label": "reduces state fiscal stress"
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210135_improved.dot": [
+    {
+      "source": "EXTERNAL",
+      "target": "DISCHARGE",
+      "label": "spillovers"
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "PRESS",
+      "label": "delayed discharge"
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": "downstream load"
+    },
+    {
+      "source": "PRESS",
+      "target": "RISK",
+      "label": "overcrowding + holds"
+    },
+    {
+      "source": "PRESS",
+      "target": "SIGNAL",
+      "label": "media salience"
+    },
+    {
+      "source": "RISK",
+      "target": "SIGNAL",
+      "label": "safety narrative"
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": "hardens/softens stance"
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": "defines \u201c45%\u201d"
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": "data quality affects"
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": "audit rules affect"
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": "sets rules for"
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": "bailout expectations"
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": "interim extensions"
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": "fragmentation \u2191"
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": "handover continuity"
+    },
+    {
+      "source": "PRESS",
+      "target": "COMPLY",
+      "label": "scrutiny \u2191"
+    },
+    {
+      "source": "COMPLY",
+      "target": "PRESS",
+      "label": "admin burden \u2191"
+    },
+    {
+      "source": "LEVER1",
+      "target": "EXTERNAL",
+      "label": "internalise externalities"
+    },
+    {
+      "source": "LEVER1",
+      "target": "BARG",
+      "label": "reduce cost-shift payoff"
+    },
+    {
+      "source": "LEVER2",
+      "target": "GOVINT",
+      "label": "reduces parallelism"
+    },
+    {
+      "source": "LEVER2",
+      "target": "RISK",
+      "label": "improves continuity"
+    },
+    {
+      "source": "LEVER3",
+      "target": "METRICS",
+      "label": "narrows gap"
+    },
+    {
+      "source": "LEVER3",
+      "target": "PRESS",
+      "label": "reduces state fiscal stress"
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210248.dot": [
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "COMPLY",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "PRESS",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210248_improved.dot": [
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "COMPLY",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "PRESS",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318.dot": [
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "COMPLY",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "PRESS",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318_improved.dot": [
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "COMPLY",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "PRESS",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210459.dot": [
+    {
+      "source": "METRICS",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "HUBA",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210459_improved.dot": [
+    {
+      "source": "METRICS",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "HUBA",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210553.dot": [
+    {
+      "source": "Place",
+      "target": "Press",
+      "label": ""
+    },
+    {
+      "source": "Signal",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Define",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Press",
+      "target": "Audit",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Press",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210553_improved.dot": [
+    {
+      "source": "Place",
+      "target": "Press",
+      "label": ""
+    },
+    {
+      "source": "Signal",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Define",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Press",
+      "target": "Audit",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Press",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621.dot": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Barg",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621_improved.dot": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Barg",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210703.dot": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210703_improved.dot": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_from_mermaid/graphical_abstract_v9.dot": [],
+  "diagrams/graphviz_sources/games_network_minimal_v9.dot": [
+    {
+      "source": "BARG",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "CAP",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "GOV",
+      "label": ""
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "DEF",
+      "target": "CAP",
+      "label": ""
+    },
+    {
+      "source": "CAP",
+      "target": "SHIFT",
+      "label": ""
+    },
+    {
+      "source": "SHIFT",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "DISC",
+      "target": "OCC",
+      "label": ""
+    },
+    {
+      "source": "FLOW",
+      "target": "ED",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "FLOW",
+      "label": ""
+    },
+    {
+      "source": "OCC",
+      "target": "OFF",
+      "label": ""
+    },
+    {
+      "source": "OFF",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "ED",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "GOV",
+      "target": "FLOW",
+      "label": ""
+    }
+  ],
+  "diagrams/graphviz_sources/risk_pathway_v9.dot": [
+    {
+      "source": "UP",
+      "target": "DISC",
+      "label": ""
+    },
+    {
+      "source": "BLOCK",
+      "target": "OCC",
+      "label": ""
+    },
+    {
+      "source": "OCC",
+      "target": "OFF",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230.mmd": [],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926.mmd": [
+    {
+      "source": "Community",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "GP",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "ED_Arrival",
+      "target": "ED_Treat",
+      "label": ""
+    },
+    {
+      "source": "ED_Treat",
+      "target": "Admission",
+      "label": ""
+    },
+    {
+      "source": "Admission",
+      "target": "Inpatient",
+      "label": ""
+    },
+    {
+      "source": "Inpatient",
+      "target": "Ready",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_Aged",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_NDIS",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-204129.mmd": [],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755.mmd": [],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805.mmd": [
+    {
+      "source": "DEF",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "SOFT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "POL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "VFI",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "DISC",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "ABF",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "COMP",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "GOV",
+      "target": "VFI",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935.mmd": [],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210135.mmd": [],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210248.mmd": [
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318.mmd": [
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210459.mmd": [
+    {
+      "source": "METRICS",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "HUBA",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210553.mmd": [
+    {
+      "source": "Place",
+      "target": "Press",
+      "label": ""
+    },
+    {
+      "source": "Signal",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Define",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621.mmd": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Barg",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_from_graphviz/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210703.mmd": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_from_graphviz/games_network_minimal_v9.mmd": [
+    {
+      "source": "BARG",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "CAP",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "GOV",
+      "label": ""
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "DEF",
+      "target": "CAP",
+      "label": ""
+    },
+    {
+      "source": "CAP",
+      "target": "SHIFT",
+      "label": ""
+    },
+    {
+      "source": "SHIFT",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "DISC",
+      "target": "OCC",
+      "label": ""
+    },
+    {
+      "source": "FLOW",
+      "target": "ED",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "FLOW",
+      "label": ""
+    },
+    {
+      "source": "OCC",
+      "target": "OFF",
+      "label": ""
+    },
+    {
+      "source": "OFF",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "ED",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "GOV",
+      "target": "FLOW",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_from_graphviz/risk_pathway_v9.mmd": [],
+  "diagrams/mermaid_generated/graphical_abstract_v9.mmd": [
+    {
+      "source": "a",
+      "target": "B",
+      "label": ""
+    },
+    {
+      "source": "b",
+      "target": "C",
+      "label": ""
+    },
+    {
+      "source": "c",
+      "target": "D",
+      "label": ""
+    },
+    {
+      "source": "a",
+      "target": "F",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230.mmd": [
+    {
+      "source": "V",
+      "target": "T",
+      "label": ""
+    },
+    {
+      "source": "I",
+      "target": "X",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926.mmd": [
+    {
+      "source": "neutral",
+      "target": "GP",
+      "label": ""
+    },
+    {
+      "source": "Community",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "GP",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "ED_Arrival",
+      "target": "ED_Treat",
+      "label": ""
+    },
+    {
+      "source": "ED_Treat",
+      "target": "Admission",
+      "label": ""
+    },
+    {
+      "source": "Admission",
+      "target": "Inpatient",
+      "label": ""
+    },
+    {
+      "source": "Inpatient",
+      "target": "Ready",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_Aged",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_NDIS",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-204129.mmd": [
+    {
+      "source": "shift",
+      "target": "ED_Pres",
+      "label": ""
+    },
+    {
+      "source": "shift",
+      "target": "Bed_Occ",
+      "label": ""
+    },
+    {
+      "source": "shift",
+      "target": "Bed_Occ",
+      "label": ""
+    },
+    {
+      "source": "surge",
+      "target": "ED",
+      "label": ""
+    },
+    {
+      "source": "discharge",
+      "target": "Wards",
+      "label": ""
+    },
+    {
+      "source": "holding",
+      "target": "Amb",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755.mmd": [
+    {
+      "source": "means",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "toughness",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "constraints",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "boundaries",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "load",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "narratives",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "baselines",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "regime",
+      "target": "COMP",
+      "label": ""
+    },
+    {
+      "source": "deals",
+      "target": "SOFT",
+      "label": ""
+    },
+    {
+      "source": "conditions",
+      "target": "GOV",
+      "label": ""
+    },
+    {
+      "source": "discharge",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "blame",
+      "target": "POL",
+      "label": ""
+    },
+    {
+      "source": "softens",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "pressure",
+      "target": "BARG",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805.mmd": [
+    {
+      "source": "DEF",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "SOFT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "POL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "VFI",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "DISC",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "ABF",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "COMP",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "GOV",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "DEF",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935.mmd": [
+    {
+      "source": "bargaining",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "constraints",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "boundaries",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "load",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "data",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "rules",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "audits",
+      "target": "COMP",
+      "label": ""
+    },
+    {
+      "source": "deals",
+      "target": "SOFT",
+      "label": ""
+    },
+    {
+      "source": "terms",
+      "target": "GOV",
+      "label": ""
+    },
+    {
+      "source": "demand",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "loop",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "pressure",
+      "target": "POL",
+      "label": ""
+    },
+    {
+      "source": "stance",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "response",
+      "target": "BARG",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210135.mmd": [
+    {
+      "source": "EXTERNAL",
+      "target": "DISCHARGE",
+      "label": "spillovers"
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "PRESS",
+      "label": "delayed discharge"
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": "downstream load"
+    },
+    {
+      "source": "PRESS",
+      "target": "RISK",
+      "label": "overcrowding + holds"
+    },
+    {
+      "source": "PRESS",
+      "target": "SIGNAL",
+      "label": "media salience"
+    },
+    {
+      "source": "RISK",
+      "target": "SIGNAL",
+      "label": "safety narrative"
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": "hardens/softens stance"
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": "defines \u201c45%\u201d"
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": "data quality affects"
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": "audit rules affect"
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": "sets rules for"
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": "bailout expectations"
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": "interim extensions"
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": "fragmentation \u2191"
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": "handover continuity"
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210248.mmd": [
+    {
+      "source": "EXTERNAL",
+      "target": "DISCHARGE",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "SIGNAL",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318.mmd": [
+    {
+      "source": "EXTERNAL",
+      "target": "DISCHARGE",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "SIGNAL",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210459.mmd": [
+    {
+      "source": "METRICS",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "HUBA",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "HUBB",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "capacity",
+      "target": "HUBB",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210553.mmd": [
+    {
+      "source": "Shift",
+      "target": "Place",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Press",
+      "label": ""
+    },
+    {
+      "source": "Press",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Signal",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Define",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621.mmd": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Barg",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210703.mmd": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230_improved.mmd": [
+    {
+      "source": "V",
+      "target": "T",
+      "label": ""
+    },
+    {
+      "source": "I",
+      "target": "X",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926_improved.mmd": [
+    {
+      "source": "neutral",
+      "target": "GP",
+      "label": ""
+    },
+    {
+      "source": "Community",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "GP",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "ED_Arrival",
+      "target": "ED_Treat",
+      "label": ""
+    },
+    {
+      "source": "ED_Treat",
+      "target": "Admission",
+      "label": ""
+    },
+    {
+      "source": "Admission",
+      "target": "Inpatient",
+      "label": ""
+    },
+    {
+      "source": "Inpatient",
+      "target": "Ready",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_Aged",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_NDIS",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-204129_improved.mmd": [
+    {
+      "source": "shift",
+      "target": "ED_Pres",
+      "label": ""
+    },
+    {
+      "source": "shift",
+      "target": "Bed_Occ",
+      "label": ""
+    },
+    {
+      "source": "shift",
+      "target": "Bed_Occ",
+      "label": ""
+    },
+    {
+      "source": "surge",
+      "target": "ED",
+      "label": ""
+    },
+    {
+      "source": "discharge",
+      "target": "Wards",
+      "label": ""
+    },
+    {
+      "source": "holding",
+      "target": "Amb",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755_improved.mmd": [
+    {
+      "source": "means",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "toughness",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "constraints",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "boundaries",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "load",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "narratives",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "baselines",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "regime",
+      "target": "COMP",
+      "label": ""
+    },
+    {
+      "source": "deals",
+      "target": "SOFT",
+      "label": ""
+    },
+    {
+      "source": "conditions",
+      "target": "GOV",
+      "label": ""
+    },
+    {
+      "source": "discharge",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "blame",
+      "target": "POL",
+      "label": ""
+    },
+    {
+      "source": "softens",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "pressure",
+      "target": "BARG",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805_improved.mmd": [
+    {
+      "source": "DEF",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "SOFT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "POL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "VFI",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "DISC",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "ABF",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "COMP",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "GOV",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "DEF",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935_improved.mmd": [
+    {
+      "source": "bargaining",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "constraints",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "boundaries",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "load",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "data",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "rules",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "audits",
+      "target": "COMP",
+      "label": ""
+    },
+    {
+      "source": "deals",
+      "target": "SOFT",
+      "label": ""
+    },
+    {
+      "source": "terms",
+      "target": "GOV",
+      "label": ""
+    },
+    {
+      "source": "demand",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "loop",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "pressure",
+      "target": "POL",
+      "label": ""
+    },
+    {
+      "source": "stance",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "response",
+      "target": "BARG",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210135_improved.mmd": [
+    {
+      "source": "EXTERNAL",
+      "target": "DISCHARGE",
+      "label": "spillovers"
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "PRESS",
+      "label": "delayed discharge"
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": "downstream load"
+    },
+    {
+      "source": "PRESS",
+      "target": "RISK",
+      "label": "overcrowding + holds"
+    },
+    {
+      "source": "PRESS",
+      "target": "SIGNAL",
+      "label": "media salience"
+    },
+    {
+      "source": "RISK",
+      "target": "SIGNAL",
+      "label": "safety narrative"
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": "hardens/softens stance"
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": "defines \u201c45%\u201d"
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": "data quality affects"
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": "audit rules affect"
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": "sets rules for"
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": "bailout expectations"
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": "interim extensions"
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": "fragmentation \u2191"
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": "handover continuity"
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210248_improved.mmd": [
+    {
+      "source": "EXTERNAL",
+      "target": "DISCHARGE",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "SIGNAL",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318_improved.mmd": [
+    {
+      "source": "EXTERNAL",
+      "target": "DISCHARGE",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "SIGNAL",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210459_improved.mmd": [
+    {
+      "source": "METRICS",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "HUBA",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "HUBB",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "capacity",
+      "target": "HUBB",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210553_improved.mmd": [
+    {
+      "source": "Shift",
+      "target": "Place",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Press",
+      "label": ""
+    },
+    {
+      "source": "Press",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Signal",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Define",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621_improved.mmd": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Barg",
+      "label": ""
+    }
+  ],
+  "diagrams/mermaid_user_improved/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210703_improved.mmd": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230.mmd": [
+    {
+      "source": "V",
+      "target": "T",
+      "label": ""
+    },
+    {
+      "source": "I",
+      "target": "X",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926.mmd": [
+    {
+      "source": "neutral",
+      "target": "GP",
+      "label": ""
+    },
+    {
+      "source": "Community",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "GP",
+      "target": "ED_Arrival",
+      "label": ""
+    },
+    {
+      "source": "ED_Arrival",
+      "target": "ED_Treat",
+      "label": ""
+    },
+    {
+      "source": "ED_Treat",
+      "target": "Admission",
+      "label": ""
+    },
+    {
+      "source": "Admission",
+      "target": "Inpatient",
+      "label": ""
+    },
+    {
+      "source": "Inpatient",
+      "target": "Ready",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_Aged",
+      "label": ""
+    },
+    {
+      "source": "Ready",
+      "target": "Block_NDIS",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-204129.mmd": [
+    {
+      "source": "shift",
+      "target": "ED_Pres",
+      "label": ""
+    },
+    {
+      "source": "shift",
+      "target": "Bed_Occ",
+      "label": ""
+    },
+    {
+      "source": "shift",
+      "target": "Bed_Occ",
+      "label": ""
+    },
+    {
+      "source": "surge",
+      "target": "ED",
+      "label": ""
+    },
+    {
+      "source": "discharge",
+      "target": "Wards",
+      "label": ""
+    },
+    {
+      "source": "holding",
+      "target": "Amb",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755.mmd": [
+    {
+      "source": "means",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "toughness",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "constraints",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "boundaries",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "load",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "narratives",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "baselines",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "regime",
+      "target": "COMP",
+      "label": ""
+    },
+    {
+      "source": "deals",
+      "target": "SOFT",
+      "label": ""
+    },
+    {
+      "source": "conditions",
+      "target": "GOV",
+      "label": ""
+    },
+    {
+      "source": "discharge",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "blame",
+      "target": "POL",
+      "label": ""
+    },
+    {
+      "source": "softens",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "pressure",
+      "target": "BARG",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805.mmd": [
+    {
+      "source": "DEF",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "SOFT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "POL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "VFI",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "DISC",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "ABF",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "COMP",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "GOV",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "DEF",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935.mmd": [
+    {
+      "source": "bargaining",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "constraints",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "boundaries",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "load",
+      "target": "VFI",
+      "label": ""
+    },
+    {
+      "source": "data",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "rules",
+      "target": "DEF",
+      "label": ""
+    },
+    {
+      "source": "audits",
+      "target": "COMP",
+      "label": ""
+    },
+    {
+      "source": "deals",
+      "target": "SOFT",
+      "label": ""
+    },
+    {
+      "source": "terms",
+      "target": "GOV",
+      "label": ""
+    },
+    {
+      "source": "demand",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "loop",
+      "target": "OUT",
+      "label": ""
+    },
+    {
+      "source": "pressure",
+      "target": "POL",
+      "label": ""
+    },
+    {
+      "source": "stance",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "response",
+      "target": "BARG",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210135.mmd": [
+    {
+      "source": "EXTERNAL",
+      "target": "DISCHARGE",
+      "label": "spillovers"
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "PRESS",
+      "label": "delayed discharge"
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": "downstream load"
+    },
+    {
+      "source": "PRESS",
+      "target": "RISK",
+      "label": "overcrowding + holds"
+    },
+    {
+      "source": "PRESS",
+      "target": "SIGNAL",
+      "label": "media salience"
+    },
+    {
+      "source": "RISK",
+      "target": "SIGNAL",
+      "label": "safety narrative"
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": "hardens/softens stance"
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": "defines \u201c45%\u201d"
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": "data quality affects"
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": "audit rules affect"
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": "sets rules for"
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": "bailout expectations"
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": "interim extensions"
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": "fragmentation \u2191"
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": "handover continuity"
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210248.mmd": [
+    {
+      "source": "EXTERNAL",
+      "target": "DISCHARGE",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "SIGNAL",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318.mmd": [
+    {
+      "source": "EXTERNAL",
+      "target": "DISCHARGE",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "PRESS",
+      "label": ""
+    },
+    {
+      "source": "PRESS",
+      "target": "SIGNAL",
+      "label": ""
+    },
+    {
+      "source": "METRICS",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "BAILOUT",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "RISK",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210459.mmd": [
+    {
+      "source": "METRICS",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "COMPLY",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "CODING",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "BAILOUT",
+      "target": "HUBA",
+      "label": ""
+    },
+    {
+      "source": "HUBA",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "BARG",
+      "target": "METRICS",
+      "label": ""
+    },
+    {
+      "source": "EXTERNAL",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "DISCHARGE",
+      "target": "HUBB",
+      "label": ""
+    },
+    {
+      "source": "GOVINT",
+      "target": "EXTERNAL",
+      "label": ""
+    },
+    {
+      "source": "HUBB",
+      "target": "RISK",
+      "label": ""
+    },
+    {
+      "source": "SIGNAL",
+      "target": "BARG",
+      "label": ""
+    },
+    {
+      "source": "capacity",
+      "target": "HUBB",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210553.mmd": [
+    {
+      "source": "Shift",
+      "target": "Place",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Press",
+      "label": ""
+    },
+    {
+      "source": "Press",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Signal",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Define",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621.mmd": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Barg",
+      "label": ""
+    }
+  ],
+  "docs/diagrams/Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210703.mmd": [
+    {
+      "source": "Define",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Audit",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Code",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Bail",
+      "target": "Hrule",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Barg",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Define",
+      "label": ""
+    },
+    {
+      "source": "Barg",
+      "target": "Bail",
+      "label": ""
+    },
+    {
+      "source": "Shift",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Place",
+      "target": "Hpress",
+      "label": ""
+    },
+    {
+      "source": "Integr",
+      "target": "Shift",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Risk",
+      "label": ""
+    },
+    {
+      "source": "Hpress",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Risk",
+      "target": "Signal",
+      "label": ""
+    },
+    {
+      "source": "Hrule",
+      "target": "Hpress",
+      "label": ""
+    }
+  ]
+}

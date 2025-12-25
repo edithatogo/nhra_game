@@ -36,3 +36,14 @@ def test_psa_smoke():
     p = Params()
     psa = probabilistic_sensitivity(years, p, ["pooled"], seed=1, n_param=10, n_mc=10)
     assert len(psa) == 10
+
+
+def test_imports():
+    """Verify that core modules can be imported."""
+    import nhra_game_theory
+    import nhra_game_theory.engine
+    import nhra_game_theory.equilibrium
+    from nhra_game_theory.interfaces import Strategy, NormalFormGame
+    assert nhra_game_theory.__version__ is not None
+    assert Strategy is not None
+    assert NormalFormGame is not None

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from icontract import ensure
 
 
 def logistic(x: float) -> float:
@@ -28,6 +29,7 @@ def mixed_strategy_logit(u_hard: float, u_soft: float, k: float = 4.0) -> float:
     return float(logistic(k * (float(u_hard) - float(u_soft))))
 
 
+@ensure(lambda result: 0.0 <= result.p_hard <= 1.0)
 @dataclass(frozen=True)
 class BargainingPayoffs:
     u_hard: float

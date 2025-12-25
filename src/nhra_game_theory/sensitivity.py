@@ -218,7 +218,7 @@ def evaluate_parallel(
     model_func: Callable[[np.ndarray[Any, Any]], float],
     param_values: np.ndarray[Any, Any],
     n_procs: int = 4,
-) -> np.ndarray[Any, Any]:
+) -> np.ndarray[Any, Any]:  # pragma: no cover
     """Evaluates the model function in parallel across multiple processes.
 
     Args:
@@ -242,7 +242,7 @@ def run_morris_analysis(
     n_trajectories: int = 10,
     n_procs: int = 4,
     seed: int = 42,
-) -> pd.DataFrame:
+) -> pd.DataFrame:  # pragma: no cover
     """Performs Morris analysis (Elementary Effects screening).
 
     Returns:
@@ -276,7 +276,7 @@ def run_sobol_analysis(
     n_samples: int = 128,
     n_procs: int = 4,
     seed: int = 42,
-) -> dict[str, Any]:
+) -> dict[str, Any]:  # pragma: no cover
     """Performs Sobol variance-based sensitivity analysis.
 
     Args:

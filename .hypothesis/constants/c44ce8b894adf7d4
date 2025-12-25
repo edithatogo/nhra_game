@@ -1,0 +1,4 @@
+# file: /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/scripts/data/ingest_economic_spine.py
+# hypothesis_version: 6.148.8
+
+[100.0, 103.5, 106.8, 109.5, 112.2, 114.8, 117.4, 120.3, 123.3, 125.8, 128.3, 131.5, 137.9, 144.8, 152.0, 4808.0, 4883.0, 4933.07, 4971.0, 4993.0, 5007.0, 5012.0, 5134.0, 5320.0, 5597.0, 5797.0, 6032.0, 6465.0, 7258.0, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, '\nSample Data:', 'NEP', 'WPI', 'Year', '__main__', 'nep_per_nwau', 'wpi_health_index', 'year']
