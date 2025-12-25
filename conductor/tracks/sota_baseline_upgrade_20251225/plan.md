@@ -19,22 +19,22 @@
 - [x] Task: Conductor - User Manual Verification 'Inventory & Core Hygiene' (Protocol in workflow.md)
 
 ## Phase 2: Typing & Validation (Items A, B, C, K)
-- [ ] Task: Static Typing - Configure `pyright`/`mypy`
-    - [ ] Sub-task: Add type checker to dev-dependencies
-    - [ ] Sub-task: Generate strict config (baseline existing errors if needed)
-    - [ ] Sub-task: Add `typing_extensions` if needed
-- [ ] Task: Runtime Validation - Boundary Checks
-    - [ ] Sub-task: Check for existing boundary inputs (CLI/Config)
-    - [ ] Sub-task: Add `pydantic` only if applicable boundaries exist
-- [ ] Task: Numeric Typing - Protocol Scaffolding
-    - [ ] Sub-task: Create `src/nhra_game/interfaces/` (or equivalent)
-    - [ ] Sub-task: Add `numpy.typing.NDArray` support
-    - [ ] Sub-task: Add `jaxtyping` if JAX is detected
-    - [ ] Sub-task: Create `protocols.py` (Strategy, NormalFormGame)
-- [ ] Task: Runtime Type Checks - Smoke Test
-    - [ ] Sub-task: Add `beartype`, `typeguard` to dev-deps
-    - [ ] Sub-task: Create `tests/test_runtime_typecheck_smoke.py`
-    - [ ] Sub-task: Add `nox -s type_runtime` session
+- [x] Task: Static Typing - Configure `pyright`/`mypy`
+    - [x] Sub-task: Add type checker to dev-dependencies
+    - [x] Sub-task: Generate strict config (baseline existing errors if needed)
+    - [x] Sub-task: Add `typing_extensions` if needed (Skipped - not yet needed)
+- [x] Task: Runtime Validation - Boundary Checks
+    - [x] Sub-task: Check for existing boundary inputs (CLI/Config)
+    - [x] Sub-task: Add `pydantic` only if applicable boundaries exist (Already used in config.py)
+- [x] Task: Numeric Typing - Protocol Scaffolding
+    - [x] Sub-task: Create `src/nhra_game_theory/interfaces/` (or equivalent)
+    - [x] Sub-task: Add `numpy.typing.NDArray` support
+    - [x] Sub-task: Add `jaxtyping` if JAX is detected (Support added via try-except in protocols.py)
+    - [x] Sub-task: Create `protocols.py` (Strategy, NormalFormGame)
+- [x] Task: Runtime Type Checks - Smoke Test
+    - [x] Sub-task: Add `beartype`, `typeguard` to dev-deps
+    - [x] Sub-task: Create `tests/test_runtime_typecheck_smoke.py`
+    - [x] Sub-task: Add `nox -s type_runtime` session
 - [ ] Task: Conductor - User Manual Verification 'Typing & Validation' (Protocol in workflow.md)
 
 ## Phase 3: Testing & Coverage (Items D, H)

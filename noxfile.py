@@ -22,10 +22,11 @@ def lint(session: nox.Session) -> None:
 
 @nox.session(name="type")
 def type_check(session: nox.Session) -> None:
-    """Run static type checking using mypy."""
+    """Run static type checking using mypy and pyright."""
     session.install(".[dev,opt]")
-    session.install("mypy")
+    session.install("mypy", "pyright")
     session.run("mypy", "src")
+    session.run("pyright", "src")
 
 
 @nox.session
@@ -61,6 +62,13 @@ def bench(session: nox.Session) -> None:
 @nox.session
 def asv_quick(session: nox.Session) -> None:
     """Run quick ASV benchmarks."""
-    session.install("asv", "virtualenv")
+    session.install("asv", "virtualenv") 
     # asv requires virtualenv often
     session.run("asv", "run", "--quick", "--show-stderr", external=True)
+
+@nox.session(name="type_runtime")
+def type_runtime(session: nox.Session) -> None:
+    """Run tests with runtime type checking enabled."""
+    session.install(".[dev,opt]")
+    session.install("beartype", "typeguard")
+    session.run("pytest", "tests/test_runtime_typecheck_smoke.py")

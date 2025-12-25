@@ -1,0 +1,9 @@
+{
+  "include": ["src"],
+  "exclude": ["**/__pycache__", ".nox", ".gemini", "outputs", "reports"],
+  "strict": ["src"],
+  "typeCheckingMode": "strict",
+  "pythonVersion": "3.10",
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false
+}
