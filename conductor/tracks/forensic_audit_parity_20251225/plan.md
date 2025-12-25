@@ -19,13 +19,13 @@
   - [x] Sub-task: Implement `src/nhra_game_theory/audit/visual_trace.py` to parse Mermaid/Graphviz files and extract strategic "edges" (influence logic).
 - [x] **Task: Conductor - User Manual Verification 'Forensic Tools' (Protocol in workflow.md)**
 
-## Phase 3: ChatGPT Context Capture
+## Phase 3: ChatGPT Context Capture [checkpoint: 228fbd0]
 - [x] **Task 3.1: ChatGPT Session Capture**
   - [x] Sub-task: Use the headful browser to load the ChatGPT origin link, capture the conversation, and save as `context/origin_chatgpt_context.md`.
-- [~] **Task: Conductor - User Manual Verification 'Context Capture' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Context Capture' (Protocol in workflow.md)**
 
 ## Phase 4: Parity Analysis & Matrix Generation
-- [ ] **Task 4.1: Cross-Reference Engine (TDD)**
+- [~] **Task 4.1: Cross-Reference Engine (TDD)**
   - [ ] Sub-task: Implement `scripts/audit/generate_parity_matrix.py` to compare fingerprints vs current repo vs diagram edges vs ChatGPT intent.
   - [ ] Sub-task: Generate `reports/parity_matrix.csv` with status `[Implemented]`, `[Refactored]`, or `[Missing]`.
 - [ ] **Task 4.2: Gap Identification**
