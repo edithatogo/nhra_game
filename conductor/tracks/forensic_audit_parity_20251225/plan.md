@@ -15,9 +15,9 @@
 - [x] **Task 2.1: AST Logic Fingerprinting Tool (TDD)** a6b8215
   - [x] Sub-task: Implement `src/nhra_game_theory/audit/fingerprint.py` to extract function signatures, constants, and subgame logic from Python files (handling legacy versions).
   - [x] Sub-task: Implement a loop to unzip and fingerprint every archived `.zip`.
-- [~] **Task 2.2: Visual Traceability Tool (TDD)**
-  - [ ] Sub-task: Implement `src/nhra_game_theory/audit/visual_trace.py` to parse Mermaid/Graphviz files and extract strategic "edges" (influence logic).
-- [ ] **Task: Conductor - User Manual Verification 'Forensic Tools' (Protocol in workflow.md)**
+- [x] **Task 2.2: Visual Traceability Tool (TDD)** 39258b9
+  - [x] Sub-task: Implement `src/nhra_game_theory/audit/visual_trace.py` to parse Mermaid/Graphviz files and extract strategic "edges" (influence logic).
+- [~] **Task: Conductor - User Manual Verification 'Forensic Tools' (Protocol in workflow.md)**
 
 ## Phase 3: ChatGPT Context Capture
 - [ ] **Task 3.1: ChatGPT Session Capture**
