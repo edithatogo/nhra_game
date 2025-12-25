@@ -1,10 +1,10 @@
 # Plan: Forensic Parity Audit & Feature Recovery
 
-## Phase 1: Automated Parity Baseline
+## Phase 1: Automated Parity Baseline [checkpoint: 50314e5]
 - [x] Task: Create Parity Regression Utility
     - [x] Sub-task: Develop `tests/test_dashboard_parity.py` to compare trajectories between `engine.py` and `dashboard_v21.py` logic.
     - [x] Sub-task: Audit statistical divergence between "Lite" (50 MC) and "Full" (1000 MC) modes.
-- [ ] Task: Conductor - User Manual Verification 'Automated Parity Baseline' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Automated Parity Baseline' (Protocol in workflow.md)
 
 ## Phase 2: Feature & Logic Audit
 - [ ] Task: Audit Strategic Games & Network
