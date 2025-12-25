@@ -28,9 +28,9 @@
 - [x] **Task 4.1: Cross-Reference Engine (TDD)** 9ef759e
   - [x] Sub-task: Implement `scripts/audit/generate_parity_matrix.py` to compare fingerprints vs current repo vs diagram edges vs ChatGPT intent.
   - [x] Sub-task: Generate `reports/parity_matrix.csv` with status `[Implemented]`, `[Refactored]`, or `[Missing]`.
-- [~] **Task 4.2: Gap Identification**
-  - [ ] Sub-task: Identify "Orphaned Logic" (e.g., specific subgames or feedback loops present in old versions/diagrams but absent in `engine.py`).
-- [ ] **Task: Conductor - User Manual Verification 'Parity Matrix' (Protocol in workflow.md)**
+- [x] **Task 4.2: Gap Identification** 364077c
+  - [x] Sub-task: Identify "Orphaned Logic" (e.g., specific subgames or feedback loops present in old versions/diagrams but absent in `engine.py`).
+- [~] **Task: Conductor - User Manual Verification 'Parity Matrix' (Protocol in workflow.md)**
 
 ## Phase 5: Reporting & Finalization
 - [ ] **Task 5.1: Comprehensive Audit Report**
