@@ -44,10 +44,18 @@
     - [x] Sub-task: Create `tests/README.md`
 - [x] Task: Conductor - User Manual Verification 'E2E Pipeline' (Protocol in workflow.md)
 
-## Phase 6: Performance & Benchmarking (Items F, G)
-- [ ] Task: Profiling - Setup Tools
-- [ ] Task: Benchmarking - Setup `pytest-benchmark` & `asv`
-- [ ] Task: Conductor - User Manual Verification 'Performance & Benchmarking' (Protocol in workflow.md)
+## Phase 6: Performance & Benchmarking (Items F, G) [checkpoint: d034f7c]
+- [x] Task: Profiling - Setup Tools
+    - [x] Sub-task: Add `pyinstrument`, `py-spy`, `memray` to dev-deps
+    - [x] Sub-task: Create `scripts/profile_target.py`
+    - [x] Sub-task: Create `docs/profiling.md`
+    - [x] Sub-task: Update `.gitignore` (`profiles/`)
+- [x] Task: Benchmarking - Setup `pytest-benchmark` & `asv`
+    - [x] Sub-task: Add tools to dev-dependencies
+    - [x] Sub-task: Create `benchmarks/` directory and skeleton
+    - [x] Sub-task: Create `asv.conf.json`
+    - [x] Sub-task: Update `.gitignore` (`.asv/`)
+- [x] Task: Conductor - User Manual Verification 'Performance & Benchmarking' (Protocol in workflow.md)
 
 ## Phase 7: Documentation & Final Polish (Item J)
 - [ ] Task: Documentation - MkDocs
