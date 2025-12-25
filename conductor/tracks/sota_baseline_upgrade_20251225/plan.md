@@ -34,7 +34,7 @@
     - [x] Sub-task: Add `nox -s load` session
 - [ ] Task: Conductor - User Manual Verification 'Advanced Testing' (Protocol in workflow.md)
 
-## Phase 5: E2E Pipeline & Snakemake [checkpoint: 72439d5]
+## Phase 5: E2E Pipeline & Snakemake [checkpoint: 0bc304b]
 - [x] Task: E2E Pipeline Verification
     - [x] Sub-task: Create `tests/e2e/test_pipeline.py` using `pytest`
     - [x] Sub-task: Ensure it triggers and verifies the full `snakemake` pipeline (Verified on Python 3.11)
@@ -42,7 +42,7 @@
     - [x] Sub-task: Add Snakemake execution step to `.github/workflows/ci.yml`
 - [x] Task: Documentation - Test Procedures
     - [x] Sub-task: Create `tests/README.md`
-- [ ] Task: Conductor - User Manual Verification 'E2E Pipeline' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'E2E Pipeline' (Protocol in workflow.md)
 
 ## Phase 6: Performance & Benchmarking (Items F, G)
 - [ ] Task: Profiling - Setup Tools
