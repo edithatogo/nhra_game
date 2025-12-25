@@ -24,16 +24,16 @@
   - [x] Sub-task: Use the headful browser to load the ChatGPT origin link, capture the conversation, and save as `context/origin_chatgpt_context.md`.
 - [x] **Task: Conductor - User Manual Verification 'Context Capture' (Protocol in workflow.md)**
 
-## Phase 4: Parity Analysis & Matrix Generation
+## Phase 4: Parity Analysis & Matrix Generation [checkpoint: 97f0f79]
 - [x] **Task 4.1: Cross-Reference Engine (TDD)** 9ef759e
   - [x] Sub-task: Implement `scripts/audit/generate_parity_matrix.py` to compare fingerprints vs current repo vs diagram edges vs ChatGPT intent.
   - [x] Sub-task: Generate `reports/parity_matrix.csv` with status `[Implemented]`, `[Refactored]`, or `[Missing]`.
 - [x] **Task 4.2: Gap Identification** 364077c
   - [x] Sub-task: Identify "Orphaned Logic" (e.g., specific subgames or feedback loops present in old versions/diagrams but absent in `engine.py`).
-- [~] **Task: Conductor - User Manual Verification 'Parity Matrix' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Parity Matrix' (Protocol in workflow.md)**
 
 ## Phase 5: Reporting & Finalization
-- [ ] **Task 5.1: Comprehensive Audit Report**
+- [~] **Task 5.1: Comprehensive Audit Report**
   - [ ] Sub-task: Generate the new `reports/lost_features_audit.md` synthesizing findings from the matrix and traceability report.
 - [ ] **Task 5.2: Recovery Candidate List**
   - [ ] Sub-task: Prepare a prioritized list of missing features for user approval to begin Phase 6 (Implementation).
