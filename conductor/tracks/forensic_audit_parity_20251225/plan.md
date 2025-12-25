@@ -3,9 +3,9 @@
 **Goal:** Achieve 100% feature parity by auditing archived zips, diagrams, and ChatGPT context against the current repository using AST fingerprinting and visual-to-code traceability.
 
 ## Phase 1: Environment & Source Discovery
-- [~] **Task 1.1: Source Inventory (TDD)**
-  - [ ] Sub-task: Implement `scripts/audit/inventory_sources.py` to recursively list all `.zip` files and diagram files (`.mmd`, `.dot`).
-  - [ ] Sub-task: Verify that all zip files found in `archive/` and the root are accessible.
+- [x] **Task 1.1: Source Inventory (TDD)** cbe0c5a
+  - [x] Sub-task: Implement `scripts/audit/inventory_sources.py` to recursively list all `.zip` files and diagram files (`.mmd`, `.dot`).
+  - [x] Sub-task: Verify that all zip files found in `archive/` and the root are accessible.
 - [ ] **Task 1.2: Audit Infrastructure Setup**
   - [ ] Sub-task: Install `playwright` or `selenium` for headful browser capture.
   - [ ] Sub-task: Archive existing `reports/lost_features_audit.md` to `archive/legacy_versions/lost_features_audit_v25.md`.
