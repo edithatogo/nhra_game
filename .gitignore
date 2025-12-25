@@ -37,3 +37,6 @@ AGENTS.md
 # Reports and logs
 coverage.json
 mypy_errors.log
+htmlcov/
+.coverage
+coverage.xml

@@ -41,7 +41,7 @@ def coverage(session: nox.Session) -> None:
     """Run tests and generate coverage report."""
     session.install(".[dev,opt]")
     session.install("pytest-cov")
-    session.run("pytest", "--cov=src", "--cov-report=term-missing")
+    session.run("pytest", "--cov=src", "--cov-report=term-missing", "--cov-report=xml", "--cov-report=html")
 
 
 @nox.session
