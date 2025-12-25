@@ -11,16 +11,16 @@
   - [x] Sub-task: Archive existing `reports/lost_features_audit.md` to `archive/legacy_versions/lost_features_audit_v25.md`.
 - [x] **Task: Conductor - User Manual Verification 'Discovery' (Protocol in workflow.md)**
 
-## Phase 2: Forensic Cataloguing (AST & Visual)
+## Phase 2: Forensic Cataloguing (AST & Visual) [checkpoint: 7d80709]
 - [x] **Task 2.1: AST Logic Fingerprinting Tool (TDD)** a6b8215
   - [x] Sub-task: Implement `src/nhra_game_theory/audit/fingerprint.py` to extract function signatures, constants, and subgame logic from Python files (handling legacy versions).
   - [x] Sub-task: Implement a loop to unzip and fingerprint every archived `.zip`.
 - [x] **Task 2.2: Visual Traceability Tool (TDD)** 39258b9
   - [x] Sub-task: Implement `src/nhra_game_theory/audit/visual_trace.py` to parse Mermaid/Graphviz files and extract strategic "edges" (influence logic).
-- [~] **Task: Conductor - User Manual Verification 'Forensic Tools' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Forensic Tools' (Protocol in workflow.md)**
 
 ## Phase 3: ChatGPT Context Capture
-- [ ] **Task 3.1: ChatGPT Session Capture**
+- [~] **Task 3.1: ChatGPT Session Capture**
   - [ ] Sub-task: Use the headful browser to load the ChatGPT origin link, capture the conversation, and save as `context/origin_chatgpt_context.md`.
 - [ ] **Task: Conductor - User Manual Verification 'Context Capture' (Protocol in workflow.md)**
 
