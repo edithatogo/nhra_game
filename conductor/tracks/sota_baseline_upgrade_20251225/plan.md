@@ -18,7 +18,7 @@
     - [x] Sub-task: Verify CI runs on push/PR
 - [x] Task: Conductor - User Manual Verification 'Inventory & Core Hygiene' (Protocol in workflow.md)
 
-## Phase 2: Typing & Validation (Items A, B, C, K)
+## Phase 2: Typing & Validation (Items A, B, C, K) [checkpoint: 72d64ca]
 - [x] Task: Static Typing - Configure `pyright`/`mypy`
     - [x] Sub-task: Add type checker to dev-dependencies
     - [x] Sub-task: Generate strict config (baseline existing errors if needed)
@@ -35,7 +35,7 @@
     - [x] Sub-task: Add `beartype`, `typeguard` to dev-deps
     - [x] Sub-task: Create `tests/test_runtime_typecheck_smoke.py`
     - [x] Sub-task: Add `nox -s type_runtime` session
-- [ ] Task: Conductor - User Manual Verification 'Typing & Validation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Typing & Validation' (Protocol in workflow.md)
 
 ## Phase 3: Testing & Coverage (Items D, H)
 - [ ] Task: Testing - Property-Based Tests
