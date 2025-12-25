@@ -1,12 +1,16 @@
-Feature,Category,Status,Source,Notes
-Influence: VFI -> Pressure,Visual,[Implemented],Diagrams,VFI spillovers into hospital
-Influence: AgedCare -> Discharge,Visual,[Implemented],Diagrams,Aged care constraints affect discharge
-Influence: Audit -> Burden,Visual,[Implemented],Diagrams,Audits increase admin burden
-Influence: Pressure -> Signalling,Visual,[Implemented],Diagrams,System pressure drives political signalling
-Logic: solve_equilibrium,Logic,[Refactored],Legacy Zips,Legacy engine component
-Logic: nash_manager,Logic,[Refactored],Legacy Zips,Legacy engine component
-Logic: monte_carlo_rollout,Logic,[Refactored],Legacy Zips,Legacy engine component
-Intent: Vertical Fiscal Imbalance,Intent,[Implemented],ChatGPT Context,Core structural framing
-Intent: Efficiency Gap,Intent,[Implemented],ChatGPT Context,Rural/regional underfunding
-Intent: Clinical Governance,Intent,[Implemented],ChatGPT Context,Safety integration condition
-Intent: Hatch/pyOpenSci,Intent,[Implemented],ChatGPT Context,Packaging standards
+Game,Codebase Function,Dashboard Selection,Dashboard Parameterized,Dashboard Visualized
+Bargaining,bargaining_game,Indirect (Policy),Partial (Sidebar),No (Network Missing)
+Compliance,compliance_game,Indirect (Policy),Partial (Sidebar),No (Network Missing)
+Cost Shifting,cost_shifting_game,Indirect (Policy),Partial (Sidebar),No (Network Missing)
+Definition,definition_game,Indirect (Policy),Partial (Sidebar),No (Network Missing)
+Discharge,discharge_coordination_game,Indirect (Policy),Partial (Sidebar),No (Network Missing)
+Governance,governance_integration_game,Indirect (Policy),No,No (Network Missing)
+Signalling,N/A (in engine.py),No,No,No
+Morris Screening,scripts/run_gsa.py,N/A,Yes (via CSV),Yes (Tornado)
+Sobol Analysis,scripts/run_gsa.py,N/A,No,No
+Interaction Heatmap,src/nhra_game_theory/sensitivity.py,N/A,No,No
+Validation Metrics,scripts/validation/*,N/A,Yes (via JSON),Yes (Error Metrics)
+Ghost Overlays,scripts/validation/plot_theil_decomposition.py,N/A,Yes,Yes
+Evidence Manager,src/nhra_game_theory/domain/registry.py,N/A,Yes (via CSV),Yes (Staging Tab)
+Interactive Network,scripts/interactive/*,No,N/A,Missing in Dashboard
+Convergence Audit,N/A,No,N/A,Missing in Dashboard
