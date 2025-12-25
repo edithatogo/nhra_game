@@ -15,13 +15,13 @@
     - [x] Sub-task: Confirm validation metrics visibility. (Found: Error metrics and Ghost overlays are functional)
 - [x] Task: Conductor - User Manual Verification 'Feature & Logic Audit' (Protocol in workflow.md)
 
-## Phase 3: Dashboard Hardening & Forensic UI
-- [ ] Task: Implement Forensic Debug Mode
-    - [ ] Sub-task: Add a "Developer/Forensic" tab to the Streamlit dashboard.
-    - [ ] Sub-task: Display raw `State` dictionary and seed information.
-- [ ] Task: Redundancy Cleanup
-    - [ ] Sub-task: Remove legacy components and dead links.
-- [ ] Task: Conductor - User Manual Verification 'Dashboard Hardening & Forensic UI' (Protocol in workflow.md)
+## Phase 3: Dashboard Hardening & Forensic UI [checkpoint: 125dedb]
+- [x] Task: Implement Forensic Debug Mode
+    - [x] Sub-task: Add a "Developer/Forensic" tab to the Streamlit dashboard.
+    - [x] Sub-task: Display raw `State` dictionary and seed information.
+- [x] Task: Redundancy Cleanup
+    - [x] Sub-task: Remove legacy components and dead links. (Verified: No legacy version refs found in dashboard v21)
+- [x] Task: Conductor - User Manual Verification 'Dashboard Hardening & Forensic UI' (Protocol in workflow.md)
 
 ## Phase 4: Final Reporting & Roadmap Update
 - [ ] Task: Generate Audit Report
