@@ -12,10 +12,10 @@
 - [x] **Task: Conductor - User Manual Verification 'Discovery' (Protocol in workflow.md)**
 
 ## Phase 2: Forensic Cataloguing (AST & Visual)
-- [ ] **Task 2.1: AST Logic Fingerprinting Tool (TDD)**
-  - [ ] Sub-task: Implement `src/nhra_game_theory/audit/fingerprint.py` to extract function signatures, constants, and subgame logic from Python files (handling legacy versions).
-  - [ ] Sub-task: Implement a loop to unzip and fingerprint every archived `.zip`.
-- [ ] **Task 2.2: Visual Traceability Tool (TDD)**
+- [x] **Task 2.1: AST Logic Fingerprinting Tool (TDD)** a6b8215
+  - [x] Sub-task: Implement `src/nhra_game_theory/audit/fingerprint.py` to extract function signatures, constants, and subgame logic from Python files (handling legacy versions).
+  - [x] Sub-task: Implement a loop to unzip and fingerprint every archived `.zip`.
+- [~] **Task 2.2: Visual Traceability Tool (TDD)**
   - [ ] Sub-task: Implement `src/nhra_game_theory/audit/visual_trace.py` to parse Mermaid/Graphviz files and extract strategic "edges" (influence logic).
 - [ ] **Task: Conductor - User Manual Verification 'Forensic Tools' (Protocol in workflow.md)**
 
