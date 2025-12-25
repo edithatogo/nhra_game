@@ -2,6 +2,12 @@ from __future__ import annotations
 
 import zipfile
 from pathlib import Path
+from typing import TypedDict
+
+
+class IntegrityReport(TypedDict):
+    valid_zips: list[Path]
+    corrupt_zips: dict[Path, str]
 
 
 def discover_sources() -> dict[str, list[Path]]:
@@ -32,28 +38,30 @@ def discover_sources() -> dict[str, list[Path]]:
     }
 
 
-def verify_sources_integrity(sources: dict[str, list[Path]]) -> dict[str, list[Path] | dict[Path, str]]:
+def verify_sources_integrity(
+    sources: dict[str, list[Path]],
+) -> IntegrityReport:
     """Verify integrity of discovered sources."""
-    report: dict[str, list[Path] | dict[Path, str]] = {
+    report: IntegrityReport = {
         "valid_zips": [],
         "corrupt_zips": {},
     }
-    
+
     for z in sources["zips"]:
         if not zipfile.is_zipfile(z):
-            report["corrupt_zips"][z] = "File is not a zip file"  # type: ignore
+            report["corrupt_zips"][z] = "File is not a zip file"
             continue
-            
+
         try:
-            with zipfile.ZipFile(z, 'r') as zf:
+            with zipfile.ZipFile(z, "r") as zf:
                 bad_file = zf.testzip()
                 if bad_file:
-                    report["corrupt_zips"][z] = f"Corrupt file within zip: {bad_file}" # type: ignore
+                    report["corrupt_zips"][z] = f"Corrupt file within zip: {bad_file}"
                 else:
-                    report["valid_zips"].append(z) # type: ignore
+                    report["valid_zips"].append(z)
         except Exception as e:
-            report["corrupt_zips"][z] = str(e) # type: ignore
-            
+            report["corrupt_zips"][z] = str(e)
+
     return report
 
 
@@ -65,7 +73,7 @@ if __name__ == "__main__":
     print(f"Found {len(sources['diagrams'])} diagram files.")
     for d in sources["diagrams"]:
         print(f"  - {d}")
-    
+
     print("\nVerifying integrity...")
     report = verify_sources_integrity(sources)
     print(f"Valid Zips: {len(report['valid_zips'])}")

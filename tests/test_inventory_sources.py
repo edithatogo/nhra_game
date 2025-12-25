@@ -6,7 +6,7 @@ from pathlib import Path
 from scripts.audit.inventory_sources import discover_sources
 
 
-def test_discover_sources_finds_zips_and_diagrams(tmp_path: Path):
+def test_discover_sources_finds_zips_and_diagrams(tmp_path: Path) -> None:
     # Setup mock structure
     (tmp_path / "archive").mkdir()
     (tmp_path / "archive" / "test1.zip").write_text("fake zip")
@@ -38,8 +38,9 @@ def test_discover_sources_finds_zips_and_diagrams(tmp_path: Path):
         os.chdir(old_cwd)
 
 
-def test_verify_sources_integrity(tmp_path: Path):
+def test_verify_sources_integrity(tmp_path: Path) -> None:
     import zipfile
+
     from scripts.audit.inventory_sources import verify_sources_integrity
 
     # Create valid zip
@@ -52,9 +53,9 @@ def test_verify_sources_integrity(tmp_path: Path):
     invalid_zip.write_text("not a zip file")
 
     sources = {"zips": [valid_zip, invalid_zip], "diagrams": []}
-    
+
     report = verify_sources_integrity(sources)
-    
+
     assert report["valid_zips"] == [valid_zip]
     assert invalid_zip in report["corrupt_zips"]
     assert report["corrupt_zips"][invalid_zip] == "File is not a zip file"
