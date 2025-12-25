@@ -1,0 +1,3 @@
+parameter,mean,lower_ci,upper_ci,source_url,nhmrc_level,unit,access_date
+within4_base,0.53,,,AIHW 2024,III-2,absolute,
+within4_base,0.55,,,Scholarly Study 2025,I,absolute,

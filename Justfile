@@ -32,6 +32,12 @@ docs:
 mutate:
   mutmut run
 
+dashboard:
+  streamlit run scripts/dashboard_v21.py
+
+validate:
+  python scripts/validation/validate_mechanism.py
+
 all:
   just format
   just lint

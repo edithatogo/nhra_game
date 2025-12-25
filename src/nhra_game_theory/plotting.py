@@ -131,7 +131,7 @@ def render_games_graph_interactive(outpath_html: Path) -> tuple[nx.DiGraph[Any],
         edge_x += [x0, x1, None]
         edge_y += [y0, y1, None]
 
-    edge_trace = go.Scatter(x=edge_x, y=edge_y, line=dict(width=2), hoverinfo="none", mode="lines")
+    edge_trace = go.Scatter(x=edge_x, y=edge_y, line={"width": 2}, hoverinfo="none", mode="lines")
 
     # Node traces
     node_x = []
@@ -157,7 +157,7 @@ def render_games_graph_interactive(outpath_html: Path) -> tuple[nx.DiGraph[Any],
         textposition="top center",
         hovertext=node_label,
         hoverinfo="text",
-        marker=dict(size=sizes, line=dict(width=2)),
+        marker={"size": sizes, "line": {"width": 2}},
     )
 
     fig = go.Figure(data=[edge_trace, node_trace])
@@ -165,9 +165,9 @@ def render_games_graph_interactive(outpath_html: Path) -> tuple[nx.DiGraph[Any],
         title="NHRA strategic interaction network (games as nodes)",
         showlegend=False,
         hovermode="closest",
-        margin=dict(l=20, r=20, t=50, b=20),
-        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+        margin={"l": 20, "r": 20, "t": 50, "b": 20},
+        xaxis={"showgrid": False, "zeroline": False, "showticklabels": False},
+        yaxis={"showgrid": False, "zeroline": False, "showticklabels": False},
     )
     outpath_html.parent.mkdir(parents=True, exist_ok=True)
     fig.write_html(str(outpath_html), include_plotlyjs="cdn")

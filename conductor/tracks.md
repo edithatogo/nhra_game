@@ -29,5 +29,14 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Release Polish & Workflow Integrity
+## [x] Track: Release Polish & Workflow Integrity
 *Link: [./conductor/tracks/release_polish_20251225/](./conductor/tracks/release_polish_20251225/)*
+
+---
+
+## [~] Track: SOTA Game-Theory Model Baseline Upgrade
+*Link: [./conductor/tracks/sota_baseline_upgrade_20251225/](./conductor/tracks/sota_baseline_upgrade_20251225/)*
+---
+
+## [~] Track: Forensic Parity Audit & Feature Recovery
+*Link: [./conductor/tracks/forensic_audit_parity_20251225/](./conductor/tracks/forensic_audit_parity_20251225/)*

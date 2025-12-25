@@ -116,11 +116,13 @@ def test_plotting_functions(tmp_path: Path) -> None:
     )
     out1 = tmp_path / "traj.png"
     plot_trajectory(df, "pressure_mean", "Pressure", out1, "pressure_p10", "pressure_p90")
-    assert out1.exists() and out1.stat().st_size > 0
+    assert out1.exists()
+    assert out1.stat().st_size > 0
 
     out1b = tmp_path / "traj2.png"
     plot_trajectory(df, "pressure_mean", "Pressure", out1b)
-    assert out1b.exists() and out1b.stat().st_size > 0
+    assert out1b.exists()
+    assert out1b.stat().st_size > 0
 
     # strategy heatmap expects columns: year, game, strategy, share
     freq = pd.DataFrame(
@@ -133,7 +135,8 @@ def test_plotting_functions(tmp_path: Path) -> None:
     )
     out2 = tmp_path / "heat.png"
     plot_strategy_heatmap(freq, out2)
-    assert out2.exists() and out2.stat().st_size > 0
+    assert out2.exists()
+    assert out2.stat().st_size > 0
 
     # tornado expects parameter columns and outcome column
     df2 = pd.DataFrame(
@@ -145,11 +148,13 @@ def test_plotting_functions(tmp_path: Path) -> None:
     )
     out3 = tmp_path / "tornado.png"
     tornado_from_rankcorr(df2, outcome_col="rr_end", params=["a", "b"], outpath=out3, topk=2)
-    assert out3.exists() and out3.stat().st_size > 0
+    assert out3.exists()
+    assert out3.stat().st_size > 0
 
     # network graph + interactive
     G = build_games_graph()
     assert G.number_of_nodes() > 5
     out4 = tmp_path / "graph.html"
     G2, html = render_games_graph_interactive(out4)
-    assert html.exists() and html.stat().st_size > 0
+    assert html.exists()
+    assert html.stat().st_size > 0

@@ -1,99 +1,87 @@
-# NHRA game-theory models (v20, 2025-12-21)
+# NHRA Game Theory
 
-This repository contains **stylised** mechanism models of the strategic interactions in NHRA negotiations and their
-downstream system-pressure consequences (eg, exit block → ED crowding → ambulance offload delays).
+[![CI](https://github.com/USER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/USER/REPO/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-**Important:** These models are **illustrative** and intended for **policy reasoning / sensitivity exploration**.
-They are **not** a forecast and should not be interpreted as estimating real-world mortality or budget impact.
+**Stylised game-theory mechanism models for National Health Reform Agreement (NHRA) negotiations.**
 
-## Quickstart
+This project simulates the strategic interactions between Commonwealth and State health actors, modelling the downstream consequences on hospital system pressure (e.g., exit block, ED crowding, ambulance offload delays).
 
-```bash
-python -m pip install -e ".[dev]"
-python scripts/run_v8_all.py
-```
+> **Disclaimer:** These models are illustrative and intended for policy reasoning and sensitivity exploration. They are not a forecast of real-world mortality or budget impact.
 
-Outputs are written to `outputs/v8/`.
+---
 
+## 🎯 Key Features
 
-## Context system (local handover)
+- **Predictive Game Theory:** Models strategic tension (Invest vs. Cost-Shift) under fiscal constraints.
+- **Empirical Grounding:** Calibrated against AIHW and ABS time-series data (2011–2024).
+- **Interactive Scenarios:** "War Gaming" dashboard to test policy interventions.
+- **Global Sensitivity Analysis:** Morris/Sobol methods to identify high-impact parameters.
+- **Publication-Ready:** Automated report generation compliant with academic standards.
 
-Key project context lives under `context/`.
+## 🚀 Quick Start
 
-Build a shareable context pack:
+### Prerequisites
+- Python 3.10+
+- [Poetry](https://python-poetry.org/) (Recommended)
 
-```bash
-python scripts/build_context_pack.py
-```
-
-Validate that every model input is either (a) sourced to a **public URL** or (b) explicitly justified:
-
-```bash
-python scripts/check_parameters_grounded.py
-```
-
-## Contents
-
-- `scripts/` — runnable analysis entrypoints (including the legacy V1–V5 scripts you asked to keep)
-- `src/nhra_game_theory/` — the v8 framework (scenarios, hybrid simulation, plotting utilities)
-- `diagrams/` — Mermaid and Graphviz source diagrams (including your uploaded Mermaid files)
-- `reports/` — HTML + plain-text modelling summary
-
-## Key outcomes (produced by the pipeline)
-
-- Scenario trajectories (pressure, occupancy, offload, within-4-hours)
-- Strategy frequencies by “game”
-- Sensitivity analysis (tornado + rank-correlation)
-- Intervention “delta” plots (difference from baseline)
-
-
-## v9 additions
-
-### Diagrams (Mermaid ↔ Graphviz)
-```bash
-PYTHONPATH=src python scripts/diagrams/improve_mermaid_v9.py
-PYTHONPATH=src python scripts/diagrams/render_all.py
-```
-
-### Interactive D3
-```bash
-PYTHONPATH=src python scripts/interactive/make_d3_network_v9.py
-open outputs/v9/interactive/games_network_d3.html
-```
-
-### Quality tooling
-```bash
-pre-commit install
-tox
-mkdocs serve
-```
-
-### Optional optimisation
-```bash
-pip install -e ".[opt]"
-PYTHONPATH=src python scripts/optimize_optuna_v9.py --trials 200
-```
-
-
-## v15 equilibrium build
-
-Run:
+### Installation
 
 ```bash
-PYTHONPATH=src python scripts/run_v15_all.py
-PYTHONPATH=src python scripts/make_plots_v15.py
+git clone https://github.com/your-org/nhra-game-theory.git
+cd nhra-game-theory
+poetry install
 ```
 
+### Running the Simulation
 
-## Versions
+**1. Interactive Dashboard (Recommended)**
+Launch the "War Gaming" interface to explore scenarios and policy levers:
 
-- v16 (2025-12-21): Packaging/coverage fixes; expanded narrative reporting; reviewer-round scaffolding.
+```bash
+just dashboard
+```
 
-- v20 (2025-12-21): Context pack + parameter registry + CI check for public sourcing/justification.
+**2. Full Validation Pipeline**
+Run the model validation suite against historical data:
 
-## Project context and governance
+```bash
+just validate
+```
 
-- `requirements.md` — what this project is for and acceptance criteria
-- `design.md` — architecture and modelling approach
-- `tasks.md` — roadmap
-- `context/` — evidence registry, provenance, glossaries, context pack
+**3. Run Everything**
+Execute the full build, test, and documentation pipeline:
+
+```bash
+just all
+```
+
+## 🏗️ Architecture
+
+The model integrates three core domains:
+1.  **Macro-Fiscal:** NEP trajectory, WPI inflation, and Funding Caps.
+2.  **Strategic Game:** Commonwealth vs. State payoff matrices (Political Capital vs. Budget).
+3.  **Hospital Operations:** System dynamics model of patient flow (ED -> Ward -> Discharge).
+
+See [context/02_system_map.md](context/02_system_map.md) for a conceptual overview.
+
+## 👩‍💻 Development
+
+We follow [pyOpenSci](https://www.pyopensci.org/) standards.
+
+- **Testing:** `just test` (runs pytest)
+- **Linting:** `just lint` (runs ruff, mypy)
+- **Docs:** `just docs` (serves mkdocs)
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📚 Citation
+
+If you use this model in your research, please cite:
+> Mordaunt, D. A. (2025). *NHRA Game Theory: A Mechanism Design Framework*. [Repository URL]

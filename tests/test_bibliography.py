@@ -35,5 +35,5 @@ def test_parse_endnote_token():
 
 def test_invalid_token():
     """Verify that malformed tokens raise error or return None."""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Invalid Endnote token format"):
         parse_endnote_token("invalid { token")

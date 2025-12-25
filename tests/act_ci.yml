@@ -1,4 +1,4 @@
-name: CI
+name: CI (Local Simulation)
 
 on:
   push:
@@ -9,12 +9,12 @@ permissions:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        os: [ubuntu-latest]
+        python-version: ["3.10"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -44,7 +44,3 @@ jobs:
       - name: Build docs
         run: |
           mkdocs build -q
-      - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.8.0
-        with:
-          args: --no-progress './**/*.md'
