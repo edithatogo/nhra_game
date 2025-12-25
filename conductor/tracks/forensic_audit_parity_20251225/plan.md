@@ -6,9 +6,9 @@
 - [x] **Task 1.1: Source Inventory (TDD)** cbe0c5a
   - [x] Sub-task: Implement `scripts/audit/inventory_sources.py` to recursively list all `.zip` files and diagram files (`.mmd`, `.dot`).
   - [x] Sub-task: Verify that all zip files found in `archive/` and the root are accessible.
-- [ ] **Task 1.2: Audit Infrastructure Setup**
-  - [ ] Sub-task: Install `playwright` or `selenium` for headful browser capture.
-  - [ ] Sub-task: Archive existing `reports/lost_features_audit.md` to `archive/legacy_versions/lost_features_audit_v25.md`.
+- [x] **Task 1.2: Audit Infrastructure Setup** 854cee8
+  - [x] Sub-task: Install `playwright` or `selenium` for headful browser capture.
+  - [x] Sub-task: Archive existing `reports/lost_features_audit.md` to `archive/legacy_versions/lost_features_audit_v25.md`.
 - [ ] **Task: Conductor - User Manual Verification 'Discovery' (Protocol in workflow.md)**
 
 ## Phase 2: Forensic Cataloguing (AST & Visual)
