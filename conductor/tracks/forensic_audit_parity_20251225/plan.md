@@ -20,9 +20,9 @@
 - [x] **Task: Conductor - User Manual Verification 'Forensic Tools' (Protocol in workflow.md)**
 
 ## Phase 3: ChatGPT Context Capture
-- [~] **Task 3.1: ChatGPT Session Capture**
-  - [ ] Sub-task: Use the headful browser to load the ChatGPT origin link, capture the conversation, and save as `context/origin_chatgpt_context.md`.
-- [ ] **Task: Conductor - User Manual Verification 'Context Capture' (Protocol in workflow.md)**
+- [x] **Task 3.1: ChatGPT Session Capture**
+  - [x] Sub-task: Use the headful browser to load the ChatGPT origin link, capture the conversation, and save as `context/origin_chatgpt_context.md`.
+- [~] **Task: Conductor - User Manual Verification 'Context Capture' (Protocol in workflow.md)**
 
 ## Phase 4: Parity Analysis & Matrix Generation
 - [ ] **Task 4.1: Cross-Reference Engine (TDD)**
