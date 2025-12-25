@@ -6,14 +6,14 @@
     - [x] Sub-task: Audit statistical divergence between "Lite" (50 MC) and "Full" (1000 MC) modes.
 - [x] Task: Conductor - User Manual Verification 'Automated Parity Baseline' (Protocol in workflow.md)
 
-## Phase 2: Feature & Logic Audit
+## Phase 2: Feature & Logic Audit [checkpoint: 125dedb]
 - [x] Task: Audit Strategic Games & Network
     - [x] Sub-task: Map `games.py` logic to dashboard selection menus. (Found: Dashboard uses indirect policy interventions instead of game selection)
     - [x] Sub-task: Verify Graphviz/Mermaid network consistency in the UI. (Found: Interactive network visualization is missing from the dashboard)
 - [x] Task: Audit Sensitivity & Calibration
     - [x] Sub-task: Verify Sobol/Morris data ingestion in the dashboard. (Found: Morris is present, Sobol/Heatmaps are missing)
     - [x] Sub-task: Confirm validation metrics visibility. (Found: Error metrics and Ghost overlays are functional)
-- [ ] Task: Conductor - User Manual Verification 'Feature & Logic Audit' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Feature & Logic Audit' (Protocol in workflow.md)
 
 ## Phase 3: Dashboard Hardening & Forensic UI
 - [ ] Task: Implement Forensic Debug Mode
