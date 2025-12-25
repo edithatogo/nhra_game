@@ -36,3 +36,25 @@ def test_discover_sources_finds_zips_and_diagrams(tmp_path: Path):
         assert len(sources["diagrams"]) == 2
     finally:
         os.chdir(old_cwd)
+
+
+def test_verify_sources_integrity(tmp_path: Path):
+    import zipfile
+    from scripts.audit.inventory_sources import verify_sources_integrity
+
+    # Create valid zip
+    valid_zip = tmp_path / "valid.zip"
+    with zipfile.ZipFile(valid_zip, "w") as zf:
+        zf.writestr("test.txt", "content")
+
+    # Create invalid zip
+    invalid_zip = tmp_path / "corrupt.zip"
+    invalid_zip.write_text("not a zip file")
+
+    sources = {"zips": [valid_zip, invalid_zip], "diagrams": []}
+    
+    report = verify_sources_integrity(sources)
+    
+    assert report["valid_zips"] == [valid_zip]
+    assert invalid_zip in report["corrupt_zips"]
+    assert report["corrupt_zips"][invalid_zip] == "File is not a zip file"
