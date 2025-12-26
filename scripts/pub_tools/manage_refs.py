@@ -1,17 +1,15 @@
-import logging
-import sys
-from typing import Any
-
 import yaml
+import sys
+import logging
+from typing import Dict, Any, List
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-
-def load_references(file_path: str) -> list[dict[str, Any]]:
+def load_references(file_path: str) -> List[Dict[str, Any]]:
     """Loads references from a YAML file."""
     try:
-        with open(file_path) as f:
+        with open(file_path, "r") as f:
             data = yaml.safe_load(f)
             return data if isinstance(data, list) else []
     except FileNotFoundError:
@@ -21,8 +19,7 @@ def load_references(file_path: str) -> list[dict[str, Any]]:
         logging.error(f"Error parsing YAML file: {e}")
         return []
 
-
-def validate_metadata(references: list[dict[str, Any]]) -> bool:
+def validate_metadata(references: List[Dict[str, Any]]) -> bool:
     """
     Validates that each reference has a DOI and a URL.
     Returns True if all references are valid, False otherwise.
@@ -30,19 +27,18 @@ def validate_metadata(references: list[dict[str, Any]]) -> bool:
     all_valid = True
     for ref in references:
         ref_id = ref.get("id", "Unknown ID")
-
+        
         # Check for DOI
         if "doi" not in ref or not ref["doi"]:
             logging.error(f"Reference '{ref_id}' is missing a DOI.")
             all_valid = False
-
+            
         # Check for URL
         if "url" not in ref or not ref["url"]:
             logging.error(f"Reference '{ref_id}' is missing a URL.")
             all_valid = False
-
+            
     return all_valid
-
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -51,7 +47,7 @@ if __name__ == "__main__":
 
     ref_file = sys.argv[1]
     refs = load_references(ref_file)
-
+    
     if not refs:
         logging.warning("No references found or file is empty.")
         sys.exit(0)
