@@ -38,7 +38,7 @@ def _best_responses_row(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
     br = np.zeros((n, m), dtype=bool)
     for j in range(m):
         mx = A[:, j].max()
-        br[:, j] = np.isclose(A[:, j], mx)
+        br[:, j] = A[:, j] >= (mx - 1e-9)
     return br
 
 
@@ -48,7 +48,7 @@ def _best_responses_col(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
     br = np.zeros((n, m), dtype=bool)
     for i in range(n):
         mx = B[i, :].max()
-        br[i, :] = np.isclose(B[i, :], mx)
+        br[i, :] = B[i, :] >= (mx - 1e-9)
     return br
 
 
@@ -79,7 +79,7 @@ def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
     denom_q = A[0, 0] - A[0, 1] - A[1, 0] + A[1, 1]
     denom_p = B[0, 0] - B[1, 0] - B[0, 1] + B[1, 1]
 
-    if np.isclose(denom_q, 0.0) or np.isclose(denom_p, 0.0):
+    if abs(denom_q) < 1e-9 or abs(denom_p) < 1e-9:
         return None
 
     q_hard = (A[1, 1] - A[0, 1]) / denom_q  # col prob of action1
