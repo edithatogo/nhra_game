@@ -14,12 +14,12 @@
 - [x] Task: Set up `pytest-mpl` and `tests/visualization/` directory with a baseline image cache. 1281561
 - [x] Task: Conductor - User Manual Verification 'API Design & Core Infrastructure' (Protocol in workflow.md) 16e41e2
 
-## Phase 3: Migration & Modernization (Iterative)
-- [ ] Task: Refactor "Trajectory" plots (from `plotting.py`) to the new API, adding docstrings and type hints.
-- [ ] Task: Refactor "Strategy Heatmaps" and "Tornado Plots" to the new API.
-- [ ] Task: Migrate complex script-based figures (e.g., from `dashboard.py` or `make_plots_v*.py`) into reusable library functions.
-- [ ] Task: Verify parity: Ensure new functions produce identical (or strictly better) outputs than legacy scripts.
-- [ ] Task: Conductor - User Manual Verification 'Migration & Modernization' (Protocol in workflow.md)
+## Phase 3: Migration & Modernization (Iterative) [checkpoint: 748d61e]
+- [x] Task: Refactor "Trajectory" plots (from `plotting.py`) to the new API, adding docstrings and type hints. 437f8f2
+- [x] Task: Refactor "Strategy Heatmaps" and "Tornado Plots" to the new API. 437f8f2
+- [x] Task: Migrate complex script-based figures (e.g., from `dashboard.py` or `make_plots_v*.py`) into reusable library functions. 437f8f2
+- [x] Task: Verify parity: Ensure new functions produce identical (or strictly better) outputs than legacy scripts. 748d61e
+- [x] Task: Conductor - User Manual Verification 'Migration & Modernization' (Protocol in workflow.md) 748d61e
 
 ## Phase 4: Testing & Verification
 - [ ] Task: Implement Smoke Tests: Verify all registered functions execute without error on sample data.
