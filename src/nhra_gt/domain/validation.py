@@ -6,8 +6,9 @@ from typing import Any, cast
 
 import numpy as np
 import pandas as pd
-from nhra_gt.engine import Params, run_hybrid
 from pydantic import BaseModel, ConfigDict
+
+from nhra_gt.engine import Params, run_hybrid
 
 
 def calculate_rmse(actual: np.ndarray[Any, Any], predicted: np.ndarray[Any, Any]) -> float:

@@ -7,11 +7,12 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-from nhra_gt.legacy_engine import Params
 from SALib.analyze import morris as morris_analyzer
 from SALib.analyze import sobol as sobol_analyzer
 from SALib.sample import morris as morris_sampler
 from SALib.sample import saltelli as sobol_sampler
+
+from nhra_gt.legacy_engine import Params
 
 
 def generate_sensitivity_summary(morris_path: Path, sobol_path: Path, output_path: Path) -> None:
