@@ -19,6 +19,6 @@ keywords:
   - mechanism design
   - digital twin
 abstract: |
-  A stylized hybrid mechanism model encoding strategic negotiations and operational dynamics 
-  of the Australian National Health Reform Agreement (NHRA). Supports Global Sensitivity 
+  A stylized hybrid mechanism model encoding strategic negotiations and operational dynamics
+  of the Australian National Health Reform Agreement (NHRA). Supports Global Sensitivity
   Analysis, automated calibration, and interactive policy scenario analysis.

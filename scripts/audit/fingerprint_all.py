@@ -19,11 +19,11 @@ def fingerprint_all() -> None:
 
     output_dir = Path("data/audit")
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     output_file = output_dir / "zip_fingerprints.json"
     with open(output_file, "w") as f:
         json.dump(all_fingerprints, f, indent=2)
-    
+
     print(f"\nSaved fingerprints for {len(all_fingerprints)} archives to {output_file}")
 
 

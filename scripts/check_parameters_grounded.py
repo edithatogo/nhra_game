@@ -112,13 +112,19 @@ def main() -> None:
 
         if st in EVIDENCE_TYPES_NEED_URL:
             if not is_public_url(cite):
-                failures.append(f"L{idx}: {r['parameter']}: source_type={st} requires public URL in citation_or_file")
+                failures.append(
+                    f"L{idx}: {r['parameter']}: source_type={st} requires public URL in citation_or_file"
+                )
             if not loc:
-                failures.append(f"L{idx}: {r['parameter']}: source_type={st} requires non-empty locator")
+                failures.append(
+                    f"L{idx}: {r['parameter']}: source_type={st} requires non-empty locator"
+                )
 
         if st in EVIDENCE_TYPES_NEED_JUSTIFICATION:
             if len(just) < 150:
-                failures.append(f"L{idx}: {r['parameter']}: source_type={st} requires detailed justification (>=150 chars)")
+                failures.append(
+                    f"L{idx}: {r['parameter']}: source_type={st} requires detailed justification (>=150 chars)"
+                )
 
         if cite.startswith("internal://"):
             failures.append(f"L{idx}: {r['parameter']}: citation_or_file cannot be internal://")
@@ -128,7 +134,9 @@ def main() -> None:
             lo = (r["range_low"] or "").strip()
             hi = (r["range_high"] or "").strip()
             if lo == "" or hi == "":
-                failures.append(f"L{idx}: {r['parameter']}: numeric value requires range_low and range_high")
+                failures.append(
+                    f"L{idx}: {r['parameter']}: numeric value requires range_low and range_high"
+                )
             else:
                 try:
                     lo_f = float(lo)

@@ -25,11 +25,11 @@ def trace_all_visuals() -> None:
 
     output_dir = Path("data/audit")
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     output_file = output_dir / "visual_edges.json"
     with open(output_file, "w") as f:
         json.dump(all_edges, f, indent=2)
-    
+
     print(f"\nSaved visual edges for {len(all_edges)} diagrams to {output_file}")
 
 

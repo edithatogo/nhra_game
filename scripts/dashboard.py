@@ -6,21 +6,23 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import plotly.express as px
 import streamlit as st
 
 from nhra_gt.visualization.interactive import (
+    plot_ghost_overlay,
     plot_risk_pressure,
     plot_share_drift,
-    plot_ghost_overlay,
     plot_stability_heatmap,
 )
 from nhra_gt.visualization.sensitivity import (
-    plot_sobol_indices as viz_plot_sobol_indices,
-    plot_sobol_heatmap as viz_plot_sobol_heatmap,
     plot_morris_tornado as viz_plot_morris_tornado,
 )
-from nhra_gt.visualization.config import PlotConfig
+from nhra_gt.visualization.sensitivity import (
+    plot_sobol_heatmap as viz_plot_sobol_heatmap,
+)
+from nhra_gt.visualization.sensitivity import (
+    plot_sobol_indices as viz_plot_sobol_indices,
+)
 
 # Add src to path if needed for relative imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
@@ -303,10 +305,16 @@ def main():
 
         # Conflict Detection logic
         conflicts = []
-        if "DEF" in overrides and overrides["DEF"] == "E" and nep_growth < 0.03:  # High growth implies Realism
-            conflicts.append("Force 'Strict' Definition contradicts low 'NEP Growth' (Realism) intent.")
+        if (
+            "DEF" in overrides and overrides["DEF"] == "E" and nep_growth < 0.03
+        ):  # High growth implies Realism
+            conflicts.append(
+                "Force 'Strict' Definition contradicts low 'NEP Growth' (Realism) intent."
+            )
         if "SHIFT" in overrides and overrides["SHIFT"] == "S" and cost_shifting < 0.20:
-            conflicts.append("Force 'Shift' strategy contradicts low 'Cost-Shifting Intensity' policy.")
+            conflicts.append(
+                "Force 'Shift' strategy contradicts low 'Cost-Shifting Intensity' policy."
+            )
 
         if conflicts:
             st.sidebar.warning("⚠️ **Strategic Contradictions Detected:**")
@@ -424,7 +432,9 @@ def main():
 
                 # Risk Plot
                 st.markdown("**Patient Safety Risk Proxy**")
-                fig_risk = plot_risk_pressure(combined, "rr_mean", "Relative Risk Proxy (Trajectories)", "Relative Risk")
+                fig_risk = plot_risk_pressure(
+                    combined, "rr_mean", "Relative Risk Proxy (Trajectories)", "Relative Risk"
+                )
                 st.plotly_chart(fig_risk, width="stretch")
                 st.caption(
                     "Lower is better. Reflects the estimated impact of system delays on clinical outcomes."
@@ -432,7 +442,9 @@ def main():
 
                 # Pressure Plot
                 st.markdown("**Hospital System Pressure**")
-                fig_pres = plot_risk_pressure(combined, "pressure_mean", "System Pressure Index", "Pressure Index")
+                fig_pres = plot_risk_pressure(
+                    combined, "pressure_mean", "System Pressure Index", "Pressure Index"
+                )
                 st.plotly_chart(fig_pres, width="stretch")
                 st.caption(
                     "Index of operational strain. Values > 1.0 indicate severe capacity constraints."
@@ -674,7 +686,7 @@ def main():
                     si_plot = {
                         "names": df_s["Parameter"].tolist(),
                         "ST": df_s["ST"].tolist(),
-                        "ST_conf": df_s["ST_conf"].tolist()
+                        "ST_conf": df_s["ST_conf"].tolist(),
                     }
                     fig_s = viz_plot_sobol_indices(si_plot, total_order=True)
                     st.pyplot(fig_s)

@@ -14,10 +14,10 @@
     - [ ] Sub-task: Implement `scripts/pub_tools/manage_refs.py` (Deduplication) & commit
     - [ ] Sub-task: Implement `scripts/pub_tools/manage_refs.py` (RIS/BIB Export) & commit
     - [x] Sub-task: Verify tool with test case & commit
-- [~] Task: Guidelines Acquisition
+- [x] Task: Guidelines Acquisition [e288654]
     - [ ] Sub-task: Scrape MJA Author Guidelines to `mja.md` & commit
     - [ ] Sub-task: Scrape RACMA Position Statement standards to `racma.md` & commit
-- [ ] Task: Define Expert Personas (Simulated)
+- [~] Task: Define Expert Personas (Simulated)
     - [ ] Sub-task: Define Initial Panel (Methodologist, Policy Expert, Game Theorist) in `publications/shared/experts/panel_v1.md` & commit
     - [ ] Sub-task: Run "Snowball" simulation (Ask Panel v1 for suggestions) -> `panel_v2.md` & commit
     - [ ] Sub-task: Verify Final Expert Panel composition & commit
