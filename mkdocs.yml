@@ -9,6 +9,21 @@ copyright: Copyright &copy; 2025 Dylan A Mordaunt. Licensed under Apache 2.0.
 
 docs_dir: docs_mkdocs
 
+nav:
+  - Home: index.md
+  - Guides:
+    - guides/index.md
+    - Usage: guides/usage.md
+    - Game Theory Models: guides/models.md
+  - Project:
+    - project/index.md
+    - Requirements & Scope: project/requirements.md
+  - Design: design.md
+  - Diagrams: diagrams.md
+  - Context: context.md
+  - Development: dev.md
+  - API Reference: reference/index.md
+
 theme:
   name: material
   custom_dir: docs_mkdocs/overrides

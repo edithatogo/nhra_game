@@ -8,11 +8,11 @@
 - [x] Task: Conductor - User Manual Verification 'Audit & Registry' (Protocol in workflow.md) 190e6fb
 
 ## Phase 2: API Design & Core Infrastructure
-- [~] Task: Create `src/nhra_gt/visualization/` module structure.
-- [ ] Task: Define `PlotConfig` (Pydantic model) for shared styling (palettes, fonts, dimensions) in `src/nhra_gt/visualization/config.py`.
-- [ ] Task: Implement `AbstractPlotter` or protocol/interface for standardized function signatures: `plot_X(data, config) -> Figure`.
-- [ ] Task: Set up `pytest-mpl` and `tests/visualization/` directory with a baseline image cache.
-- [ ] Task: Conductor - User Manual Verification 'API Design & Core Infrastructure' (Protocol in workflow.md)
+- [x] Task: Create `src/nhra_gt/visualization/` module structure.
+- [x] Task: Define `PlotConfig` (Pydantic model) for shared styling (palettes, fonts, dimensions) in `src/nhra_gt/visualization/config.py`.
+- [x] Task: Implement `AbstractPlotter` or protocol/interface for standardized function signatures: `plot_X(data, config) -> Figure`.
+- [x] Task: Set up `pytest-mpl` and `tests/visualization/` directory with a baseline image cache.
+- [~] Task: Conductor - User Manual Verification 'API Design & Core Infrastructure' (Protocol in workflow.md)
 
 ## Phase 3: Migration & Modernization (Iterative)
 - [ ] Task: Refactor "Trajectory" plots (from `plotting.py`) to the new API, adding docstrings and type hints.

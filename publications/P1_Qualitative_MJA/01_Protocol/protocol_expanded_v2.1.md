@@ -1,80 +1,321 @@
 # Protocol: Structural Analysis of the National Health Reform Agreement using Game Theory (Expanded v2.1)
-**Author:** Dylan A Mordaunt
+**Author:** Dylan A Mordaunt  
+**Related preregistration:** `publications/P1_Qualitative_MJA/01_Protocol/osf_registration.md`  
+**Repository data provenance:** `context/06_data_provenance.md`  
+**Audit notes (examples):** `context/audit_results_verification.md`, `context/audit_results_ihacpa.md`
+
+## Summary
+This protocol specifies a qualitative document analysis of the National Health Reform Agreement (NHRA) and related statutory/policy instruments, followed by formal game-theoretic modelling. The purpose is to (1) make the incentive structure explicit as an extensive-form game with imperfect information, and (2) identify "fragility nodes" where ambiguity, information lags, or payoff misalignment make strategic gaming a rational equilibrium response.
+
+## Abbreviations
+| Abbrev. | Meaning |
+| :--- | :--- |
+| ABF | Activity Based Funding |
+| AIHW | Australian Institute of Health and Welfare |
+| HAC | Hospital Acquired Complication |
+| IAD | Institutional Analysis and Development |
+| IHACPA | Independent Health and Aged Care Pricing Authority |
+| KPI | Key Performance Indicator |
+| LHN | Local Health Network |
+| NEP | National Efficient Price |
+| NHFB | National Health Funding Body |
+| NHFP | National Health Funding Pool |
+| NHRA | National Health Reform Agreement |
+| NWAU | National Weighted Activity Unit |
+| PRISMA-ScR | PRISMA extension for scoping reviews |
+| PSI-90 | Patient Safety Indicator 90 |
+| SRQR | Standards for Reporting Qualitative Research |
 
 ## 1. Background & Rationale
-The National Health Reform Agreement (NHRA), signed in 2011, fundamentally shifted the Australian public hospital funding landscape from historical block grants to Activity Based Funding (ABF). While the stated objective was to drive efficiency and transparency (Duckett, 2021), the implementation of such a complex, multi-layered incentive system often leads to unintended strategic behaviors. These behaviors, collectively termed **"Strategic Gaming,"** involve organizations optimizing for metric reporting and symbolic compliance rather than substantive improvements in system performance or clinical quality.
+The National Health Reform Agreement (NHRA) and its addenda define the contemporary Australian intergovernmental funding architecture for public hospital services. The Agreement (and enabling legislation) formalises a shift toward Activity Based Funding (ABF) and related activity/pricing mechanisms (Council on Federal Financial Relations, 2011; Commonwealth of Australia, 2011). ABF systems are designed to align payments to activity (e.g., via National Weighted Activity Units, NWAUs), but they can also create incentives to optimise reporting and classification in ways that do not necessarily reflect underlying clinical effort or outcomes (Bevan & Hood, 2006; Mannion & Braithwaite, 2012).
 
-Strategic Gaming in this context is a sophisticated form of **Symbolic Compliance**, where agents (Local Health Networks, LHNs) prioritize the "appearance" of meeting key performance indicators (KPIs) to secure maximum National Weighted Activity Unit (NWAU) revenue. This phenomenon is grounded in **Institutional Isomorphism** (DiMaggio & Powell, 1983), where regulatory and competitive pressures force healthcare organizations to adopt similar "masks" of high performance. In the context of the NHRA, the financial penalties associated with Hospital Acquired Complications (HACs) and the performance rankings based on Patient Safety Indicator 90 (PSI-90) indicators create a high-stakes environment. However, when these indicators are noisy or decoupled from actual clinical effort, the rational strategy for a Local Health Network (LHN) may shift from genuine performance improvement to Strategic Gaming (reporting optimization).
+In this protocol, **Strategic Gaming** refers to strategic behaviours that optimise measured performance, classification, or reported activity in response to incentives and constraints, rather than improving the underlying latent construct (e.g., true clinical quality). This is closely related to **symbolic compliance** and "performance masks" described in institutional sociology (Meyer & Rowan, 1977; DiMaggio & Powell, 1983). Under high-stakes performance measurement, organisations may converge on isomorphic reporting strategies that are rational responses to the institutional environment.
 
-Despite the widespread clinical and administrative recognition of these gaming behaviors, there remains a critical gap in the systematic identification of the structural vulnerabilities that enable them. Recent methodological reviews (Baez Hernandez, 2025) highlight that while game theory is increasingly recognized as a valuable instrument for public policy decision-making, its specific application to the structural mapping of legal and statutory agreements is underdeveloped. Public policy, as a field, often relies on descriptive or econometric evaluations that capture outcomes but fail to map the underlying strategic interactions defined by the rules of the game. This study addresses this gap by applying a rigorous game-theoretic framework to the legal text of the NHRA.
+The NHRA context includes (a) multi-layered agency (Commonwealth–State/Territory–Local Health Network), (b) negotiated and periodically revised rules, and (c) **imperfect information** due to reporting lags, noisy safety/quality indicators, and audit cycles. Together, these features can be represented as a sequential game in which players act under uncertainty and respond to both financial payoffs (e.g., marginal NWAU revenue, growth caps, penalties) and reputational payoffs (e.g., public reporting signals).
 
-## 2. Theoretical Framework: The IAD Approach
-We utilize Elinor Ostrom’s **Institutional Analysis and Development (IAD)** framework (Ostrom, 2005) as the primary lens for document analysis. The IAD framework is uniquely suited for this task as it provides a structured "grammar" for institutions. It allows for the systematic breakdown of the NHRA into "Action Situations," where "Players" (Federal and State governments, LHN Boards) interact based on a specific set of "Rules" (statutory clauses) and "Information Sets."
+While game theory is widely used to study incentives, and document analysis is an established qualitative method for analysing policy artefacts, there is limited protocol-level guidance for explicitly translating a complex intergovernmental agreement into an auditable, clause-linked extensive-form game specification (Bowen, 2009; Ostrom, 2005; Osborne & Rubinstein, 1994). This study addresses that gap by defining a transparent extraction, coding, and modelling workflow that is reproducible and reviewable.
 
-### 2.1 IAD Component Mapping
-We map the components of the NHRA to the seven universal rules defined by Ostrom:
-1.  **Boundary Rules:** Defining who can participate in the health funding pool and the eligibility criteria for NWAU-eligible activity.
-2.  **Position Rules:** Establishing roles such as the "Administrator of the National Health Funding Pool," the "Independent Health and Aged Care Pricing Authority (IHACPA)," and the State Health Departments.
-3.  **Choice Rules:** Specifying the actions available to LHNs, such as clinical documentation intensity, discharge scheduling, and substitution between service streams.
-4.  **Information Rules:** Dictating mandatory data submission timelines, transparency requirements, and the specific metrics (e.g., HACs, ED wait times) that are published as public signals.
-5.  **Payoff Rules:** The financial formulae including the National Efficient Price (NEP), indexation rates, growth caps, and safety-based penalty adjustments.
-6.  **Aggregation Rules:** The logic by which individual LHN activity is aggregated into State-level growth caps, determining the marginal value of an extra unit of activity.
-7.  **Scope Rules:** The geographical and service-type boundaries, defining what constitutes a "public hospital service" under the Act.
+## 2. Theoretical Framework
 
-### 2.2 Constructive Ambiguity
-The NHRA is characterized by **Constructive Ambiguity**—intentional vagueness in policy text designed to facilitate political consensus among jurisdictions with divergent interests. While politically expedient, this ambiguity creates "undefined states" in the formal game tree. Using the IAD framework, we can identify these gaps where the "Rules-in-Use" may diverge significantly from the "Rules-on-Paper," permitting non-cooperative equilibria such as cost-shifting and reporting manipulation.
+### 2.1 Qualitative document analysis as the base method
+This protocol uses qualitative document analysis to systematically extract, code, and interpret the rules, roles, and incentive mechanisms described in legal/policy texts (Prior, 2003; Bowen, 2009). The approach is primarily deductive (mapping to an *a priori* institutional grammar), with an explicit inductive component to capture emergent gaming mechanisms not anticipated in the initial codebook (Hsieh & Shannon, 2005).
 
-## 3. Taxonomy of Strategic Gaming
-To guide the qualitative coding, we define a preliminary taxonomy of Strategic Gaming behaviors hypothesized to exist within the NHRA structure:
-*   **Upcoding (Classification Shifting):** Strategic selection of diagnostic codes to maximize NWAU weight without corresponding clinical resource consumption.
-*   **Cost-Shifting (Boundary Gaming):** Moving clinical activity between ABF-funded and block-funded streams (or between State and Federal funding pools) to bypass growth caps or take advantage of pricing differentials.
-*   **Selective Disclosure:** Managing the submission of noisy indicators (like PSI-90 or elective surgery wait times) to present a symbolic mask of high performance while minimizing the risk of a formal audit.
-*   **Hysteretic Crisis Response:** Strategic escalation of system "pressure signals" (e.g., declaring Code Yellow or Red) to trigger political bailout mechanisms and emergency side-payments outside the formal ABF formula.
+### 2.2 Institutional Analysis and Development (IAD) and the "grammar of institutions"
+Elinor Ostrom’s **Institutional Analysis and Development (IAD)** framework provides a structured grammar for decomposing institutions into analyzable components (Ostrom, 2005). The IAD concept of an **action situation** is used as the bridge between policy text and game structure: an action situation describes who acts, what actions are available, what information is available, and how consequences/payoffs are allocated (Crawford & Ostrom, 1995; Ostrom et al., 1994).
 
-## 4. Objectives
-1.  **Map the Formal Game Structure:** Systematically decompose the NHRA and its 2017 and 2020-2025 Addendums into an Extensive Form Game tree, identifying Players, Action Sets (Moves), and Payoff Functions.
-2.  **Structural Incoherence Analysis:** Identify nodes in the game tree where "Constructive Ambiguity" leads to undefined payoffs or circular logic, facilitating strategic decoupling between effort and reward.
-3.  **Equilibrium Determination:** Mathematically determine the conditions under which **Strategic Gaming** becomes the dominant strategy for LHNs, specifically accounting for the trade-off between **Financial Payoffs** (NWAU revenue) and **Reputational Payoffs** (Public rankings and political standing).
-4.  **Policy Stress Testing:** Evaluate the sensitivity of the system to specific policy levers, such as the introduction of "Transparency Surges" or "Audit Pressure," using the stylized NHRA Game Theory Model.
+We map NHRA clauses to the seven IAD rule types:
+1. **Boundary rules:** Who may participate, eligibility criteria, and scope of covered services.
+2. **Position rules:** Defined roles (e.g., Administrator, IHACPA, State health departments, LHN boards).
+3. **Choice rules:** What actions are permitted/required (e.g., submission, certification, audit response).
+4. **Information rules:** Reporting, publication, data quality requirements, and timing/lags.
+5. **Payoff rules:** Transfers and penalties (e.g., NEP valuation, growth caps, safety adjustments).
+6. **Aggregation rules:** How actions aggregate into binding constraints (e.g., state caps, national adjustments).
+7. **Scope rules:** Service and geographic boundaries; what outcomes are in or out of scope.
+
+### 2.3 Constructive ambiguity and multi-level principal–agent dynamics
+Intergovernmental agreements frequently contain **constructive ambiguity**: policy language that is intentionally flexible to enable agreement among parties with divergent objectives. In IAD terms, ambiguity can manifest as underspecified rules, weak monitoring, or unclear aggregation logic; in game terms, it can produce "undefined states" or wide information sets that expand the equilibrium set.
+
+The NHRA institutional setting is also well described by a multi-level **principal–agent** structure (Eisenhardt, 1989): the Commonwealth (principal) delegates implementation and service delivery to States/Territories (agents), which in turn delegate operational decisions to LHNs (sub-agents). When monitoring is imperfect and payoffs are noisy, agents may rationally substitute effort into reportable outputs rather than latent quality.
+
+### 2.4 Game-theoretic formalisation: extensive-form, imperfect information, and reputation
+The modelling target is an **extensive-form game with imperfect information**, suitable for sequential decision-making under uncertainty (Schelling, 1960; Fudenberg & Tirole, 1991; Osborne & Rubinstein, 1994). Imperfect information is operationalised via:
+- **Strategic uncertainty:** uncertainty about other players’ future actions and enforcement responses.
+- **Stochastic uncertainty:** noise and measurement error in observed performance signals (e.g., PSI-90-type composites, lagged reporting).
+
+Payoffs include both financial and reputational components. The reputational component matters because public ranking signals can affect political attention, managerial incentives, and organisational legitimacy (DiMaggio & Powell, 1983; Mannion & Braithwaite, 2012).
+
+## 3. Taxonomy of Strategic Gaming (Sensitising Framework)
+To guide coding, we use a preliminary taxonomy of hypothesised gaming behaviours. This is a **sensitising framework**: categories may be revised, merged, or expanded during inductive coding (Hsieh & Shannon, 2005).
+
+### 3.1 Financial-classification gaming
+- **Upcoding (classification shifting):** strategic coding/documentation intensity to increase NWAU weight without commensurate resource use.
+- **Episode fragmentation / rebundling:** shifting where activity is counted (e.g., admission/discharge timing) to maximise payable units.
+
+### 3.2 Boundary and scope gaming
+- **Cost-shifting (boundary gaming):** moving activity between ABF and block-funded streams, or between jurisdictions/pools, to bypass caps or exploit pricing differentials.
+- **Service substitution:** shifting delivery to service types with more favourable valuation or weaker monitoring.
+
+### 3.3 Information and signal management
+- **Selective disclosure / timing manipulation:** managing the timing/completeness of data submissions and narrative framing to optimise public signals.
+- **Audit evasion / audit shaping:** avoiding triggering thresholds, or reallocating effort toward audit-visible artefacts rather than underlying quality.
+
+### 3.4 Political bargaining strategies
+- **Hysteretic crisis response:** strategic escalation of capacity-pressure signals (e.g., "crisis declarations") to activate discretionary side-payments or political exceptions outside the formal ABF formula.
+
+## 4. Research Questions, Objectives, and Outputs
+
+### 4.1 Primary research questions
+1. **RQ1 (Structure):** What are the key action situations implied by the NHRA and associated instruments, and how do they connect as a sequential game?
+2. **RQ2 (Incentives):** Under what plausible payoff and information conditions does strategic gaming become an equilibrium response for LHNs and/or States/Territories?
+3. **RQ3 (Fragility):** Which clauses/rule clusters constitute "fragility nodes" where small changes in information quality, audit intensity, or payoff weights shift the predicted equilibrium?
+
+### 4.2 Objectives
+1. **Map the formal game structure:** decompose the NHRA and addenda into a clause-linked extensive-form game specification (players, moves, information sets, payoffs).
+2. **Analyse ambiguity and incoherence:** identify how constructive ambiguity and/or circular aggregation logic expands information sets or produces weakly specified payoffs.
+3. **Determine equilibria under imperfect information:** analyse conditions under which gaming dominates honest effort, explicitly including reputational payoffs and monitoring/audit probability.
+4. **Policy stress testing:** evaluate sensitivity to policy levers (e.g., audit pressure, publication timing, penalty strength, measurement noise).
+
+### 4.3 Pre-specified outputs (deliverables)
+- A document index and clause-level extraction table (with stable document locators).
+- An IAD rule map (clause → rule type) and action-situation catalogue.
+- A machine-readable game specification (nodes, moves, information sets, payoffs).
+- A fragility-node register: clauses/rule clusters with disproportionate strategic impact.
+- A reproducible audit trail covering extraction, reconciliation, and modelling decisions.
 
 ## 5. Methods
 
-### 5.1 Study Design
-This is a qualitative document analysis study using an **Extensive Form Game with Imperfect Information** approach. Extensive Form games (Schelling, 1960) allow for the modeling of sequential decision-making where players respond to the moves of others over time. This methodology is particularly suited for modeling the NHRA environment, where players (e.g., LHNs) have private information about their true state that is only noisily revealed to the regulator (e.g., IHACPA) through lagged data submissions.
+### 5.1 Study design and epistemic stance
+Design: **qualitative document analysis** followed by **formal analytic modelling** (Bowen, 2009; Osborne & Rubinstein, 1994). The qualitative phase treats policy text as an institutional artefact whose meaning is partly explicit (rules-on-paper) and partly operational (rules-in-use). The modelling phase treats the extracted structure as a formal object that can be stress tested for equilibrium behaviour under assumptions about information and payoffs.
 
-### 5.2 Information Sources
-The census of analyzed documents includes:
-*   **National Health Reform Agreement (2011):** The foundation text.
-*   **Addendums (2017, 2020-2025):** The operational updates defining the current funding caps and safety penalties.
-*   **National Health Reform Act 2011 (Cth):** The statutory instrument providing legal force to the Agreement.
-*   **IHACPA Pricing Frameworks (2024-25):** The detailed rules for NEP determination and HAC adjustment (IHACPA, 2024).
-*   **AIHW Performance Reports:** Providing the context for noisy performance signals (AIHW, 2024).
+### 5.2 Corpus and sampling strategy
+This study uses a **census** of core governing instruments (primary corpus) plus a purposive set of operational and measurement instruments (secondary corpus).
 
-### 5.3 Data Collection (Blinded Mapping Protocol)
-To ensure auditability and minimize bias, the analysis uses a "Clean Room" protocol with two independent coding passes simulated through divergent analytical lenses (Mordaunt, 2025).
-*   **Pass A (Rule-Strict):** Codes strictly based on the explicit legal constraints and mandatory requirements found in the statutory text.
-*   **Pass B (Context-Applied):** Codes based on the operational interpretation and known historical work-arounds documented in policy evaluations (Hermans et al., 2014).
+**Primary corpus (census):**
+- National Health Reform Agreement (2011) (Council on Federal Financial Relations, 2011).
+- NHRA addenda (2017, 2020–2025) (Council on Federal Financial Relations, 2017; Council on Federal Financial Relations, 2020).
+- *National Health Reform Act 2011* (Cth) (Commonwealth of Australia, 2011).
 
-**Extraction Categories:**
-*   *Players:* Identifying the primary decision-makers and their alignment (e.g., the Commonwealth as the principal, States as agents, LHNs as sub-agents).
-*   *Moves:* Mapping atomic actions (e.g., data submission) and **Iterative Negotiation Cycles** defined in the 2020 Addendum (Clauses 127-130).
-*   *Information Sets:* Distinguishing between **Strategic Uncertainty** (opponent actions) and **Stochastic Uncertainty** (the noise in PSI-90 data).
-*   *Payoffs:* Quantifying utility through both direct financial transfers (NWAU) and indirect reputational standing.
+**Secondary corpus (contextual rules and signals):**
+- IHACPA Pricing Frameworks (relevant years) and NEP Determinations (IHACPA, 2024).
+- AIHW hospital performance reporting artefacts used as public signals (AIHW, 2024).
+- Public audit / review reports relevant to ABF and data quality (where included).
 
-### 5.4 Mathematical Formulation of Utility
-For each node in the game tree, we define a utility function $U_i$ for player $i$:
+**Supplemental literature (scoping search):**
+A scoping review of peer-reviewed and grey literature is used to contextualise known strategic responses to ABF/performance regimes and to triangulate candidate gaming behaviours. This component follows scoping review methods and reporting (Arksey & O’Malley, 2005; Levac et al., 2010; Tricco et al., 2018), and uses the inclusion/exclusion logic in `publications/P1_Qualitative_MJA/01_Protocol/criteria.md` with search strings in `publications/P1_Qualitative_MJA/01_Protocol/search_strings.md`.
+
+### 5.3 Document retrieval, indexing, and provenance
+To make the analysis auditable:
+1. Each source document is retrieved from a public source and stored/linked with a stable locator (URL + retrieval date + page/section locator).
+2. A document index is maintained (title, issuer, date, version, URL, checksum where feasible).
+3. When extracting clauses, each coded extract includes a locator: document name + clause ID + page reference (or equivalent stable anchor).
+
+This protocol aligns with the repository’s public-source constraint and provenance approach described in `context/06_data_provenance.md`.
+
+### 5.4 Unit of analysis and segmentation rules
+**Unit of analysis:** a "rule statement" derived from policy text, typically at the clause/subclause level, including definitions and schedule items when they define binding constraints.
+
+**Segmentation rules:**
+- Split combined clauses into separate rule statements when they define (a) a distinct actor, (b) a distinct required/prohibited action, (c) a distinct timing condition, or (d) a distinct payoff/penalty condition.
+- Keep cross-references explicit (e.g., "subject to clause X") by encoding dependencies in the extraction table.
+
+### 5.5 Coding framework and extraction procedure
+
+#### 5.5.1 A priori codebook (deductive)
+Deductive codes are defined by the IAD rule types and a minimal game-theory schema (player, move, timing, information, payoff). A preliminary "move type" dictionary is used to keep extraction consistent:
+- `FundingEvent` (determination, transfer, cap adjustment)
+- `ReportingEvent` (submission, certification, publication)
+- `AuditEvent` (audit initiation, response, revision)
+- `PenaltyEvent` (HAC/safety adjustment, noncompliance penalty)
+- `NegotiationLoop` (iterative cycles defined across clauses)
+- `ExceptionEvent` (escape clauses, emergency measures, ministerial discretion)
+
+#### 5.5.2 Inductive coding
+Inductive codes capture emergent mechanisms of gaming and ambiguity not fully anticipated by the taxonomy in Section 3. The inductive pass pays particular attention to:
+- points where compliance is defined in output terms rather than process/effort terms,
+- places where monitoring probability or data quality is underspecified,
+- areas where reputational signals are published without strong linkage to controllable effort.
+
+#### 5.5.3 Dual-pass "clean room" coding and reconciliation
+To reduce single-lens bias, extraction is performed in two independent passes:
+- **Pass A (rule-strict / rules-on-paper):** code only what is explicitly required/permitted by the text.
+- **Pass B (context-applied / rules-in-use):** code how the rule is plausibly operationalised given implementation realities and known workaround patterns.
+
+Each pass produces:
+- a clause-level extraction table,
+- a set of action situations,
+- a candidate mapping from clauses to game-theory elements.
+
+**Reconciliation:** discrepancies are resolved via documented arbitration rules:
+1. Prefer statutory text (Act) over agreement language when in conflict.
+2. Prefer explicit definitions over implied practice.
+3. Record ambiguous interpretations as alternative branches (expanded information sets) rather than forcing a single interpretation.
+
+### 5.6 From coded extracts to action situations and game specification
+The modelling workflow proceeds as follows:
+1. **Clause → rule statement:** extract and code rule statements with locators.
+2. **Rule statements → action situations:** group related rule statements into action situations (who acts, what choices, what information, what outcomes).
+3. **Action situations → game tree skeleton:** define player order, move sets, and timing.
+4. **Information sets:** identify what each player observes at each move (including lags, audits, publication delays).
+5. **Payoffs:** map explicit payoffs (NEP valuation, adjustments, penalties) and specify reputational payoff proxies driven by published signals.
+
+The game representation is stored as an explicit graph object (nodes/edges) plus a human-readable narrative description for review.
+
+### 5.7 Utility specification and parameterisation
+At each decision node, define utility for player *i*:
 $$U_i = \alpha \cdot F(a_i, \theta) + \beta \cdot R(s_i) - C(e_i)$$
 Where:
-*   $F$ is the financial payoff based on activity $a_i$ and coding intensity $\theta$.
-*   $R$ is the reputational payoff based on the public signal $s_i$.
-*   $C$ is the cost of genuine clinical effort $e_i$.
-*   $\alpha, \beta$ are weighting parameters determined through the policy context analysis.
+- $F$ is financial payoff as a function of activity $a_i$ and classification/coding intensity $\theta$ (e.g., NWAU-weighted valuation under NEP and cap rules).
+- $R$ is reputational payoff as a function of observed signal $s_i$ (public reporting, rankings, political/media attention).
+- $C$ is the cost of genuine effort $e_i$ (clinical, managerial, operational).
+- $\alpha, \beta$ are weights explored in sensitivity analyses rather than treated as known constants.
 
-### 5.5 Analysis & Synthesis
-The extracted logic will be reconciled by Dylan A Mordaunt, using the Statutory Lens to resolve discrepancies in clause interpretation. The final game tree will be validated for logical closure and analyzed for Nash Equilibria using the NHRA Game Engine. The synthesis will specifically look for "Fragility Nodes"—points in the agreement where a small change in information quality (audit pressure) causes a large shift in player strategy (from Honest to Gaming).
+### 5.8 Equilibrium concepts and analyses
+Primary equilibrium targets (chosen according to the information structure):
+- **Subgame Perfect Equilibrium** (where the game admits proper subgames).
+- **Perfect Bayesian / Sequential Equilibrium** for imperfect information variants (Osborne & Rubinstein, 1994).
 
-### 5.6 Reflexivity & Bias (Simulated)
-This study acknowledges the "Model Bias" toward standardized policy interpretations inherent in the use of automated analytical agents. To mitigate this, multiple analytical lenses are adopted, and all steps of the deliberation are logged for peer audit. The use of a single author (Dylan A Mordaunt) ensuring consistency across these lenses provides a unified critical framework for the final synthesis.
+Analyses include:
+- identification of strategy profiles that constitute equilibrium under plausible parameter ranges,
+- sensitivity analysis over audit probability, noise in signals, penalty strength, and $\alpha/\beta$ tradeoffs,
+- identification of **tipping points** where equilibrium behaviour changes discontinuously.
 
-## 6. Reporting Standards
-This study complies with the **SRQR (Standards for Reporting Qualitative Research)** and utilizes the **PRISMA-ScR** checklist for the systematic identification of supplementary policy literature.
+### 5.9 Trustworthiness, quality assurance, and audit trail
+This protocol uses qualitative trustworthiness criteria (Lincoln & Guba, 1985; Tracy, 2010) adapted to document analysis and formal modelling:
+- **Credibility:** triangulation across primary and secondary corpus; explicit recording of alternative interpretations.
+- **Dependability:** versioned extraction tables and decision logs; reproducible scripts where applicable.
+- **Confirmability:** preservation of locators and quotations; reconciliation log capturing arbitration decisions.
+- **Transferability:** clear definition of institutional context and boundaries; explicit limitations.
+
+The repository includes illustrative verification artefacts for data/parameter ingestion (e.g., `context/audit_results_verification.md`), and these practices are extended to the document-extraction stage.
+
+### 5.10 Reflexivity & bias (simulated analytical lenses)
+This protocol acknowledges that any structured analytic procedure can bias interpretation toward what is easily codified. To mitigate this, the dual-pass approach operationalises divergent lenses (rule-strict vs context-applied) and forces explicit documentation of interpretive choices. Where the modelling requires assumptions (e.g., payoffs, information lags), assumptions are enumerated and stress tested rather than hidden.
+
+### 5.11 Ethics and governance
+This study uses publicly retrievable policy, statutory, and reporting documents and does not involve human participants or identifiable patient data. Formal human-research ethics approval is not expected to be required; nonetheless, governance principles are followed: transparent sourcing, careful quotation, and avoidance of confidential material.
+
+## 6. Workflow Diagrams (Mermaid / Graphviz)
+
+### 6.1 End-to-end protocol workflow (Mermaid)
+```mermaid
+flowchart TB
+  subgraph Corpus
+    A[Primary corpus: NHRA + Act + addenda] --> B[Document index + locators]
+    A2[Secondary corpus: IHACPA + AIHW + audits] --> B
+    A3[Supplemental literature (PRISMA-ScR)] --> B
+  end
+
+  B --> C1[Clean-room coding pass A\nRule-strict (rules-on-paper)]
+  B --> C2[Clean-room coding pass B\nContext-applied (rules-in-use)]
+  C1 --> D[Reconciliation + arbitration log]
+  C2 --> D
+  D --> E[IAD rule map + action situations]
+  E --> F[Game specification\n(players, moves, info sets, payoffs)]
+  F --> G[Graph representation\n(game tree / DAG)]
+  G --> H[Equilibrium + sensitivity analyses]
+  H --> I[Outputs\nfragility nodes + policy levers]
+```
+
+### 6.2 Audit / reporting loop as an information structure (Mermaid sequence)
+```mermaid
+sequenceDiagram
+  participant LHN as LHN
+  participant State as State/Territory
+  participant Admin as NHFP Administrator
+  participant IHACPA as IHACPA
+  participant Public as Public signal
+
+  LHN->>State: Activity + coding data (t)
+  State->>Admin: Submission/certification (t+Δ1)
+  Admin->>IHACPA: Pricing/safety processing (t+Δ2)
+  IHACPA-->>Admin: Adjustments + audit triggers (t+Δ3)
+  Admin-->>State: Funding determination/adjustment (t+Δ4)
+  State-->>LHN: Budget + performance requirements (t+Δ5)
+  Admin->>Public: Publish signal (t+Δ6)
+  Public-->>State: Political attention / reputational payoff
+```
+
+### 6.3 Example clause → action situation → game node mapping (Graphviz)
+```dot
+digraph nhra_mapping_example {
+  rankdir=LR;
+  node [shape=box];
+
+  Clause [label="NHRA addendum\n(eg. data quality cycle)\nClause group: 127–130"];
+  IADInfo [label="IAD rule: Information\nsubmission + publication\n+ lags"];
+  IADPayoff [label="IAD rule: Payoff\npenalty/adjustment\n+ incentives"];
+  Action [label="Action situation:\nReport → Audit → Adjust"];
+  Node [label="Game node:\nChoose effort vs gaming\nunder imperfect info"];
+
+  Clause -> IADInfo;
+  Clause -> IADPayoff;
+  IADInfo -> Action;
+  IADPayoff -> Action;
+  Action -> Node;
+}
+```
+
+## 7. Reporting Standards
+This study will be reported in accordance with the **SRQR** reporting guidance for qualitative research (O’Brien et al., 2014). The supplemental scoping search will be documented using **PRISMA-ScR** (Tricco et al., 2018).
+
+## 8. References (Bibliography)
+1. AIHW. *Hospital performance reporting / Emergency Department care reporting (relevant year).* Australian Institute of Health and Welfare; 2024.
+2. Arksey H, O’Malley L. Scoping studies: towards a methodological framework. *International Journal of Social Research Methodology.* 2005;8(1):19–32.
+3. Bevan G, Hood C. What’s measured is what matters: targets and gaming in the English public health care system. *Public Administration.* 2006;84(3):517–538.
+4. Bowen GA. Document analysis as a qualitative research method. *Qualitative Research Journal.* 2009;9(2):27–40.
+5. Commonwealth of Australia. *National Health Reform Act 2011* (Cth).
+6. Council on Federal Financial Relations. *National Health Reform Agreement.* 2011.
+7. Council on Federal Financial Relations. *National Health Reform Agreement — Addendum.* 2017.
+8. Council on Federal Financial Relations. *National Health Reform Agreement — Addendum (2020–2025).* 2020.
+9. Crawford SE, Ostrom E. A grammar of institutions. *American Political Science Review.* 1995;89(3):582–600.
+10. DiMaggio PJ, Powell WW. The iron cage revisited: institutional isomorphism and collective rationality in organizational fields. *American Sociological Review.* 1983;48(2):147–160.
+11. Eisenhardt KM. Agency theory: an assessment and review. *Academy of Management Review.* 1989;14(1):57–74.
+12. Fudenberg D, Tirole J. *Game Theory.* MIT Press; 1991.
+13. Hsieh HF, Shannon SE. Three approaches to qualitative content analysis. *Qualitative Health Research.* 2005;15(9):1277–1288.
+14. IHACPA. *Pricing Framework for Australian Public Hospital Services 2024–25.* Independent Health and Aged Care Pricing Authority; 2024.
+15. Levac D, Colquhoun H, O’Brien KK. Scoping studies: advancing the methodology. *Implementation Science.* 2010;5:69.
+16. Lincoln YS, Guba EG. *Naturalistic Inquiry.* SAGE; 1985.
+17. Mannion R, Braithwaite J. Unintended consequences of performance measurement in healthcare: 20 salutary lessons from the English National Health Service. *Internal Medicine Journal.* 2012;42(5):569–574.
+18. Meyer JW, Rowan B. Institutionalized organizations: formal structure as myth and ceremony. *American Journal of Sociology.* 1977;83(2):340–363.
+19. O’Brien BC, Harris IB, Beckman TJ, Reed DA, Cook DA. Standards for reporting qualitative research: a synthesis of recommendations. *Academic Medicine.* 2014;89(9):1245–1251.
+20. Osborne MJ, Rubinstein A. *A Course in Game Theory.* MIT Press; 1994.
+21. Ostrom E. *Understanding Institutional Diversity.* Princeton University Press; 2005.
+22. Ostrom E, Gardner R, Walker J. *Rules, Games, and Common-Pool Resources.* University of Michigan Press; 1994.
+23. Prior L. *Using Documents in Social Research.* SAGE; 2003.
+24. Schelling TC. *The Strategy of Conflict.* Harvard University Press; 1960.
+25. Tracy SJ. Qualitative quality: eight “big-tent” criteria for excellent qualitative research. *Qualitative Inquiry.* 2010;16(10):837–851.
+26. Tricco AC, Lillie E, Zarin W, O’Brien KK, Colquhoun H, Levac D, et al. PRISMA extension for scoping reviews (PRISMA-ScR): checklist and explanation. *Annals of Internal Medicine.* 2018;169(7):467–473.
+
+## Appendix A. Minimal extraction template (for clause-level coding)
+| Field | Description |
+| :--- | :--- |
+| Document | Source document name + version |
+| Locator | Clause ID + page/section anchor |
+| Quotation | Exact text excerpt (as needed) |
+| Rule type | IAD: boundary/position/choice/information/payoff/aggregation/scope |
+| Player(s) | Actor(s) implicated by the clause |
+| Move type | `FundingEvent`, `ReportingEvent`, `AuditEvent`, `PenaltyEvent`, `NegotiationLoop`, `ExceptionEvent` |
+| Timing | When the move occurs (and lags) |
+| Information set | What is observed/known at this point |
+| Payoff implication | Financial + reputational (if applicable) |
+| Ambiguity note | Where interpretation branches, record alternatives |

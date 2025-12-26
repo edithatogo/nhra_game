@@ -10,7 +10,7 @@ This documentation provides details on the simulation models, game theory mechan
 
     Detailed guides on usage, profiling, and development workflows.
 
-    [:arrow_right: Explore Guides](guides/usage.md)
+    [:arrow_right: Explore Guides](guides/index.md)
 
 -   :material-chart-bell-curve-cumulative: **Models**
 
@@ -22,13 +22,13 @@ This documentation provides details on the simulation models, game theory mechan
 
     Requirements, design documents, and task tracking.
 
-    [:arrow_right: Project Docs](project/requirements.md)
+    [:arrow_right: Project Docs](project/index.md)
 
 -   :material-api: **API Reference**
 
     Auto-generated Python API reference for the `nhra_gt` package.
 
-    [:arrow_right: API Reference](reference/)
+    [:arrow_right: API Reference](reference/index.md)
 
 </div>
 

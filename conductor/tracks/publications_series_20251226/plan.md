@@ -52,40 +52,40 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: P1 Protocol (Qualitative) - Drafting & Review Loops' (Protocol in workflow.md) [checkpoint: 5748b0e]
 
 ## Phase 2a: Methodological Rigour & Document Expansion (New)
-- [ ] Task: Research Methods Expansion
-    - [ ] Sub-task: Create `data/research/` directory & commit
-    - [x] Sub-task: Ingest user-provided PDFs (Manual Step) & commit metadata [4173a93]
-    - [x] Sub-task: Conduct High-Quality Literature Search (Last 5 Years) & commit results [4173a93]
-    - [x] Sub-task: Select and Validate Key Methodological Papers & commit [b1c9ce3]
-- [ ] Task: Reference Quality Audit
-    - [x] Sub-task: Audit `publications/shared/references/library.yaml` for DOI/URL/Recency & commit report [a478bd9]
-    - [x] Sub-task: Replace low-quality/old references with new search results & commit [13fd51f]
-    - [~] Sub-task: Ensure consistent citation style (Inline + Bibliography) & commit
-- [ ] Task: Document Expansion & Refinement
-    - [x] Sub-task: Review `protocol_final_v2.md` against new research & commit v2.1 [3f0bb99]
-    - [x] Sub-task: Expand "Background" with recent critiques (2020-2025) & commit [e7e76aa]
-    - [x] Sub-task: Deepen "Methods" with specific graph theoretic citations & commit [e7e76aa]
-    - [~] Sub-task: Verify target length metrics (e.g., Protocol > 1500 words) & commit
-- [ ] Task: Conductor - User Manual Verification 'Phase 2a: Methodological Rigour & Document Expansion' (Protocol in workflow.md)
+- [x] Task: Research Methods Expansion [b1c9ce3]
+    - [x] Sub-task: Create `data/research/` directory & commit
+    - [x] Sub-task: Ingest user-provided PDFs (Manual Step) & commit metadata
+    - [x] Sub-task: Conduct High-Quality Literature Search (Last 5 Years) & commit results
+    - [x] Sub-task: Select and Validate Key Methodological Papers & commit
+- [x] Task: Reference Quality Audit [13fd51f]
+    - [x] Sub-task: Audit `publications/shared/references/library.yaml` for DOI/URL/Recency & commit report
+    - [x] Sub-task: Replace low-quality/old references with new search results & commit
+    - [x] Sub-task: Ensure consistent citation style (Inline + Bibliography) & commit
+- [x] Task: Document Expansion & Refinement [d88377e]
+    - [x] Sub-task: Review `protocol_final_v2.md` against new research & commit v2.1
+    - [x] Sub-task: Expand "Background" with recent critiques (2020-2025) & commit
+    - [x] Sub-task: Deepen "Methods" with specific graph theoretic citations & commit
+    - [x] Sub-task: Verify target length metrics (e.g., Protocol > 1500 words) & commit
+- [x] Task: Conductor - User Manual Verification 'Phase 2a: Methodological Rigour & Document Expansion' (Protocol in workflow.md) [checkpoint: d88377e]
 
 ## Phase 3: P1 Execution - Clean Room Mapping & Reconciliation
-- [~] Task: Clean Room Setup (Blinding)
-    - [ ] Sub-task: Create `temp_blinded_workspace/` with ONLY NHRA PDF text (No repo access) & commit
-    - [ ] Sub-task: Verify workspace isolation & commit
-- [ ] Task: Search Execution
-    - [ ] Sub-task: Run Search on defined sources & commit
-    - [ ] Sub-task: Save raw results to `raw_search.csv` & commit
-    - [ ] Sub-task: Run deduplication & commit
-    - [ ] Sub-task: Verify deduplication count & commit
-- [ ] Task: Blinded Mapping (In Clean Room)
-    - [ ] Sub-task: Create empty Codebook & commit
-    - [ ] Sub-task: Independent Coding of NHRA Text (Part 1) & commit
-    - [ ] Sub-task: Independent Coding of NHRA Text (Part 2) & commit
-    - [ ] Sub-task: Export Coding Artifacts to Main Repo (`P1_Qualitative_MJA/02_Analysis/`) & commit
-- [ ] Task: Reconciliation Analysis
-    - [ ] Sub-task: Run comparison script (Blinded vs Repo Diagrams) & commit
-    - [ ] Sub-task: Generate Parity Matrix CSV & commit
-    - [ ] Sub-task: Draft Reconciliation Report v1.0 & commit
+- [x] Task: Clean Room Setup (Blinding) [1d4c915]
+    - [x] Sub-task: Create `temp_blinded_workspace/` with ONLY NHRA PDF text (No repo access) & commit
+    - [x] Sub-task: Verify workspace isolation & commit
+- [x] Task: Search Execution [9810a2b]
+    - [x] Sub-task: Run Search on defined sources & commit
+    - [x] Sub-task: Save raw results to `raw_search.csv` & commit
+    - [x] Sub-task: Run deduplication & commit
+    - [x] Sub-task: Verify deduplication count & commit
+- [x] Task: Blinded Mapping (In Clean Room) [950a58f]
+    - [x] Sub-task: Create empty Codebook & commit
+    - [x] Sub-task: Independent Coding of NHRA Text (Part 1) & commit
+    - [x] Sub-task: Independent Coding of NHRA Text (Part 2) & commit
+    - [x] Sub-task: Export Coding Artifacts to Main Repo (`P1_Qualitative_MJA/02_Analysis/`) & commit
+- [x] Task: Reconciliation Analysis [289d4d8]
+    - [x] Sub-task: Run comparison script (Blinded vs Repo Diagrams) & commit
+    - [x] Sub-task: Generate Parity Matrix CSV & commit
+    - [x] Sub-task: Draft Reconciliation Report v1.0 & commit
 - [ ] Task: Internal Review (Reconciliation Report)
     - [ ] Sub-task: Review Report v1.0 through analytical lenses -> `review_log.md` & commit
     - [ ] Sub-task: Generate `missing_features_list.md` (e.g., needed diagrams/logic updates) & commit
@@ -95,30 +95,30 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: P1 Execution - Clean Room Mapping & Reconciliation' (Protocol in workflow.md)
 
 ## Phase 4: P1 Manuscript - Drafting & Review Loops
-- [ ] Task: Targeting & Schema Definition (P1)
+- [x] Task: Targeting & Schema Definition (P1) [7d7e136]
     - [ ] Sub-task: Extract Word Count Limits (Abstract, Text) from `mja.md` & commit
     - [ ] Sub-task: Define Section Word Budgets (Intro: X, Methods: Y...) & commit
     - [ ] Sub-task: Create `P1_Qualitative_MJA/03_Manuscript/schema.json` tracking targets & commit
-- [ ] Task: Traceability Matrix Construction (P1)
-    - [ ] Sub-task: Map Protocol Objectives -> Results -> Manuscript Sections in `traceability_matrix.csv` & commit
-- [ ] Task: Manuscript Skeleton (SRQR)
-    - [ ] Sub-task: Create `manuscript.md` with SRQR headings & commit
-    - [ ] Sub-task: Map headings to checklist items & commit
-- [ ] Task: Draft P1 Manuscript v1.0
-    - [ ] Sub-task: Draft Intro/Methods/Results/Discussion & commit
-- [ ] Task: Readability, Tone & Reference Quality (P1)
-    - [ ] Sub-task: Run `textstat` analysis on v1.0 -> `readability_report.md` & commit
-    - [ ] Sub-task: Optimize Sentence Length & Jargon & commit
-    - [ ] Sub-task: Tone Audit (Remove Hyperbole/AI-isms, Ensure Neutrality) & commit
-    - [ ] Sub-task: Run `manage_refs.py` Quality Check (Recency/Impact/DOIs) & commit
-    - [ ] Sub-task: Replace/Fix Low-Quality References & commit
+- [x] Task: Traceability Matrix Construction (P1) [0371464]
+    - [x] Sub-task: Map Protocol Objectives -> Results -> Manuscript Sections in `traceability_matrix.csv` & commit
+- [x] Task: Manuscript Skeleton (SRQR) [e3ab1be]
+    - [x] Sub-task: Create `manuscript.md` with SRQR headings & commit
+    - [x] Sub-task: Map headings to checklist items & commit
+- [x] Task: Draft P1 Manuscript v1.0 [68d2f71]
+    - [x] Sub-task: Draft Intro/Methods/Results/Discussion & commit
+- [x] Task: Readability, Tone & Reference Quality (P1) [86ddee5]
+    - [x] Sub-task: Run `textstat` analysis on v1.0 -> `readability_report.md` & commit
+    - [x] Sub-task: Optimize Sentence Length & Jargon & commit
+    - [x] Sub-task: Tone Audit (Remove Hyperbole/AI-isms, Ensure Neutrality) & commit
+    - [x] Sub-task: Run `manage_refs.py` Quality Check (Recency/Impact/DOIs) & commit
+    - [x] Sub-task: Replace/Fix Low-Quality References & commit
     - [ ] Sub-task: Sequence Figures/Tables (1, 2, 3...) based on Callouts & commit
     - [ ] Sub-task: Re-label Supplementary Items (S1, S2...) & verify cross-refs & commit
-- [ ] Task: Final Formatting & Bibliography (P1)
-    - [ ] Sub-task: Strip non-manuscript text (Title, Abstract, Body, Refs ONLY) & commit
-    - [ ] Sub-task: Generate Numbered Bibliography (Append to End) & commit
-    - [ ] Sub-task: Verify Hybrid Citation Style ({Author, Year} + Numbered Bib) & commit
-- [ ] Task: Internal Review Round 1 (P1 Manuscript)
+- [x] Task: Final Formatting & Bibliography (P1) [86ddee5]
+    - [x] Sub-task: Strip non-manuscript text (Title, Abstract, Body, Refs ONLY) & commit
+    - [x] Sub-task: Generate Numbered Bibliography (Append to End) & commit
+    - [x] Sub-task: Verify Hybrid Citation Style ({Author, Year} + Numbered Bib) & commit
+- [~] Task: Internal Review Round 1 (P1 Manuscript)
     - [ ] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
     - [ ] Sub-task: Generate `missing_visuals_list.md` (Tables/Figures needed) & commit
     - [ ] Sub-task: Implement missing Visuals (Update `scripts/viz.py` if needed) & commit
