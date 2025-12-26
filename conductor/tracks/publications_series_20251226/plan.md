@@ -54,6 +54,23 @@
     - [ ] Sub-task: Generate Frozen Registration PDF & commit
 - [x] Task: Conductor - User Manual Verification 'Phase 2: P1 Protocol (Qualitative) - Drafting & Review Loops' (Protocol in workflow.md) [checkpoint: 5748b0e]
 
+## Phase 2a: Methodological Rigour & Document Expansion (New)
+- [ ] Task: Research Methods Expansion
+    - [ ] Sub-task: Create `data/research/` directory & commit
+    - [ ] Sub-task: Ingest user-provided PDFs (Manual Step) & commit metadata
+    - [ ] Sub-task: Conduct High-Quality Literature Search (Last 5 Years) & commit results
+    - [ ] Sub-task: Select and Validate Key Methodological Papers & commit
+- [ ] Task: Reference Quality Audit
+    - [ ] Sub-task: Audit `publications/shared/references/library.yaml` for DOI/URL/Recency & commit report
+    - [ ] Sub-task: Replace low-quality/old references with new search results & commit
+    - [ ] Sub-task: Ensure consistent citation style (Inline + Bibliography) & commit
+- [ ] Task: Document Expansion & Refinement
+    - [ ] Sub-task: Review `protocol_final_v2.md` against new research & commit v2.1
+    - [ ] Sub-task: Expand "Background" with recent critiques (2020-2025) & commit
+    - [ ] Sub-task: Deepen "Methods" with specific graph theoretic citations & commit
+    - [ ] Sub-task: Verify target length metrics (e.g., Protocol > 1500 words) & commit
+- [ ] Task: Conductor - User Manual Verification 'Phase 2a: Methodological Rigour & Document Expansion' (Protocol in workflow.md)
+
 ## Phase 3: P1 Execution - Clean Room Mapping & Reconciliation
 - [~] Task: Clean Room Setup (Blinding)
     - [ ] Sub-task: Create `temp_blinded_workspace/` with ONLY NHRA PDF text (No repo access) & commit
