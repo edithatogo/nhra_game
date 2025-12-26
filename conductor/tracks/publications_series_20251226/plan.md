@@ -1,7 +1,7 @@
 # Implementation Plan: Publication Series - NHRA Game Theory & Empirical Modelling
 **Author:** Dylan A Mordaunt
 
-## Phase 1: Infrastructure & Expert Panel Setup
+## Phase 1: Infrastructure & Analytical Setup
 - [x] Task: Create Publication Folder Hierarchy (spec 2.1) [45c25a5]
     - [x] Sub-task: Create `publications/shared/references` & commit
     - [x] Sub-task: Create `publications/shared/author_guidelines` & commit
@@ -18,11 +18,10 @@
 - [x] Task: Guidelines Acquisition [e288654]
     - [ ] Sub-task: Scrape MJA Author Guidelines to `mja.md` & commit
     - [ ] Sub-task: Scrape RACMA Position Statement standards to `racma.md` & commit
-- [x] Task: Define Expert Personas (Simulated) [e8f3838]
-    - [ ] Sub-task: Define Initial Panel (Methodologist, Policy Expert, Game Theorist) in `publications/shared/experts/panel_v1.md` & commit
-    - [ ] Sub-task: Run "Snowball" simulation (Ask Panel v1 for suggestions) -> `panel_v2.md` & commit
-    - [ ] Sub-task: Verify Final Expert Panel composition & commit
-- [x] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure & Expert Panel Setup' (Protocol in workflow.md) [checkpoint: f3189ea]
+- [x] Task: Define Analytical Lenses (Single-Author Protocol) [e8f3838]
+    - [x] Sub-task: Define 6 Analytical Lenses in `publications/shared/analytical_lenses.md` & commit
+    - [x] Sub-task: Verify Lenses cover all relevant domain facets & commit
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure & Analytical Setup' (Protocol in workflow.md) [checkpoint: f3189ea]
 
 ## Phase 2: P1 Protocol (Qualitative) - Drafting & Review Loops
 - [x] Task: Search Strategy Definition (Atomic PRISMA-ScR) [ec3ce66]
@@ -38,17 +37,15 @@
     - [ ] Sub-task: Write Methods section (Data Collection) & commit
     - [ ] Sub-task: Write Methods section (Analysis/Synthesis) & commit
     - [ ] Sub-task: Compile Draft v1.0 & commit
-- [x] Task: Expert Review Round 1 (P1 Protocol) [fd79b51]
-    - [ ] Sub-task: Solicit Individual Feedback (Async) -> `P1_Qualitative_MJA/01_Protocol/review_log_r1.md` & commit
-    - [ ] Sub-task: Document "Coding Improvements" (save to separate list) & commit
+- [x] Task: Internal Review Round 1 (P1 Protocol) [fd79b51]
+    - [ ] Sub-task: Review v1.0 through analytical lenses -> `P1_Qualitative_MJA/01_Protocol/review_log_r1.md` & commit
+    - [ ] Sub-task: Document "Strategic Gaming" logic gaps (save to separate list) & commit
     - [ ] Sub-task: Generate `gap_analysis_v1.md` (Missing protocol sections) & commit
-    - [ ] Sub-task: Facilitate Deliberation (Simulated Panel Discussion) on Priorities & commit
-    - [ ] Sub-task: Vote/Prioritize Actions -> `action_plan_r1.md` & commit
+    - [ ] Sub-task: Prioritize actions -> `action_plan_r1.md` & commit
     - [ ] Sub-task: Implement changes -> v1.1 & commit
-- [x] Task: Expert Review Round 2 (P1 Protocol) [341b69e]
-    - [ ] Sub-task: Solicit Individual Feedback on v1.1 -> `review_log_r2.md` & commit
-    - [ ] Sub-task: Facilitate Deliberation & Consensus & commit
-    - [ ] Sub-task: Implement changes -> v2.0 (Final) & commit
+- [x] Task: Internal Review Round 2 (P1 Protocol) [341b69e]
+    - [ ] Sub-task: Review v1.1 through clinical/legal lenses -> `review_log_r2.md` & commit
+    - [ ] Sub-task: Implement final consensus changes -> v2.0 (Final) & commit
 - [x] Task: OSF Registration (v2.0) [89138e3]
     - [ ] Sub-task: Populate OSF Template with v2.0 content & commit
     - [ ] Sub-task: Generate Frozen Registration PDF & commit
@@ -89,8 +86,8 @@
     - [ ] Sub-task: Run comparison script (Blinded vs Repo Diagrams) & commit
     - [ ] Sub-task: Generate Parity Matrix CSV & commit
     - [ ] Sub-task: Draft Reconciliation Report v1.0 & commit
-- [ ] Task: Expert Review (Reconciliation Report)
-    - [ ] Sub-task: Panel reviews Report v1.0 (Logic gaps) -> `review_log.md` & commit
+- [ ] Task: Internal Review (Reconciliation Report)
+    - [ ] Sub-task: Review Report v1.0 through analytical lenses -> `review_log.md` & commit
     - [ ] Sub-task: Generate `missing_features_list.md` (e.g., needed diagrams/logic updates) & commit
     - [ ] Sub-task: Update `context/nhra_stage_game_spec.md` if gaps found & commit
     - [ ] Sub-task: Update Diagrams if gaps found & commit
@@ -121,15 +118,13 @@
     - [ ] Sub-task: Strip non-manuscript text (Title, Abstract, Body, Refs ONLY) & commit
     - [ ] Sub-task: Generate Numbered Bibliography (Append to End) & commit
     - [ ] Sub-task: Verify Hybrid Citation Style ({Author, Year} + Numbered Bib) & commit
-- [ ] Task: Expert Review Round 1 (P1 Manuscript)
-    - [ ] Sub-task: Solicit Individual Feedback on v1.0 -> `review_log_r1.md` & commit
+- [ ] Task: Internal Review Round 1 (P1 Manuscript)
+    - [ ] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
     - [ ] Sub-task: Generate `missing_visuals_list.md` (Tables/Figures needed) & commit
-    - [ ] Sub-task: Facilitate Deliberation on Visuals & commit
     - [ ] Sub-task: Implement missing Visuals (Update `scripts/viz.py` if needed) & commit
     - [ ] Sub-task: Refine Text -> v1.1 & commit
-- [ ] Task: Expert Review Round 2 (P1 Manuscript)
-    - [ ] Sub-task: Solicit Feedback on v1.1 -> `review_log_r2.md` & commit
-    - [ ] Sub-task: Facilitate Consensus & commit
+- [ ] Task: Internal Review Round 2 (P1 Manuscript)
+    - [ ] Sub-task: Final review of v1.1 & commit
     - [ ] Sub-task: Implement -> v2.0 (Submission Ready) & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: P1 Manuscript - Drafting & Review Loops' (Protocol in workflow.md)
 
@@ -140,14 +135,12 @@
     - [ ] Sub-task: Write Process Overview section & commit
     - [ ] Sub-task: Write Design Concepts section & commit
     - [ ] Sub-task: Compile Draft v1.0 & commit
-- [ ] Task: Expert Review Round 1 (P2 Protocol)
-    - [ ] Sub-task: Solicit Individual Feedback v1.0 -> `review_log_r1.md` & commit
+- [ ] Task: Internal Review Round 1 (P2 Protocol)
+    - [ ] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
     - [ ] Sub-task: Document "Model Refinements" (if coding needed) & commit
-    - [ ] Sub-task: Facilitate Deliberation on Model Refinements & commit
     - [ ] Sub-task: Implement Protocol changes -> v1.1 & commit
-- [ ] Task: Expert Review Round 2 (P2 Protocol)
-    - [ ] Sub-task: Solicit Feedback v1.1 -> `review_log_r2.md` & commit
-    - [ ] Sub-task: Facilitate Consensus & commit
+- [ ] Task: Internal Review Round 2 (P2 Protocol)
+    - [ ] Sub-task: Final review of v1.1 & commit
     - [ ] Sub-task: Implement -> v2.0 (Final) & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 5: P2 Protocol (Modelling) - Drafting & Review Loops' (Protocol in workflow.md)
 
@@ -167,8 +160,7 @@
 - [ ] Task: Simulation Execution & Gap Filling
     - [ ] Sub-task: Run Golden Scenarios & commit
     - [ ] Sub-task: Generate Figures v1.0 & commit
-    - [ ] Sub-task: Expert Panel reviews Visuals -> `missing_visuals_list.md` & commit
-    - [ ] Sub-task: Deliberate on Visual Gaps & commit
+    - [ ] Sub-task: Internal Review of Visuals -> `missing_visuals_list.md` & commit
     - [ ] Sub-task: Update `scripts/viz.py` or Experiment Configs based on list & commit
     - [ ] Sub-task: Re-run needed sims -> Figures v2.0 & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 6: P2 Execution - Simulation & Parity Audit' (Protocol in workflow.md)
@@ -199,15 +191,13 @@
     - [ ] Sub-task: Strip non-manuscript text & commit
     - [ ] Sub-task: Generate Numbered Bibliography & commit
     - [ ] Sub-task: Verify Hybrid Citation Style & commit
-- [ ] Task: Expert Review Round 1 (P2 Manuscript)
-    - [ ] Sub-task: Solicit Individual Feedback v1.0 -> `review_log_r1.md` & commit
+- [ ] Task: Internal Review Round 1 (P2 Manuscript)
+    - [ ] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
     - [ ] Sub-task: Generate `missing_features_list.md` & commit
-    - [ ] Sub-task: Deliberate on Features & commit
     - [ ] Sub-task: Implement missing features & commit
     - [ ] Sub-task: Prioritize & Implement Text -> v1.1 & commit
-- [ ] Task: Expert Review Round 2 (P2 Manuscript)
-    - [ ] Sub-task: Solicit Feedback v1.1 -> `review_log_r2.md` & commit
-    - [ ] Sub-task: Facilitate Consensus & commit
+- [ ] Task: Internal Review Round 2 (P2 Manuscript)
+    - [ ] Sub-task: Final review of v1.1 & commit
     - [ ] Sub-task: Implement -> v2.0 (Submission Ready) & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 7: P2 Manuscript - Drafting & Review Loops' (Protocol in workflow.md)
 
@@ -229,13 +219,11 @@
     - [ ] Sub-task: Strip non-manuscript text & commit
     - [ ] Sub-task: Generate Numbered Bibliography & commit
     - [ ] Sub-task: Verify Hybrid Citation Style & commit
-- [ ] Task: Expert Review Round 1 (P3)
-    - [ ] Sub-task: Solicit Individual Feedback v1.0 -> `review_log_r1.md` & commit
-    - [ ] Sub-task: Facilitate Deliberation & commit
+- [ ] Task: Internal Review Round 1 (P3)
+    - [ ] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
     - [ ] Sub-task: Implement changes -> v1.1 & commit
-- [ ] Task: Expert Review Round 2 (P3)
-    - [ ] Sub-task: Solicit Feedback v1.1 -> `review_log_r2.md` & commit
-    - [ ] Sub-task: Facilitate Consensus & commit
+- [ ] Task: Internal Review Round 2 (P3)
+    - [ ] Sub-task: Final review of v1.1 & commit
     - [ ] Sub-task: Implement -> v2.0 (Final) & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 8: P3 RACMA - Drafting & Review Loops' (Protocol in workflow.md)
 
@@ -243,14 +231,14 @@
 - [ ] Task: Title Page & Cover Letter - P1 (Qualitative)
     - [ ] Sub-task: Draft Title Page (Affiliations, Conflicts, Funding) & commit
     - [ ] Sub-task: Draft Cover Letter (To Editor, Highlighting Fit/Novelty) & commit
-    - [ ] Sub-task: Expert Review Title/Cover & commit
+    - [ ] Sub-task: Internal Review Title/Cover & commit
 - [ ] Task: Title Page & Cover Letter - P2 (Modelling)
     - [ ] Sub-task: Draft Title Page (Affiliations, Conflicts, Funding) & commit
     - [ ] Sub-task: Draft Cover Letter (To Editor, Highlighting Fit/Novelty) & commit
-    - [ ] Sub-task: Expert Review Title/Cover & commit
+    - [ ] Sub-task: Internal Review Title/Cover & commit
 - [ ] Task: Title Page & Cover Letter - P3 (RACMA)
     - [ ] Sub-task: Draft Title Page/Cover Note & commit
-    - [ ] Sub-task: Expert Review & commit
+    - [ ] Sub-task: Internal Review & commit
 - [ ] Task: Final Package Assembly
     - [ ] Sub-task: Final Reference Validation (100% check) & commit
     - [ ] Sub-task: Generate P1 Final PDF Bundle & commit
