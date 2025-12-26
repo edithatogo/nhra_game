@@ -21,11 +21,11 @@
 - [x] Task: Verify parity: Ensure new functions produce identical (or strictly better) outputs than legacy scripts. 748d61e
 - [x] Task: Conductor - User Manual Verification 'Migration & Modernization' (Protocol in workflow.md) 748d61e
 
-## Phase 4: Testing & Verification
-- [ ] Task: Implement Smoke Tests: Verify all registered functions execute without error on sample data.
-- [ ] Task: Implement Data Integrity Tests: Assert input DataFrames meet schema expectations (columns, types) before plotting.
-- [ ] Task: Implement Visual Regression Tests: Compare outputs against "gold standard" baselines for key figures.
-- [ ] Task: Conductor - User Manual Verification 'Testing & Verification' (Protocol in workflow.md)
+## Phase 4: Testing & Verification [checkpoint: 59f0dc2]
+- [x] Task: Implement Smoke Tests: Verify all registered functions execute without error on sample data. 59f0dc2
+- [x] Task: Implement Data Integrity Tests: Assert input DataFrames meet schema expectations (columns, types) before plotting. 59f0dc2
+- [x] Task: Implement Visual Regression Tests: Compare outputs against "gold standard" baselines for key figures. 59f0dc2
+- [x] Task: Conductor - User Manual Verification 'Testing & Verification' (Protocol in workflow.md) 59f0dc2
 
 ## Phase 5: Documentation & Cleanup
 - [ ] Task: Update `docs/models.md` and `docs/usage.md` with new visualization API usage examples.
