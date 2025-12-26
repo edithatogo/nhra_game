@@ -26,7 +26,16 @@ class Agent(ABC):
 
     @abstractmethod
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
-        """Choose strategies based on current system state."""
+        """Choose strategies based on current system state.
+
+        Args:
+            state: The current simulation state (pressure, funds, etc.).
+            params: The simulation parameters and configuration.
+            rng: A random number generator seeded for this rollout.
+
+        Returns:
+            A dictionary of strategic choices (e.g., {"DEF": "E", "BARG": "A"}).
+        """
         pass
 
 
@@ -35,7 +44,19 @@ class BriefGenerator:
 
     @staticmethod
     def generate(state: State, params: Params, role: str) -> str:
-        """Generate a policy brief for a specific role (Commonwealth/State/Provider)."""
+        """Generate a policy brief for a specific role (Commonwealth/State/Provider).
+
+        Converts quantitative state metrics into a qualitative textual narrative
+        suitable for LLM consumption.
+
+        Args:
+            state: Current simulation state.
+            params: System parameters.
+            role: The role to generate the brief for (e.g., "State Health Dept").
+
+        Returns:
+            A formatted markdown string containing the policy brief.
+        """
         mode_desc = {
             "normal": "The system is currently stable.",
             "stress": "The system is under significant pressure.",
@@ -75,8 +96,15 @@ class AuditorValidator:
     """
 
     def validate(self, trace: list[dict[str, Any]]) -> dict[str, Any]:
-        """
-        Takes a list of (state, strategy, rationale) and returns a realism score.
+        """Evaluates agent strategic traces from an 'Auditor' perspective.
+
+        Scores realism and detects unlikely gaming behavior.
+
+        Args:
+            trace: A list of step dictionaries containing state, strategy, and rationale.
+
+        Returns:
+            A dictionary with keys `realism_score` (float) and `findings` (list of str).
         """
         # Logic would involve an LLM prompt: "Does this look like a real hospital administrator?"
         # For now, return a placeholder score.
@@ -101,7 +129,7 @@ class LLMAgent(Agent):
         Generates a brief, calls the LLM, and parses the strategic response.
         Note: Actual LLM call is stubbed/delegated to the environment.
         """
-        brief = self.brief_gen.generate(state, params, self.role)
+        self.brief_gen.generate(state, params, self.role)
 
         # In a real implementation, we would call the LLM here.
         # For the simulation engine, we can use a callback or a mock
@@ -126,8 +154,18 @@ class HeuristicAgent(Agent):
     """
 
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
-        """
-        Choose strategies based on current system state and orchestration mode.
+        """Choose strategies based on current system state and orchestration mode.
+
+        Implements the hybrid game-theory logic, determining actions for all subgames
+        (SIGNAL, BARG, DEF, etc.) based on either Nash Equilibrium or heuristics.
+
+        Args:
+            state: Current system state.
+            params: System parameters including orchestration definition.
+            rng: Random number generator.
+
+        Returns:
+            A dictionary containing the chosen action for each game (e.g., "SIGNAL": "H").
         """
         noise = float(rng.normal(0.0, params.noise_sd))
 

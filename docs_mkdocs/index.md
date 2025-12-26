@@ -1,17 +1,43 @@
-# NHRA Game-Theory Model
+# Welcome to NHRA Game
 
-Welcome to the documentation for the National Health Reform Agreement (NHRA) game-theory mechanism model.
+**Stylised mechanism models for NHRA negotiations and downstream system pressure.**
 
-## Overview
-This project provides State-of-the-Art (SOTA) stylised mechanism models to simulate and analyze the strategic interactions between the Commonwealth and State governments within the NHRA framework.
+This documentation provides details on the simulation models, game theory mechanisms, and analysis tools used in the project.
 
-## Core Features
-- **Dynamic Simulation:** Monte Carlo rollouts of funding trajectories.
-- **Game-Theoretic Solvers:** Integrated Nash equilibrium and Quantal Response solvers.
-- **Advanced Sensitivity Analysis:** Sobol and Morris global sensitivity methods.
-- **Rigorous Verification:** 95% coverage requirement, fuzzing, and E2E pipeline verification.
+<div class="grid cards" markdown>
 
-## Navigation
-- [API Reference](api.md)
-- [Testing Procedures](testing.md)
-- [Performance Profiling](profiling.md)
+-   :material-book-open-page-variant: **Guides**
+
+    Detailed guides on usage, profiling, and development workflows.
+
+    [:arrow_right: Explore Guides](guides/usage.md)
+
+-   :material-chart-bell-curve-cumulative: **Models**
+
+    Technical specifications of the game theory mechanisms and simulation logic.
+
+    [:arrow_right: View Models](guides/models.md)
+
+-   :material-clipboard-text-outline: **Project**
+
+    Requirements, design documents, and task tracking.
+
+    [:arrow_right: Project Docs](project/requirements.md)
+
+-   :material-api: **API Reference**
+
+    Auto-generated Python API reference for the `nhra_game_theory` package.
+
+    [:arrow_right: API Reference](reference/)
+
+</div>
+
+## Key Features
+
+*   **Mechanism Design**: Custom game-theory models for hospital funding negotiations.
+*   **Safety Theatre**: Simulation of "Safety Theatre" dynamics in high-reliability organizations.
+*   **Validation**: Rigorous validation suite including sensitivity analysis and backtesting.
+
+## Getting Started
+
+Check out the [Usage Guide](guides/usage.md) to get up and running with the simulation.

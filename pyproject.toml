@@ -55,7 +55,9 @@ dev = [
     "nox", "mkdocs", "mkdocs-material", "mutmut", "pytest-mock",
     "pytest-cov", "scalene", "pyinstrument", "py-spy", "memray",
     "pytest-benchmark", "asv", "deptry", "vulture", "bandit", "pyright",
-    "beartype", "typeguard", "mkdocstrings-python"
+    "beartype", "typeguard", "mkdocstrings-python", "mkdocs-literate-nav",
+    "mkdocs-section-index", "mkdocs-jupyter", "mike",
+    "mkdocs-git-revision-date-localized-plugin"
 ]
 
 [tool.poetry.group.dev.dependencies]
@@ -85,6 +87,10 @@ typeguard = "*"
 mkdocstrings-python = "^2.0.1"
 mkdocs-gen-files = "^0.6.0"
 mkdocs-git-revision-date-localized-plugin = "^1.5.0"
+mkdocs-literate-nav = "*"
+mkdocs-section-index = "*"
+mkdocs-jupyter = "*"
+mike = "*"
 
 [tool.coverage.run]
 omit = ["tests/*", "scripts/*", ".nox/*", ".gemini/*", "*/__init__.py"]

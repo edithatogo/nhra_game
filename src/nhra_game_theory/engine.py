@@ -46,7 +46,19 @@ def softmax(u: NDArray[np.floating[Any]], tau: float = 0.25) -> NDArray[np.float
 
 
 def mm_s_queue_wait(arrival_rate: float, service_rate: float, servers: float) -> float:
-    """Simplified approximation of M/M/s wait time."""
+    """Simplified approximation of M/M/s wait time.
+
+    Calculates the expected wait time in minutes using a Kingman-like approximation
+    for a multi-server queue.
+
+    Args:
+        arrival_rate: The rate of arrivals (e.g., patients per hour).
+        service_rate: The service rate per server (e.g., patients per hour).
+        servers: The number of available servers (effective capacity).
+
+    Returns:
+        The estimated wait time in minutes, clamped between 5 and 1440.
+    """
     utilization = arrival_rate / max(1e-9, (service_rate * servers))
     if utilization >= 1.0:
         return 1440.0  # Cap at 24 hours
@@ -60,7 +72,19 @@ def within4_from_pressure(pidx: float) -> float:
 
 
 def nep_series(years: list[int], p: Params) -> pd.DataFrame:
-    """Return an illustrative NEP series."""
+    """Return an illustrative NEP series.
+
+    Generates a time-series DataFrame of National Efficient Price (NEP) values
+    based on the initial NEP and annual growth rate defined in the parameters.
+
+    Args:
+        years: A list of years to generate data for.
+        p: The simulation parameters containing growth assumptions.
+
+    Returns:
+        A DataFrame with columns `year`, `nep_per_nwau`, `representative_nwau`,
+        and `efficient_payment`.
+    """
     nep = float(p.nep_per_nwau_start)
     rows = []
     for i, y in enumerate(years):
@@ -302,6 +326,23 @@ def ops_step(
     month_growth_factor: float,
     rng: np.random.Generator,
 ) -> tuple[float, float, float, float, float, float, float]:
+    """Execute the operational dynamics step.
+
+    Updates operational metrics including discharge delay, capacity, occupancy,
+    and pressure indices based on demand and strategic choices.
+
+    Args:
+        s: Current system state.
+        p: System parameters.
+        strategies: Dictionary of current agent strategies.
+        demand: The realized demand for the current step.
+        month_growth_factor: Scaling factor for monthly time-step (1/12).
+        rng: Random number generator for stochasticity.
+
+    Returns:
+        A tuple containing:
+        (discharge, capacity, wait_min, occ, off, pidx, w4)
+    """
     discharge = s.discharge_delay
     aged_effect = 0.95 if strategies.get("AGED") == "C" else 1.02
     ndis_effect = 0.96 if strategies.get("NDIS") == "C" else 1.03
@@ -361,6 +402,20 @@ def update_system_mode(s: State, p: Params) -> SystemMode:
 
 
 def step(s: State, p: Params, strategies: dict[str, Any], rng: np.random.Generator) -> State:
+    """Advance the simulation by one month.
+
+    Integrates demand, policy, operational, and payment dynamics to produce the
+    next system state. Also updates political capital and equity indices.
+
+    Args:
+        s: Current state.
+        p: System parameters.
+        strategies: Dictionary of chosen strategies for this step.
+        rng: Random number generator.
+
+    Returns:
+        The new `State` object for the simulation.
+    """
     mgf = 1.0 / 12.0
     demand = demand_step(s, p, strategies, rng)
     eff_gap, eff_share, bailout = policy_step(s, p, strategies, mgf)
@@ -431,6 +486,25 @@ def run_hybrid(
     recorder: Any | None = None,
     overrides: dict[str, str] | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Execute a hybrid simulation experiment with multiple Monte Carlo rollouts.
+
+    Runs the simulation over the specified years, aggregating results across `n_mc`
+    independent trajectories. Calculates standard deviations and percentiles for
+    key metrics.
+
+    Args:
+        years: List of integer years to simulate (e.g., `[2025, 2026, ...]`).
+        p: Base simulation parameters.
+        seed: Random seed for reproducibility.
+        n_mc: Number of Monte Carlo rollouts (iterations).
+        recorder: Optional instrumentation object for tracking experiments.
+        overrides: Optional dictionary of strategy overrides (e.g., forced "COOP").
+
+    Returns:
+        A tuple of two DataFrames:
+        1. `agg`: Aggregated metrics per year (mean, std, p10, p90).
+        2. `freq`: Frequency of strategy choices per game per year.
+    """
     if recorder:
         recorder.start_experiment(
             experiment_name=f"hybrid_sim_{years[0]}_{years[-1]}",
@@ -438,7 +512,7 @@ def run_hybrid(
             n_mc=n_mc,
             params=str(p),
         )
-    rng, rows, strat_rows, agent = np.random.default_rng(seed), [], [], HeuristicAgent()
+    rows, strat_rows, agent = [], [], HeuristicAgent()
     for r in range(n_mc):
         s, sub, end_year = (
             baseline_state(start_year=years[0], p=p),

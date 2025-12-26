@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+title: "NHRA Game: Mechanisms and downstream system pressure models"
+message: "If you use this software in your research, please cite it as below."
+type: software
+authors:
+  - family-names: "Mordaunt"
+    given-names: "Dylan A."
+    orcid: "https://orcid.org/0000-0002-8619-3507"
+repository-code: "https://github.com/edithatogo/nhra_game"
+keywords:
+  - "healthcare"
+  - "game-theory"
+  - "simulation"
+  - "policy"
+license: "MIT"
+version: "26.0.1"
+date-released: "2025-12-26"

@@ -42,3 +42,4 @@ htmlcov/
 coverage.xml
 profiles/
 .asv/
+site/
