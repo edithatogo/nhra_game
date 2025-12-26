@@ -31,3 +31,4 @@ To develop a State-of-the-Art (SOTA) predictive game-theory model of the Nationa
 7.  **Performance Profiling & Benchmarking Suite:** Automated profiling (e.g., using `pyinstrument` or `scalene`) to ensure computational efficiency as MC rollouts scale.
 8.  **Automated Quality & Security Audits:** Formalized mutation testing (mutmut) and security scanning (bandit/safety) integrated into the CI pipeline.
 9.  **Standardized Visualization API:** A unified, configuration-driven plotting infrastructure with visual regression testing (`pytest-mpl`) to ensure publication-ready figures.
+10. **SOTA Technical Artifacts:** Formal C4/ODD technical diagrams, evidence-linked feature matrices, and automated documentation drift detection integrated into the development lifecycle.
