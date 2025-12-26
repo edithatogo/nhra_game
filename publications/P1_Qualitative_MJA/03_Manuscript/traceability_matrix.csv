@@ -1,0 +1,5 @@
+Objective,Source_Clause,Method,Results_Target,Manuscript_Section
+"Obj 1: Map static game structure","NHRA Clauses 1-130","IAD Framework / Blinded Coding","Extensive Form Tree / Node List","Results 3.1"
+"Obj 2: Analyze ambiguity/incoherence","Schedule J, Clause A127","Qualitative Reconciliation","Fragility Node Register","Results 3.2"
+"Obj 3: Determine equilibria","Statutory Payoff rules","Nash / SPE Analysis","Gaming Dominance conditions","Results 3.3"
+"Obj 4: Policy stress testing","Pricing Framework 24-25","Sensitivity simulations","Audit threshold impact","Results 3.4"
