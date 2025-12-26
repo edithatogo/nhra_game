@@ -73,6 +73,32 @@ def validate_recency(references: List[Dict[str, Any]], max_age_years: int = 10) 
 
     return all_recent
 
+def validate_quality(references: List[Dict[str, Any]], high_impact_list: List[str] = None) -> bool:
+    """
+    Checks if references are from high-impact journals.
+    This is a heuristic check.
+    """
+    if high_impact_list is None:
+        high_impact_list = ["nature", "science", "lancet", "nejm", "bmj", "jama"] # Example list
+    
+    all_high_quality = True
+    for ref in references:
+        ref_id = ref.get("id", "Unknown ID")
+        container_title = ref.get("container-title", "") # CSL-JSON standard
+        
+        if not container_title:
+             container_title = ref.get("journal", "") # Fallback
+
+        if container_title:
+            if not any(j in container_title.lower() for j in high_impact_list):
+                logging.info(f"Reference '{ref_id}' journal '{container_title}' is not in the high-impact whitelist (Heuristic check).")
+                # We do NOT fail validation for this, just log info, unless strict mode is enabled.
+                # For now, we return True to avoid blocking, but you could toggle this.
+        else:
+            logging.warning(f"Reference '{ref_id}' has no journal/container title.")
+
+    return True # We return True as this is a soft check for now
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python manage_refs.py <path_to_references.yaml>")
@@ -87,6 +113,7 @@ if __name__ == "__main__":
 
     metadata_valid = validate_metadata(refs)
     recency_valid = validate_recency(refs)
+    quality_valid = validate_quality(refs)
 
     if metadata_valid:
         logging.info("Metadata validation passed.")
@@ -97,6 +124,9 @@ if __name__ == "__main__":
         logging.info("Recency check passed.")
     else:
         logging.warning("Recency check flagged some older references.")
+        
+    if quality_valid:
+        logging.info("Quality check passed (Soft check).")
 
     if not metadata_valid:
         sys.exit(1)

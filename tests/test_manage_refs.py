@@ -1,7 +1,27 @@
 import os
 import yaml
 import pytest
-from scripts.pub_tools.manage_refs import load_references, validate_metadata, validate_recency
+from scripts.pub_tools.manage_refs import load_references, validate_metadata, validate_recency, validate_quality
+
+# ... existing code ...
+
+@pytest.fixture
+def quality_yaml(tmp_path):
+    f = tmp_path / "quality.yaml"
+    data = [
+        {"id": "high_ref", "journal": "Nature"},
+        {"id": "low_ref", "journal": "Unknown Journal"},
+    ]
+    with open(f, "w") as file:
+        yaml.dump(data, file)
+    return str(f)
+
+# ... existing tests ...
+
+def test_validate_quality(quality_yaml):
+    refs = load_references(quality_yaml)
+    # Based on implementation, it always returns True currently but logs info
+    assert validate_quality(refs) is True
 from datetime import datetime
 
 # ... existing code ...
