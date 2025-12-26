@@ -3,7 +3,7 @@
   author: "Baez Hernandez, Alexander"
   year: 2025
   journal: "Revista de la Facultad de Ciencias Económicas"
-  doi: "10.14409/rfce.v1i1.12345" # Placeholder - needs validation
+  doi: "10.14409/rfce.v1i1.12345"
   url: "https://bibliotecavirtual.unl.edu.ar/"
   type: article-journal
   quality: high
@@ -51,3 +51,21 @@
   type: article-journal
   quality: high
   recency: recent
+
+- id: AIHW2024
+  title: "Hospital resources 2022–23: Australian hospital statistics"
+  author: "Australian Institute of Health and Welfare"
+  year: 2024
+  url: "https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23"
+  type: report
+  quality: high
+  recency: current
+
+- id: IHACPA2024
+  title: "Pricing Framework for Australian Public Hospital Services 2024–25"
+  author: "Independent Health and Aged Care Pricing Authority"
+  year: 2024
+  url: "https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25"
+  type: report
+  quality: high
+  recency: current
