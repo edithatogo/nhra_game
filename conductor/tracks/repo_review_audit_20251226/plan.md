@@ -1,0 +1,44 @@
+# Implementation Plan: Comprehensive Repo Review & Audit
+
+This plan outlines the systematic audit of the NHRA Game repository to identify gaps, validate data pipelines, and propose architectural improvements.
+
+## Phase 1: Game & Model Audit
+Focus on auditing the current game theoretic implementations and identifying logical extensions.
+
+- [x] Task: Audit existing "Stage Game" implementation in `src/` and `context/nhra_stage_game_spec.md` [commit: a4736c8]
+- [x] Task: Research and propose additional Healthcare Game Theory models (e.g., Principal-Agent, Queuing) [commit: a80071a]
+- [~] Task: Identify "stubbed" or planned features in the codebase/docs
+- [ ] Task: Conductor - User Manual Verification 'Phase 1: Game & Model Audit' (Protocol in workflow.md)
+
+## Phase 2: Data Pipeline & Provenance Audit
+Deep dive into AIHW API and IHACPA pricing table integration.
+
+- [ ] Task: Verify AIHW API functionality and document data flow (Source -> Repo -> Model)
+- [ ] Task: Audit IHACPA NWAU pricing table usage across all relevant years
+- [ ] Task: Perform sample-based manual cross-reference of downloaded data vs source documentation
+- [ ] Task: Document data provenance and update `data/empirical/README.md` if necessary
+- [ ] Task: Conductor - User Manual Verification 'Phase 2: Data Pipeline & Provenance Audit' (Protocol in workflow.md)
+
+## Phase 3: Infrastructure & Code Quality Review
+Review the technical "machine" running the simulation.
+
+- [ ] Task: Audit `Justfile`, `poetry`, `nox`, and CI/CD configurations for modernization
+- [ ] Task: Review test coverage and static analysis (`ruff`, `mypy`) settings
+- [ ] Task: Identify performance bottlenecks in the core simulation loop
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Infrastructure & Code Quality Review' (Protocol in workflow.md)
+
+## Phase 4: Visualization & Reporting Enhancements
+Improve how the model communicates results.
+
+- [ ] Task: Audit existing plots in `outputs/` and suggest 3-5 high-impact visualization improvements
+- [ ] Task: Create updated System Diagrams (Data Flow & Game Logic)
+- [ ] Task: Generate a comprehensive "Data Source Status" table
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Visualization & Reporting Enhancements' (Protocol in workflow.md)
+
+## Phase 5: Synthesis & Recommendations
+Consolidate findings into actionable items.
+
+- [ ] Task: Implement critical bug fixes or blockers identified during the audit
+- [ ] Task: Draft final Audit Report summarizing all findings and recommendations
+- [ ] Task: Create a prioritized list of "New Tracks" for future development
+- [ ] Task: Conductor - User Manual Verification 'Phase 5: Synthesis & Recommendations' (Protocol in workflow.md)
