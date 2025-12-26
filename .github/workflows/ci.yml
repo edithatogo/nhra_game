@@ -32,6 +32,8 @@ jobs:
         run: |
           poetry run ruff check src tests
           poetry run ruff format src tests --check
+      - name: Import sorting
+        run: poetry run isort src tests --check-only
       - name: Type check
         run: poetry run mypy --strict src/nhra_gt
       - name: Security scan (Bandit)
