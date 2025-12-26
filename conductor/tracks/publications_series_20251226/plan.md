@@ -48,13 +48,13 @@
     - [ ] Sub-task: Solicit Individual Feedback on v1.1 -> `review_log_r2.md` & commit
     - [ ] Sub-task: Facilitate Deliberation & Consensus & commit
     - [ ] Sub-task: Implement changes -> v2.0 (Final) & commit
-- [~] Task: OSF Registration (v2.0)
+- [x] Task: OSF Registration (v2.0) [89138e3]
     - [ ] Sub-task: Populate OSF Template with v2.0 content & commit
     - [ ] Sub-task: Generate Frozen Registration PDF & commit
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: P1 Protocol (Qualitative) - Drafting & Review Loops' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: P1 Protocol (Qualitative) - Drafting & Review Loops' (Protocol in workflow.md) [checkpoint: 5748b0e]
 
 ## Phase 3: P1 Execution - Clean Room Mapping & Reconciliation
-- [ ] Task: Clean Room Setup (Blinding)
+- [~] Task: Clean Room Setup (Blinding)
     - [ ] Sub-task: Create `temp_blinded_workspace/` with ONLY NHRA PDF text (No repo access) & commit
     - [ ] Sub-task: Verify workspace isolation & commit
 - [ ] Task: Search Execution

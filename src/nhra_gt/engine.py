@@ -264,11 +264,11 @@ def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
 # ----------------------------
 
 
-def get_cap_rule(params: Params):
+def get_cap_rule(params: Params) -> SoftCapRule | HardCapRule:
     return SoftCapRule() if params.cap_rule_type == "soft" else HardCapRule()
 
 
-def get_audit_rule(params: Params):
+def get_audit_rule(params: Params) -> ThresholdAuditRule | ProportionalAuditRule:
     return (
         ThresholdAuditRule() if params.audit_rule_type == "threshold" else ProportionalAuditRule()
     )

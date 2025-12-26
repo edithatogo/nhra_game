@@ -18,7 +18,7 @@ def softmax(u: np.ndarray, tau: float = 0.25) -> np.ndarray:
     u = np.asarray(u, dtype=float)
     u = u - u.max()
     z = np.exp(u / max(1e-9, tau))
-    return cast(np.ndarray, np.asarray(z / z.sum(), dtype=float))
+    return np.asarray(z / z.sum(), dtype=float)  # type: ignore[return-value]
 
 
 class Agent(ABC):

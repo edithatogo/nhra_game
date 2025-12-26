@@ -13,7 +13,7 @@ IntArray = NDArray[np.int_]
 
 # Optional: jaxtyping support if available
 try:
-    from jaxtyping import Array, Float, Int  # type: ignore
+    from jaxtyping import Array, Float, Int  # noqa: F401
 
     has_jaxtyping = True
 except ImportError:
