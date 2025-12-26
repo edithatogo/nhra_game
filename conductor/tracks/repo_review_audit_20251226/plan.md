@@ -21,23 +21,23 @@ Deep dive into AIHW API and IHACPA pricing table integration.
 - [x] Task: Document data provenance and update `data/empirical/README.md` if necessary [commit: 4ff90bc]
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Data Pipeline & Provenance Audit' (Protocol in workflow.md) [checkpoint: cf1e0f5]
 
-## Phase 3: Infrastructure & Code Quality Review
+## Phase 3: Infrastructure & Code Quality Review [checkpoint: 7c2a02f]
 
 Review the technical "machine" running the simulation.
 
 - [x] Task: Audit `Justfile`, `poetry`, `nox`, and CI/CD configurations for modernization [commit: 1370cee]
 - [x] Task: Review test coverage and static analysis (`ruff`, `mypy`) settings [commit: abbbe3e]
 - [x] Task: Identify performance bottlenecks in the core simulation loop [commit: 014ffa2]
-- [~] Task: Conductor - User Manual Verification 'Phase 3: Infrastructure & Code Quality Review' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Infrastructure & Code Quality Review' (Protocol in workflow.md) [checkpoint: 7c2a02f]
 
 ## Phase 4: Visualization & Reporting Enhancements
 
 Improve how the model communicates results.
 
-- [ ] Task: Audit existing plots in `outputs/` and suggest 3-5 high-impact visualization improvements
-- [ ] Task: Create updated System Diagrams (Data Flow & Game Logic)
-- [ ] Task: Generate a comprehensive "Data Source Status" table
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Visualization & Reporting Enhancements' (Protocol in workflow.md)
+- [x] Task: Audit existing plots in `outputs/` and suggest 3-5 high-impact visualization improvements [commit: abbbe3e]
+- [x] Task: Create updated System Diagrams (Data Flow & Game Logic) [commit: abbbe3e]
+- [x] Task: Generate a comprehensive "Data Source Status" table [commit: abbbe3e]
+- [~] Task: Conductor - User Manual Verification 'Phase 4: Visualization & Reporting Enhancements' (Protocol in workflow.md)
 
 ## Phase 5: Synthesis & Recommendations
 

@@ -1,4 +1,4 @@
-# Plan: CI Fix and DISC Re-integration
+# Plan: CI Fix, DISC Re-integration, and Publication Rigour
 **Author:** Dylan A Mordaunt
 
 ## Goals
@@ -6,6 +6,7 @@
 2. Monitor GitHub Actions for the deploy workflow.
 3. Iteratively fix any CI errors and push again until the workflow passes.
 4. Re-add `discharge_coordination_game` (DISC) to the current `HeuristicAgent` in `agents/base.py`.
+5. **Elevate Publication Quality:** Expand manuscripts with rigorous research, recent high-quality references, and increased depth/length.
 
 ---
 
@@ -45,7 +46,19 @@
      ```
   4. Add heuristic fallback for non-equilibrium mode.
 
-## Step 5: Final Verification
+## Step 5: Publication Series Rigour (New)
+- **Research Methods:**
+    - [ ] Create `data/research/` directory.
+    - [ ] Ingest user-provided PDFs.
+    - [ ] Conduct literature search (Last 5 years, High Impact Journals).
+- **Update References:**
+    - [ ] Validate all references (DOI, Recency, Reality).
+    - [ ] Ensure every claim is cited.
+- **Expand Documents:**
+    - [ ] Review current drafts against length/quality metrics.
+    - [ ] Expand sections with deeper analysis and evidence.
+
+## Step 6: Final Verification
 - Run `mkdocs build` locally.
 - Push and confirm CI passes.
 

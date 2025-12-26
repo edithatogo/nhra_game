@@ -204,6 +204,24 @@ class Params:
     # Data
     economic_spine: pd.DataFrame | None = None
 
+    def to_dict(self) -> dict[str, Any]:
+        """Convert params to a dictionary."""
+        from dataclasses import asdict
+
+        d = asdict(self)
+        if self.economic_spine is not None:
+            d["economic_spine"] = self.economic_spine.to_dict()
+        else:
+            d["economic_spine"] = None
+        return d
+
+    @classmethod
+    def from_dict(cls, d: dict[str, Any]) -> Params:
+        """Create Params from a dictionary."""
+        if d.get("economic_spine") is not None:
+            d["economic_spine"] = pd.DataFrame(d["economic_spine"])
+        return cls(**d)
+
 
 @dataclass(frozen=True)
 class State:
@@ -224,6 +242,21 @@ class State:
     reconciliation_balance: float = 0.0
     bailout_expectation: float = 0.0
     coding_intensity: float = 1.0
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert state to a dictionary."""
+        from dataclasses import asdict
+
+        d = asdict(self)
+        d["system_mode"] = self.system_mode.value
+        return d
+
+    @classmethod
+    def from_dict(cls, d: dict[str, Any]) -> State:
+        """Create State from a dictionary."""
+        if "system_mode" in d and isinstance(d["system_mode"], str):
+            d["system_mode"] = SystemMode(d["system_mode"])
+        return cls(**d)
 
 
 def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
@@ -346,7 +379,8 @@ def ops_step(
     discharge = s.discharge_delay
     aged_effect = 0.95 if strategies.get("AGED") == "C" else 1.02
     ndis_effect = 0.96 if strategies.get("NDIS") == "C" else 1.03
-    discharge *= (aged_effect * ndis_effect) ** month_growth_factor
+    disc_effect = 0.98 if strategies.get("DISC") == "C" else 1.01
+    discharge *= (aged_effect * ndis_effect * disc_effect) ** month_growth_factor
     if p.use_burden_feedback:
         discharge *= math.exp(
             p.burden_to_throughput_beta * max(0.0, s.pressure - 1.0) * month_growth_factor

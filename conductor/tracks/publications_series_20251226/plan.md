@@ -1,4 +1,5 @@
 # Implementation Plan: Publication Series - NHRA Game Theory & Empirical Modelling
+**Author:** Dylan A Mordaunt
 
 ## Phase 1: Infrastructure & Expert Panel Setup
 - [x] Task: Create Publication Folder Hierarchy (spec 2.1) [45c25a5]

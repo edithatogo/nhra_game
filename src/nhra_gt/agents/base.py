@@ -2,9 +2,23 @@ from __future__ import annotations
 
 import math
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
+
+from nhra_gt.subgames.games import (
+    GameParams,
+    aged_care_interface_game,
+    bargaining_game,
+    coding_audit_game,
+    compliance_game,
+    cost_shifting_game,
+    definition_game,
+    discharge_coordination_game,
+    governance_integration_game,
+    ndis_interface_game,
+)
+from nhra_gt.subgames.nash import all_nash, select_equilibrium
 
 if TYPE_CHECKING:
     from nhra_gt.engine import Params, State
@@ -175,6 +189,7 @@ class HeuristicAgent(Agent):
             "DEF": "E",
             "BARG": "D",
             "SHIFT": "I",
+            "DISC": "C",
             "AGED": "C",
             "NDIS": "C",
             "CODING": "H",
@@ -194,6 +209,7 @@ class HeuristicAgent(Agent):
             "BARG",
             "DEF",
             "SHIFT",
+            "DISC",
             "AGED",
             "NDIS",
             "CODING",
@@ -270,6 +286,9 @@ class HeuristicAgent(Agent):
                 elif g == "SHIFT":
                     r_shift, c_shift = _solve(cost_shifting_game(gp))
                     results["SHIFT"] = "S" if (r_shift == "S" or c_shift == "S") else "I"
+                elif g == "DISC":
+                    r_disc, c_disc = _solve(discharge_coordination_game(gp))
+                    results["DISC"] = "C" if (r_disc == "C" and c_disc == "C") else "F"
                 elif g == "AGED":
                     r_aged, c_aged = _solve(aged_care_interface_game(gp))
                     results["AGED"] = "C" if (r_aged == "C" and c_aged == "C") else "F"
@@ -318,6 +337,12 @@ class HeuristicAgent(Agent):
                         -1.1 * (state.pressure - 1.0) - 1.0 * state.efficiency_gap
                     )
                     results["SHIFT"] = "I" if rng.random() < SHIFT_prob else "S"
+
+                elif g == "DISC":
+                    DISC_prob = logistic(
+                        -1.0 * (state.pressure - 1.0) - 0.8 * (state.discharge_delay - 1.0)
+                    )
+                    results["DISC"] = "C" if rng.random() < DISC_prob else "F"
 
                 elif g == "AGED":
                     AGED_prob = logistic(

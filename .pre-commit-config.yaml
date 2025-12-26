@@ -1,3 +1,6 @@
+exclude: >-
+  (^NHRA Analysis - Improve commissioning brief\.pdf$|^docs/diagrams/|^outputs/|^\.gemini/)
+
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.4
