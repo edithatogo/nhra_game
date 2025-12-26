@@ -2,12 +2,12 @@
 **Author:** Dylan A Mordaunt
 
 ## 1. Background & Rationale
-The National Health Reform Agreement (NHRA) fundamentally shifted Australian public hospital funding to Activity Based Funding (ABF). While intended to drive efficiency, theoretical critiques suggest the system may incentivize "Safety Theatre"—strategic behaviors optimizing for metric reporting over patient safety. This phenomenon can be understood through the lens of **Institutional Isomorphism**, where regulatory pressures force organizations to adopt similar symbolic masks regardless of clinical reality. This study systematically maps the NHRA to a game-theoretic framework to identify these structural vulnerabilities.
+The National Health Reform Agreement (NHRA) fundamentally shifted Australian public hospital funding to Activity Based Funding (ABF). While intended to drive efficiency, theoretical critiques suggest the system may incentivize **"Strategic Gaming"**—strategic behaviors optimizing for metric reporting over system performance. This phenomenon can be understood through the lens of **Institutional Isomorphism**, where regulatory pressures force organizations to adopt similar symbolic masks regardless of clinical reality. This study systematically maps the NHRA to a game-theoretic framework to identify these structural vulnerabilities.
 
 ## 2. Objectives
 1.  **Map** the static game structure defined by the NHRA, identifying Players, Action Sets, and Payoff Functions.
 2.  **Analyze** structural incoherence and "Constructive Ambiguity" in the Agreement that permits non-cooperative equilibria.
-3.  **Determine** if incentive structures mathematically favor "Safety Theatre" over "High Reliability" using Extensive Form Game analysis, explicitly accounting for **Reputational Payoffs** and financial utility.
+3.  **Determine** if incentive structures mathematically favor **Strategic Gaming** over substantive performance improvement using Extensive Form Game analysis, explicitly accounting for **Reputational Payoffs** and financial utility.
 
 ## 3. Methods
 
@@ -20,9 +20,9 @@ Qualitative document analysis using an Extensive Form Game with Imperfect Inform
 *   IHACPA Determination reports and Pricing Frameworks.
 
 ### 3.3 Data Collection (Blinded Mapping)
-Two independent researchers (simulated personas) will code the text in a "Clean Room" protocol.
-*   **Coder A (Methodologist):** Codes explicit legal rules.
-*   **Coder B (Policy Expert):** Codes operational context and interpretation.
+The analysis uses a "Clean Room" protocol with two independent coding passes using divergent analytical lenses.
+*   **Pass A:** Codes explicit legal rules.
+*   **Pass B:** Codes operational context and interpretation.
 Extraction categories:
 *   *Players:* Federal/State Ministers, LHN Boards.
 *   *Moves:* Atomic actions and **Iterative Negotiation Cycles** (e.g., data quality audits).
@@ -30,11 +30,11 @@ Extraction categories:
 *   *Payoffs:* Financial (NWAU) and Reputational (Performance Rankings).
 
 ### 3.4 Analysis & Synthesis
-*   **Reconciliation:** Arbiter (Legal Scholar) resolves discrepancies.
+*   **Reconciliation:** Analysis of discrepancies followed by arbitration based on the Statutory Lens.
 *   **Validation:** Logic completeness check and equilibrium analysis.
 
 ### 3.5 Reflexivity & Bias (Simulated)
-This study utilizes LLM agents to simulate expert personas. Bias toward textbook interpretations is acknowledged. Divergent personas (Methodologist vs. Policy Expert) are used to simulate inter-rater reliability.
+This study utilizes structured analytical lenses to simulate divergent perspectives. Bias toward textbook interpretations is acknowledged and mitigated through explicit framing of LHNs as strategic agents.
 
 ## 4. Reporting
 Compliance with SRQR checklist.
