@@ -7,12 +7,12 @@
 - [ ] Task: Implement `scripts/build_figure_report.py` to generate `docs/reports/figure_inventory.md` from the registry.
 - [ ] Task: Conductor - User Manual Verification 'Audit & Registry' (Protocol in workflow.md)
 
-## Phase 2: API Design & Core Infrastructure
-- [ ] Task: Create `src/nhra_game_theory/visualization/` module structure.
-- [ ] Task: Define `PlotConfig` (Pydantic model) for shared styling (palettes, fonts, dimensions) in `src/nhra_game_theory/visualization/config.py`.
-- [ ] Task: Implement `AbstractPlotter` or protocol/interface for standardized function signatures: `plot_X(data, config) -> Figure`.
-- [ ] Task: Set up `pytest-mpl` and `tests/visualization/` directory with a baseline image cache.
-- [ ] Task: Conductor - User Manual Verification 'API Design & Core Infrastructure' (Protocol in workflow.md)
+## Phase 2: API Design & Core Infrastructure [checkpoint: 16e41e2]
+- [x] Task: Create `src/nhra_game_theory/visualization/` module structure. 1281561
+- [x] Task: Define `PlotConfig` (Pydantic model) for shared styling (palettes, fonts, dimensions) in `src/nhra_game_theory/visualization/config.py`. 1281561
+- [x] Task: Implement `AbstractPlotter` or protocol/interface for standardized function signatures: `plot_X(data, config) -> Figure`. 1281561
+- [x] Task: Set up `pytest-mpl` and `tests/visualization/` directory with a baseline image cache. 1281561
+- [x] Task: Conductor - User Manual Verification 'API Design & Core Infrastructure' (Protocol in workflow.md) 16e41e2
 
 ## Phase 3: Migration & Modernization (Iterative)
 - [ ] Task: Refactor "Trajectory" plots (from `plotting.py`) to the new API, adding docstrings and type hints.
