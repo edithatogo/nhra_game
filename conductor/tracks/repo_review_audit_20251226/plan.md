@@ -3,6 +3,7 @@
 This plan outlines the systematic audit of the NHRA Game repository to identify gaps, validate data pipelines, and propose architectural improvements.
 
 ## Phase 1: Game & Model Audit [checkpoint: e5fd297]
+
 Focus on auditing the current game theoretic implementations and identifying logical extensions.
 
 - [x] Task: Audit existing "Stage Game" implementation in `src/` and `context/nhra_stage_game_spec.md` [commit: a4736c8]
@@ -10,16 +11,18 @@ Focus on auditing the current game theoretic implementations and identifying log
 - [x] Task: Identify "stubbed" or planned features in the codebase/docs [commit: 0c32653]
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Game & Model Audit' (Protocol in workflow.md) [checkpoint: e5fd297]
 
-## Phase 2: Data Pipeline & Provenance Audit
+## Phase 2: Data Pipeline & Provenance Audit [checkpoint: cf1e0f5]
+
 Deep dive into AIHW API and IHACPA pricing table integration.
 
 - [x] Task: Verify AIHW API functionality and document data flow (Source -> Repo -> Model) [commit: 99911d0]
 - [x] Task: Audit IHACPA NWAU pricing table usage across all relevant years [commit: 3b1cca3]
 - [x] Task: Perform sample-based manual cross-reference of downloaded data vs source documentation [commit: 6e38760]
 - [x] Task: Document data provenance and update `data/empirical/README.md` if necessary [commit: 4ff90bc]
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Data Pipeline & Provenance Audit' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Data Pipeline & Provenance Audit' (Protocol in workflow.md) [checkpoint: cf1e0f5]
 
 ## Phase 3: Infrastructure & Code Quality Review
+
 Review the technical "machine" running the simulation.
 
 - [ ] Task: Audit `Justfile`, `poetry`, `nox`, and CI/CD configurations for modernization
@@ -28,6 +31,7 @@ Review the technical "machine" running the simulation.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Infrastructure & Code Quality Review' (Protocol in workflow.md)
 
 ## Phase 4: Visualization & Reporting Enhancements
+
 Improve how the model communicates results.
 
 - [ ] Task: Audit existing plots in `outputs/` and suggest 3-5 high-impact visualization improvements
@@ -36,6 +40,7 @@ Improve how the model communicates results.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Visualization & Reporting Enhancements' (Protocol in workflow.md)
 
 ## Phase 5: Synthesis & Recommendations
+
 Consolidate findings into actionable items.
 
 - [ ] Task: Implement critical bug fixes or blockers identified during the audit
