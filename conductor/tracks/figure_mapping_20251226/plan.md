@@ -27,8 +27,8 @@
 - [x] Task: Implement Visual Regression Tests: Compare outputs against "gold standard" baselines for key figures. 59f0dc2
 - [x] Task: Conductor - User Manual Verification 'Testing & Verification' (Protocol in workflow.md) 59f0dc2
 
-## Phase 5: Documentation & Cleanup
-- [~] Task: Update `docs/models.md` and `docs/usage.md` with new visualization API usage examples.
-- [ ] Task: Deprecate and remove legacy plotting code from `src/nhra_game_theory/plotting.py` and `scripts/`.
-- [ ] Task: Final generation of `figure_inventory.md` reflecting the new, clean state.
-- [ ] Task: Conductor - User Manual Verification 'Documentation & Cleanup' (Protocol in workflow.md)
+## Phase 5: Documentation & Cleanup [checkpoint: 0b7bb45]
+- [x] Task: Update `docs/models.md` and `docs/usage.md` with new visualization API usage examples. 0b7bb45
+- [x] Task: Deprecate and remove legacy plotting code from `src/nhra_game_theory/plotting.py` and `scripts/`. 0b7bb45
+- [x] Task: Final generation of `figure_inventory.md` reflecting the new, clean state. 0b7bb45
+- [x] Task: Conductor - User Manual Verification 'Documentation & Cleanup' (Protocol in workflow.md) 0b7bb45
