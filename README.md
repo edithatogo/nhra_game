@@ -9,6 +9,8 @@
 
 This project implements a "Cognitive Digital Twin" of the Australian health funding system, simulating strategic interactions between Commonwealth and State actors. It models the downstream consequences of negotiation choices on hospital operational states, including access block, ED crowding, and ambulance offload delays.
 
+📖 **Live Documentation:** [https://edithatogo.github.io/nhra_game/](https://edithatogo.github.io/nhra_game/)
+
 > **Disclaimer:** These models are illustrative mechanisms intended for policy reasoning and strategic sensitivity exploration. They are not point-forecasts of real-world clinical endpoints.
 
 ---
