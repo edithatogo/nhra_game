@@ -10,7 +10,7 @@ def test_rank_interventions():
     """Verify intervention ranking logic."""
     from unittest.mock import patch
 
-    with patch("scripts.dashboard_v21.run_hybrid") as mock_run:
+    with patch("scripts.dashboard.run_hybrid") as mock_run:
         # Mock side effects for different interventions
         def side_effect(years, p, **kwargs):
             # Baseline (no intervention roughly)

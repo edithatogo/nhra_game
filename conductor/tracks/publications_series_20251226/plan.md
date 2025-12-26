@@ -56,16 +56,16 @@
     - [ ] Sub-task: Create `data/research/` directory & commit
     - [x] Sub-task: Ingest user-provided PDFs (Manual Step) & commit metadata [4173a93]
     - [x] Sub-task: Conduct High-Quality Literature Search (Last 5 Years) & commit results [4173a93]
-    - [ ] Sub-task: Select and Validate Key Methodological Papers & commit
+    - [x] Sub-task: Select and Validate Key Methodological Papers & commit [b1c9ce3]
 - [ ] Task: Reference Quality Audit
     - [x] Sub-task: Audit `publications/shared/references/library.yaml` for DOI/URL/Recency & commit report [a478bd9]
-    - [~] Sub-task: Replace low-quality/old references with new search results & commit
-    - [ ] Sub-task: Ensure consistent citation style (Inline + Bibliography) & commit
+    - [x] Sub-task: Replace low-quality/old references with new search results & commit [13fd51f]
+    - [~] Sub-task: Ensure consistent citation style (Inline + Bibliography) & commit
 - [ ] Task: Document Expansion & Refinement
     - [x] Sub-task: Review `protocol_final_v2.md` against new research & commit v2.1 [3f0bb99]
-    - [~] Sub-task: Expand "Background" with recent critiques (2020-2025) & commit
-    - [ ] Sub-task: Deepen "Methods" with specific graph theoretic citations & commit
-    - [ ] Sub-task: Verify target length metrics (e.g., Protocol > 1500 words) & commit
+    - [x] Sub-task: Expand "Background" with recent critiques (2020-2025) & commit [e7e76aa]
+    - [x] Sub-task: Deepen "Methods" with specific graph theoretic citations & commit [e7e76aa]
+    - [~] Sub-task: Verify target length metrics (e.g., Protocol > 1500 words) & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 2a: Methodological Rigour & Document Expansion' (Protocol in workflow.md)
 
 ## Phase 3: P1 Execution - Clean Room Mapping & Reconciliation

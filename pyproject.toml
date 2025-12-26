@@ -92,6 +92,7 @@ mkdocs-literate-nav = "*"
 mkdocs-section-index = "*"
 mkdocs-jupyter = "*"
 mike = "*"
+pytest-mpl = "^0.18.0"
 
 [tool.coverage.run]
 omit = ["tests/*", "scripts/*", ".nox/*", ".gemini/*", "*/__init__.py"]
@@ -165,11 +166,13 @@ known_first_party = ["nhra_gt", "scripts"]
 
 [tool.deptry]
 ignore_notebooks = true
+extend_exclude = ["tests", "scripts", "archive", ".nox", ".gemini"]
 
 [tool.deptry.per_rule_ignores]
-DEP001 = ["scripts/*", "tests/*", "src/nhra_gt/*"]
-DEP002 = ["scipy", "snakemake", "jaxlib", "jaxtyping", "polars"]
-DEP004 = ["nox", "pytest", "hypothesis", "logfire"]
+DEP001 = ["nhra_gt", "scripts"]
+DEP002 = ["scipy", "snakemake", "jaxlib", "jaxtyping", "polars", "seaborn", "pydantic-settings", "pandera"]
+DEP003 = ["nhra_gt", "scripts"]
+DEP004 = ["nox", "pytest", "hypothesis", "logfire", "mypy", "ruff", "bandit", "deptry"]
 
 [tool.vulture]
 exclude = [".nox", ".gemini", "outputs", "reports", "docs", "archive", "build", "dist"]

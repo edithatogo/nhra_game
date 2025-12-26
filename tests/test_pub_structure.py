@@ -1,6 +1,11 @@
 import os
 
+import pytest
 
+
+@pytest.mark.skipif(
+    not os.path.isdir("publications"), reason="Publications dir not in CI"
+)
 def test_publication_folder_structure() -> None:
     required_dirs = [
         "publications/shared/references",

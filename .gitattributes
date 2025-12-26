@@ -1,0 +1,25 @@
+# Ensure consistent line endings across all platforms
+* text=auto eol=lf
+
+# Specific file types
+*.py text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.json text eol=lf
+*.lock text eol=lf
+*.txt text eol=lf
+*.sh text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.js text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.pdf binary
