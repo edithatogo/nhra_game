@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 
 
-def test_build_figure_report_smoke(tmp_path):
+def test_build_figure_report_smoke(tmp_path: Path) -> None:
     """Verify that the report builder script runs and produces output."""
 
     # Mock registry
@@ -30,7 +30,7 @@ def test_build_figure_report_smoke(tmp_path):
 
     # Let's verify the actual script runs on the actual data as an integration smoke test.
     cmd = ["python", "scripts/build_figure_report.py"]
-    result = subprocess.run(cmd, capture_output=True, text=True)  # nosec
+    result = subprocess.run(cmd, capture_output=True, text=True)  # noqa: S603
     assert result.returncode == 0
     assert "Report generated" in result.stdout
     assert Path("docs/reports/figure_inventory.md").exists()
