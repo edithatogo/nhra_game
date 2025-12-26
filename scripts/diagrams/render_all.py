@@ -46,15 +46,15 @@ def main() -> None:
 
     # Mermaid -> DOT
     for m_user in m_user_dirs:
-        for mmd in m_user.glob('*.mmd'):
-            dot_text = mermaid_to_dot(mmd.read_text(encoding='utf-8'), title=mmd.stem)
+        for mmd in m_user.glob("*.mmd"):
+            dot_text = mermaid_to_dot(mmd.read_text(encoding="utf-8"), title=mmd.stem)
             dot_path = g_from_m / f"{mmd.stem}.dot"
-            dot_path.write_text(dot_text, encoding='utf-8')
+            dot_path.write_text(dot_text, encoding="utf-8")
             render_dot(dot_path, out_dir)
-    for mmd in m_gen.glob('*.mmd'):
-        dot_text = mermaid_to_dot(mmd.read_text(encoding='utf-8'), title=mmd.stem)
+    for mmd in m_gen.glob("*.mmd"):
+        dot_text = mermaid_to_dot(mmd.read_text(encoding="utf-8"), title=mmd.stem)
         dot_path = g_from_m / f"{mmd.stem}.dot"
-        dot_path.write_text(dot_text, encoding='utf-8')
+        dot_path.write_text(dot_text, encoding="utf-8")
         render_dot(dot_path, out_dir)
     # DOT -> Mermaid
     for dot in g_sources.glob("*.dot"):
@@ -64,6 +64,7 @@ def main() -> None:
         render_dot(dot, out_dir)
 
     print(f"Rendered diagrams to {out_dir}")
+
 
 if __name__ == "__main__":
     main()

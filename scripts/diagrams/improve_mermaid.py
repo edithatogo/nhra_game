@@ -14,6 +14,7 @@ INIT_BLOCK = """%%{init: {
   }
 }}%%"""
 
+
 def improve(text: str) -> str:
     if text.lstrip().startswith("---"):
         parts = text.split("---", 2)
@@ -33,14 +34,18 @@ def improve(text: str) -> str:
         text = re.sub(pat, rep, text)
     return text
 
+
 def main() -> None:
     repo = Path(__file__).resolve().parents[2]
     src = repo / "diagrams" / "mermaid_user"
     out = repo / "diagrams" / "mermaid_user_improved"
     out.mkdir(parents=True, exist_ok=True)
     for f in src.glob("*.mmd"):
-        (out / f"{f.stem}_improved.mmd").write_text(improve(f.read_text(encoding="utf-8")), encoding="utf-8")
+        (out / f"{f.stem}_improved.mmd").write_text(
+            improve(f.read_text(encoding="utf-8")), encoding="utf-8"
+        )
     print(f"Wrote improved diagrams to: {out}")
+
 
 if __name__ == "__main__":
     main()

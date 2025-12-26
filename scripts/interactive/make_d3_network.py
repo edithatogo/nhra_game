@@ -68,7 +68,10 @@ def main() -> None:
     cent = compute_centrality(node_ids, link_dicts)
 
     graph = {
-        "nodes": [{"id": nid, "label": lab, "type": typ, "centrality": cent.get(nid, 0.0)} for nid, lab, typ in nodes],
+        "nodes": [
+            {"id": nid, "label": lab, "type": typ, "centrality": cent.get(nid, 0.0)}
+            for nid, lab, typ in nodes
+        ],
         "links": link_dicts,
     }
     (out / "games_network.json").write_text(json.dumps(graph, indent=2), encoding="utf-8")
@@ -85,11 +88,41 @@ def main() -> None:
             for y in range(2025, 2031):
                 series[sc].setdefault(y, {})
                 series[sc][y] = {
-                    "PRESS": {"pressure": float(r.get("pressure_2030", 0.0)), "risk": float(r.get("harm_2030", 0.0)), "within4": float(r.get("within4_2030", 0.0)), "offload": float(r.get("offload_2030", 0.0)), "effshare": float(r.get("effshare_effective_2030", 0.0))},
-                    "RISK": {"pressure": float(r.get("pressure_2030", 0.0)), "risk": float(r.get("harm_2030", 0.0)), "within4": float(r.get("within4_2030", 0.0)), "offload": float(r.get("offload_2030", 0.0)), "effshare": float(r.get("effshare_effective_2030", 0.0))},
-                    "ED": {"pressure": float(r.get("pressure_2030", 0.0)), "risk": float(r.get("harm_2030", 0.0)), "within4": float(r.get("within4_2030", 0.0)), "offload": float(r.get("offload_2030", 0.0)), "effshare": float(r.get("effshare_effective_2030", 0.0))},
-                    "OFF": {"pressure": float(r.get("pressure_2030", 0.0)), "risk": float(r.get("harm_2030", 0.0)), "within4": float(r.get("within4_2030", 0.0)), "offload": float(r.get("offload_2030", 0.0)), "effshare": float(r.get("effshare_effective_2030", 0.0))},
-                    "EFF": {"pressure": float(r.get("pressure_2030", 0.0)), "risk": float(r.get("harm_2030", 0.0)), "within4": float(r.get("within4_2030", 0.0)), "offload": float(r.get("offload_2030", 0.0)), "effshare": float(r.get("effshare_effective_2030", 0.0))},
+                    "PRESS": {
+                        "pressure": float(r.get("pressure_2030", 0.0)),
+                        "risk": float(r.get("harm_2030", 0.0)),
+                        "within4": float(r.get("within4_2030", 0.0)),
+                        "offload": float(r.get("offload_2030", 0.0)),
+                        "effshare": float(r.get("effshare_effective_2030", 0.0)),
+                    },
+                    "RISK": {
+                        "pressure": float(r.get("pressure_2030", 0.0)),
+                        "risk": float(r.get("harm_2030", 0.0)),
+                        "within4": float(r.get("within4_2030", 0.0)),
+                        "offload": float(r.get("offload_2030", 0.0)),
+                        "effshare": float(r.get("effshare_effective_2030", 0.0)),
+                    },
+                    "ED": {
+                        "pressure": float(r.get("pressure_2030", 0.0)),
+                        "risk": float(r.get("harm_2030", 0.0)),
+                        "within4": float(r.get("within4_2030", 0.0)),
+                        "offload": float(r.get("offload_2030", 0.0)),
+                        "effshare": float(r.get("effshare_effective_2030", 0.0)),
+                    },
+                    "OFF": {
+                        "pressure": float(r.get("pressure_2030", 0.0)),
+                        "risk": float(r.get("harm_2030", 0.0)),
+                        "within4": float(r.get("within4_2030", 0.0)),
+                        "offload": float(r.get("offload_2030", 0.0)),
+                        "effshare": float(r.get("effshare_effective_2030", 0.0)),
+                    },
+                    "EFF": {
+                        "pressure": float(r.get("pressure_2030", 0.0)),
+                        "risk": float(r.get("harm_2030", 0.0)),
+                        "within4": float(r.get("within4_2030", 0.0)),
+                        "offload": float(r.get("offload_2030", 0.0)),
+                        "effshare": float(r.get("effshare_effective_2030", 0.0)),
+                    },
                 }
                 # Default: other nodes inherit pressure values for colour scaling
                 for nid in node_ids:
@@ -102,6 +135,7 @@ def main() -> None:
     (out / "games_network_d3.html").write_text(tpl.read_text(encoding="utf-8"), encoding="utf-8")
 
     print(f"Wrote D3 assets to: {out}")
+
 
 if __name__ == "__main__":
     main()

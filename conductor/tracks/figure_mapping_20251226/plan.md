@@ -1,7 +1,7 @@
 # Implementation Plan: Comprehensive Figure Mapping & API Modernization
 
 ## Phase 1: Audit & Registry (Parity Foundation)
-- [~] Task: Audit core library (`src/nhra_game_theory/plotting.py`) and analysis scripts (`scripts/make_plots_*.py`) to inventory all existing figures.
+- [x] Task: Audit core library (`src/nhra_game_theory/plotting.py`) and analysis scripts (`scripts/make_plots_*.py`) to inventory all existing figures. e21dfb7
 - [ ] Task: Inspect documentation (PDFs, Markdown) and legacy ZIPs to identify "lost" visualizations.
 - [ ] Task: Create `docs/reports/figure_registry.json` (and `.csv` view) with schema: `id`, `source_file`, `function_name`, `output_path`, `description`, `inputs`.
 - [ ] Task: Implement `scripts/build_figure_report.py` to generate `docs/reports/figure_inventory.md` from the registry.

@@ -12,9 +12,9 @@ def test_quality_configuration_completeness() -> None:
     # Check for Bandit config
     assert "bandit" in config["tool"], "pyproject.toml missing [tool.bandit] section"
     # Ensure we exclude tests from bandit (strict asserts in src)
-    assert "tests" in config["tool"]["bandit"].get("exclude_dirs", []), (
-        "Bandit should exclude tests directory"
-    )
+    assert "tests" in config["tool"]["bandit"].get(
+        "exclude_dirs", []
+    ), "Bandit should exclude tests directory"
 
     # Check for Stricter Ruff
     ruff_select = config["tool"]["ruff"]["lint"]["select"]

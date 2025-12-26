@@ -50,9 +50,9 @@ opt = ["optuna"]
 accel = ["jax", "jaxlib", "jaxtyping", "numpyro", "polars"]
 observability = ["logfire"]
 dev = [
-    "pytest", "hypothesis", "hypothesis-auto", "icontract-hypothesis", 
-    "icontract", "locust", "atheris", "ruff", "mypy", "pre-commit", 
-    "nox", "mkdocs", "mkdocs-material", "mutmut", "pytest-mock", 
+    "pytest", "hypothesis", "hypothesis-auto", "icontract-hypothesis",
+    "icontract", "locust", "atheris", "ruff", "mypy", "pre-commit",
+    "nox", "mkdocs", "mkdocs-material", "mutmut", "pytest-mock",
     "pytest-cov", "scalene", "pyinstrument", "py-spy", "memray",
     "pytest-benchmark", "asv", "deptry", "vulture", "bandit", "pyright",
     "beartype", "typeguard", "mkdocstrings-python"

@@ -4,6 +4,8 @@ from dataclasses import replace
 from pathlib import Path
 
 import pandas as pd
+
+from nhra_game_theory.engine import Params, nep_series, nep_vs_cost_series, run_hybrid
 from nhra_game_theory.subgames.games import (
     GameParams,
     bargaining_game,
@@ -14,7 +16,6 @@ from nhra_game_theory.subgames.games import (
     governance_integration_game,
 )
 from nhra_game_theory.subgames.nash import all_nash
-from nhra_game_theory.engine import Params, nep_series, nep_vs_cost_series, run_hybrid
 
 
 def equilibria_snapshot(p: Params) -> pd.DataFrame:
@@ -65,8 +66,8 @@ def equilibria_by_year(df: pd.DataFrame, p: Params) -> pd.DataFrame:
             discharge_delay=float(row["discharge_mean"]),
             political_salience=p.political_salience,
             audit_pressure=p.audit_pressure,
-                cost_shifting_intensity=p.cost_shifting_intensity,
-                political_capital=1.0,
+            cost_shifting_intensity=p.cost_shifting_intensity,
+            political_capital=1.0,
         )
         games = {
             "DEF": definition_game(gp),
@@ -97,7 +98,9 @@ def equilibria_by_year(df: pd.DataFrame, p: Params) -> pd.DataFrame:
     return pd.DataFrame(eq_rows)
 
 
-def scenario_endpoints(years: list[int], scenarios: dict[str, Params], seed: int = 123) -> pd.DataFrame:
+def scenario_endpoints(
+    years: list[int], scenarios: dict[str, Params], seed: int = 123
+) -> pd.DataFrame:
     """Run a set of scenarios and return end-year summary metrics."""
     rows: list[dict[str, object]] = []
     for name, pp in scenarios.items():
@@ -138,7 +141,6 @@ def main() -> None:
     nep = nep_series(years=years, p=base)
     nep.to_csv(tables / "nep_series.csv", index=False)
 
-
     # Equilibria exports
     eq_grid = equilibria_snapshot(base)
     eq_grid.to_csv(tables / "equilibria_grid.csv", index=False)
@@ -149,8 +151,19 @@ def main() -> None:
     scenarios_core = {
         "baseline_equilibria": Params(),
         "no_stage_equilibria": Params(use_stage_game_equilibria=False),
-        "cooperative": Params(cost_shifting_intensity=0.8, fragmentation_index=0.9, bed_capacity_index=1.05, discharge_delay_base=0.95),
-        "adversarial": Params(cost_shifting_intensity=1.2, fragmentation_index=1.1, bed_capacity_index=0.97, discharge_delay_base=1.05, political_salience=0.7),
+        "cooperative": Params(
+            cost_shifting_intensity=0.8,
+            fragmentation_index=0.9,
+            bed_capacity_index=1.05,
+            discharge_delay_base=0.95,
+        ),
+        "adversarial": Params(
+            cost_shifting_intensity=1.2,
+            fragmentation_index=1.1,
+            bed_capacity_index=0.97,
+            discharge_delay_base=1.05,
+            political_salience=0.7,
+        ),
         "equilibrium_row_favourable": Params(equilibrium_selection_rule="row_favourable"),
         "equilibrium_random": Params(equilibrium_selection_rule="random"),
     }
@@ -160,10 +173,16 @@ def main() -> None:
     # Policy intervention scenarios (stylised levers; intended for directionality, not point prediction)
     interventions = {
         # Governance integration / pooled budgets reduce fragmentation and cost-shifting incentives
-        "pooled_funding_pilot": replace(base, fragmentation_index=0.92, cost_shifting_intensity=0.90),
-        "ucc_integrated_governance": replace(base, fragmentation_index=0.95, admin_burden_weight=0.95),
+        "pooled_funding_pilot": replace(
+            base, fragmentation_index=0.92, cost_shifting_intensity=0.90
+        ),
+        "ucc_integrated_governance": replace(
+            base, fragmentation_index=0.95, admin_burden_weight=0.95
+        ),
         # Aged care / NDIS throughput improves discharge delay
-        "aged_care_places_increase": replace(base, discharge_delay_base=0.90, bed_capacity_index=1.02),
+        "aged_care_places_increase": replace(
+            base, discharge_delay_base=0.90, bed_capacity_index=1.02
+        ),
         # NEP indexation realism (raises NEP-to-cost ratio, reducing the efficiency gap for rurality/remote)
         "nep_indexation_uplift": replace(
             base,
@@ -178,18 +197,30 @@ def main() -> None:
     interv.to_csv(tables / "intervention_scenarios.csv", index=False)
 
     # Intervention deltas vs baseline
-    baseline_row = interv.assign(_k=1).merge(
-        core[core["scenario"] == "baseline_equilibria"].assign(_k=1), on="_k", suffixes=("", "_baseline")
-    ).drop(columns=["_k"])
+    baseline_row = (
+        interv.assign(_k=1)
+        .merge(
+            core[core["scenario"] == "baseline_equilibria"].assign(_k=1),
+            on="_k",
+            suffixes=("", "_baseline"),
+        )
+        .drop(columns=["_k"])
+    )
     deltas = []
     for _, r in baseline_row.iterrows():
         deltas.append(
             {
                 "scenario": str(r["scenario"]),
                 "delta_rr_2030": float(r["rr_mean_2030"] - r["rr_mean_2030_baseline"]),
-                "delta_offload_2030": float(r["offload_mean_2030"] - r["offload_mean_2030_baseline"]),
-                "delta_within4_2030": float(r["within4_mean_2030"] - r["within4_mean_2030_baseline"]),
-                "delta_pressure_2030": float(r["pressure_mean_2030"] - r["pressure_mean_2030_baseline"]),
+                "delta_offload_2030": float(
+                    r["offload_mean_2030"] - r["offload_mean_2030_baseline"]
+                ),
+                "delta_within4_2030": float(
+                    r["within4_mean_2030"] - r["within4_mean_2030_baseline"]
+                ),
+                "delta_pressure_2030": float(
+                    r["pressure_mean_2030"] - r["pressure_mean_2030_baseline"]
+                ),
                 "delta_effgap_2030": float(r["effgap_mean_2030"] - r["effgap_mean_2030_baseline"]),
             }
         )

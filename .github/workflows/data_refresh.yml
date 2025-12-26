@@ -10,27 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
           cache: 'pip'
-      
+
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install -r requirements.lock
           pip install -e "."
-      
+
       - name: Run AIHW Data Ingestion
         run: |
           PYTHONPATH=src python scripts/data/ingest_aihw_api.py
-      
+
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:

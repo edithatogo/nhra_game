@@ -218,7 +218,7 @@
 | **8) Renegotiation** | `Planned` | 2.1 (LLM Negot.) | Settlement transfers |
 
 ## Analysis of Behaviour Map
-The combined map highlights that **Access under Capacity (#4)** is the central mediator between **Rules** and **Politics/Renegotiation**. 
+The combined map highlights that **Access under Capacity (#4)** is the central mediator between **Rules** and **Politics/Renegotiation**.
 
 ### Refinement for Plan:
 *   Ensure **Task 1.2 (Crisis & Queues)** outputs the "Threshold Breaches" needed for the **Political Loss Function**.

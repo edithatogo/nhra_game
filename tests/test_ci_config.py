@@ -14,6 +14,6 @@ def test_ci_workflow_has_permissions() -> None:
         ci_config = yaml.safe_load(f)
 
     assert "permissions" in ci_config, "ci.yml is missing top-level 'permissions' key"
-    assert ci_config["permissions"] == {"contents": "read"}, (
-        "ci.yml permissions should be restricted to contents: read"
-    )
+    assert ci_config["permissions"] == {
+        "contents": "read"
+    }, "ci.yml permissions should be restricted to contents: read"
