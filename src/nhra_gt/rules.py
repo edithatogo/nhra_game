@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from nhra_game_theory.engine import Params, State
+    from nhra_gt.engine import Params, State
 
 
 class CapRule(ABC):

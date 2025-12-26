@@ -20,7 +20,7 @@ def plot_trajectory(
     qhi: str | None = None,
 ) -> None:
     warnings.warn(
-        "plot_trajectory is deprecated, use nhra_game_theory.visualization.trajectories instead",
+        "plot_trajectory is deprecated, use nhra_gt.visualization.trajectories instead",
         DeprecationWarning,
         stacklevel=2,
     )
@@ -31,7 +31,7 @@ def plot_trajectory(
 
 def plot_strategy_heatmap(freq: pd.DataFrame, outpath: Path) -> None:
     warnings.warn(
-        "plot_strategy_heatmap is deprecated, use nhra_game_theory.visualization.distributional instead",
+        "plot_strategy_heatmap is deprecated, use nhra_gt.visualization.distributional instead",
         DeprecationWarning,
         stacklevel=2,
     )
@@ -44,7 +44,7 @@ def tornado_from_rankcorr(
     df: pd.DataFrame, outcome_col: str, params: list[str], outpath: Path, topk: int = 10
 ) -> None:
     warnings.warn(
-        "tornado_from_rankcorr is deprecated, use nhra_game_theory.visualization.sensitivity instead",
+        "tornado_from_rankcorr is deprecated, use nhra_gt.visualization.sensitivity instead",
         DeprecationWarning,
         stacklevel=2,
     )

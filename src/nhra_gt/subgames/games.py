@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
-from nhra_game_theory.subgames.nash import TwoPlayerGame
+from nhra_gt.subgames.nash import TwoPlayerGame
 
 
 @dataclass(frozen=True)

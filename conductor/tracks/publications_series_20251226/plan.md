@@ -31,7 +31,7 @@
     - [ ] Sub-task: Verify sources coverage & commit
     - [ ] Sub-task: Draft Search Strings (Boolean logic) & commit
     - [ ] Sub-task: Verify search strings syntax & commit
-- [~] Task: Protocol Document Drafting (Atomic PRISMA-P)
+- [x] Task: Protocol Document Drafting (Atomic PRISMA-P) [5995671]
     - [ ] Sub-task: Write Background/Rationale section & commit
     - [ ] Sub-task: Write Objectives section & commit
     - [ ] Sub-task: Write Methods section (Data Collection) & commit

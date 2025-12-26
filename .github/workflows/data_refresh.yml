@@ -5,6 +5,9 @@ on:
     - cron: '0 0 1 * *' # Monthly at midnight
   workflow_dispatch: # Manual trigger
 
+env:
+  POETRY_VERSION: "2.2.1"
+
 jobs:
   refresh-data:
     runs-on: ubuntu-latest
@@ -21,15 +24,15 @@ jobs:
           python-version: '3.13'
           cache: 'pip'
 
+      - name: Install Poetry
+        run: pip install "poetry==${{ env.POETRY_VERSION }}"
+
       - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.lock
-          pip install -e "."
+        run: poetry install --only main
 
       - name: Run AIHW Data Ingestion
         run: |
-          PYTHONPATH=src python scripts/data/ingest_aihw_api.py
+          poetry run python scripts/data/ingest_aihw_api.py
 
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5

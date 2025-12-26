@@ -3,8 +3,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from nhra_game_theory.agents.base import Agent
-    from nhra_game_theory.engine import Params, State
+    from nhra_gt.agents.base import Agent
+    from nhra_gt.engine import Params, State
 
 
 class DebateLoop:

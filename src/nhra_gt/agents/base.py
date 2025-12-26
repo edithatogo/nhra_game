@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, cast
 import numpy as np
 
 if TYPE_CHECKING:
-    from nhra_game_theory.engine import Params, State
+    from nhra_gt.engine import Params, State
 
 
 def logistic(x: float) -> float:
@@ -209,7 +209,7 @@ class HeuristicAgent(Agent):
             # --- Game Logic Implementation ---
             if params.use_stage_game_equilibria and g != "SIGNAL" and g != "SIGNAL_QUALITY":
                 # Equilibrium solver path
-                from nhra_game_theory.subgames.games import (
+                from nhra_gt.subgames.games import (
                     GameParams,
                     aged_care_interface_game,
                     bargaining_game,
@@ -220,7 +220,7 @@ class HeuristicAgent(Agent):
                     governance_integration_game,
                     ndis_interface_game,
                 )
-                from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
+                from nhra_gt.subgames.nash import all_nash, select_equilibrium
 
                 gp = GameParams(
                     pressure=float(state.pressure),

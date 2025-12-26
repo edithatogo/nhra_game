@@ -15,8 +15,8 @@ from typing import Any, cast
 
 import numpy as np
 import pandas as pd
-from nhra_game_theory.agents.base import HeuristicAgent
-from nhra_game_theory.rules import (
+from nhra_gt.agents.base import HeuristicAgent
+from nhra_gt.rules import (
     HardCapRule,
     ProportionalAuditRule,
     SoftCapRule,

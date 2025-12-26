@@ -137,6 +137,7 @@ description = "A coverage-guided fuzzer for Python and Python extensions."
 optional = false
 python-versions = "*"
 groups = ["dev"]
+markers = "sys_platform == \"linux\""
 files = [
     {file = "atheris-3.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:8a5c8a781467c187da40fd29139784193e2647058831f837f675d0bb8cbd8746"},
     {file = "atheris-3.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:510e502c57b6dc615fb174066407af620d4c7f73cf08a782c86e7761bf12c4eb"},
@@ -2221,7 +2222,7 @@ description = "Differentiate, compile, and transform Numpy code."
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "extra == \"accel\" and python_version >= \"3.11\""
+markers = "python_version >= \"3.11\" and extra == \"accel\""
 files = [
     {file = "jax-0.8.2-py3-none-any.whl", hash = "sha256:d0478c5dc74406441efcd25731166a65ee782f13c352fa72dc7d734351909355"},
     {file = "jax-0.8.2.tar.gz", hash = "sha256:1a685ded06a8223a7b52e45e668e406049dbbead02873f2b5a4d881ba7b421ae"},
@@ -2288,7 +2289,7 @@ description = "XLA library for JAX"
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "extra == \"accel\" and python_version >= \"3.11\""
+markers = "python_version >= \"3.11\" and extra == \"accel\""
 files = [
     {file = "jaxlib-0.8.2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:490bf0cb029c73c65c9431124b86cdc95082dbc1fb76fc549d24d75da33e5454"},
     {file = "jaxlib-0.8.2-cp311-cp311-manylinux_2_27_aarch64.whl", hash = "sha256:bb89be452b1b808d3f88fc01c415b364a260be4cc7ac120c038009f6150a32dc"},
@@ -7536,4 +7537,4 @@ opt = ["optuna"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "cbe1f04bd370438bb4762459b07c5962ff62099548f9d8ac31e94a1c2a652c48"
+content-hash = "0259fa913ba0ffed0af91e9d88138a4f2252fef432f86584801ea8239abd9a26"

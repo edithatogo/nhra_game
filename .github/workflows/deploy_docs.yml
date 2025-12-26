@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write
 
+env:
+  POETRY_VERSION: "2.2.1"
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,7 +20,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install Poetry
-        run: pip install poetry
+        run: pip install "poetry==${{ env.POETRY_VERSION }}"
       - name: Install
         run: poetry install --with dev
       - run: poetry run mkdocs gh-deploy --force

@@ -6,7 +6,7 @@ from typing import Any, cast
 
 import numpy as np
 import pandas as pd
-from nhra_game_theory.engine import Params, run_hybrid
+from nhra_gt.engine import Params, run_hybrid
 from pydantic import BaseModel, ConfigDict
 
 

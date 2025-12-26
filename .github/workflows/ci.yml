@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read
 
+env:
+  POETRY_VERSION: "2.2.1"
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
@@ -22,7 +25,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
       - name: Install Poetry
-        run: pip install poetry
+        run: pip install "poetry==${{ env.POETRY_VERSION }}"
       - name: Install
         run: poetry install --with dev
       - name: Lint
@@ -31,6 +34,12 @@ jobs:
           poetry run ruff format src tests --check
       - name: Type check
         run: poetry run mypy --strict src/nhra_gt
+      - name: Security scan (Bandit)
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+        run: poetry run bandit -c pyproject.toml -r src
+      - name: Dependency hygiene (deptry)
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+        run: poetry run deptry .
       - name: Input traceability (public sources or justification)
         run: poetry run python scripts/check_parameters_grounded.py
       - name: Build context pack

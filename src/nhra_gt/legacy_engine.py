@@ -185,7 +185,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
     signal = "H" if rng.random() < prob_sig[1] else "L"
 
     if p.use_stage_game_equilibria:
-        from nhra_game_theory.subgames.games import (
+        from nhra_gt.subgames.games import (
             GameParams,
             bargaining_game,
             compliance_game,
@@ -194,7 +194,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
             discharge_coordination_game,
             governance_integration_game,
         )
-        from nhra_game_theory.subgames.nash import TwoPlayerGame, all_nash, select_equilibrium
+        from nhra_gt.subgames.nash import TwoPlayerGame, all_nash, select_equilibrium
 
         gp = GameParams(
             pressure=float(s.pressure),

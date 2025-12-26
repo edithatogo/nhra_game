@@ -7,7 +7,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-from nhra_game_theory.legacy_engine import Params
+from nhra_gt.legacy_engine import Params
 from SALib.analyze import morris as morris_analyzer
 from SALib.analyze import sobol as sobol_analyzer
 from SALib.sample import morris as morris_sampler
@@ -79,7 +79,7 @@ from .visualization.sensitivity import (
 def plot_sobol_indices(si: dict[str, Any], output_path: Path) -> None:
     """Generates Sobol first-order and total sensitivity plots."""
     warnings.warn(
-        "plot_sobol_indices is deprecated, use nhra_game_theory.visualization.sensitivity instead",
+        "plot_sobol_indices is deprecated, use nhra_gt.visualization.sensitivity instead",
         DeprecationWarning,
         stacklevel=2,
     )
@@ -97,7 +97,7 @@ def plot_sobol_indices(si: dict[str, Any], output_path: Path) -> None:
 def plot_sobol_heatmap(si: dict[str, Any], output_path: Path) -> None:
     """Generates a heatmap of second-order interaction indices (S2)."""
     warnings.warn(
-        "plot_sobol_heatmap is deprecated, use nhra_game_theory.visualization.sensitivity instead",
+        "plot_sobol_heatmap is deprecated, use nhra_gt.visualization.sensitivity instead",
         DeprecationWarning,
         stacklevel=2,
     )
@@ -110,7 +110,7 @@ def plot_sobol_heatmap(si: dict[str, Any], output_path: Path) -> None:
 def plot_morris_tornado(df: pd.DataFrame, output_path: Path) -> None:
     """Generates a Morris Tornado plot (mu_star ranking)."""
     warnings.warn(
-        "plot_morris_tornado is deprecated, use nhra_game_theory.visualization.sensitivity instead",
+        "plot_morris_tornado is deprecated, use nhra_gt.visualization.sensitivity instead",
         DeprecationWarning,
         stacklevel=2,
     )
