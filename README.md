@@ -1,115 +1,131 @@
 # NHRA Game Theory: Cognitive Digital Twin
 
+![Social Preview](og-image.png)
+
 [![CI](https://github.com/edithatogo/nhra_game/actions/workflows/ci.yml/badge.svg)](https://github.com/edithatogo/nhra_game)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.13+](https://img.shields.io/badge/python-3.13+-008080.svg)](https://www.python.org/downloads/)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![Coverage](https://img.shields.io/badge/coverage-%3E95%25-green.svg)](https://github.com/edithatogo/nhra_game)
 
-**Decision-grade game-theory mechanism models for National Health Reform Agreement (NHRA) negotiations.**
+**State-of-the-Art (SOTA) decision-grade game-theory mechanism models for National Health Reform Agreement (NHRA) negotiations.**
 
-This project implements a "Cognitive Digital Twin" of the Australian health funding system, simulating strategic interactions between Commonwealth and State actors. It models the downstream consequences of negotiation choices on hospital operational states, including access block, ED crowding, and ambulance offload delays.
+This project implements a **Cognitive Digital Twin** of the Australian health funding system. It simulates strategic interactions between Commonwealth and State actors, mapping high-level negotiation choices to monthly operational states (access block, ED crowding, ambulance offload).
 
 📖 **Live Documentation:** [https://edithatogo.github.io/nhra_game/](https://edithatogo.github.io/nhra_game/)
 
-> **Disclaimer:** These models are illustrative mechanisms intended for policy reasoning and strategic sensitivity exploration. They are not point-forecasts of real-world clinical endpoints.
+---
+
+## 🏛️ System Architecture (C4 Model)
+
+### Level 1: System Context
+The model serves as a methodological bridge between empirical data (AIHW/ABS) and policy decision-making.
+
+```mermaid
+C4Context
+    title System Context Diagram for NHRA Game Theory Model
+    
+    Person(user, "Policy Researcher / Analyst", "Uses the model to run scenarios and generate reports.")
+    System(model, "NHRA Game Theory Model", "Predictive forecasting engine for hospital system pressure and risk.")
+    
+    System_Ext(aihw, "AIHW / ABS Data", "Provides historical health system metrics (NEP, ED performance).")
+    System_Ext(mja, "Academic Community (MJA)", "Peer review and reproducibility target.")
+    
+    Rel(user, model, "Configures parameters and runs simulations")
+    Rel(aihw, model, "Feeds historical data for calibration")
+    Rel(model, mja, "Provides reproducible methodology and figures")
+    Rel(model, user, "Delivers interactive dashboard and PDF reports")
+```
+
+### Level 3: Internal Components
+Modular design separating strategic intent from operational execution.
+
+```mermaid
+C4Component
+    title Component Diagram for NHRA Game Theory Model
+    
+    Component(engine, "Engine", "Python/NumPy", "Core transition functions and Monte Carlo logic.")
+    Component(subgames, "Strategic Layer", "Python/NetworkX", "Game theory logic and Nash solvers.")
+    Component(viz, "Visualization API", "Python/Matplotlib/Plotly", "Unified plotting infrastructure.")
+    
+    Rel(engine, subgames, "Calls strategic decisions")
+    Rel(engine, viz, "Feeds data for plotting")
+```
 
 ---
 
-## 🎯 Key Features
+## 🎯 Evidence-Linked Capabilities
 
-### 1. Cognitive Simulation (v26 Upgrade)
-- **Strategic Agents:** Modular `LLMAgent` and `HeuristicAgent` frameworks.
-- **Negotiation Loops:** Structured "Debate Loops" between Commonwealth and State agents.
-- **Explainable AI:** "Cognitive Trace" logging providing natural language rationales for agent moves.
+| Feature | Maturity | Verification | Evidence Source |
+|---|---|---|---|
+| **Stochastic Simulation** | **STABLE** | `tests/test_engine_smoke.py` | [Assumptions Log](context/05_assumptions_log.md) |
+| **Multi-Game Equilibria** | **STABLE** | `tests/test_subgames_nash.py` | [Game Theory Spec](context/03_model_overview.md) |
+| **45% Cth Share Logic** | **STABLE** | `context/grounding.ok` | [NHRA Agreement](https://www.publichospitalfunding.gov.au/) |
+| **Cognitive DT Engine** | **ALPHA** | `tests/test_engine_smoke.py` | [Strategic Map](context/02_system_map.md) |
 
-### 2. Decision-Grade Operational Realism
-- **Monthly Time-steps:** Captures seasonal demand peaks, claim timing games, and monthly cashflow dynamics.
-- **M/M/s Queuing:** Explicit queuing theory implementation converting demand/capacity into waiting times.
-- **Crisis State Machine:** Hysteretic "Code Red" logic simulating system failure and recovery cycles.
-
-### 3. Institutional Realism
-- **VFI Waterfall:** Explicit tracking of Valuation Divergence (Nominal vs. Effective share).
-- **Interface Games:** Dedicated sub-games for Aged Care and NDIS bottlenecks.
-- **Structural Rules:** Swappable implementation of Funding Caps (Hard/Soft) and Audit Regimes.
+[Full Feature Matrix & Maturity Grades →](docs/feature_matrix.md)
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- Python 3.13+
-- [Poetry](https://python-poetry.org/)
-- [Just](https://github.com/casey/just) (Command runner)
-
-### Installation
-
+### 1. Installation
 ```bash
 git clone https://github.com/edithatogo/nhra_game.git
 cd nhra_game
 poetry install
 ```
 
-### Running the System
-
-**1. Strategic Dashboard**
-Launch the interactive "War Gaming" interface:
+### 2. Launch War Room (Dashboard)
 ```bash
 just dashboard
 ```
 
-**2. Simulation Pipeline**
-Run the core simulation, diagram rendering, and network generation:
+### 3. Run Pipeline
 ```bash
 just run
 ```
 
-**3. Model Calibration**
-Optimize parameters against multi-target historical data:
-```bash
-python scripts/optimize_calibration.py
+---
+
+## 📂 Logic & Workflows (ODD Protocol)
+
+### Strategic Chain of Influence
+How negotiation choices propagate through the system.
+
+```mermaid
+graph TD
+    BARG[Bargaining] -- "funding levels" --> DEF[Definition]
+    DEF -- "payment scope" --> SHIFT[Cost-shifting]
+    SHIFT -- "community access" --> DISC[Discharge]
+    DISC -- "throughput" --> COMP[Compliance]
+    COMP -- "audit risk" --> SIGNAL[Signalling]
+    SIGNAL -- "transparency" --> BARG
 ```
 
-**4. Full Quality Suite**
-Execute formatting, linting, grounding checks, and tests:
-```bash
-just all
-```
+---
+
+## 👩‍💻 High-Integrity Development
+
+We adhere to the **Conductor** spec-driven development framework:
+- **TDD:** >95% code coverage required for all core modules.
+- **Safety:** Automated security scanning via `bandit` and `safety`.
+- **Integrity:** Pydantic V2 runtime validation for all simulation parameters.
 
 ---
 
-## 📂 Scenario Library
-
-The `scenario_library/` contains standard YAML-based counterfactuals for policy exploration:
-- `baseline.yaml`: Standard NHRA settings.
-- `cap_removed.yaml`: Impact of removing the 6.5% growth cap.
-- `audit_surge.yaml`: High-intensity compliance regime.
-- `nep_freeze.yaml`: Stagnant efficiency pricing vs. rising costs.
-- `crisis_start.yaml`: Stress-testing system recovery from an initial failure state.
-
----
-
-## 🏗️ Architecture
-
-The model is built on a modular four-layer architecture:
-1.  **Macro-Fiscal:** NEP trajectory and input cost drift (NEP vs. WPI).
-2.  **Strategic Layer:** Interacting games (Bargaining, Signalling, Definition, Coding).
-3.  **Operational Layer:** M/M/s patient flow and capacity dynamics.
-4.  **Political/Utility:** Non-linear loss functions driven by KPI threshold breaches.
-
----
-
-## 👩‍💻 Development Standards
-
-We adhere to high-integrity software engineering standards:
-- **Linting/Formatting:** [Ruff](https://github.com/astral-sh/ruff)
-- **Type Checking:** [Mypy](https://mypy-lang.org/) (Strict mode)
-- **Testing:** [Pytest](https://docs.pytest.org/) (>95% coverage requirement)
-- **Environment:** [Nox](https://nox.thea.codes/) for multi-version orchestration.
-
----
-
-## 📚 Citation
+## 📚 Citation & Metadata
 
 If you use this model in your research, please cite:
 
-> Mordaunt, D. A. (2025). *NHRA Game Theory: A Cognitive Digital Twin Framework for Mechanism Design*. https://github.com/edithatogo/nhra_game
+```bibtex
+@software{Mordaunt_NHRA_Game_Theory_2025,
+  author = {Mordaunt, Dylan},
+  title = {NHRA Game Theory Model: A Cognitive Digital Twin for Public Hospital Funding},
+  version = {26.0.0},
+  year = {2025},
+  url = {https://github.com/edithatogo/nhra_game}
+}
+```
+
+[CITATION.cff](CITATION.cff) | [zenodo.json](zenodo.json)

@@ -50,15 +50,24 @@ Details the internal module relationships within the Python package.
 C4Component
     title Component Diagram for NHRA Game Theory Model (src/nhra_game_theory)
     
-    Component(engine, "Engine", "Python/NumPy", "Core transition functions and Monte Carlo logic.")
-    Component(domain, "Domain Models", "Python/Pydantic", "State vectors, parameters, and business logic.")
-    Component(subgames, "Strategic Layer", "Python/NetworkX", "Game theory logic and Nash solvers.")
-    Component(sensitivity, "Sensitivity Suite", "Python/SALib", "Sobol and Morris GSA implementations.")
-    Component(viz, "Visualization API", "Python/Matplotlib/Plotly", "Unified plotting infrastructure.")
+    Component(engine, "Engine (v26)", "Python/NumPy", "Core transition functions.")
+    Component(legacy_engine, "Legacy Engine (v8)", "Python/Pydantic", "Baseline mechanism logic.")
+    Component(domain, "Domain Models", "Python/Pydantic", "State vectors and Params.")
+    Component(subgames, "Strategic Layer", "Python/NetworkX", "Nash solvers.")
+    Component(rules, "Policy Rules", "Python", "Cap and Audit logic.")
+    Component(viz, "Visualization API", "Python", "Unified plotting.")
+    Component(sensitivity, "GSA Suite", "Python/SALib", "Sobol and Morris.")
+    Component(audit, "Audit Suite", "Python", "Fingerprinting and integrity.")
+    Component(plotting_legacy, "Legacy Plotting", "Python", "Deprecated wrappers.")
+    Component(interfaces, "Protocols", "Python", "Interface definitions.")
     
+    Rel(engine, subgames, "Calls")
     Rel(engine, domain, "Uses")
-    Rel(engine, subgames, "Calls strategic decisions")
-    Rel(sensitivity, engine, "Wraps for variance analysis")
-    Rel(engine, viz, "Feeds data for plotting")
-    Rel(viz, domain, "Validates schemas")
+    Rel(engine, rules, "Respects")
+    Rel(engine, viz, "Feeds")
+    Rel(sensitivity, engine, "Wraps")
+    Rel(audit, engine, "Scans")
+    Rel(engine, legacy_engine, "Compares against")
+
+
 ```
