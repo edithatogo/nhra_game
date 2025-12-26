@@ -21,7 +21,7 @@
     - [ ] Sub-task: Define Initial Panel (Methodologist, Policy Expert, Game Theorist) in `publications/shared/experts/panel_v1.md` & commit
     - [ ] Sub-task: Run "Snowball" simulation (Ask Panel v1 for suggestions) -> `panel_v2.md` & commit
     - [ ] Sub-task: Verify Final Expert Panel composition & commit
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure & Expert Panel Setup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure & Expert Panel Setup' (Protocol in workflow.md) [checkpoint: f3189ea]
 
 ## Phase 2: P1 Protocol (Qualitative) - Drafting & Review Loops
 - [ ] Task: Search Strategy Definition (Atomic PRISMA-ScR)
