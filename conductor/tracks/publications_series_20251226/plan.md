@@ -57,7 +57,7 @@
 ## Phase 2a: Methodological Rigour & Document Expansion (New)
 - [ ] Task: Research Methods Expansion
     - [ ] Sub-task: Create `data/research/` directory & commit
-    - [ ] Sub-task: Ingest user-provided PDFs (Manual Step) & commit metadata
+    - [~] Sub-task: Ingest user-provided PDFs (Manual Step) & commit metadata
     - [ ] Sub-task: Conduct High-Quality Literature Search (Last 5 Years) & commit results
     - [ ] Sub-task: Select and Validate Key Methodological Papers & commit
 - [ ] Task: Reference Quality Audit
