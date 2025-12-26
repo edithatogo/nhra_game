@@ -1,0 +1,53 @@
+- id: BaezHernandez2025
+  title: "Games theory. A valuable instrument in decision-making in public policies"
+  author: "Baez Hernandez, Alexander"
+  year: 2025
+  journal: "Revista de la Facultad de Ciencias Económicas"
+  doi: "10.14409/rfce.v1i1.12345" # Placeholder - needs validation
+  url: "https://bibliotecavirtual.unl.edu.ar/"
+  type: article-journal
+  quality: high
+  recency: current
+
+- id: Ostrom2005
+  title: "Understanding Institutional Diversity"
+  author: "Ostrom, Elinor"
+  year: 2005
+  publisher: "Princeton University Press"
+  type: book
+  quality: seminal
+  recency: historical
+
+- id: Schelling1960
+  title: "The Strategy of Conflict"
+  author: "Schelling, Thomas C."
+  year: 1960
+  publisher: "Harvard University Press"
+  type: book
+  quality: seminal
+  recency: historical
+
+- id: Hermans2014
+  title: "The usefulness of game theory as a method for policy evaluation"
+  author: "Hermans, Leon M. and Cunningham, Scott W. and Slinger, Jill H."
+  year: 2014
+  journal: "Evaluation"
+  volume: 20
+  issue: 1
+  pages: "10-25"
+  doi: "10.1177/1356389013516053"
+  url: "https://journals.sagepub.com/doi/10.1177/1356389013516053"
+  type: article-journal
+  quality: high
+  recency: moderate
+
+- id: Duckett2021
+  title: "Vicious cycles: hospital bed block and the National Health Reform Agreement"
+  author: "Duckett, Stephen"
+  year: 2021
+  journal: "Medical Journal of Australia"
+  doi: "10.5694/mja2.51016"
+  url: "https://www.mja.com.au/journal/2021/214/8/vicious-cycles-hospital-bed-block-and-national-health-reform-agreement"
+  type: article-journal
+  quality: high
+  recency: recent
