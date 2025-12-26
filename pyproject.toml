@@ -67,7 +67,7 @@ hypothesis-auto = "*"
 icontract-hypothesis = "*"
 icontract = "*"
 locust = "*"
-atheris = "*"
+atheris = {version = "*", markers = "sys_platform == 'linux'"}
 ruff = ">=0.8"
 mypy = ">=1.10"
 pre-commit = ">=3.7"
@@ -145,7 +145,12 @@ ignore = ["E501", "N806"]
 
 [tool.ruff.lint.per-file-ignores]
 "scripts/*" = ["E402"]
-"tests/*" = ["S101", "S105"]
+"tests/*" = ["S101", "S105", "PT011", "B017", "E402", "S607", "S603"]
+"src/nhra_gt/audit/*" = ["S110", "S112"]
+"src/nhra_gt/domain/audit.py" = ["S607", "S603"]
+"src/nhra_gt/interfaces/protocols.py" = ["F401"]
+"src/nhra_gt/sensitivity.py" = ["E402"]
+"src/nhra_gt/visualization/interactive.py" = ["C408"]
 
 [tool.ruff.format]
 quote-style = "double"

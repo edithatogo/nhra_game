@@ -1,4 +1,4 @@
-from nhra_game_theory.engine import Params, run_hybrid
+from nhra_gt.engine import Params, run_hybrid
 
 
 def test_v26_engine_smoke():

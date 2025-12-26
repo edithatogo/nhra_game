@@ -25,7 +25,7 @@ Deep dive into AIHW API and IHACPA pricing table integration.
 
 Review the technical "machine" running the simulation.
 
-- [ ] Task: Audit `Justfile`, `poetry`, `nox`, and CI/CD configurations for modernization
+- [~] Task: Audit `Justfile`, `poetry`, `nox`, and CI/CD configurations for modernization
 - [ ] Task: Review test coverage and static analysis (`ruff`, `mypy`) settings
 - [ ] Task: Identify performance bottlenecks in the core simulation loop
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Infrastructure & Code Quality Review' (Protocol in workflow.md)

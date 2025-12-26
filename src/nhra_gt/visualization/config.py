@@ -32,8 +32,8 @@ class PlotConfig(BaseModel):
     primary_color: str = "#008080"  # Teal
     secondary_color: str = "#20B2AA"  # LightSeaGreen
     accent_color: str = "#afeeee"  # PaleTurquoise
-    error_color: str = "#CD5C5C"   # IndianRed
-    success_color: str = "#2E8B57" # SeaGreen
+    error_color: str = "#CD5C5C"  # IndianRed
+    success_color: str = "#2E8B57"  # SeaGreen
 
     # Palette for multi-scenario comparisons
     color_palette: list[str] = Field(

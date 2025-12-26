@@ -1,9 +1,15 @@
-import os
-import yaml
 import pytest
-from scripts.pub_tools.manage_refs import load_references, validate_metadata, validate_recency, validate_quality
+import yaml
+
+from scripts.pub_tools.manage_refs import (
+    load_references,
+    validate_metadata,
+    validate_quality,
+    validate_recency,
+)
 
 # ... existing code ...
+
 
 @pytest.fixture
 def quality_yaml(tmp_path):
@@ -16,15 +22,20 @@ def quality_yaml(tmp_path):
         yaml.dump(data, file)
     return str(f)
 
+
 # ... existing tests ...
+
 
 def test_validate_quality(quality_yaml):
     refs = load_references(quality_yaml)
     # Based on implementation, it always returns True currently but logs info
     assert validate_quality(refs) is True
+
+
 from datetime import datetime
 
 # ... existing code ...
+
 
 @pytest.fixture
 def recency_yaml(tmp_path):
@@ -38,7 +49,9 @@ def recency_yaml(tmp_path):
         yaml.dump(data, file)
     return str(f)
 
+
 # ... existing tests ...
+
 
 def test_validate_recency(recency_yaml):
     refs = load_references(recency_yaml)
@@ -46,6 +59,7 @@ def test_validate_recency(recency_yaml):
     # Based on implementation:
     assert validate_recency(refs, max_age_years=10) is False
     assert validate_recency(refs, max_age_years=25) is True
+
 
 @pytest.fixture
 def valid_yaml(tmp_path):
@@ -58,25 +72,29 @@ def valid_yaml(tmp_path):
         yaml.dump(data, file)
     return str(f)
 
+
 @pytest.fixture
 def invalid_yaml(tmp_path):
     f = tmp_path / "invalid.yaml"
     data = [
-        {"id": "ref1", "doi": "10.1000/1"}, # Missing URL
-        {"id": "ref2", "url": "http://example.com/2"}, # Missing DOI
+        {"id": "ref1", "doi": "10.1000/1"},  # Missing URL
+        {"id": "ref2", "url": "http://example.com/2"},  # Missing DOI
     ]
     with open(f, "w") as file:
         yaml.dump(data, file)
     return str(f)
+
 
 def test_load_references(valid_yaml):
     refs = load_references(valid_yaml)
     assert len(refs) == 2
     assert refs[0]["id"] == "ref1"
 
+
 def test_validate_metadata_valid(valid_yaml):
     refs = load_references(valid_yaml)
     assert validate_metadata(refs) is True
+
 
 def test_validate_metadata_invalid(invalid_yaml):
     refs = load_references(invalid_yaml)
