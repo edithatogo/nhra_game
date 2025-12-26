@@ -21,3 +21,13 @@ Add new sources to `context/04_parameter_registry.csv` with a stable URL and a l
 ```bash
 just context
 ```
+
+## Technical Implementation Details
+The following automated and semi-automated ingestion paths are implemented:
+
+| Data Type | Source | Implementation | Output Artifact |
+| :--- | :--- | :--- | :--- |
+| **ED Performance** | AIHW MyHospitals API | `scripts/data/ingest_aihw_api.py` | `data/raw/historical_aihw_api.csv` |
+| **Economic Spine** | IHACPA Determinations | `scripts/data/ingest_economic_spine.py` | `data/calibration_v21/economic_spine.csv` |
+
+*Note: The Economic Spine (NEP/WPI) currently uses hardcoded series in the ingestion script and requires manual updates for new Determinations. AIHW ingestion is fully automated via the public API.*
