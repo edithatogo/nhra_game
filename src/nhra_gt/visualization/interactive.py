@@ -3,7 +3,6 @@ from __future__ import annotations
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from typing import Any
 
 from .config import PlotConfig
 
@@ -117,7 +116,6 @@ def plot_stability_heatmap(
         color_continuous_scale="Viridis",
     )
     fig.update_layout(
-        title="Stability Landscape: 0=Invest (Teal), 1=Shift (Rose)",
-        template="simple_white"
+        title="Stability Landscape: 0=Invest (Teal), 1=Shift (Rose)", template="simple_white"
     )
     return fig

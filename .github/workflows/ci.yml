@@ -32,7 +32,7 @@ jobs:
           python -m ruff format src tests --check
       - name: Type check
         run: |
-          python -m mypy --strict src/nhra_game_theory
+          python -m mypy --strict src/nhra_gt
       - name: Input traceability (public sources or justification)
         run: |
           python scripts/check_parameters_grounded.py

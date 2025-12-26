@@ -33,7 +33,7 @@ def plot_sobol_indices(
     names = si["names"]
     key = "ST" if total_order else "S1"
     conf_key = f"{key}_conf"
-    
+
     vals = si[key]
     conf = si[conf_key]
 
@@ -43,10 +43,10 @@ def plot_sobol_indices(
 
     fig = plt.figure(figsize=config.default_figsize)
     ax = fig.gca()
-    
+
     color = "salmon" if total_order else "lightgreen"
     ax.barh(df.index, df["index"], xerr=df["conf"], color=color, capsize=5)
-    
+
     label = "Total-order (ST)" if total_order else "First-order (S1)"
     ax.set_xlabel(f"{label} sensitivity index", fontsize=config.fontsize_label)
     ax.set_title(f"Sobol Analysis: {label}", fontsize=config.fontsize_title)
@@ -69,7 +69,7 @@ def plot_sobol_heatmap(
 
     names = si["names"]
     s2 = si["S2"]
-    
+
     # Ensure square matrix
     if not (isinstance(s2, np.ndarray) and s2.ndim == 2):
         return None
@@ -78,7 +78,7 @@ def plot_sobol_heatmap(
     ax = fig.gca()
     sns.heatmap(s2, annot=True, xticklabels=names, yticklabels=names, cmap="YlGnBu", ax=ax)
     ax.set_title("Sobol Analysis: Interaction Indices (S2)", fontsize=config.fontsize_title)
-    
+
     return fig
 
 
@@ -94,7 +94,7 @@ def plot_morris_tornado(
 
     fig = plt.figure(figsize=config.default_figsize)
     ax = fig.gca()
-    
+
     ax.barh(df.index, df["mu_star"], xerr=df["mu_star_conf"], color="skyblue", capsize=5)
     ax.set_xlabel("mu_star (Absolute mean elementary effect)", fontsize=config.fontsize_label)
     ax.set_title("Morris Screening: Parameter Influence", fontsize=config.fontsize_title)
@@ -119,7 +119,7 @@ def plot_rank_tornado(
     for p in params:
         rho = data[[p, outcome_col]].corr(method="spearman").iloc[0, 1]
         rows.append((p, float(rho)))
-        
+
     rows.sort(key=lambda x: abs(x[1]), reverse=True)
     rows = rows[:topk]
     labels = [r[0] for r in rows][::-1]
@@ -129,7 +129,7 @@ def plot_rank_tornado(
     height = 0.45 * len(labels) + 1.6
     fig = plt.figure(figsize=(config.default_figsize[0], height))
     ax = fig.gca()
-    
+
     ax.barh(labels, vals, color=config.primary_color)
     ax.axvline(0, color="black", linewidth=1)
     ax.set_xlabel("Spearman rank correlation", fontsize=config.fontsize_label)

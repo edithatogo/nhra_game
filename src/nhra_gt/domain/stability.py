@@ -4,7 +4,6 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-
 from nhra_game_theory.subgames.games import GameParams, cost_shifting_game
 from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
 
