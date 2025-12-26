@@ -1,4 +1,5 @@
 # OSF Preregistration: NHRA Structural Game Theory Analysis
+**Author:** Dylan A Mordaunt
 
 ## 1. Study Information
 *   **Title:** Structural Analysis of the National Health Reform Agreement using Game Theory

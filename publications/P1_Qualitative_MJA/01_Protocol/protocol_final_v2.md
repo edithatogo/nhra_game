@@ -1,4 +1,5 @@
 # Protocol: Structural Analysis of the National Health Reform Agreement using Game Theory (Final v2.0)
+**Author:** Dylan A Mordaunt
 
 ## 1. Background & Rationale
 The National Health Reform Agreement (NHRA) fundamentally shifted Australian public hospital funding to Activity Based Funding (ABF). While intended to drive efficiency, theoretical critiques suggest the system may incentivize "Safety Theatre"—strategic behaviors optimizing for metric reporting over patient safety. This phenomenon can be understood through the lens of **Institutional Isomorphism**, where regulatory pressures force organizations to adopt similar symbolic masks regardless of clinical reality. This study systematically maps the NHRA to a game-theoretic framework to identify these structural vulnerabilities.

@@ -1,4 +1,5 @@
 # Methods Appendix: NHRA Game Theory Model (v24)
+**Author:** Dylan A Mordaunt
 
 ## 1. Model Structure
 The model is a **Hybrid Agent-Based / System Dynamics** simulation with the following components:

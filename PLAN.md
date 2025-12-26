@@ -1,4 +1,5 @@
 # Plan: CI Fix and DISC Re-integration
+**Author:** Dylan A Mordaunt
 
 ## Goals
 1. Commit and push all current changes once `mkdocs build` completes.
