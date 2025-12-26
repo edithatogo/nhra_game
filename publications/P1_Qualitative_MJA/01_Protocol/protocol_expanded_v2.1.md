@@ -13,13 +13,13 @@ We utilize Elinor Ostrom’s **Institutional Analysis and Development (IAD)** fr
 
 ### 2.1 IAD Component Mapping
 We map the components of the NHRA to the seven universal rules defined by Ostrom:
-1.  **Boundary Rules:** Defining who can participate in the health funding pool.
-2.  **Position Rules:** Establishing roles such as the "Administrator of the National Health Funding Pool" and "Pricing Authority."
-3.  **Choice Rules:** Specifying the actions available to LHNs (e.g., coding, discharge management).
-4.  **Information Rules:** Dictating data submission timelines and transparency requirements.
-5.  **Payoff Rules:** The ABF price weights, caps, and safety-based penalties.
-6.  **Aggregation Rules:** How individual LHN data is aggregated into State-level growth caps.
-7.  **Scope Rules:** The geographical and service-type boundaries of the Agreement.
+1.  **Boundary Rules:** Defining who can participate in the health funding pool and the eligibility criteria for NWAU-eligible activity.
+2.  **Position Rules:** Establishing roles such as the "Administrator of the National Health Funding Pool," the "Independent Health and Aged Care Pricing Authority (IHACPA)," and the State Health Departments.
+3.  **Choice Rules:** Specifying the actions available to LHNs, such as clinical documentation intensity, discharge scheduling, and substitution between service streams.
+4.  **Information Rules:** Dictating mandatory data submission timelines, transparency requirements, and the specific metrics (e.g., HACs, ED wait times) that are published as public signals.
+5.  **Payoff Rules:** The financial formulae including the National Efficient Price (NEP), indexation rates, growth caps, and safety-based penalty adjustments.
+6.  **Aggregation Rules:** The logic by which individual LHN activity is aggregated into State-level growth caps, determining the marginal value of an extra unit of activity.
+7.  **Scope Rules:** The geographical and service-type boundaries, defining what constitutes a "public hospital service" under the Act.
 
 ### 2.2 Constructive Ambiguity
 The NHRA is characterized by **Constructive Ambiguity**—intentional vagueness in policy text designed to facilitate political consensus among jurisdictions with divergent interests. While politically expedient, this ambiguity creates "undefined states" in the formal game tree. Using the IAD framework, we can identify these gaps where the "Rules-in-Use" may diverge significantly from the "Rules-on-Paper," permitting non-cooperative equilibria such as cost-shifting and reporting manipulation.
@@ -27,15 +27,15 @@ The NHRA is characterized by **Constructive Ambiguity**—intentional vagueness 
 ## 3. Taxonomy of Strategic Gaming
 To guide the qualitative coding, we define a preliminary taxonomy of Strategic Gaming behaviors hypothesized to exist within the NHRA structure:
 *   **Upcoding (Classification Shifting):** Strategic selection of diagnostic codes to maximize NWAU weight without corresponding clinical resource consumption.
-*   **Cost-Shifting (Boundary Gaming):** Moving clinical activity between ABF-funded and block-funded streams (or between State and Federal funding pools) to bypass growth caps.
-*   **Selective Disclosure:** Managing the submission of noisy indicators (like PSI-90) to present a symbolic mask of high quality while minimizing audit risk.
-*   **Hysteretic Crisis Response:** Strategic escalation of system "pressure signals" to trigger political bailout mechanisms (side-payments) outside the formal ABF formula.
+*   **Cost-Shifting (Boundary Gaming):** Moving clinical activity between ABF-funded and block-funded streams (or between State and Federal funding pools) to bypass growth caps or take advantage of pricing differentials.
+*   **Selective Disclosure:** Managing the submission of noisy indicators (like PSI-90 or elective surgery wait times) to present a symbolic mask of high performance while minimizing the risk of a formal audit.
+*   **Hysteretic Crisis Response:** Strategic escalation of system "pressure signals" (e.g., declaring Code Yellow or Red) to trigger political bailout mechanisms and emergency side-payments outside the formal ABF formula.
 
 ## 4. Objectives
 1.  **Map the Formal Game Structure:** Systematically decompose the NHRA and its 2017 and 2020-2025 Addendums into an Extensive Form Game tree, identifying Players, Action Sets (Moves), and Payoff Functions.
-2.  **Structural Incoherence Analysis:** Identify nodes in the game tree where "Constructive Ambiguity" leads to undefined payoffs or circular logic, facilitating strategic decoupling.
+2.  **Structural Incoherence Analysis:** Identify nodes in the game tree where "Constructive Ambiguity" leads to undefined payoffs or circular logic, facilitating strategic decoupling between effort and reward.
 3.  **Equilibrium Determination:** Mathematically determine the conditions under which **Strategic Gaming** becomes the dominant strategy for LHNs, specifically accounting for the trade-off between **Financial Payoffs** (NWAU revenue) and **Reputational Payoffs** (Public rankings and political standing).
-4.  **Policy Stress Testing:** Evaluate the sensitivity of the system to specific policy levers, such as the introduction of "Transparency Surges" or "Audit Pressure."
+4.  **Policy Stress Testing:** Evaluate the sensitivity of the system to specific policy levers, such as the introduction of "Transparency Surges" or "Audit Pressure," using the stylized NHRA Game Theory Model.
 
 ## 5. Methods
 
@@ -51,7 +51,7 @@ The census of analyzed documents includes:
 *   **AIHW Performance Reports:** Providing the context for noisy performance signals (AIHW, 2024).
 
 ### 5.3 Data Collection (Blinded Mapping Protocol)
-To ensure auditability and minimize bias, the analysis uses a "Clean Room" protocol with two independent coding passes simulated through divergent analytical lenses.
+To ensure auditability and minimize bias, the analysis uses a "Clean Room" protocol with two independent coding passes simulated through divergent analytical lenses (Mordaunt, 2025).
 *   **Pass A (Rule-Strict):** Codes strictly based on the explicit legal constraints and mandatory requirements found in the statutory text.
 *   **Pass B (Context-Applied):** Codes based on the operational interpretation and known historical work-arounds documented in policy evaluations (Hermans et al., 2014).
 
@@ -61,10 +61,19 @@ To ensure auditability and minimize bias, the analysis uses a "Clean Room" proto
 *   *Information Sets:* Distinguishing between **Strategic Uncertainty** (opponent actions) and **Stochastic Uncertainty** (the noise in PSI-90 data).
 *   *Payoffs:* Quantifying utility through both direct financial transfers (NWAU) and indirect reputational standing.
 
-### 5.4 Analysis & Synthesis
+### 5.4 Mathematical Formulation of Utility
+For each node in the game tree, we define a utility function $U_i$ for player $i$:
+$$U_i = \alpha \cdot F(a_i, \theta) + \beta \cdot R(s_i) - C(e_i)$$
+Where:
+*   $F$ is the financial payoff based on activity $a_i$ and coding intensity $\theta$.
+*   $R$ is the reputational payoff based on the public signal $s_i$.
+*   $C$ is the cost of genuine clinical effort $e_i$.
+*   $\alpha, \beta$ are weighting parameters determined through the policy context analysis.
+
+### 5.5 Analysis & Synthesis
 The extracted logic will be reconciled by Dylan A Mordaunt, using the Statutory Lens to resolve discrepancies in clause interpretation. The final game tree will be validated for logical closure and analyzed for Nash Equilibria using the NHRA Game Engine. The synthesis will specifically look for "Fragility Nodes"—points in the agreement where a small change in information quality (audit pressure) causes a large shift in player strategy (from Honest to Gaming).
 
-### 5.5 Reflexivity & Bias (Simulated)
+### 5.6 Reflexivity & Bias (Simulated)
 This study acknowledges the "Model Bias" toward standardized policy interpretations inherent in the use of automated analytical agents. To mitigate this, multiple analytical lenses are adopted, and all steps of the deliberation are logged for peer audit. The use of a single author (Dylan A Mordaunt) ensuring consistency across these lenses provides a unified critical framework for the final synthesis.
 
 ## 6. Reporting Standards
