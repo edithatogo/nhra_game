@@ -65,137 +65,45 @@ def get_parameter_lineage() -> dict[str, str]:
     }
 
 
+import warnings
+from .visualization.sensitivity import (
+    plot_sobol_indices as new_plot_sobol_indices,
+    plot_sobol_heatmap as new_plot_sobol_heatmap,
+    plot_morris_tornado as new_plot_morris_tornado,
+)
+from .visualization.base import save_figure, PlotConfig
+
+
 def plot_sobol_indices(si: dict[str, Any], output_path: Path) -> None:
     """Generates Sobol first-order and total sensitivity plots."""
-    names = si["names"]
-    s1 = si["S1"]
-    st = si["ST"]
-    s1_conf = si["S1_conf"]
-    st_conf = si["ST_conf"]
-
-    # First Order (S1)
-    df_s1 = pd.DataFrame({"index": s1, "conf": s1_conf}, index=names).sort_values(
-        "index", ascending=True
-    )
-    plt.figure(figsize=(10, 6))
-    plt.barh(df_s1.index, df_s1["index"], xerr=df_s1["conf"], color="lightgreen", capsize=5)
-    plt.xlabel("S1 (First-order sensitivity index)")
-    plt.ylabel("Parameter")
-    plt.title("Sobol Analysis: First-order Effects")
-    plt.grid(axis="x", linestyle="--", alpha=0.7)
-    plt.tight_layout()
-    plt.savefig(output_path.parent / (output_path.name + "_s1.png"), dpi=300)
-    plt.savefig(output_path.parent / (output_path.name + "_s1.svg"))
-    plt.savefig(output_path.parent / (output_path.name + "_s1.pdf"))
-    plt.close()
-
-    # Total Order (ST)
-    df_st = pd.DataFrame({"index": st, "conf": st_conf}, index=names).sort_values(
-        "index", ascending=True
-    )
-    plt.figure(figsize=(10, 6))
-    plt.barh(df_st.index, df_st["index"], xerr=df_st["conf"], color="salmon", capsize=5)
-    plt.xlabel("ST (Total-order sensitivity index)")
-    plt.ylabel("Parameter")
-    plt.title("Sobol Analysis: Total-order Effects")
-    plt.grid(axis="x", linestyle="--", alpha=0.7)
-    plt.tight_layout()
-    plt.savefig(output_path.parent / (output_path.name + "_st.png"), dpi=300)
-    plt.savefig(output_path.parent / (output_path.name + "_st.svg"))
-    plt.savefig(output_path.parent / (output_path.name + "_st.pdf"))
-    plt.close()
+    warnings.warn("plot_sobol_indices is deprecated, use nhra_game_theory.visualization.sensitivity instead", DeprecationWarning, stacklevel=2)
+    config = PlotConfig()
+    
+    # S1
+    fig_s1 = new_plot_sobol_indices(si, config=config, total_order=False)
+    save_figure(fig_s1, output_path.parent / (output_path.name + "_s1.png"), config)
+    
+    # ST
+    fig_st = new_plot_sobol_indices(si, config=config, total_order=True)
+    save_figure(fig_st, output_path.parent / (output_path.name + "_st.png"), config)
 
 
 def plot_sobol_heatmap(si: dict[str, Any], output_path: Path) -> None:
     """Generates a heatmap of second-order interaction indices (S2)."""
-    if "S2" not in si or si["S2"] is None:
-        print("S2 indices not available for heatmap.")
-        return
-
-    names = si["names"]
-    s2 = si["S2"]
-
-    # s2 is a square matrix (num_vars, num_vars)
-    # SALib returns a triangular matrix or flattened array depending on version
-    # Let's ensure it's a square matrix for the heatmap
-    n = len(names)
-    s2_matrix = np.zeros((n, n))
-
-    # SALib typically returns S2 as a 2D array where only the upper triangle is filled
-    # or a 1D array of length n*(n-1)/2.
-    # In recent versions, it's often a 2D array.
-    if isinstance(s2, np.ndarray) and s2.ndim == 2:
-        s2_matrix = s2
-    else:
-        # Handle flattened case if necessary (legacy SALib)
-        print("Handling flattened S2 not yet implemented.")
-        return
-
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(s2_matrix, annot=True, xticklabels=names, yticklabels=names, cmap="YlGnBu")
-    plt.title("Sobol Analysis: Second-order Interaction Indices (S2)")
-    plt.tight_layout()
-    plt.savefig(output_path.with_suffix(".png"), dpi=300)
-    plt.savefig(output_path.with_suffix(".svg"))
-    plt.savefig(output_path.with_suffix(".pdf"))
-    plt.close()
-
-
-def export_sensitivity_indices(si: dict[str, Any], output_path: Path) -> None:
-    """Exports all sensitivity indices to a CSV file."""
-    names = si["names"]
-    data = {
-        "Parameter": names,
-        "S1": si["S1"],
-        "S1_conf": si["S1_conf"],
-        "ST": si["ST"],
-        "ST_conf": si["ST_conf"],
-    }
-    df = pd.DataFrame(data)
-    df.to_csv(output_path, index=False)
-
-
-def export_sobol_s2_to_csv(si: dict[str, Any], output_path: Path) -> None:
-    """Exports Sobol second-order interaction indices (S2) to a CSV matrix."""
-    if "S2" not in si or si["S2"] is None:
-        print("S2 indices not available for export.")
-        return
-
-    names = si["names"]
-    s2 = si["S2"]
-
-    # Handle both 2D and flattened S2 if necessary
-    if isinstance(s2, np.ndarray) and s2.ndim == 2:
-        df = pd.DataFrame(s2, index=names, columns=names)
-    else:
-        # SALib 1.x returns S2 as 2D where only upper triangle is filled
-        # We ensure it's a symmetric or at least readable matrix
-        n = len(names)
-        df = pd.DataFrame(np.zeros((n, n)), index=names, columns=names)
-        # Best effort fill
-        print("S2 export for non-2D format not fully implemented; returning zero matrix.")
-
-    df.to_csv(output_path)
+    warnings.warn("plot_sobol_heatmap is deprecated, use nhra_game_theory.visualization.sensitivity instead", DeprecationWarning, stacklevel=2)
+    config = PlotConfig()
+    fig = new_plot_sobol_heatmap(si, config=config)
+    if fig:
+        save_figure(fig, output_path.with_suffix(".png"), config)
 
 
 def plot_morris_tornado(df: pd.DataFrame, output_path: Path) -> None:
     """Generates a Morris Tornado plot (mu_star ranking)."""
-    # Filter non-zero influence if needed, but here we show all
-    df = df.sort_values("mu_star", ascending=True)
+    warnings.warn("plot_morris_tornado is deprecated, use nhra_game_theory.visualization.sensitivity instead", DeprecationWarning, stacklevel=2)
+    config = PlotConfig()
+    fig = new_plot_morris_tornado(df, config=config)
+    save_figure(fig, output_path.with_suffix(".png"), config)
 
-    plt.figure(figsize=(10, 6))
-    plt.barh(df.index, df["mu_star"], xerr=df["mu_star_conf"], color="skyblue", capsize=5)
-    plt.xlabel("mu_star (Absolute mean elementary effect)")
-    plt.ylabel("Parameter")
-    plt.title("Morris Screening: Parameter Influence")
-    plt.grid(axis="x", linestyle="--", alpha=0.7)
-    plt.tight_layout()
-
-    # Save in multiple formats as per spec
-    plt.savefig(output_path.with_suffix(".png"), dpi=300)
-    plt.savefig(output_path.with_suffix(".svg"))
-    plt.savefig(output_path.with_suffix(".pdf"))
-    plt.close()
 
 
 def get_salib_problem(

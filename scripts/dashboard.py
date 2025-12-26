@@ -9,6 +9,19 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from nhra_game_theory.visualization.interactive import (
+    plot_risk_pressure,
+    plot_share_drift,
+    plot_ghost_overlay,
+    plot_stability_heatmap,
+)
+from nhra_game_theory.visualization.sensitivity import (
+    plot_sobol_indices as viz_plot_sobol_indices,
+    plot_sobol_heatmap as viz_plot_sobol_heatmap,
+    plot_morris_tornado as viz_plot_morris_tornado,
+)
+from nhra_game_theory.visualization.config import PlotConfig
+
 # Add src to path if needed for relative imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
@@ -411,19 +424,7 @@ def main():
 
                 # Risk Plot
                 st.markdown("**Patient Safety Risk Proxy**")
-                fig_risk = px.line(
-                    combined,
-                    x="year",
-                    y="rr_mean",
-                    color="Scenario",
-                    title="Relative Risk Proxy (Trajectories)",
-                    labels={"rr_mean": "Relative Risk", "year": "Year"},
-                    color_discrete_map={
-                        "Baseline": "#A9A9A9",
-                        "Strategic Scenario Analysis": "#008080",
-                    },
-                )
-                fig_risk.update_layout(template="simple_white", hovermode="x unified")
+                fig_risk = plot_risk_pressure(combined, "rr_mean", "Relative Risk Proxy (Trajectories)", "Relative Risk")
                 st.plotly_chart(fig_risk, width="stretch")
                 st.caption(
                     "Lower is better. Reflects the estimated impact of system delays on clinical outcomes."
@@ -431,24 +432,11 @@ def main():
 
                 # Pressure Plot
                 st.markdown("**Hospital System Pressure**")
-                fig_pres = px.line(
-                    combined,
-                    x="year",
-                    y="pressure_mean",
-                    color="Scenario",
-                    title="System Pressure Index",
-                    labels={"pressure_mean": "Pressure Index", "year": "Year"},
-                    color_discrete_map={
-                        "Baseline": "#A9A9A9",
-                        "Strategic Scenario Analysis": "#008080",
-                    },
-                )
-                fig_pres.update_layout(template="simple_white", hovermode="x unified")
+                fig_pres = plot_risk_pressure(combined, "pressure_mean", "System Pressure Index", "Pressure Index")
                 st.plotly_chart(fig_pres, width="stretch")
                 st.caption(
                     "Index of operational strain. Values > 1.0 indicate severe capacity constraints."
                 )
-
             with col2:
                 st.markdown("#### Executive Summary")
 
@@ -516,22 +504,7 @@ def main():
             drift_df, breaches = prepare_share_drift_data(traj_game, threshold)
 
             # Plot Nominal vs Effective
-            fig_share = px.line(
-                drift_df,
-                x="year",
-                y=["cth_nominal_mean", "cth_effective_mean"],
-                title="Nominal vs Effective Commonwealth Share",
-                labels={"value": "Share", "year": "Year", "variable": "Type"},
-                color_discrete_map={"cth_nominal_mean": "blue", "cth_effective_mean": "red"},
-            )
-            # Add threshold line
-            fig_share.add_hline(
-                y=threshold,
-                line_dash="dash",
-                line_color="black",
-                annotation_text=f"Threshold {threshold:.0%}",
-            )
-
+            fig_share = plot_share_drift(drift_df, threshold)
             st.plotly_chart(fig_share, width="stretch")
 
             if breaches:
@@ -640,15 +613,7 @@ def main():
                 sel_metric = st.selectbox("Select Metric for Overlay:", ["within4", "occupancy"])
                 overlay_df = prepare_ghost_overlay_data(df_hist, recursive_results, sel_metric)
 
-                fig_ghost = px.line(
-                    overlay_df,
-                    x="year",
-                    y="value",
-                    color="type",
-                    title=f"Forecasting Check: {sel_metric} (Ghost Overlay)",
-                    color_discrete_map={"Historical": "#008080", "Backtest Prediction": "#FF7F50"},
-                )
-                fig_ghost.update_layout(template="simple_white", hovermode="x unified")
+                fig_ghost = plot_ghost_overlay(overlay_df, sel_metric)
                 st.plotly_chart(fig_ghost, width="stretch")
         else:
             st.warning(
@@ -676,20 +641,7 @@ def main():
                         index="pressure", columns="cost_shifting_intensity", values="outcome"
                     )
 
-                    fig_stab = px.imshow(
-                        pivot_table,
-                        labels={
-                            "x": "Cost Shifting Intensity",
-                            "y": "Pressure Index",
-                            "color": "Strategy",
-                        },
-                        x=pivot_table.columns,
-                        y=pivot_table.index,
-                        color_continuous_scale="Viridis",
-                    )
-                    fig_stab.update_layout(
-                        title="Stability Landscape: 0=Invest (Teal), 1=Shift (Rose)"
-                    )
+                    fig_stab = plot_stability_heatmap(pivot_table)
                     st.plotly_chart(fig_stab, width="stretch")
 
         with tab5_2:
@@ -706,38 +658,26 @@ def main():
                     df_m = pd.read_csv(morris_path)
                     if "Unnamed: 0" in df_m.columns:
                         df_m = df_m.rename(columns={"Unnamed: 0": "parameter"})
+                    df_m = df_m.set_index("parameter")
 
                     st.markdown("#### 🌪️ Morris Tornado (Parameter Influence)")
-                    fig_m = px.bar(
-                        df_m.sort_values("mu_star", ascending=True),
-                        x="mu_star",
-                        y="parameter",
-                        orientation="h",
-                        title="Morris Screening (Absolute Mean Elementary Effect)",
-                        color="mu_star",
-                        color_continuous_scale="Teal",
-                    )
-                    fig_m.update_layout(template="simple_white")
-                    st.plotly_chart(fig_m, width="stretch")
+                    fig_m = viz_plot_morris_tornado(df_m)
+                    st.pyplot(fig_m)
                 else:
                     st.info("Morris results not found. Run the GSA pipeline to generate.")
-
             with gsa_tabs[1]:
                 sobol_path = Path("data/gsa_v21/sobol_results.csv")
                 if sobol_path.exists():
                     df_s = pd.read_csv(sobol_path)
                     st.markdown("#### 📊 Sobol Variance Decomposition (Total-order)")
-                    fig_s = px.bar(
-                        df_s.sort_values("ST", ascending=True),
-                        x="ST",
-                        y="Parameter",
-                        orientation="h",
-                        title="Sobol Total-order Sensitivity Index (ST)",
-                        color="ST",
-                        color_continuous_scale="Viridis",
-                    )
-                    fig_s.update_layout(template="simple_white")
-                    st.plotly_chart(fig_s, width="stretch")
+                    # Reconstruct si dict for the plotter
+                    si_plot = {
+                        "names": df_s["Parameter"].tolist(),
+                        "ST": df_s["ST"].tolist(),
+                        "ST_conf": df_s["ST_conf"].tolist()
+                    }
+                    fig_s = viz_plot_sobol_indices(si_plot, total_order=True)
+                    st.pyplot(fig_s)
                 else:
                     st.info(
                         "Sobol results not found. Use the CLI `scripts/run_gsa.py --method sobol` to generate."
@@ -748,13 +688,10 @@ def main():
                 if s2_path.exists():
                     df_s2 = pd.read_csv(s2_path, index_col=0)
                     st.markdown("#### 🌡️ Parameter Interaction Heatmap (S2)")
-                    fig_s2 = px.imshow(
-                        df_s2,
-                        labels={"color": "S2 Index"},
-                        title="Sobol Second-order Interactions",
-                        color_continuous_scale="Magma",
-                    )
-                    st.plotly_chart(fig_s2, width="stretch")
+                    si_s2 = {"names": df_s2.columns.tolist(), "S2": df_s2.to_numpy()}
+                    fig_s2 = viz_plot_sobol_heatmap(si_s2)
+                    if fig_s2:
+                        st.pyplot(fig_s2)
                 else:
                     st.info(
                         "S2 interaction data not found. Ensure Sobol analysis is run with interaction terms."

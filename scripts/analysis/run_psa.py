@@ -52,22 +52,26 @@ def main():
     print(f"PSA results saved to {out_dir / 'psa_results.csv'}")
     
     # Plotting
-    plt.figure(figsize=(10, 6))
-    sns.histplot(df["outcome"], kde=True, color="teal")
-    plt.title("PSA: Distribution of System Pressure (2030)")
-    plt.xlabel("Pressure Index")
-    plt.ylabel("Frequency")
-    plt.axvline(x=df["outcome"].mean(), color='r', linestyle='--', label=f"Mean: {df['outcome'].mean():.2f}")
+    from nhra_game_theory.visualization.distributional import plot_distributions
+    from nhra_game_theory.visualization.base import save_figure, PlotConfig
+
+    config = PlotConfig()
+    fig = plot_distributions(df, "outcome", config=config)
+    
+    # Custom additions to the plot (mean and CI)
+    ax = fig.gca()
+    mean_val = df["outcome"].mean()
+    ax.axvline(x=mean_val, color='r', linestyle='--', label=f"Mean: {mean_val:.2f}")
     
     # Calculate 95% CI
     ci_lower = np.percentile(df["outcome"], 2.5)
     ci_upper = np.percentile(df["outcome"], 97.5)
-    plt.axvline(x=ci_lower, color='k', linestyle=':', label="95% CI")
-    plt.axvline(x=ci_upper, color='k', linestyle=':')
+    ax.axvline(x=ci_lower, color='k', linestyle=':', label="95% CI")
+    ax.axvline(x=ci_upper, color='k', linestyle=':')
     
-    plt.legend()
+    ax.legend()
     plot_path = out_dir / "psa_distribution.png"
-    plt.savefig(plot_path)
+    save_figure(fig, plot_path, config)
     print(f"Plot saved to {plot_path}")
     
     # Summary stats

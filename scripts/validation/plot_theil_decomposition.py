@@ -34,19 +34,16 @@ def main():
     df = pd.DataFrame(data).set_index("Metric")
     
     # Plot
-    fig, ax = plt.subplots(figsize=(10, 6))
-    df.plot(kind="barh", stacked=True, ax=ax, color=["#008080", "#20B2AA", "#afeeee"])
-    
-    ax.set_title("Theil Inequality Decomposition (Error Source)")
-    ax.set_xlabel("Proportion")
-    ax.set_xlim(0, 1)
+    from nhra_game_theory.visualization.distributional import plot_stacked_bar
+    from nhra_game_theory.visualization.base import save_figure, PlotConfig
+
+    config = PlotConfig()
+    fig = plot_stacked_bar(df, "Theil Inequality Decomposition (Error Source)", "Proportion", config=config)
     
     # Save
     out_dir = Path("outputs/validation")
-    out_dir.mkdir(parents=True, exist_ok=True)
     plot_path = out_dir / "theil_decomposition.png"
-    plt.tight_layout()
-    plt.savefig(plot_path)
+    save_figure(fig, plot_path, config)
     print(f"Saved Theil decomposition plot to {plot_path}")
 
 if __name__ == "__main__":

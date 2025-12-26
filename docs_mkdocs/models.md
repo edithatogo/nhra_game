@@ -11,3 +11,18 @@ The v8 hybrid model combines:
 - a conservative harm index (comparative proxy only)
 
 See: `src/nhra_game_theory/legacy_engine.py` and `scripts/run_v8_all.py`.
+
+## Visualization Layer
+The project uses a standardized visualization API located in `src/nhra_game_theory/visualization/`. 
+
+### Core Components
+- **Standardized API:** All plotting functions follow the pattern `plot_X(data, config) -> Figure`.
+- **Configuration-Driven:** Global styling (DPI, palettes, fonts) is managed via `PlotConfig`.
+- **Multi-Engine Support:** Supports Static (Matplotlib/Seaborn) and Interactive (Plotly) rendering.
+
+### Available Plots
+- **Trajectories:** Time-series analysis with quantile ribbons (`trajectories.py`).
+- **Distributional:** Strategy heatmaps, KDE distributions, and Pareto frontiers (`distributional.py`).
+- **Sensitivity:** Sobol indices, interaction heatmaps, and Morris tornado plots (`sensitivity.py`).
+- **Interactive:** Dashboard-ready dual-line comparisons and stability maps (`interactive.py`).
+
