@@ -1,0 +1,18 @@
+{
+    "title": "NHRA Game Theory Model",
+    "description": "Predictive game-theory mechanism model for NHRA policy analysis.",
+    "creators": [
+        {
+            "name": "Mordaunt, Dylan",
+            "affiliation": "Victoria University of Wellington"
+        }
+    ],
+    "keywords": [
+        "game-theory",
+        "nhra",
+        "health-policy",
+        "australia"
+    ],
+    "access_right": "open",
+    "license": "MIT"
+}

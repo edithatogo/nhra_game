@@ -1,17 +1,23 @@
 cff-version: 1.2.0
-title: "NHRA Game: Mechanisms and downstream system pressure models"
-message: "If you use this software in your research, please cite it as below."
-type: software
+message: "If you use this software, please cite it as below."
 authors:
   - family-names: "Mordaunt"
-    given-names: "Dylan A."
-    orcid: "https://orcid.org/0000-0002-8619-3507"
-repository-code: "https://github.com/edithatogo/nhra_game"
+    given-names: "Dylan"
+    orcid: "https://orcid.org/0000-0000-0000-0000" # Placeholder
+title: "NHRA Game Theory Model: A Cognitive Digital Twin for Public Hospital Funding"
+version: 26.0.0
+doi: 10.5281/zenodo.0000000 # Placeholder
+date-released: 2025-12-26
+url: "https://github.com/edithatogo/nhra-game-theory"
 keywords:
-  - "healthcare"
-  - "game-theory"
-  - "simulation"
-  - "policy"
-license: "MIT"
-version: "26.0.1"
-date-released: "2025-12-26"
+  - game theory
+  - public health
+  - national health reform agreement
+  - nhra
+  - hospital capacity
+  - mechanism design
+  - digital twin
+abstract: |
+  A stylized hybrid mechanism model encoding strategic negotiations and operational dynamics 
+  of the Australian National Health Reform Agreement (NHRA). Supports Global Sensitivity 
+  Analysis, automated calibration, and interactive policy scenario analysis.
