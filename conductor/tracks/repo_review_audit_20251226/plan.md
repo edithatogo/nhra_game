@@ -2,13 +2,13 @@
 
 This plan outlines the systematic audit of the NHRA Game repository to identify gaps, validate data pipelines, and propose architectural improvements.
 
-## Phase 1: Game & Model Audit
+## Phase 1: Game & Model Audit [checkpoint: e5fd297]
 Focus on auditing the current game theoretic implementations and identifying logical extensions.
 
 - [x] Task: Audit existing "Stage Game" implementation in `src/` and `context/nhra_stage_game_spec.md` [commit: a4736c8]
 - [x] Task: Research and propose additional Healthcare Game Theory models (e.g., Principal-Agent, Queuing) [commit: a80071a]
 - [x] Task: Identify "stubbed" or planned features in the codebase/docs [commit: 0c32653]
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Game & Model Audit' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Game & Model Audit' (Protocol in workflow.md) [checkpoint: e5fd297]
 
 ## Phase 2: Data Pipeline & Provenance Audit
 Deep dive into AIHW API and IHACPA pricing table integration.
