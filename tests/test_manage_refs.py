@@ -1,7 +1,31 @@
 import os
 import yaml
 import pytest
-from scripts.pub_tools.manage_refs import load_references, validate_metadata
+from scripts.pub_tools.manage_refs import load_references, validate_metadata, validate_recency
+from datetime import datetime
+
+# ... existing code ...
+
+@pytest.fixture
+def recency_yaml(tmp_path):
+    f = tmp_path / "recency.yaml"
+    current_year = datetime.now().year
+    data = [
+        {"id": "new_ref", "year": current_year},
+        {"id": "old_ref", "year": current_year - 20},
+    ]
+    with open(f, "w") as file:
+        yaml.dump(data, file)
+    return str(f)
+
+# ... existing tests ...
+
+def test_validate_recency(recency_yaml):
+    refs = load_references(recency_yaml)
+    # The function returns False if ANY ref is old, but it only logs warnings, it doesn't fail strictly unless we decide to.
+    # Based on implementation:
+    assert validate_recency(refs, max_age_years=10) is False
+    assert validate_recency(refs, max_age_years=25) is True
 
 @pytest.fixture
 def valid_yaml(tmp_path):

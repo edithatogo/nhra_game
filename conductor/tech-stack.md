@@ -16,6 +16,6 @@
 - **Environment Orchestration:** Nox (Replacing Tox)
 - **Linting & Formatting:** Ruff, Bandit
 - **Static Analysis:** Pyright (Strict), Mypy, Deptry (Dependency Audit)
-- **Advanced Testing:** Hypothesis (PBT), Atheris (Fuzzing), Locust (Load), Mutmut (Mutation Testing), pytest-mpl (Visual Regression)
+- **Advanced Testing:** Hypothesis (PBT), Atheris (Fuzzing), Locust (Load), Mutmut (Mutation Testing)
 - **Runtime Verification:** Icontract (Design-by-Contract), Beartype, Typeguard
-- **Documentation:** MkDocs, Mkdocstrings, Mermaid.js (Technical Diagrams), C4 Model (Architecture)
+- **Documentation:** MkDocs, Mkdocstrings

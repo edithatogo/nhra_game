@@ -105,18 +105,18 @@
   },
   {
     "id": "fig_distributions",
-    "source_file": "src/nhra_game_theory/visualization/distributional.py",
+    "source_file": "(legacy)",
     "function_name": "plot_distributions",
     "output_path": "outputs/plots/distributions.png",
-    "description": "Distribution plots of key variables (Recovered).",
-    "status": "active"
+    "description": "Distribution plots of key variables (Found in legacy fingerprints).",
+    "status": "missing"
   },
   {
     "id": "fig_pareto",
-    "source_file": "src/nhra_game_theory/visualization/distributional.py",
+    "source_file": "(legacy)",
     "function_name": "plot_pareto",
     "output_path": "outputs/plots/pareto.png",
-    "description": "Pareto frontier plot for tradeoff analysis (Recovered).",
-    "status": "active"
+    "description": "Pareto frontier plot for tradeoff analysis (Found in legacy fingerprints).",
+    "status": "missing"
   }
 ]

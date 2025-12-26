@@ -1,50 +1,54 @@
-# Plan: Systematic MkDocs Documentation Improvement
+# Plan: CI Fix and DISC Re-integration
 
-## 1. Goal
-Significantly improve the quality, maintainability, and depth of the documentation by leveraging `docstrings`, automating API reference generation, and utilizing advanced `mkdocs-material` features.
+## Goals
+1. Commit and push all current changes once `mkdocs build` completes.
+2. Monitor GitHub Actions for the deploy workflow.
+3. Iteratively fix any CI errors and push again until the workflow passes.
+4. Re-add `discharge_coordination_game` (DISC) to the current `HeuristicAgent` in `agents/base.py`.
 
-## 2. Analysis
-- **Current State**: Flat `docs_mkdocs/` directory, manual `api.md`, minimal `mkdocs.yml` config.
-- **Missing Features**: Deep API reference, structured navigation, wealthy markdown features (tabs, annotations, diagrams).
-- **Missing Plugins**: `mkdocs-literate-nav` (for structure), `mkdocs-section-index` (for UX), `mkdocs-gen-files` (configured for recursion).
+---
 
-## 3. Implementation Steps
+## Step 1: Commit and Push
+- Wait for `mkdocs build` to finish.
+- Run `git add .` and `git commit -m "chore: cleanup and simplify docs workflow"`.
+- Run `git push`.
 
-### 3.1. Infrastructure & Dependencies
-- [ ] **Add Plugins**: Add `mkdocs-literate-nav`, `mkdocs-section-index`, `mkdocs-jupyter`, and `mike` (for versioning) to `pyproject.toml`.
-- [ ] **Update Configuration**: Overhaul `mkdocs.yml` to:
-    -   **Versioning**: Configure `mike` to serve multiple versions (e.g., `latest`, `v26.0`) allowing users to browse docs for older releases.
-    -   **Scientific Typesetting**: Enable `pymdownx.arithmatex` (MathJax) for proper rendering of game theory equations (e.g., $ \sigma^* $).
-    -   **Code Integrity**: Enable `pymdownx.snippets` to embed code directly from `src/` into docs, preventing examples from becoming stale.
-    -   **Material Features**: Navigation tabs, search, code copying, dark mode toggle, admonitions, pymdownx extensions (highlight, superfences, details, tabbed).
-    -   Configure `mkdocstrings` with `python` handler options (show source, headings).
-    -   Configure `nav` to use `literate-nav` (file-system based navigation).
+## Step 2: Monitor Remote
+- Check GitHub Actions status using the browser or CLI:
+  ```bash
+  gh run list --limit 3
+  ```
+- If actions fail, retrieve logs:
+  ```bash
+  gh run view <RUN_ID> --log-failed
+  ```
 
-### 3.2. Automated API Reference (`gen-files`)
-- [ ] **Create Script**: Implement `scripts/gen_ref_pages.py`.
-    -   Recursively walk `src/nhra_game_theory/`.
-    -   Generate ephemeral `.md` files for each module containing `::: path.to.module`.
-    -   Map these files into the `reference/` section of the documentation.
+## Step 3: Fix Errors (Iterative)
+- Common expected issues:
+  - Missing dependencies in `pip install` (add to workflow).
+  - Missing docs files referenced in `mkdocs.yml`.
+  - Linting/type errors from code changes.
+- Fix the issue, commit, push, and re-check.
 
-### 3.3. Structural Reorganization
-- [ ] **Refactor `docs_mkdocs/`**:
-    -   Move project docs (requirements, design, tasks) to `docs_mkdocs/project/`.
-    -   Move guides (usage, profiling, dev) to `docs_mkdocs/guides/`.
-    -   Create `docs_mkdocs/reference/` (virtual, populated by script).
-    -   Create `docs_mkdocs/SUMMARY.md` (if using literate-nav) or rely on implicit folder structure.
+## Step 4: Re-add DISC to `HeuristicAgent`
+- **File**: `src/nhra_game_theory/agents/base.py` (or current package path).
+- **Changes**:
+  1. Import `discharge_coordination_game` from `subgames.games`.
+  2. Add `DISC` to the `games_to_play` list and `play_order`.
+  3. Add the solve logic:
+     ```python
+     elif g == "DISC":
+         r_disc, c_disc = _solve(discharge_coordination_game(gp))
+         results["DISC"] = "C" if (r_disc == "C" and c_disc == "C") else "F"
+     ```
+  4. Add heuristic fallback for non-equilibrium mode.
 
-### 3.4. Content Enhancement
-- [ ] **Landing Page**: Improve `index.md` to be a proper entry point with cards/links to sections.
-- [ ] **Validation**: Run `mkdocs build` to ensure all docstrings are resolving and links are valid.
+## Step 5: Final Verification
+- Run `mkdocs build` locally.
+- Push and confirm CI passes.
 
-## 4. Verification
-- **Automated**:
-    - `mkdocs build --strict` (treat warnings as errors).
-    - `mike deploy --dry-run` to test versioning logic.
-- **Manual**:
-    - Verify MathJax renders complex equations correctly.
-    - Verify Plotly/HTML interactive figures render within the Material theme boundaries.
-    - Inspect the generated site locally to verify the API reference hierarchy and docstring rendering.
+---
 
-## 5. Deployment Upgrade
-- [ ] **Workflow Update**: Modify `deploy_docs.yml` to use `mike deploy` instead of `mkdocs gh-deploy`. This preserves history.
+## User Review Required
+> [!IMPORTANT]
+> The `nhra_gt/` package appears to have been deleted. Please confirm the current package name/path for the code edits in Step 4.

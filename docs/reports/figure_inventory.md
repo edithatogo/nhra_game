@@ -19,9 +19,10 @@ Generated from `docs/reports/figure_registry.json`.
 | **fig_dashboard_risk** | Risk exposure over time (Plotly). | `scripts/dashboard.py` (`(embedded)`) | `(dashboard)` |
 | **fig_dashboard_pressure** | System pressure dynamics (Plotly). | `scripts/dashboard.py` (`(embedded)`) | `(dashboard)` |
 | **fig_dashboard_share** | Nominal vs Effective Commonwealth share (Plotly). | `scripts/dashboard.py` (`(embedded)`) | `(dashboard)` |
-| **fig_distributions** | Distribution plots of key variables (Recovered). | `src/nhra_game_theory/visualization/distributional.py` (`plot_distributions`) | `outputs/plots/distributions.png` |
-| **fig_pareto** | Pareto frontier plot for tradeoff analysis (Recovered). | `src/nhra_game_theory/visualization/distributional.py` (`plot_pareto`) | `outputs/plots/pareto.png` |
 
 ## Missing / Legacy Figures
 
-_No missing figures identified._
+| ID | Description | Source | Output |
+|---|---|---|---|
+| **fig_distributions** | Distribution plots of key variables (Found in legacy fingerprints). | (legacy) | `outputs/plots/distributions.png` |
+| **fig_pareto** | Pareto frontier plot for tradeoff analysis (Found in legacy fingerprints). | (legacy) | `outputs/plots/pareto.png` |

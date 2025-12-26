@@ -1,11 +1,6 @@
 # Changelog
 
-## v26.0.1 — 2025-12-26
-- **Fix:** Corrected version mismatch in `pyproject.toml` (was 0.20.0, now 26.0.1).
-- **Deployment:** Added automated GitHub Release workflow.
-- **Maintenance:** Resolved rebase state and consolidated figure refactoring.
-
-## v26.0.0 — 2025-12-24
+## v23 — 2025-12-24
 - **Dashboard Enhancements:** Added Effective Share Drift analysis and Ranked Intervention Table (with uncertainty).
 - **Reporting:** Automated generation of Methods Appendix and Manuscript Parameter Table (STRESS compliant).
 - **Documentation:** Restructured reporting scripts into `scripts/reporting/`.
