@@ -26,7 +26,7 @@ This documentation provides details on the simulation models, game theory mechan
 
 -   :material-api: **API Reference**
 
-    Auto-generated Python API reference for the `nhra_game_theory` package.
+    Auto-generated Python API reference for the `nhra_gt` package.
 
     [:arrow_right: API Reference](reference/)
 

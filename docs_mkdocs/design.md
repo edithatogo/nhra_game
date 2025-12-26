@@ -13,7 +13,7 @@ The repository is designed as a **model-based policy analysis** toolchain with t
 
 ## Repo structure
 
-- `src/nhra_game_theory/` — core model library
+- `src/nhra_gt/` — core model library
 - `tests/` — unit + property-like tests; coverage enforced
 - `context/` — project intent, policy questions, parameter registry, provenance, glossaries
 - `scripts/` — runnable pipelines (versioned; avoid “magic” by keeping scripts thin)

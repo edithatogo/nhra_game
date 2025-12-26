@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from nhra_game_theory.domain.validation import calculate_theil_decomposition
+from nhra_gt.domain.validation import calculate_theil_decomposition
 
 
 def test_theil_decomposition_sum():

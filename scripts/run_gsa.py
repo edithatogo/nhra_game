@@ -11,8 +11,8 @@ import numpy as np
 # Add src to path
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-from nhra_game_theory.engine import Params, run_hybrid, summarise_outcome
-from nhra_game_theory.sensitivity import (
+from nhra_gt.engine import Params, run_hybrid, summarise_outcome
+from nhra_gt.sensitivity import (
     evaluate_parallel,
     export_sensitivity_indices,
     generate_sensitivity_summary,
@@ -122,7 +122,7 @@ def main() -> None:
 
         # Export S2 interaction matrix
         s2_path = args.output.parent / "sobol_s2.csv"
-        from nhra_game_theory.sensitivity import export_sobol_s2_to_csv
+        from nhra_gt.sensitivity import export_sobol_s2_to_csv
 
         export_sobol_s2_to_csv(si, s2_path)
 

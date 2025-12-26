@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from nhra_game_theory.domain.validation import RecursiveResult, aggregate_metrics
+from nhra_gt.domain.validation import RecursiveResult, aggregate_metrics
 
 
 def main():

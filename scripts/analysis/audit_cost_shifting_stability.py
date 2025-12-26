@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pandas as pd
 import numpy as np
-from nhra_game_theory.subgames.games import GameParams, cost_shifting_game
-from nhra_game_theory.subgames.nash import all_nash, select_equilibrium
+from nhra_gt.subgames.games import GameParams, cost_shifting_game
+from nhra_gt.subgames.nash import all_nash, select_equilibrium
 
 def main():
     # Grid search

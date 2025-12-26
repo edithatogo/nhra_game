@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from nhra_game_theory.domain.bibliography import BibliographyManager, Reference
+from nhra_gt.domain.bibliography import BibliographyManager, Reference
 
 
 @pytest.fixture

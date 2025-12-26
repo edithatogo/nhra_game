@@ -1,4 +1,4 @@
-from nhra_game_theory.legacy_engine import (
+from nhra_gt.legacy_engine import (
     Params,
     one_way_sensitivity,
     probabilistic_sensitivity,
@@ -40,10 +40,10 @@ def test_psa_smoke():
 
 def test_imports():
     """Verify that core modules can be imported."""
-    import nhra_game_theory
-    import nhra_game_theory.engine
-    from nhra_game_theory.interfaces import NormalFormGame, Strategy
+    import nhra_gt
+    import nhra_gt.engine
+    from nhra_gt.interfaces import NormalFormGame, Strategy
 
-    assert nhra_game_theory.__version__ is not None
+    assert nhra_gt.__version__ is not None
     assert Strategy is not None
     assert NormalFormGame is not None

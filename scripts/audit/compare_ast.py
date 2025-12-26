@@ -55,7 +55,7 @@ def compare_logic(legacy_path, current_path):
     return missing
 
 def main():
-    current_v9 = "src/nhra_game_theory/v9.py"
+    current_v9 = "src/nhra_gt/v9.py"
     legacy_roots = [
         ".gemini/tmp/audit/v1",
         ".gemini/tmp/audit/v5",

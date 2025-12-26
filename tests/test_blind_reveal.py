@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pandas as pd
 import pytest
 
-from nhra_game_theory.domain.validation import BlindReveal
+from nhra_gt.domain.validation import BlindReveal
 
 
 @pytest.fixture
@@ -28,7 +28,7 @@ def test_blind_reveal_split(mock_data):
     assert 2024 not in revealer.train_df["year"].values
 
 
-@patch("nhra_game_theory.domain.validation.run_hybrid")
+@patch("nhra_gt.domain.validation.run_hybrid")
 def test_blind_reveal_run(mock_run, mock_data):
     """Verify execution of the blind run."""
 

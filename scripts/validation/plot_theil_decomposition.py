@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from pathlib import Path
-from nhra_game_theory.domain.validation import calculate_theil_decomposition
+from nhra_gt.domain.validation import calculate_theil_decomposition
 
 def main():
     results_path = Path("data/calibration_v21/recursive_results.json")
@@ -34,8 +34,8 @@ def main():
     df = pd.DataFrame(data).set_index("Metric")
     
     # Plot
-    from nhra_game_theory.visualization.distributional import plot_stacked_bar
-    from nhra_game_theory.visualization.base import save_figure, PlotConfig
+    from nhra_gt.visualization.distributional import plot_stacked_bar
+    from nhra_gt.visualization.base import save_figure, PlotConfig
 
     config = PlotConfig()
     fig = plot_stacked_bar(df, "Theil Inequality Decomposition (Error Source)", "Proportion", config=config)

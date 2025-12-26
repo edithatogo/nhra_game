@@ -5,7 +5,7 @@ import pytest
 from pandera.errors import SchemaError
 
 # Implementation will be in a new module
-from nhra_game_theory.domain.schemas import ABSSchema, AIHWSchema
+from nhra_gt.domain.schemas import ABSSchema, AIHWSchema
 
 
 def test_aihw_schema_validation():

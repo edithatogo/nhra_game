@@ -6,8 +6,8 @@ import pandas as pd
 import pytest
 
 # We'll implement this in Phase 2/3
-from nhra_game_theory.domain.validation import RecursiveBacktest, RecursiveResult
-from nhra_game_theory.engine import Params
+from nhra_gt.domain.validation import RecursiveBacktest, RecursiveResult
+from nhra_gt.engine import Params
 
 
 @pytest.fixture
@@ -39,7 +39,7 @@ def test_recursive_backtest_windowing(mock_historical_data):
     assert test_0["year"].tolist() == [2013]
 
 
-@patch("nhra_game_theory.domain.validation.run_hybrid")
+@patch("nhra_gt.domain.validation.run_hybrid")
 def test_recursive_backtest_step(mock_run, mock_historical_data):
     """Verify that a single step of the backtest produces a RecursiveResult."""
 

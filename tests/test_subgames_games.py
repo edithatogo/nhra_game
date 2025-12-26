@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from nhra_game_theory.subgames.games import (
+from nhra_gt.subgames.games import (
     GameParams,
     bargaining_game,
     compliance_game,
@@ -9,7 +9,7 @@ from nhra_game_theory.subgames.games import (
     discharge_coordination_game,
     governance_integration_game,
 )
-from nhra_game_theory.subgames.nash import all_nash
+from nhra_gt.subgames.nash import all_nash
 
 
 def test_each_game_has_equilibrium() -> None:

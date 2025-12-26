@@ -4,7 +4,7 @@ import pandas as pd
 import pytest
 
 # To be implemented
-from nhra_game_theory.domain.validation import MechanismValidator
+from nhra_gt.domain.validation import MechanismValidator
 
 
 @pytest.fixture

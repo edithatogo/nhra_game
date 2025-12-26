@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pandas as pd
 from pathlib import Path
-from nhra_game_theory.domain.validation import BlindReveal, aggregate_metrics
+from nhra_gt.domain.validation import BlindReveal, aggregate_metrics
 
 def main():
     historical_path = Path("data/calibration_v21/historical_normalized.csv")

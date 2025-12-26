@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pandas as pd
 import pytest
 
-from nhra_game_theory.domain.aihw_api import AIHWClient
+from nhra_gt.domain.aihw_api import AIHWClient
 
 
 @pytest.fixture

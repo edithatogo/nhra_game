@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from nhra_game_theory.engine import Params, nep_series, nep_vs_cost_series, run_hybrid
-from nhra_game_theory.subgames.games import (
+from nhra_gt.engine import Params, nep_series, nep_vs_cost_series, run_hybrid
+from nhra_gt.subgames.games import (
     GameParams,
     bargaining_game,
     compliance_game,
@@ -15,7 +15,7 @@ from nhra_game_theory.subgames.games import (
     discharge_coordination_game,
     governance_integration_game,
 )
-from nhra_game_theory.subgames.nash import all_nash
+from nhra_gt.subgames.nash import all_nash
 
 
 def equilibria_snapshot(p: Params) -> pd.DataFrame:

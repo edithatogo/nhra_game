@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from nhra_game_theory.sensitivity import evaluate_parallel, get_salib_problem
+from nhra_gt.sensitivity import evaluate_parallel, get_salib_problem
 
 
 def mock_model(params: np.ndarray) -> float:
@@ -56,7 +56,7 @@ def test_evaluate_parallel_basic() -> None:
 
 def test_run_morris_analysis() -> None:
     """Verify that Morris analysis produces a dataframe with mu_star and sigma."""
-    from nhra_game_theory.sensitivity import run_morris_analysis
+    from nhra_gt.sensitivity import run_morris_analysis
 
     param_list = ["rurality_weight", "cost_shifting_intensity"]
     problem = get_salib_problem(param_list)
@@ -72,7 +72,7 @@ def test_run_morris_analysis() -> None:
 
 def test_run_sobol_analysis() -> None:
     """Verify that Sobol analysis produces a results dictionary with S1 and ST."""
-    from nhra_game_theory.sensitivity import run_sobol_analysis
+    from nhra_gt.sensitivity import run_sobol_analysis
 
     param_list = ["rurality_weight", "cost_shifting_intensity"]
     problem = get_salib_problem(param_list)
@@ -90,7 +90,7 @@ def test_generate_sensitivity_summary(tmp_path) -> None:
     """Verify that the summary report is created with expected content."""
     import pandas as pd
 
-    from nhra_game_theory.sensitivity import generate_sensitivity_summary
+    from nhra_gt.sensitivity import generate_sensitivity_summary
 
     # Create mock CSVs
     morris_csv = tmp_path / "morris.csv"

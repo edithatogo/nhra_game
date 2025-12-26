@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pandas as pd
-from nhra_game_theory.domain.registry import EvidenceEntry
+from nhra_gt.domain.registry import EvidenceEntry
 
 
 class AIHWIngestor:

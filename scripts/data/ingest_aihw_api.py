@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pandas as pd
 from pathlib import Path
-from nhra_game_theory.domain.aihw_api import AIHWClient
-from nhra_game_theory.domain.schemas import AIHWSchema
+from nhra_gt.domain.aihw_api import AIHWClient
+from nhra_gt.domain.schemas import AIHWSchema
 
 def process_api_data(raw_data: pd.DataFrame, datasets: list[dict]) -> pd.DataFrame:
     """Merges API results with metadata and normalizes fields."""

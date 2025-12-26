@@ -3,8 +3,8 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from nhra_game_theory.domain.registry import EvidenceEntry, EvidenceRegistry
-from nhra_game_theory.legacy_engine import Params
+from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
+from nhra_gt.legacy_engine import Params
 
 
 def test_params_pydantic_validation():

@@ -15,7 +15,7 @@ python scripts/build_context_pack.py
 This writes `context/CONTEXT_PACK.md`.
 
 ## Input traceability
-Every model input in `nhra_game_theory.v9.Params` must be either:
+Every model input in `nhra_gt.v9.Params` must be either:
 - anchored to a **publicly retrievable source** (URL), or
 - explicitly justified with a plausible range for sensitivity analysis.
 

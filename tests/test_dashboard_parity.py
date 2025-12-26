@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from nhra_game_theory.engine import (
+from nhra_gt.engine import (
     Params,
     State,
     baseline_state,

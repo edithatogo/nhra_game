@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from nhra_game_theory.legacy_engine import Params, relative_risk
+from nhra_gt.legacy_engine import Params, relative_risk
 
 
 def test_relative_risk_monotone_pressure() -> None:

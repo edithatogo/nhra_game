@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from nhra_game_theory.engine import Params, baseline_state, run_hybrid
+from nhra_gt.engine import Params, baseline_state, run_hybrid
 
 
 def test_effective_share_v2_structural_parity():

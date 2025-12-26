@@ -11,8 +11,8 @@ from dataclasses import replace
 # Add src
 sys.path.append("src")
 
-from nhra_game_theory.sensitivity import run_psa
-from nhra_game_theory.engine import Params, run_hybrid, summarise_outcome
+from nhra_gt.sensitivity import run_psa
+from nhra_gt.engine import Params, run_hybrid, summarise_outcome
 
 # Define PSA Parameters
 PSA_PARAMS = [
@@ -52,8 +52,8 @@ def main():
     print(f"PSA results saved to {out_dir / 'psa_results.csv'}")
     
     # Plotting
-    from nhra_game_theory.visualization.distributional import plot_distributions
-    from nhra_game_theory.visualization.base import save_figure, PlotConfig
+    from nhra_gt.visualization.distributional import plot_distributions
+    from nhra_gt.visualization.base import save_figure, PlotConfig
 
     config = PlotConfig()
     fig = plot_distributions(df, "outcome", config=config)

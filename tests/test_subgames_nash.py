@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from nhra_game_theory.subgames.nash import (
+from nhra_gt.subgames.nash import (
     TwoPlayerGame,
     all_nash,
     mixed_nash_2x2,

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pandas as pd
 from pathlib import Path
-from nhra_game_theory.domain.schemas import EconomicSpineSchema
+from nhra_gt.domain.schemas import EconomicSpineSchema
 
 # Ground Truth Data (Sourced from IHACPA Determinations 2011-2025)
 NEP_SERIES = {

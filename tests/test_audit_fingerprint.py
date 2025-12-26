@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 # We'll import the implementation (which doesn't exist yet)
-from src.nhra_game_theory.audit.fingerprint import extract_fingerprint
+from src.nhra_gt.audit.fingerprint import extract_fingerprint
 
 
 def test_extract_fingerprint_from_code() -> None:
@@ -36,7 +36,7 @@ class MyClass:
 def test_fingerprint_zip_file(tmp_path: Path) -> None:
     import zipfile
 
-    from src.nhra_game_theory.audit.fingerprint import fingerprint_zip
+    from src.nhra_gt.audit.fingerprint import fingerprint_zip
 
     # Create a zip with python files
     zip_path = tmp_path / "test.zip"

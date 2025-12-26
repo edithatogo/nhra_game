@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 from scripts.audit.inventory_sources import discover_sources
-from src.nhra_game_theory.audit.visual_trace import extract_edges
+from src.nhra_gt.audit.visual_trace import extract_edges
 
 
 def trace_all_visuals() -> None:

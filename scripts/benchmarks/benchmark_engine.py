@@ -9,8 +9,8 @@ import numpy as np
 # Add src to path
 sys.path.append(str(Path(__file__).parent.parent.parent / "src"))
 
-from nhra_game_theory.engine import Params, run_hybrid
-from nhra_game_theory.domain.audit import Recorder
+from nhra_gt.engine import Params, run_hybrid
+from nhra_gt.domain.audit import Recorder
 
 def benchmark_engine(n_mc: int = 300, n_years: int = 6):
     """Measures samples per second for the core simulation engine."""

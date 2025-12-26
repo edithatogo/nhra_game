@@ -4,14 +4,14 @@ This page documents the core interfaces and protocols used in the NHRA game-theo
 
 ## Interfaces
 
-::: nhra_game_theory.interfaces.protocols.Strategy
+::: nhra_gt.interfaces.protocols.Strategy
     options:
       show_root_heading: true
 
-::: nhra_game_theory.interfaces.protocols.NormalFormGame
+::: nhra_gt.interfaces.protocols.NormalFormGame
     options:
       show_root_heading: true
 
-::: nhra_game_theory.interfaces.protocols.ExtensiveFormGame
+::: nhra_gt.interfaces.protocols.ExtensiveFormGame
     options:
       show_root_heading: true

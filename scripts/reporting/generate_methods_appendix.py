@@ -3,8 +3,8 @@ from __future__ import annotations
 import pandas as pd
 import json
 from pathlib import Path
-from nhra_game_theory.engine import Params
-from nhra_game_theory.domain.bibliography import Reference, BibliographyManager
+from nhra_gt.engine import Params
+from nhra_gt.domain.bibliography import Reference, BibliographyManager
 
 def generate_appendix(registry_path: Path, output_path: Path, references_path: Path):
     """Generates a STRESS-compliant methods appendix with bibliography."""

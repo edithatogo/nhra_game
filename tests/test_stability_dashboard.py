@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from nhra_game_theory.domain.stability import analyze_cost_shifting_stability
+from nhra_gt.domain.stability import analyze_cost_shifting_stability
 
 
 def test_analyze_cost_shifting_stability():

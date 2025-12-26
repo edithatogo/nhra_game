@@ -4,7 +4,7 @@ import pandas as pd
 import pytest
 from pandera.errors import SchemaError
 
-from nhra_game_theory.domain.schemas import EconomicSpineSchema
+from nhra_gt.domain.schemas import EconomicSpineSchema
 from scripts.data.ingest_economic_spine import process_economic_data
 
 

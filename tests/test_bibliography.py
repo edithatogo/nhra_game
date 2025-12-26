@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from nhra_game_theory.domain.bibliography import Reference, parse_endnote_token
+from nhra_gt.domain.bibliography import Reference, parse_endnote_token
 
 
 def test_reference_model():

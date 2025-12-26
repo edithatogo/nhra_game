@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from nhra_game_theory.sensitivity import run_psa
+from nhra_gt.sensitivity import run_psa
 
 
 # Mock model must be top-level for pickling

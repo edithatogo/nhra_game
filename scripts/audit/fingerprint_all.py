@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 from scripts.audit.inventory_sources import discover_sources
-from src.nhra_game_theory.audit.fingerprint import fingerprint_zip
+from src.nhra_gt.audit.fingerprint import fingerprint_zip
 
 
 def fingerprint_all() -> None:

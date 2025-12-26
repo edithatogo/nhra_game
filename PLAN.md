@@ -31,10 +31,11 @@
 - Fix the issue, commit, push, and re-check.
 
 ## Step 4: Re-add DISC to `HeuristicAgent`
-- **File**: `src/nhra_game_theory/agents/base.py` (or current package path).
+- **File**: `src/nhra_game_theory/agents/base.py` ✅ (Confirmed)
+- **Games File**: `src/nhra_game_theory/subgames/games.py` ✅ (Confirmed)
 - **Changes**:
   1. Import `discharge_coordination_game` from `subgames.games`.
-  2. Add `DISC` to the `games_to_play` list and `play_order`.
+  2. Add `DISC` to the `play_order` list.
   3. Add the solve logic:
      ```python
      elif g == "DISC":
@@ -49,6 +50,7 @@
 
 ---
 
-## User Review Required
-> [!IMPORTANT]
-> The `nhra_gt/` package appears to have been deleted. Please confirm the current package name/path for the code edits in Step 4.
+## Recommended Improvements
+1. **GitHub CLI (`gh`)**: Install `gh` CLI for faster CI monitoring instead of browser checks.
+2. **Pre-commit bypass**: Use `--no-verify` for rapid iteration during CI debugging.
+3. **Incremental Pushes**: Commit/push after each fix to see incremental CI results.

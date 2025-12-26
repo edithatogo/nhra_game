@@ -1,4 +1,4 @@
-from nhra_game_theory.config import Settings, settings
+from nhra_gt.config import Settings, settings
 
 
 def test_settings_load_defaults():

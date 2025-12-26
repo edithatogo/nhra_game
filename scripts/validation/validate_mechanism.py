@@ -7,13 +7,13 @@ from pathlib import Path
 # Add src to path if needed (though PYTHONPATH=src handles this)
 sys.path.append("src")
 
-from nhra_game_theory.domain.validation import MechanismValidator
-from nhra_game_theory.sensitivity import (
+from nhra_gt.domain.validation import MechanismValidator
+from nhra_gt.sensitivity import (
     get_salib_problem,
     run_morris_analysis
 )
 
-from nhra_game_theory.engine import Params, run_hybrid, summarise_outcome
+from nhra_gt.engine import Params, run_hybrid, summarise_outcome
 from dataclasses import replace
 import numpy as np
 

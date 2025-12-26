@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from nhra_game_theory.domain.validation import RecursiveBacktest, aggregate_metrics
+from nhra_gt.domain.validation import RecursiveBacktest, aggregate_metrics
 
 
 def main():

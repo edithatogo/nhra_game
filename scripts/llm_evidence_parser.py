@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from nhra_game_theory.domain.registry import EvidenceEntry
+from nhra_gt.domain.registry import EvidenceEntry
 
 
 class LLMEvidenceExtractor:

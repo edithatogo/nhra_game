@@ -9,27 +9,27 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from nhra_game_theory.visualization.interactive import (
+from nhra_gt.visualization.interactive import (
     plot_risk_pressure,
     plot_share_drift,
     plot_ghost_overlay,
     plot_stability_heatmap,
 )
-from nhra_game_theory.visualization.sensitivity import (
+from nhra_gt.visualization.sensitivity import (
     plot_sobol_indices as viz_plot_sobol_indices,
     plot_sobol_heatmap as viz_plot_sobol_heatmap,
     plot_morris_tornado as viz_plot_morris_tornado,
 )
-from nhra_game_theory.visualization.config import PlotConfig
+from nhra_gt.visualization.config import PlotConfig
 
 # Add src to path if needed for relative imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
-from nhra_game_theory.domain.registry import EvidenceEntry, EvidenceRegistry
-from nhra_game_theory.domain.stability import analyze_cost_shifting_stability
-from nhra_game_theory.domain.validation import RecursiveResult, aggregate_metrics
-from nhra_game_theory.engine import Params, apply_intervention, run_hybrid, summarise_outcome
-from nhra_game_theory.sensitivity import get_parameter_lineage
+from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
+from nhra_gt.domain.stability import analyze_cost_shifting_stability
+from nhra_gt.domain.validation import RecursiveResult, aggregate_metrics
+from nhra_gt.engine import Params, apply_intervention, run_hybrid, summarise_outcome
+from nhra_gt.sensitivity import get_parameter_lineage
 
 
 def prepare_ghost_overlay_data(

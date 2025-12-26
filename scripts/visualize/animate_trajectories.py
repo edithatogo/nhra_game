@@ -10,7 +10,7 @@ import sys
 # Add src to path
 sys.path.append(str(Path(__file__).parent.parent.parent / "src"))
 
-from nhra_game_theory.engine import Params, baseline_state, step, decide_strategies
+from nhra_gt.engine import Params, baseline_state, step, decide_strategies
 
 def animate_pressure(n_mc: int = 50, n_years: int = 10, output_path: str = "outputs/animations/pressure_swarm.gif"):
     """Generates an animated GIF of Monte Carlo pressure trajectories."""

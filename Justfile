@@ -20,7 +20,7 @@ format:
 
 lint:
   ruff check src tests
-  mypy --strict src/nhra_game_theory
+  mypy --strict src/nhra_gt
 
 test:
   PYTHONPATH=src:. pytest -q

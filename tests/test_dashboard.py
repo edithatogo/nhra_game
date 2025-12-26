@@ -26,7 +26,7 @@ def test_dashboard_loadable():
 
 def test_parameter_mapping_logic():
     """Verify that parameters can be correctly mapped to expected slider ranges."""
-    from nhra_game_theory.legacy_engine import Params
+    from nhra_gt.legacy_engine import Params
 
     defaults = Params()
     # Test a few key mappings we expect in the dashboard
@@ -36,7 +36,7 @@ def test_parameter_mapping_logic():
 
 def test_model_rollout_interface():
     """Verify that the model can be called with dashboard-provided parameters."""
-    from nhra_game_theory.legacy_engine import Params, run_hybrid
+    from nhra_gt.legacy_engine import Params, run_hybrid
 
     # Simulate a dashboard update
     p = Params(rurality_weight=0.5)

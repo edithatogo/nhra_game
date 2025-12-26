@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from nhra_game_theory.domain.audit import Recorder
+from nhra_gt.domain.audit import Recorder
 
 
 def test_recorder_captures_metadata_and_versioned_path(tmp_path: Any) -> None:

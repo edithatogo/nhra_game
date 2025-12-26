@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from nhra_game_theory.sensitivity import (
+from nhra_gt.sensitivity import (
     generate_sensitivity_summary,
     get_salib_problem,
     plot_sobol_heatmap,

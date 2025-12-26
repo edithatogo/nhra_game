@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from nhra_game_theory.domain.schemas import AIHWSchema
+from nhra_gt.domain.schemas import AIHWSchema
 
 
 def normalize_nhra_data(df: pd.DataFrame) -> pd.DataFrame:
