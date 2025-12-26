@@ -16,6 +16,7 @@ def main():
         data = json.load(f)
 
     df = pd.DataFrame(data)
+    df.to_csv(registry_path.with_suffix(".csv"), index=False)
 
     lines = []
     lines.append("# Figure Inventory")

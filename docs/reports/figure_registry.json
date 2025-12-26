@@ -1,7 +1,7 @@
 [
   {
     "id": "fig_trajectory",
-    "source_file": "src/nhra_game_theory/plotting.py",
+    "source_file": "src/nhra_gt/visualization/trajectories.py",
     "function_name": "plot_trajectory",
     "output_path": "outputs/plots/trajectory_*.png",
     "description": "Time-series plot of simulation variables with optional quantile ribbons.",
@@ -9,7 +9,7 @@
   },
   {
     "id": "fig_strategy_heatmap",
-    "source_file": "src/nhra_game_theory/plotting.py",
+    "source_file": "src/nhra_gt/visualization/distributional.py",
     "function_name": "plot_strategy_heatmap",
     "output_path": "outputs/plots/strategy_heatmap_*.png",
     "description": "Heatmap showing strategy frequency evolution over time for each game node.",
@@ -17,23 +17,23 @@
   },
   {
     "id": "fig_tornado_rankcorr",
-    "source_file": "src/nhra_game_theory/plotting.py",
-    "function_name": "tornado_from_rankcorr",
+    "source_file": "src/nhra_gt/visualization/sensitivity.py",
+    "function_name": "plot_rank_tornado",
     "output_path": "outputs/plots/tornado_*.png",
     "description": "Tornado plot showing Spearman rank correlations between parameters and outcomes.",
     "status": "active"
   },
   {
     "id": "fig_games_network",
-    "source_file": "src/nhra_game_theory/plotting.py",
-    "function_name": "render_games_graph_interactive",
-    "output_path": "outputs/plots/games_network.html",
-    "description": "Interactive Plotly network diagram of game nodes and influence edges.",
+    "source_file": "scripts/interactive/make_d3_network.py",
+    "function_name": "(script)",
+    "output_path": "outputs/interactive/games_network_d3.html",
+    "description": "Interactive D3 network diagram of game nodes and influence edges.",
     "status": "active"
   },
   {
     "id": "fig_sobol_indices",
-    "source_file": "src/nhra_game_theory/sensitivity.py",
+    "source_file": "src/nhra_gt/visualization/sensitivity.py",
     "function_name": "plot_sobol_indices",
     "output_path": "outputs/gsa/sobol_indices_*.png",
     "description": "Bar chart of First-order (S1) and Total-order (ST) sensitivity indices.",
@@ -41,7 +41,7 @@
   },
   {
     "id": "fig_sobol_heatmap",
-    "source_file": "src/nhra_game_theory/sensitivity.py",
+    "source_file": "src/nhra_gt/visualization/sensitivity.py",
     "function_name": "plot_sobol_heatmap",
     "output_path": "outputs/gsa/sobol_heatmap.png",
     "description": "Heatmap of Second-order (S2) parameter interactions.",
@@ -49,7 +49,7 @@
   },
   {
     "id": "fig_morris_tornado",
-    "source_file": "src/nhra_game_theory/sensitivity.py",
+    "source_file": "src/nhra_gt/visualization/sensitivity.py",
     "function_name": "plot_morris_tornado",
     "output_path": "outputs/gsa/morris_tornado.png",
     "description": "Tornado plot of Morris mu_star values.",
@@ -105,18 +105,26 @@
   },
   {
     "id": "fig_distributions",
-    "source_file": "(legacy)",
+    "source_file": "src/nhra_gt/visualization/distributional.py",
     "function_name": "plot_distributions",
     "output_path": "outputs/plots/distributions.png",
-    "description": "Distribution plots of key variables (Found in legacy fingerprints).",
-    "status": "missing"
+    "description": "Distribution plots of key variables.",
+    "status": "active"
   },
   {
     "id": "fig_pareto",
-    "source_file": "(legacy)",
+    "source_file": "src/nhra_gt/visualization/distributional.py",
     "function_name": "plot_pareto",
     "output_path": "outputs/plots/pareto.png",
-    "description": "Pareto frontier plot for tradeoff analysis (Found in legacy fingerprints).",
+    "description": "Pareto frontier plot for tradeoff analysis.",
+    "status": "active"
+  },
+  {
+    "id": "fig_signalling",
+    "source_file": "(missing)",
+    "function_name": "(missing)",
+    "output_path": "(none)",
+    "description": "Visualisation of the Signalling/Transparency game dynamics.",
     "status": "missing"
   }
 ]

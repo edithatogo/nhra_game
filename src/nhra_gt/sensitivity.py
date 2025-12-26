@@ -66,15 +66,9 @@ def get_parameter_lineage() -> dict[str, str]:
 import warnings
 
 from .visualization.base import PlotConfig, save_figure
-from .visualization.sensitivity import (
-    plot_morris_tornado as new_plot_morris_tornado,
-)
-from .visualization.sensitivity import (
-    plot_sobol_heatmap as new_plot_sobol_heatmap,
-)
-from .visualization.sensitivity import (
-    plot_sobol_indices as new_plot_sobol_indices,
-)
+from .visualization.sensitivity import plot_morris_tornado as new_plot_morris_tornado
+from .visualization.sensitivity import plot_sobol_heatmap as new_plot_sobol_heatmap
+from .visualization.sensitivity import plot_sobol_indices as new_plot_sobol_indices
 
 
 def plot_sobol_indices(si: dict[str, Any], output_path: Path) -> None:
