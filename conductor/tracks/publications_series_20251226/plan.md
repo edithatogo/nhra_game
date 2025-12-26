@@ -24,7 +24,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Infrastructure & Expert Panel Setup' (Protocol in workflow.md) [checkpoint: f3189ea]
 
 ## Phase 2: P1 Protocol (Qualitative) - Drafting & Review Loops
-- [ ] Task: Search Strategy Definition (Atomic PRISMA-ScR)
+- [x] Task: Search Strategy Definition (Atomic PRISMA-ScR) [ec3ce66]
     - [ ] Sub-task: Define Eligibility Criteria (Inclusion/Exclusion) in `criteria.md` & commit
     - [ ] Sub-task: Verify criteria vs Research Questions & commit
     - [ ] Sub-task: List Information Sources in `sources.md` & commit

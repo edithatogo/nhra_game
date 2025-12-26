@@ -32,10 +32,19 @@ class PlotConfig(BaseModel):
     primary_color: str = "#008080"  # Teal
     secondary_color: str = "#20B2AA"  # LightSeaGreen
     accent_color: str = "#afeeee"  # PaleTurquoise
+    error_color: str = "#CD5C5C"   # IndianRed
+    success_color: str = "#2E8B57" # SeaGreen
 
-    # Sequence for categorical plots
+    # Palette for multi-scenario comparisons
     color_palette: list[str] = Field(
-        default_factory=lambda: ["#008080", "#20B2AA", "#afeeee", "#48D1CC", "#40E0D0"]
+        default_factory=lambda: [
+            "#008080",  # Teal
+            "#CD5C5C",  # Rose/Red
+            "#20B2AA",  # Light Sea Green
+            "#4682B4",  # Steel Blue
+            "#DAA520",  # Goldenrod
+            "#6A5ACD",  # Slate Blue
+        ]
     )
 
     # Extension for custom engine-specific kwargs

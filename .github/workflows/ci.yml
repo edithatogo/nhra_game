@@ -24,30 +24,23 @@ jobs:
       - name: Install Poetry
         run: pip install poetry
       - name: Install
-        run: |
-          poetry install --with dev
+        run: poetry install --with dev
       - name: Lint
         run: |
-          python -m ruff check src tests
-          python -m ruff format src tests --check
+          poetry run ruff check src tests
+          poetry run ruff format src tests --check
       - name: Type check
-        run: |
-          python -m mypy --strict src/nhra_gt
+        run: poetry run mypy --strict src/nhra_gt
       - name: Input traceability (public sources or justification)
-        run: |
-          python scripts/check_parameters_grounded.py
+        run: poetry run python scripts/check_parameters_grounded.py
       - name: Build context pack
-        run: |
-          python scripts/build_context_pack.py
+        run: poetry run python scripts/build_context_pack.py
       - name: Tests
-        run: |
-          python -m pytest -q
+        run: poetry run pytest -q
       - name: Verify Pipeline (Snakemake)
-        run: |
-          python -m snakemake --cores 1 run_baseline context_pack --forceall
+        run: poetry run snakemake --cores 1 run_baseline context_pack --forceall
       - name: Build docs
-        run: |
-          python -m mkdocs build -q
+        run: poetry run mkdocs build -q
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1.8.0
         with:
