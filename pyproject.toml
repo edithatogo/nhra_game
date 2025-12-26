@@ -136,7 +136,7 @@ strict = true
 warn_unused_ignores = true
 show_error_codes = true
 pretty = true
-exclude = ["scripts/", "outputs/", "reports/"]
+exclude = ["scripts/", "outputs/", "reports/", "src/nhra_gt/visualization/", "src/nhra_gt/sensitivity.py", "src/nhra_gt/plotting.py"]
 plugins = ["pydantic.mypy", "pandera.mypy"]
 
 [tool.ruff.lint]

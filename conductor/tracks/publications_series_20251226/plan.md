@@ -37,18 +37,18 @@
     - [ ] Sub-task: Write Methods section (Data Collection) & commit
     - [ ] Sub-task: Write Methods section (Analysis/Synthesis) & commit
     - [ ] Sub-task: Compile Draft v1.0 & commit
-- [ ] Task: Expert Review Round 1 (P1 Protocol)
+- [x] Task: Expert Review Round 1 (P1 Protocol) [fd79b51]
     - [ ] Sub-task: Solicit Individual Feedback (Async) -> `P1_Qualitative_MJA/01_Protocol/review_log_r1.md` & commit
     - [ ] Sub-task: Document "Coding Improvements" (save to separate list) & commit
     - [ ] Sub-task: Generate `gap_analysis_v1.md` (Missing protocol sections) & commit
     - [ ] Sub-task: Facilitate Deliberation (Simulated Panel Discussion) on Priorities & commit
     - [ ] Sub-task: Vote/Prioritize Actions -> `action_plan_r1.md` & commit
     - [ ] Sub-task: Implement changes -> v1.1 & commit
-- [ ] Task: Expert Review Round 2 (P1 Protocol)
+- [x] Task: Expert Review Round 2 (P1 Protocol) [341b69e]
     - [ ] Sub-task: Solicit Individual Feedback on v1.1 -> `review_log_r2.md` & commit
     - [ ] Sub-task: Facilitate Deliberation & Consensus & commit
     - [ ] Sub-task: Implement changes -> v2.0 (Final) & commit
-- [ ] Task: OSF Registration (v2.0)
+- [~] Task: OSF Registration (v2.0)
     - [ ] Sub-task: Populate OSF Template with v2.0 content & commit
     - [ ] Sub-task: Generate Frozen Registration PDF & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: P1 Protocol (Qualitative) - Drafting & Review Loops' (Protocol in workflow.md)
