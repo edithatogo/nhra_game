@@ -1,0 +1,8 @@
+# Baseline NHRA Scenario
+name: "Baseline"
+params:
+  cap_growth: 0.065
+  audit_pressure: 0.50
+  cap_rule_type: "hard"
+  audit_rule_type: "proportional"
+  orchestration_mode: "simultaneous"

@@ -1,0 +1,85 @@
+Assuming unrestricted shared filesystem usage.
+host: Pleiades-M1-14-MBP.local
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                      count
+---------------------  -------
+all                          1
+backtest_recursive           1
+calibrate                    1
+check_grounding              1
+context_pack                 1
+generate_report              1
+gsa_morris                   1
+gsa_sobol                    1
+make_d3                      1
+plot_validation              1
+preprocess_historical        1
+render_diagrams              1
+run_baseline                 1
+total                       13
+
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Dec 26 17:44:13 2025]
+localrule check_grounding:
+    output: context/grounding.ok
+    jobid: 8
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+[Fri Dec 26 17:44:14 2025]
+Finished jobid: 8 (Rule: check_grounding)
+1 of 13 steps (8%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Dec 26 17:44:14 2025]
+localrule gsa_morris:
+    output: data/gsa/morris_results.csv, data/gsa/morris_tornado.png
+    jobid: 2
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+Select jobs to execute...
+[Fri Dec 26 17:44:34 2025]
+Finished jobid: 2 (Rule: gsa_morris)
+2 of 13 steps (15%) done
+Execute 1 jobs...
+[Fri Dec 26 17:44:34 2025]
+localrule calibrate:
+    input: data/raw/calibration_targets.csv
+    output: data/calibration/calibration_optuna_best.csv, data/calibration/calibration_trials_posterior.csv
+    jobid: 3
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+Select jobs to execute...
+[Fri Dec 26 17:45:22 2025]
+Finished jobid: 3 (Rule: calibrate)
+3 of 13 steps (23%) done
+Execute 1 jobs...
+[Fri Dec 26 17:45:22 2025]
+localrule render_diagrams:
+    output: outputs/diagrams/games_network_minimal.png
+    jobid: 5
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+Select jobs to execute...
+Waiting at most 5 seconds for missing files:
+outputs/diagrams/games_network_minimal.png (missing locally)
+MissingOutputException in rule render_diagrams in file "/Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/Snakefile", line 90:
+Job 5  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+outputs/diagrams/games_network_minimal.png (missing locally, parent dir contents: risk_pathway_v9.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210459_improved.svg, games_network_minimal_v9.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210553.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210553_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318_improved.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210135.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926_improved.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805_improved.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935_improved.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210135.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205935.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210553_improved.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203926.svg, games_network_minimal_v9.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210553.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210459_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210318.png, risk_pathway_v9.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210135_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210248_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210248.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210459.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-204129_improved.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755.svg, graphical_abstract_v9.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210703.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230_improved.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210703_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-204129.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755_improved.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-204129.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210621_improved.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210703_improved.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-203230.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210703.svg, graphical_abstract_v9.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210459.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205755.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-204129_improved.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-205805.png, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210248.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210248_improved.svg, Mermaid Chart - Create complex, visual diagrams with text.-2025-12-18-210135_improved.svg)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Fri Dec 26 17:46:38 2025]
+Error in rule render_diagrams:
+    message: None
+    jobid: 5
+    output: outputs/diagrams/games_network_minimal.png
+    shell:
+        PYTHONPATH=src python scripts/diagrams/render_all.py
+        (command exited with non-zero exit code)
+Complete log(s): /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/.snakemake/log/2025-12-26T174413.349571.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

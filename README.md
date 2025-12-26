@@ -1,87 +1,113 @@
-# NHRA Game Theory
+# NHRA Game Theory: Cognitive Digital Twin
 
-[![CI](https://github.com/USER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/USER/REPO/actions/workflows/ci.yml)
+[![CI](https://github.com/edithatogo/nhra_game/actions/workflows/ci.yml/badge.svg)](https://github.com/edithatogo/nhra_game)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 
-**Stylised game-theory mechanism models for National Health Reform Agreement (NHRA) negotiations.**
+**Decision-grade game-theory mechanism models for National Health Reform Agreement (NHRA) negotiations.**
 
-This project simulates the strategic interactions between Commonwealth and State health actors, modelling the downstream consequences on hospital system pressure (e.g., exit block, ED crowding, ambulance offload delays).
+This project implements a "Cognitive Digital Twin" of the Australian health funding system, simulating strategic interactions between Commonwealth and State actors. It models the downstream consequences of negotiation choices on hospital operational states, including access block, ED crowding, and ambulance offload delays.
 
-> **Disclaimer:** These models are illustrative and intended for policy reasoning and sensitivity exploration. They are not a forecast of real-world mortality or budget impact.
+> **Disclaimer:** These models are illustrative mechanisms intended for policy reasoning and strategic sensitivity exploration. They are not point-forecasts of real-world clinical endpoints.
 
 ---
 
 ## 🎯 Key Features
 
-- **Predictive Game Theory:** Models strategic tension (Invest vs. Cost-Shift) under fiscal constraints.
-- **Empirical Grounding:** Calibrated against AIHW and ABS time-series data (2011–2024).
-- **Interactive Scenarios:** "War Gaming" dashboard to test policy interventions.
-- **Global Sensitivity Analysis:** Morris/Sobol methods to identify high-impact parameters.
-- **Publication-Ready:** Automated report generation compliant with academic standards.
+### 1. Cognitive Simulation (v26 Upgrade)
+- **Strategic Agents:** Modular `LLMAgent` and `HeuristicAgent` frameworks.
+- **Negotiation Loops:** Structured "Debate Loops" between Commonwealth and State agents.
+- **Explainable AI:** "Cognitive Trace" logging providing natural language rationales for agent moves.
+
+### 2. Decision-Grade Operational Realism
+- **Monthly Time-steps:** Captures seasonal demand peaks, claim timing games, and monthly cashflow dynamics.
+- **M/M/s Queuing:** Explicit queuing theory implementation converting demand/capacity into waiting times.
+- **Crisis State Machine:** Hysteretic "Code Red" logic simulating system failure and recovery cycles.
+
+### 3. Institutional Realism
+- **VFI Waterfall:** Explicit tracking of Valuation Divergence (Nominal vs. Effective share).
+- **Interface Games:** Dedicated sub-games for Aged Care and NDIS bottlenecks.
+- **Structural Rules:** Swappable implementation of Funding Caps (Hard/Soft) and Audit Regimes.
+
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.10+
-- [Poetry](https://python-poetry.org/) (Recommended)
+- Python 3.13+
+- [Poetry](https://python-poetry.org/)
+- [Just](https://github.com/casey/just) (Command runner)
 
 ### Installation
 
 ```bash
-git clone https://github.com/your-org/nhra-game-theory.git
-cd nhra-game-theory
+git clone https://github.com/edithatogo/nhra_game.git
+cd nhra_game
 poetry install
 ```
 
-### Running the Simulation
+### Running the System
 
-**1. Interactive Dashboard (Recommended)**
-Launch the "War Gaming" interface to explore scenarios and policy levers:
-
+**1. Strategic Dashboard**
+Launch the interactive "War Gaming" interface:
 ```bash
 just dashboard
 ```
 
-**2. Full Validation Pipeline**
-Run the model validation suite against historical data:
-
+**2. Simulation Pipeline**
+Run the core simulation, diagram rendering, and network generation:
 ```bash
-just validate
+just run
 ```
 
-**3. Run Everything**
-Execute the full build, test, and documentation pipeline:
+**3. Model Calibration**
+Optimize parameters against multi-target historical data:
+```bash
+python scripts/optimize_calibration.py
+```
 
+**4. Full Quality Suite**
+Execute formatting, linting, grounding checks, and tests:
 ```bash
 just all
 ```
 
+---
+
+## 📂 Scenario Library
+
+The `scenario_library/` contains standard YAML-based counterfactuals for policy exploration:
+- `baseline.yaml`: Standard NHRA settings.
+- `cap_removed.yaml`: Impact of removing the 6.5% growth cap.
+- `audit_surge.yaml`: High-intensity compliance regime.
+- `nep_freeze.yaml`: Stagnant efficiency pricing vs. rising costs.
+- `crisis_start.yaml`: Stress-testing system recovery from an initial failure state.
+
+---
+
 ## 🏗️ Architecture
 
-The model integrates three core domains:
-1.  **Macro-Fiscal:** NEP trajectory, WPI inflation, and Funding Caps.
-2.  **Strategic Game:** Commonwealth vs. State payoff matrices (Political Capital vs. Budget).
-3.  **Hospital Operations:** System dynamics model of patient flow (ED -> Ward -> Discharge).
+The model is built on a modular four-layer architecture:
+1.  **Macro-Fiscal:** NEP trajectory and input cost drift (NEP vs. WPI).
+2.  **Strategic Layer:** Interacting games (Bargaining, Signalling, Definition, Coding).
+3.  **Operational Layer:** M/M/s patient flow and capacity dynamics.
+4.  **Political/Utility:** Non-linear loss functions driven by KPI threshold breaches.
 
-See [context/02_system_map.md](context/02_system_map.md) for a conceptual overview.
+---
 
-## 👩‍💻 Development
+## 👩‍💻 Development Standards
 
-We follow [pyOpenSci](https://www.pyopensci.org/) standards.
+We adhere to high-integrity software engineering standards:
+- **Linting/Formatting:** [Ruff](https://github.com/astral-sh/ruff)
+- **Type Checking:** [Mypy](https://mypy-lang.org/) (Strict mode)
+- **Testing:** [Pytest](https://docs.pytest.org/) (>95% coverage requirement)
+- **Environment:** [Nox](https://nox.thea.codes/) for multi-version orchestration.
 
-- **Testing:** `just test` (runs pytest)
-- **Linting:** `just lint` (runs ruff, mypy)
-- **Docs:** `just docs` (serves mkdocs)
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+---
 
 ## 📚 Citation
 
 If you use this model in your research, please cite:
-> Mordaunt, D. A. (2025). *NHRA Game Theory: A Mechanism Design Framework*. [Repository URL]
+
+> Mordaunt, D. A. (2025). *NHRA Game Theory: A Cognitive Digital Twin Framework for Mechanism Design*. https://github.com/edithatogo/nhra_game

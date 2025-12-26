@@ -3,7 +3,7 @@ from __future__ import annotations
 import pandas as pd
 
 from nhra_game_theory.engine import Params
-from scripts.dashboard_v21 import rank_interventions
+from scripts.dashboard import rank_interventions
 
 
 def test_rank_interventions():

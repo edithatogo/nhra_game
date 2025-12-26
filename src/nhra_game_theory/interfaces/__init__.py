@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from .protocols import (
+    HAS_JAXTYPING,
+    ExtensiveFormGame,
     FloatArray,
     IntArray,
-    Strategy,
     NormalFormGame,
-    ExtensiveFormGame,
-    HAS_JAXTYPING,
+    Strategy,
 )
 
 __all__ = [

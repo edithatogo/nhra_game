@@ -10,14 +10,14 @@ import pandas as pd
 
 def test_dashboard_script_exists():
     """Verify that the dashboard script exists in the expected location."""
-    dashboard_path = Path("scripts/dashboard_v21.py")
-    assert dashboard_path.exists(), "Dashboard script scripts/dashboard_v21.py not found."
+    dashboard_path = Path("scripts/dashboard.py")
+    assert dashboard_path.exists(), "Dashboard script scripts/dashboard.py not found."
 
 
 def test_dashboard_loadable():
     """Verify that the dashboard script can be loaded as a module."""
-    dashboard_path = Path("scripts/dashboard_v21.py")
-    spec = importlib.util.spec_from_file_location("dashboard_v21", dashboard_path)
+    dashboard_path = Path("scripts/dashboard.py")
+    spec = importlib.util.spec_from_file_location("dashboard", dashboard_path)
     module = importlib.util.module_from_spec(spec)
     with contextlib.suppress(Exception):
         spec.loader.exec_module(module)

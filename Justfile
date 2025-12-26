@@ -2,9 +2,9 @@ set shell := ["bash", "-lc"]
 
 # quick pipeline
 run:
-  PYTHONPATH=src python scripts/run_v8_all.py
+  PYTHONPATH=src python scripts/run_baseline.py
   PYTHONPATH=src python scripts/diagrams/render_all.py
-  PYTHONPATH=src python scripts/interactive/make_d3_network_v9.py
+  PYTHONPATH=src python scripts/interactive/make_d3_network.py
 
 # build a shareable context pack
 context:
@@ -33,7 +33,7 @@ mutate:
   mutmut run
 
 dashboard:
-  streamlit run scripts/dashboard_v21.py
+  streamlit run scripts/dashboard.py
 
 validate:
   python scripts/validation/validate_mechanism.py

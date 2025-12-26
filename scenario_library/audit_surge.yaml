@@ -1,0 +1,7 @@
+# Audit Surge Scenario
+name: "Audit Surge"
+params:
+  audit_pressure: 0.90
+  audit_rule_type: "threshold"
+  admin_burden_weight: 0.40
+  political_salience: 0.50

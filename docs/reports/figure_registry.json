@@ -1,0 +1,122 @@
+[
+  {
+    "id": "fig_trajectory",
+    "source_file": "src/nhra_game_theory/plotting.py",
+    "function_name": "plot_trajectory",
+    "output_path": "outputs/plots/trajectory_*.png",
+    "description": "Time-series plot of simulation variables with optional quantile ribbons.",
+    "status": "active"
+  },
+  {
+    "id": "fig_strategy_heatmap",
+    "source_file": "src/nhra_game_theory/plotting.py",
+    "function_name": "plot_strategy_heatmap",
+    "output_path": "outputs/plots/strategy_heatmap_*.png",
+    "description": "Heatmap showing strategy frequency evolution over time for each game node.",
+    "status": "active"
+  },
+  {
+    "id": "fig_tornado_rankcorr",
+    "source_file": "src/nhra_game_theory/plotting.py",
+    "function_name": "tornado_from_rankcorr",
+    "output_path": "outputs/plots/tornado_*.png",
+    "description": "Tornado plot showing Spearman rank correlations between parameters and outcomes.",
+    "status": "active"
+  },
+  {
+    "id": "fig_games_network",
+    "source_file": "src/nhra_game_theory/plotting.py",
+    "function_name": "render_games_graph_interactive",
+    "output_path": "outputs/plots/games_network.html",
+    "description": "Interactive Plotly network diagram of game nodes and influence edges.",
+    "status": "active"
+  },
+  {
+    "id": "fig_sobol_indices",
+    "source_file": "src/nhra_game_theory/sensitivity.py",
+    "function_name": "plot_sobol_indices",
+    "output_path": "outputs/gsa/sobol_indices_*.png",
+    "description": "Bar chart of First-order (S1) and Total-order (ST) sensitivity indices.",
+    "status": "active"
+  },
+  {
+    "id": "fig_sobol_heatmap",
+    "source_file": "src/nhra_game_theory/sensitivity.py",
+    "function_name": "plot_sobol_heatmap",
+    "output_path": "outputs/gsa/sobol_heatmap.png",
+    "description": "Heatmap of Second-order (S2) parameter interactions.",
+    "status": "active"
+  },
+  {
+    "id": "fig_morris_tornado",
+    "source_file": "src/nhra_game_theory/sensitivity.py",
+    "function_name": "plot_morris_tornado",
+    "output_path": "outputs/gsa/morris_tornado.png",
+    "description": "Tornado plot of Morris mu_star values.",
+    "status": "active"
+  },
+  {
+    "id": "fig_psa_distribution",
+    "source_file": "scripts/analysis/run_psa.py",
+    "function_name": "(script)",
+    "output_path": "outputs/psa/psa_distribution.png",
+    "description": "Histogram/KDE of probabilistic sensitivity analysis outcomes.",
+    "status": "active"
+  },
+  {
+    "id": "fig_theil_decomposition",
+    "source_file": "scripts/validation/plot_theil_decomposition.py",
+    "function_name": "(script)",
+    "output_path": "outputs/validation/theil_decomposition.png",
+    "description": "Bar chart showing decomposition of Theil inequality index (Bias, Variance, Covariance).",
+    "status": "active"
+  },
+  {
+    "id": "fig_trajectory_animation",
+    "source_file": "scripts/visualize/animate_trajectories.py",
+    "function_name": "(script)",
+    "output_path": "outputs/animations/trajectory.gif",
+    "description": "Animated GIF of Monte Carlo trajectory swarm evolution.",
+    "status": "active"
+  },
+  {
+    "id": "fig_dashboard_risk",
+    "source_file": "scripts/dashboard.py",
+    "function_name": "(embedded)",
+    "output_path": "(dashboard)",
+    "description": "Risk exposure over time (Plotly).",
+    "status": "active"
+  },
+  {
+    "id": "fig_dashboard_pressure",
+    "source_file": "scripts/dashboard.py",
+    "function_name": "(embedded)",
+    "output_path": "(dashboard)",
+    "description": "System pressure dynamics (Plotly).",
+    "status": "active"
+  },
+  {
+    "id": "fig_dashboard_share",
+    "source_file": "scripts/dashboard.py",
+    "function_name": "(embedded)",
+    "output_path": "(dashboard)",
+    "description": "Nominal vs Effective Commonwealth share (Plotly).",
+    "status": "active"
+  },
+  {
+    "id": "fig_distributions",
+    "source_file": "(legacy)",
+    "function_name": "plot_distributions",
+    "output_path": "outputs/plots/distributions.png",
+    "description": "Distribution plots of key variables (Found in legacy fingerprints).",
+    "status": "missing"
+  },
+  {
+    "id": "fig_pareto",
+    "source_file": "(legacy)",
+    "function_name": "plot_pareto",
+    "output_path": "outputs/plots/pareto.png",
+    "description": "Pareto frontier plot for tradeoff analysis (Found in legacy fingerprints).",
+    "status": "missing"
+  }
+]

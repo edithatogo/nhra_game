@@ -1,0 +1,7 @@
+,rurality_weight,cost_shifting_intensity,fragmentation_index,discharge_delay_base,admin_burden_weight,political_salience
+rurality_weight,,0.0,0.0,0.0,0.0,0.0
+cost_shifting_intensity,,,0.0,0.0,0.0,0.0
+fragmentation_index,,,,0.0,0.0,0.0
+discharge_delay_base,,,,,0.0,0.0
+admin_burden_weight,,,,,,0.0
+political_salience,,,,,,

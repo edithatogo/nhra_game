@@ -7,9 +7,9 @@ from datetime import datetime
 from nhra_game_theory.domain.validation import aggregate_metrics, RecursiveResult
 
 def main():
-    results_path = Path("data/calibration_v21/recursive_results.json")
-    gsa_path = Path("data/gsa_v21/morris_results.csv")
-    out_path = Path("reports/validation_report_v21.md")
+    results_path = Path("data/calibration/recursive_results.json")
+    gsa_path = Path("data/gsa/morris_results.csv")
+    out_path = Path("reports/validation_report.md")
     
     if not results_path.exists():
         print("Error: Backtest results not found.")

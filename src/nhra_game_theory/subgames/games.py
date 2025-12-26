@@ -185,6 +185,63 @@ def governance_integration_game(gp: GameParams) -> TwoPlayerGame:
     return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("I", "S"), col_actions=("I", "S"))
 
 
+def aged_care_interface_game(gp: GameParams) -> TwoPlayerGame:
+    """Aged Care interface: coordinate 'C' vs fragment 'F'."""
+    pr = gp.pressure
+    # Payoffs influenced by pressure and discharge delay
+    coord_benefit = 0.6 + 0.4 * (gp.discharge_delay - 1.0)
+    frag_cost = 0.5 * pr
+
+    u_row = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
+    u_col = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
+
+    return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("C", "F"), col_actions=("C", "F"))
+
+
+def ndis_interface_game(gp: GameParams) -> TwoPlayerGame:
+    """NDIS interface: coordinate 'C' vs fragment 'F'."""
+    pr = gp.pressure
+    coord_benefit = 0.5 + 0.5 * (gp.discharge_delay - 1.0)
+    frag_cost = 0.6 * pr
+
+    u_row = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
+    u_col = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
+
+    return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("C", "F"), col_actions=("C", "F"))
+
+
+def coding_audit_game(gp: GameParams) -> TwoPlayerGame:
+    """Coding/Audit game: Provider Honest 'H' vs Upcode 'U'; Auditor Light 'L' vs Tight 'T'."""
+    eg = gp.efficiency_gap
+    ap = gp.audit_pressure
+
+    # Provider payoff (Row)
+    # Upcoding gain increases with efficiency gap
+    upcode_gain = 0.3 + 0.7 * eg
+    penalty = 0.8 * ap
+
+    u_row = np.array(
+        [
+            [1.0, 1.0],  # Honest
+            [1.0 + upcode_gain, 1.0 + upcode_gain - penalty],  # Upcode
+        ]
+    )
+
+    # Auditor payoff (Col)
+    # Tight audit has cost but catches upcoding
+    audit_cost = 0.2
+    recovery = 0.4 * eg
+
+    u_col = np.array(
+        [
+            [1.0, 1.0 - audit_cost],  # Light
+            [1.0, 1.0 - audit_cost + recovery],  # Tight
+        ]
+    )
+
+    return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("H", "U"), col_actions=("L", "T"))
+
+
 def compliance_game(gp: GameParams) -> TwoPlayerGame:
     """Compliance game: 'T' tight vs 'L' light."""
     ai = gp.audit_pressure

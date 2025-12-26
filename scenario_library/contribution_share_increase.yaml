@@ -1,0 +1,5 @@
+# Contribution Share Increase Scenario
+name: "Contribution Share Increase"
+params:
+  nominal_cth_share_target: 0.50
+  political_salience: 0.60 # Higher salience to justify the cost

@@ -20,11 +20,13 @@ def extract_edges(content: str, format_type: str) -> list[Edge]:
         pattern = r"(\w+)(?:\[[^\]]*\])?\s*--+>\s*(?:\|([^\|]*)\|)?\s*(\w+)(?:\[[^\]]*\])?"
         matches = re.finditer(pattern, content)
         for m in matches:
-            edges.append({
-                "source": m.group(1),
-                "target": m.group(3),
-                "label": m.group(2) if m.group(2) else ""
-            })
+            edges.append(
+                {
+                    "source": m.group(1),
+                    "target": m.group(3),
+                    "label": m.group(2) if m.group(2) else "",
+                }
+            )
 
     elif format_type == "graphviz":
         # Match: "Node A" -> "Node B" [label="Influence"];
@@ -35,10 +37,6 @@ def extract_edges(content: str, format_type: str) -> list[Edge]:
             source = m.group(1) or m.group(2)
             target = m.group(3) or m.group(4)
             label = m.group(5) if m.group(5) else ""
-            edges.append({
-                "source": source,
-                "target": target,
-                "label": label
-            })
+            edges.append({"source": source, "target": target, "label": label})
 
     return edges

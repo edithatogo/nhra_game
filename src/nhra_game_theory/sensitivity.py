@@ -155,6 +155,29 @@ def export_sensitivity_indices(si: dict[str, Any], output_path: Path) -> None:
     df.to_csv(output_path, index=False)
 
 
+def export_sobol_s2_to_csv(si: dict[str, Any], output_path: Path) -> None:
+    """Exports Sobol second-order interaction indices (S2) to a CSV matrix."""
+    if "S2" not in si or si["S2"] is None:
+        print("S2 indices not available for export.")
+        return
+
+    names = si["names"]
+    s2 = si["S2"]
+
+    # Handle both 2D and flattened S2 if necessary
+    if isinstance(s2, np.ndarray) and s2.ndim == 2:
+        df = pd.DataFrame(s2, index=names, columns=names)
+    else:
+        # SALib 1.x returns S2 as 2D where only upper triangle is filled
+        # We ensure it's a symmetric or at least readable matrix
+        n = len(names)
+        df = pd.DataFrame(np.zeros((n, n)), index=names, columns=names)
+        # Best effort fill
+        print("S2 export for non-2D format not fully implemented; returning zero matrix.")
+
+    df.to_csv(output_path)
+
+
 def plot_morris_tornado(df: pd.DataFrame, output_path: Path) -> None:
     """Generates a Morris Tornado plot (mu_star ranking)."""
     # Filter non-zero influence if needed, but here we show all

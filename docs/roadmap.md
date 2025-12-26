@@ -37,6 +37,12 @@
 - **Dynamic Animation:** Generate GIFs/Videos of simulation trajectories (Pressure/Risk over time).
 - **Publication Polish:** Ensure all dashboard plots and exported figures meet high-impact journal standards (vector graphics, colorblind safe).
 
+### Dashboard & Visualization Parity (From Forensic Audit)
+- **Interactive Map:** Integrate the D3-based games network into the Streamlit dashboard.
+- **GSA Visualization:** Implement full Sobol variance decomposition and interaction heatmap tabs.
+- **Expert Mode:** Add direct subgame strategy overrides (e.g., forcing Commonwealth to play 'Strict').
+- **Convergence Guard:** Implement UI indicator for Monte Carlo statistical convergence.
+
 ### Forensic Deep Dive
 - **Code Investigator:** Systematically audit all legacy versions using AI agents to recover any missed logic or "ghost" features.
 - **Library Review:** Evaluate integration of new libraries (e.g., Mesa, PyGambit) vs current custom implementations.

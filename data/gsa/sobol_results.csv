@@ -1,0 +1,7 @@
+Parameter,S1,S1_conf,ST,ST_conf
+rurality_weight,0.0,0.0,0.0,0.0
+cost_shifting_intensity,0.0,0.0,0.0,0.0
+fragmentation_index,0.0,0.0,0.0,0.0
+discharge_delay_base,1.0496292229936424,1.3244224631380979,1.0496292229936424,0.04687460314609283
+admin_burden_weight,0.0,0.0,0.0,0.0
+political_salience,0.0,0.0,0.0,0.0

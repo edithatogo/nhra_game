@@ -1,0 +1,56 @@
+Assuming unrestricted shared filesystem usage.
+host: Pleiades-M1-14-MBP.local
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                      count
+---------------------  -------
+all                          1
+backtest_recursive           1
+calibrate                    1
+check_grounding              1
+context_pack                 1
+generate_report              1
+gsa_morris                   1
+gsa_sobol                    1
+make_d3                      1
+plot_validation              1
+preprocess_historical        1
+render_diagrams              1
+run_baseline                 1
+total                       13
+
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Dec 26 17:28:59 2025]
+localrule check_grounding:
+    output: context/grounding.ok
+    jobid: 8
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+RuleException:
+CalledProcessError in file "/Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/Snakefile", line 114:
+Command 'set -euo pipefail;  python scripts/check_parameters_grounded.py && echo OK > context/grounding.ok' returned non-zero exit status 2.
+[Fri Dec 26 17:28:59 2025]
+Error in rule check_grounding:
+    message: None
+    jobid: 8
+    output: context/grounding.ok
+    shell:
+        python scripts/check_parameters_grounded.py && echo OK > context/grounding.ok
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Fri Dec 26 17:28:59 2025]
+Error in rule check_grounding:
+    message: None
+    jobid: 8
+    output: context/grounding.ok
+    shell:
+        python scripts/check_parameters_grounded.py && echo OK > context/grounding.ok
+        (command exited with non-zero exit code)
+Complete log(s): /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/.snakemake/log/2025-12-26T172858.882401.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

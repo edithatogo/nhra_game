@@ -1,7 +1,7 @@
 {
     "version": 1,
-    "project": "nhra-game-theory",
-    "project_url": "https://github.com/RACMA/nhra-game-theory",
+    "project": "nhra_game",
+    "project_url": "https://github.com/edithatogo/nhra_game",
     "repo": ".",
     "pythons": ["3.10", "3.11", "3.12"],
     "matrix": {

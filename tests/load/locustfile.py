@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from locust import HttpUser, task, between
+from locust import HttpUser, between, task
+
 
 class DashboardUser(HttpUser):
     wait_time = between(1, 5)
@@ -20,7 +21,6 @@ class DashboardUser(HttpUser):
     def run_simulation(self):
         """Simulate a user triggering a computation."""
         # Hypothetical computation API
-        self.client.post("/api/v1/compute", json={
-            "scenario": "baseline",
-            "years": [2025, 2026, 2027]
-        })
+        self.client.post(
+            "/api/v1/compute", json={"scenario": "baseline", "years": [2025, 2026, 2027]}
+        )

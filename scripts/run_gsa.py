@@ -22,7 +22,7 @@ from nhra_game_theory.sensitivity import (
     run_morris_analysis,
     run_sobol_analysis,
 )
-from nhra_game_theory.legacy_engine import Params, run_hybrid, summarise_outcome
+from nhra_game_theory.engine import Params, run_hybrid, summarise_outcome
 
 
 def model_wrapper(param_values: np.ndarray, names: list[str], years: list[int]) -> float:
@@ -68,7 +68,7 @@ def main() -> None:
     parser.add_argument("--method", type=str, choices=["morris", "sobol", "mock"], default="morris")
     parser.add_argument("--samples", type=int, default=10, help="N samples (or trajectories for Morris)")
     parser.add_argument("--procs", type=int, default=os.cpu_count() or 4)
-    parser.add_argument("--output", type=Path, default=Path("data/gsa_v21/raw_results.csv"))
+    parser.add_argument("--output", type=Path, default=Path("data/gsa/raw_results.csv"))
     
     args = parser.parse_args()
     
@@ -110,11 +110,17 @@ def main() -> None:
         # Export indices
         export_sensitivity_indices(si, args.output)
         
+        # Export S2 interaction matrix
+        s2_path = args.output.parent / "sobol_s2.csv"
+        from nhra_game_theory.sensitivity import export_sobol_s2_to_csv
+        export_sobol_s2_to_csv(si, s2_path)
+        
         # Generate plots
         plot_sobol_indices(si, args.output.parent / "sobol_indices")
         plot_sobol_heatmap(si, args.output.parent / "sobol_heatmap")
         
         print(f"Sobol results saved to {args.output}")
+        print(f"S2 matrix saved to {s2_path}")
         print(f"Sobol plots saved to {args.output.parent}/sobol_*.png/.svg/.pdf")
         
         # Generate summary (requires both to exist for best result)

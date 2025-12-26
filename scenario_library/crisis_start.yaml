@@ -1,0 +1,8 @@
+# Crisis Mode Start
+name: "Crisis Start"
+params:
+  occupancy_base: 0.98
+  offload_base_min: 60.0
+  discharge_delay_base: 1.2
+  political_salience: 0.9
+  audit_pressure: 0.2 # Lower audit in crisis

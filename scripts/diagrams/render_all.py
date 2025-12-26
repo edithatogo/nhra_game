@@ -32,7 +32,7 @@ def render_dot(dot_path: Path, out_dir: Path) -> None:
 def main() -> None:
     repo = Path(__file__).resolve().parents[2]
     diagrams = repo / "diagrams"
-    out_dir = repo / "outputs" / "v9" / "diagrams"
+    out_dir = repo / "outputs" / "diagrams"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     m_user_dirs = [diagrams / "mermaid_user", diagrams / "mermaid_user_improved"]

@@ -5,7 +5,7 @@ from pathlib import Path
 from nhra_game_theory.domain.validation import RecursiveBacktest, aggregate_metrics
 
 def main():
-    historical_path = Path("data/calibration_v21/historical_normalized.csv")
+    historical_path = Path("data/calibration/historical_normalized.csv")
     if not historical_path.exists():
         print(f"Error: {historical_path} not found. Please run scripts/data/preprocess_historical.py first.")
         return
@@ -25,7 +25,7 @@ def main():
     results = engine.run_all()
     
     # Save results for dashboard
-    out_path = Path("data/calibration_v21/recursive_results.json")
+    out_path = Path("data/calibration/recursive_results.json")
     engine.save_results(results, out_path)
     print(f"Saved {len(results)} steps to {out_path}")
     

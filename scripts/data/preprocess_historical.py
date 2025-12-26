@@ -38,7 +38,7 @@ if __name__ == "__main__":
     
     # Define paths relative to the script's location or CWD
     RAW_PATH = "data/raw/historical_aihw_ed.csv"
-    OUT_PATH = "data/calibration_v21/historical_normalized.csv"
+    OUT_PATH = "data/calibration/historical_normalized.csv"
     
     os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
     

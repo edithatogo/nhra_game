@@ -1,0 +1,6 @@
+# NEP Freeze Scenario
+name: "NEP Freeze"
+params:
+  nep_annual_growth: 0.01
+  input_cost_annual_growth: 0.04 # Gap widens faster
+  political_salience: 0.80 # High conflict expected

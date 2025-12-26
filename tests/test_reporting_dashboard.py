@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from scripts.dashboard_v21 import prepare_share_drift_data
+from scripts.dashboard import prepare_share_drift_data
 
 
 def test_prepare_share_drift_data():

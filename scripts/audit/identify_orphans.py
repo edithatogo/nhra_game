@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 
 def check_orphans():
-    dash_path = Path("scripts/dashboard_v21.py")
+    dash_path = Path("scripts/dashboard.py")
     content = dash_path.read_text()
     
     # Check for legacy versions

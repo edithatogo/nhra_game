@@ -1,34 +1,33 @@
 rule all:
     input:
-        "data/gsa_v21/sensitivity_summary.md",
-        "data/calibration_v21/calibration_optuna_best.csv",
-        "data/baseline_v21/tables/trajectory.csv",
-        "outputs/v8/plots/tradeoff_scatter.png",
-        "outputs/v9/diagrams/games_network_minimal_v9.png",
-        "outputs/v9/interactive/games_network_d3.html",
+        "data/gsa/sensitivity_summary.md",
+        "data/calibration/calibration_optuna_best.csv",
+        "data/baseline/tables/trajectory.csv",
+        "outputs/diagrams/games_network_minimal.png",
+        "outputs/interactive/games_network_d3.html",
         "context/CONTEXT_PACK.md",
         "context/grounding.ok",
-        "reports/validation_report_v21.md"
+        "reports/validation_report.md"
 
 rule preprocess_historical:
     input:
         "data/raw/historical_aihw_ed.csv"
     output:
-        "data/calibration_v21/historical_normalized.csv"
+        "data/calibration/historical_normalized.csv"
     shell:
         "PYTHONPATH=src python scripts/data/preprocess_historical.py"
 
 rule backtest_recursive:
     input:
-        "data/calibration_v21/historical_normalized.csv"
+        "data/calibration/historical_normalized.csv"
     output:
-        "data/calibration_v21/recursive_results.json"
+        "data/calibration/recursive_results.json"
     shell:
         "LOGFIRE_SEND_TO_LOGFIRE=false PYTHONPATH=src python scripts/validation/recursive_backtest.py"
 
 rule plot_validation:
     input:
-        "data/calibration_v21/recursive_results.json"
+        "data/calibration/recursive_results.json"
     output:
         "outputs/validation/theil_decomposition.png"
     shell:
@@ -36,7 +35,7 @@ rule plot_validation:
 
 rule validate_mechanism_script:
     input:
-        "data/gsa_v21/morris_results.csv"
+        "data/gsa/morris_results.csv"
     output:
         touch("outputs/validation/mechanism.ok")
     shell:
@@ -44,71 +43,63 @@ rule validate_mechanism_script:
 
 rule generate_report:
     input:
-        "data/calibration_v21/recursive_results.json",
+        "data/calibration/recursive_results.json",
         "outputs/validation/theil_decomposition.png",
-        "data/gsa_v21/morris_results.csv"
+        "data/gsa/morris_results.csv"
     output:
-        "reports/validation_report_v21.md"
+        "reports/validation_report.md"
     shell:
         "LOGFIRE_SEND_TO_LOGFIRE=false PYTHONPATH=src python scripts/validation/generate_validation_report.py"
 
 rule validate:
     input:
-        "reports/validation_report_v21.md",
+        "reports/validation_report.md",
         "outputs/validation/mechanism.ok"
 
 rule gsa_morris:
     output:
-        "data/gsa_v21/morris_results.csv",
-        "data/gsa_v21/morris_tornado.png"
+        "data/gsa/morris_results.csv",
+        "data/gsa/morris_tornado.png"
     shell:
-        "PYTHONPATH=src python scripts/run_gsa.py --method morris --samples 10 --output data/gsa_v21/morris_results.csv"
+        "PYTHONPATH=src python scripts/run_gsa.py --method morris --samples 10 --output data/gsa/morris_results.csv"
 
 rule gsa_sobol:
     input:
-        "data/gsa_v21/morris_results.csv"
+        "data/gsa/morris_results.csv"
     output:
-        "data/gsa_v21/sobol_results.csv",
-        "data/gsa_v21/sensitivity_summary.md"
+        "data/gsa/sobol_results.csv",
+        "data/gsa/sensitivity_summary.md"
     shell:
-        "PYTHONPATH=src python scripts/run_gsa.py --method sobol --samples 32 --output data/gsa_v21/sobol_results.csv"
+        "PYTHONPATH=src python scripts/run_gsa.py --method sobol --samples 32 --output data/gsa/sobol_results.csv"
 
 rule calibrate:
     input:
         "data/raw/calibration_targets.csv"
     output:
-        "data/calibration_v21/calibration_optuna_best.csv",
-        "data/calibration_v21/calibration_trials_posterior.csv"
+        "data/calibration/calibration_optuna_best.csv",
+        "data/calibration/calibration_trials_posterior.csv"
     shell:
-        "PYTHONPATH=src python scripts/optimize_calibration_v21.py"
+        "PYTHONPATH=src python scripts/optimize_calibration.py"
 
 rule run_baseline:
     output:
-        "data/baseline_v21/tables/trajectory.csv"
+        "data/baseline/tables/trajectory.csv"
     shell:
-        "PYTHONPATH=src python scripts/run_baseline_v21.py"
-
-rule run_v8:
-    output:
-        "outputs/v8/plots/tradeoff_scatter.png"
-    shell:
-        "PYTHONPATH=src python scripts/run_v8_all.py"
+        "PYTHONPATH=src python scripts/run_baseline.py"
 
 rule render_diagrams:
-    input:
-        "outputs/v8/plots/tradeoff_scatter.png"
     output:
-        "outputs/v9/diagrams/games_network_minimal_v9.png"
+        "outputs/diagrams/games_network_minimal.png"
     shell:
         "PYTHONPATH=src python scripts/diagrams/render_all.py"
 
 rule make_d3:
     input:
-        "outputs/v9/diagrams/games_network_minimal_v9.png"
+        "outputs/diagrams/games_network_minimal.png"
     output:
-        "outputs/v9/interactive/games_network_d3.html"
+        "outputs/interactive/games_network_d3.html"
     shell:
-        "PYTHONPATH=src python scripts/interactive/make_d3_network_v9.py"
+        "PYTHONPATH=src python scripts/interactive/make_d3_network.py"
 
 rule context_pack:
     output:

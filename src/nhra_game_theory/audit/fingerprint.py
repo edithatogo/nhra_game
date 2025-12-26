@@ -3,7 +3,7 @@ from __future__ import annotations
 import ast
 import zipfile
 from pathlib import Path
-from typing import TypedDict, Any
+from typing import Any, TypedDict
 
 
 class ClassInfo(TypedDict):
@@ -31,7 +31,7 @@ def extract_fingerprint(code: str) -> Fingerprint:
         # Handling legacy syntax or encoding issues gracefully
         return fingerprint
 
-    for node in ast.iter_fields(tree):
+    for _node in ast.iter_fields(tree):
         # We only look at top-level body
         pass
 
@@ -45,23 +45,20 @@ def extract_fingerprint(code: str) -> Fingerprint:
                     # Attempt to get literal value
                     value = _get_literal_value(node.value)
                     if value is not None:
-                         fingerprint["constants"][target.id] = value
-        
+                        fingerprint["constants"][target.id] = value
+
         elif isinstance(node, ast.FunctionDef):
             args = [arg.arg for arg in node.args.args]
             fingerprint["functions"][node.name] = args
-            
+
         elif isinstance(node, ast.ClassDef):
             methods = []
             bases = [base.id for base in node.bases if isinstance(base, ast.Name)]
             for item in node.body:
-                 if isinstance(item, ast.FunctionDef):
-                     methods.append(item.name)
-            
-            fingerprint["classes"][node.name] = {
-                "methods": methods,
-                "bases": bases
-            }
+                if isinstance(item, ast.FunctionDef):
+                    methods.append(item.name)
+
+            fingerprint["classes"][node.name] = {"methods": methods, "bases": bases}
 
     return fingerprint
 
@@ -86,7 +83,7 @@ def fingerprint_zip(zip_path: Path) -> dict[str, Fingerprint]:
                         results[name] = extract_fingerprint(content)
                     except Exception:
                         # Skip files we can't read/parse
-                        continue
+                        continue  # nosec
     except Exception:
-        pass
+        pass  # nosec
     return results

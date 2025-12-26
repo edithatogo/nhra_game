@@ -1,0 +1,6 @@
+# Cap Removed Scenario
+name: "Cap Removed"
+params:
+  cap_growth: 1.0 # Effectively no cap
+  cap_rule_type: "soft"
+  political_salience: 0.20 # Reduced tension

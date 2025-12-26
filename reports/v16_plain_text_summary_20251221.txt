@@ -1,9 +1,0 @@
-This repository models NHRA negotiations as a set of interacting strategic games that shape hospital flow, throughput, and safety proxies. The model does not attempt to forecast exact operational performance. Instead, it compares scenarios to clarify which mechanisms have the largest effect on system pressure, occupancy, discharge delay, and a simple ambulance offload proxy.
-
-In the baseline simulation from 2025 to 2030, pressure tends to rise when demand growth and discharge constraints outpace effective capacity. The model encodes the feedback loop in which delayed discharge increases occupancy, which reduces ED throughput and worsens ambulance offload.
-
-Strategically, each year’s state parameterises several small games, including bargaining, cost shifting, discharge coordination, and governance integration. The equilibrium analysis shows that some games can have multiple equilibria, which implies that small changes in pressure or valuation conditions can shift the system between different strategy profiles.
-
-Scenario analysis indicates that packages that reduce fragmentation and improve discharge coordination produce larger improvements in flow proxies than nominal funding-share changes alone. One-way sensitivity analysis suggests that parameters governing demand, discharge performance, and fragmentation dominate the ambulance offload outcome, supporting a negotiation stance focused on structural alignment and clinical governance.
-
-Overall, the outputs support RACMA advocating for governance and incentive alignment—such as pooled regional pilots and integration conditions for Commonwealth-funded models—alongside any changes to the Commonwealth contribution rate.

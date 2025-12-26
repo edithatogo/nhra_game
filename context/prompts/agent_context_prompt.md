@@ -1,6 +1,6 @@
 # Agent context prompt (copy-paste)
 
-You are working inside the `nhra-game-theory` repository.
+You are working inside the `nhra_game` repository.
 
 Your task is to improve the NHRA mechanism models and outputs **only using publicly retrievable sources**.
 

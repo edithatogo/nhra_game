@@ -21,8 +21,14 @@ RUN pip install --no-cache-dir -U pip \
 COPY . /app
 RUN pip install --no-cache-dir -e "."
 
+# Cloud operationalization: ENV defaults
+ENV NHRA_MC_SAMPLES=300
+ENV NHRA_SEED=123
+ENV NHRA_ORCHESTRATION=simultaneous
+
 # Switch to non-root user
 USER nhra_user
 
-# Default: run full Snakemake pipeline (v25)
-CMD ["snakemake", "--cores", "1", "all"]
+# Entrypoint allowing command override
+ENTRYPOINT ["snakemake", "--cores", "1"]
+CMD ["all"]

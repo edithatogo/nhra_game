@@ -1,0 +1,6 @@
+# Soft Cap Scenario
+name: "Soft Cap"
+params:
+  cap_rule_type: "soft"
+  cap_growth: 0.05
+  audit_pressure: 0.70 # Higher audit to compensate for soft cap

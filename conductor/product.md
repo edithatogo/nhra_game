@@ -23,7 +23,7 @@ To develop a State-of-the-Art (SOTA) predictive game-theory model of the Nationa
 
 ## Key Features (Prioritized)
 1.  **High-Performance Sensitivity & Calibration:** HPC-accelerated global sensitivity analysis (Sobol/Morris) and automated parameter calibration.
-2.  **Scenario "War Gaming" Mode:** Interactive counterfactuals to simulate negotiation outcomes and strategy shifts.
+2.  **Strategic Scenario Analysis:** Interactive counterfactuals to simulate negotiation outcomes and strategy shifts with expert-level direct control.
 3.  **Interactive Web Dashboard:** A user-friendly interface (e.g., Streamlit/Dash) for policy engagement.
 4.  **Automated Data Pipelines:** Robust ingestion of public health data (AIHW/ABS) to maintain model currency.
 5.  **Modular Pipeline Execution (GUI):** Capability to select individual "games" from the strategic map (Mermaid/Graphviz) via the dashboard to isolate their impact on system performance.

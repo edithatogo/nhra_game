@@ -1,0 +1,121 @@
+Assuming unrestricted shared filesystem usage.
+host: Pleiades-M1-14-MBP.local
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                      count
+---------------------  -------
+all                          1
+backtest_recursive           1
+calibrate                    1
+check_grounding              1
+context_pack                 1
+generate_report              1
+gsa_morris                   1
+gsa_sobol                    1
+make_d3                      1
+plot_validation              1
+preprocess_historical        1
+render_diagrams              1
+run_baseline                 1
+total                       13
+
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Dec 26 17:50:38 2025]
+localrule check_grounding:
+    output: context/grounding.ok
+    jobid: 8
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+[Fri Dec 26 17:50:39 2025]
+Finished jobid: 8 (Rule: check_grounding)
+1 of 13 steps (8%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Dec 26 17:50:39 2025]
+localrule gsa_morris:
+    output: data/gsa/morris_results.csv, data/gsa/morris_tornado.png
+    jobid: 2
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+Select jobs to execute...
+[Fri Dec 26 17:51:01 2025]
+Finished jobid: 2 (Rule: gsa_morris)
+2 of 13 steps (15%) done
+Execute 1 jobs...
+[Fri Dec 26 17:51:01 2025]
+localrule calibrate:
+    input: data/raw/calibration_targets.csv
+    output: data/calibration/calibration_optuna_best.csv, data/calibration/calibration_trials_posterior.csv
+    jobid: 3
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+Select jobs to execute...
+[Fri Dec 26 17:51:48 2025]
+Finished jobid: 3 (Rule: calibrate)
+3 of 13 steps (23%) done
+Execute 1 jobs...
+[Fri Dec 26 17:51:48 2025]
+localrule render_diagrams:
+    output: outputs/diagrams/games_network_minimal.png
+    jobid: 5
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+Select jobs to execute...
+[Fri Dec 26 17:53:01 2025]
+Finished jobid: 5 (Rule: render_diagrams)
+4 of 13 steps (31%) done
+Execute 1 jobs...
+[Fri Dec 26 17:53:01 2025]
+localrule context_pack:
+    output: context/CONTEXT_PACK.md
+    jobid: 7
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+[Fri Dec 26 17:53:01 2025]
+Finished jobid: 7 (Rule: context_pack)
+5 of 13 steps (38%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Fri Dec 26 17:53:01 2025]
+localrule preprocess_historical:
+    input: data/raw/historical_aihw_ed.csv
+    output: data/calibration/historical_normalized.csv
+    jobid: 11
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+Select jobs to execute...
+[Fri Dec 26 17:53:02 2025]
+Finished jobid: 11 (Rule: preprocess_historical)
+6 of 13 steps (46%) done
+Execute 1 jobs...
+[Fri Dec 26 17:53:02 2025]
+localrule backtest_recursive:
+    input: data/calibration/historical_normalized.csv
+    output: data/calibration/recursive_results.json
+    jobid: 10
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+Select jobs to execute...
+Waiting at most 5 seconds for missing files:
+data/calibration/recursive_results.json (missing locally)
+MissingOutputException in rule backtest_recursive in file "/Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/Snakefile", line 20:
+Job 10  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+data/calibration/recursive_results.json (missing locally, parent dir contents: calibration_trials_posterior.csv, historical_normalized.csv, calibration_optuna_best.csv)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Fri Dec 26 17:53:13 2025]
+Error in rule backtest_recursive:
+    message: None
+    jobid: 10
+    input: data/calibration/historical_normalized.csv
+    output: data/calibration/recursive_results.json
+    shell:
+        LOGFIRE_SEND_TO_LOGFIRE=false PYTHONPATH=src python scripts/validation/recursive_backtest.py
+        (command exited with non-zero exit code)
+Complete log(s): /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/.snakemake/log/2025-12-26T175038.735910.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

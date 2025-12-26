@@ -1,0 +1,6 @@
+# Perfect Information Scenario
+name: "Perfect Information"
+params:
+  noise_sd: 0.0
+  orchestration_mode: "sequential"
+  political_salience: 0.1
