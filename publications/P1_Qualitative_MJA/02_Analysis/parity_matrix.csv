@@ -1,0 +1,8 @@
+Category,Blinded_Node,Repo_Node,Match_Status,Gap_Analysis
+Players,LHN Board,LHNs (implied),Partial,Existing diagrams aggregate LHNs into States.
+Players,IHACPA / Pricing Authority,Pricing Authority (implicit),Partial,Existing diagrams lack explicit regulatory actors.
+Moves,Data Submission,Data/Reporting (implicit),Partial,Clean room mapping identified specific iterative submission cycles.
+Moves,Dispute Resolution / Arbitration,N/A,Missing,Existing diagrams do not model the non-cooperative dispute phase.
+Payoffs,Reputational Ranking (PSI-90),Clinical Risk (Outcome),Partial,Blinded mapping identified reputation as a distinct utility component from clinical risk.
+Mechanisms,Strategic Gaming (Isomorphism),N/A,Missing,Sociological driver of 'masks' is missing from repo maps.
+Mechanisms,Cost-Shifting,Split Incentives,Match,Direct alignment on VFI-induced spillovers.
