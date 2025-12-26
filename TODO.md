@@ -2,7 +2,7 @@
 
 ## 1. Initial Commit & Push `[git]`
 - [x] Commit current changes <!-- id: 1 -->
-- [ ] Push to remote <!-- id: 2 -->
+- [x] Push to remote <!-- id: 2 -->
 
 ## 2. Monitor CI `[ci]` (Iterative)
 - [ ] Check GitHub Actions status <!-- id: 10 -->

@@ -5,7 +5,7 @@ description = "Stylised game-theory mechanism models for NHRA negotiations and d
 authors = ["Dylan A Mordaunt (RACMA working draft)"]
 readme = "README.md"
 packages = [
-    {include = "nhra_gt", from = "src"},
+    {include = "nhra_game_theory", from = "src"},
     {include = "scripts"}
 ]
 license = "Apache-2.0"
@@ -156,7 +156,7 @@ line-ending = "lf"
 ignore_notebooks = true
 
 [tool.deptry.per_rule_ignores]
-DEP001 = ["scripts/*", "tests/*", "src/nhra_gt/*"]
+DEP001 = ["scripts/*", "tests/*", "src/nhra_game_theory/*"]
 DEP002 = ["scipy", "snakemake", "jaxlib", "jaxtyping", "polars"]
 DEP004 = ["nox", "pytest", "hypothesis", "logfire"]
 
