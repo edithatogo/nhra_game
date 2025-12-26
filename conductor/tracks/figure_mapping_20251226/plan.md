@@ -8,8 +8,8 @@
 - [x] Task: Conductor - User Manual Verification 'Audit & Registry' (Protocol in workflow.md) 190e6fb
 
 ## Phase 2: API Design & Core Infrastructure
-- [ ] Task: Create `src/nhra_game_theory/visualization/` module structure.
-- [ ] Task: Define `PlotConfig` (Pydantic model) for shared styling (palettes, fonts, dimensions) in `src/nhra_game_theory/visualization/config.py`.
+- [~] Task: Create `src/nhra_gt/visualization/` module structure.
+- [ ] Task: Define `PlotConfig` (Pydantic model) for shared styling (palettes, fonts, dimensions) in `src/nhra_gt/visualization/config.py`.
 - [ ] Task: Implement `AbstractPlotter` or protocol/interface for standardized function signatures: `plot_X(data, config) -> Figure`.
 - [ ] Task: Set up `pytest-mpl` and `tests/visualization/` directory with a baseline image cache.
 - [ ] Task: Conductor - User Manual Verification 'API Design & Core Infrastructure' (Protocol in workflow.md)
