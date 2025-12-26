@@ -49,6 +49,40 @@ def plot_strategy_heatmap(
     return fig
 
 
+def plot_risk_heatmap(
+    data: pd.DataFrame,
+    x_col: str,
+    y_col: str,
+    z_col: str,
+    title: str,
+    config: PlotConfig | None = None,
+) -> Figure:
+    """
+    Plots a 2D heatmap of system risk/state.
+    Typically used for parameter sweeps (e.g. Bed Capacity vs Demand).
+    """
+    if config is None:
+        config = PlotConfig()
+
+    fig, ax = plt.subplots(figsize=config.default_figsize)
+
+    pivot = data.pivot_table(index=y_col, columns=x_col, values=z_col)
+
+    sns.heatmap(
+        pivot,
+        ax=ax,
+        cmap="YlGnBu",  # Professional gradient
+        cbar_klabel=z_col.replace("_", " ").title(),
+        annot=True,
+        fmt=".2f",
+        annot_kws={"size": 8},
+    )
+
+    ax.set_title(title, fontsize=config.fontsize_title)
+    ax.invert_yaxis()  # Standard orientation for sweeps
+    return fig
+
+
 def plot_distributions(
     data: pd.DataFrame,
     value_col: str,

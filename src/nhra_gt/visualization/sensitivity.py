@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 import matplotlib.pyplot as plt
@@ -8,6 +9,7 @@ import pandas as pd
 import seaborn as sns
 from matplotlib.figure import Figure
 
+from .base import save_figure
 from .config import PlotConfig
 
 
@@ -15,6 +17,7 @@ def plot_sobol_indices(
     si: dict[str, Any],
     config: PlotConfig | None = None,
     total_order: bool = True,
+    path: str | Path | None = None,
 ) -> Figure:
     """
     Generates Sobol sensitivity bar chart (S1 or ST).
@@ -23,6 +26,7 @@ def plot_sobol_indices(
         si: Dictionary containing 'names', 'S1', 'ST', 'S1_conf', 'ST_conf'.
         config: PlotConfig for styling.
         total_order: If True, plots ST (Total-order), else S1 (First-order).
+        path: Optional path to save the figure.
 
     Returns:
         Matplotlib Figure.
@@ -44,8 +48,8 @@ def plot_sobol_indices(
     fig = plt.figure(figsize=config.default_figsize)
     ax = fig.gca()
 
-    color = "salmon" if total_order else "lightgreen"
-    ax.barh(df.index, df["index"], xerr=df["conf"], color=color, capsize=5)
+    color = config.primary_color if total_order else config.secondary_color
+    ax.barh(df.index, df["index"], xerr=df["conf"], color=color, capsize=5, alpha=0.8)
 
     label = "Total-order (ST)" if total_order else "First-order (S1)"
     ax.set_xlabel(f"{label} sensitivity index", fontsize=config.fontsize_label)
@@ -53,12 +57,16 @@ def plot_sobol_indices(
     ax.grid(axis="x", alpha=config.alpha_grid)
     ax.tick_params(axis="both", labelsize=config.fontsize_tick)
 
+    if path:
+        save_figure(fig, path, config)
+
     return fig
 
 
 def plot_sobol_heatmap(
     si: dict[str, Any],
     config: PlotConfig | None = None,
+    path: str | Path | None = None,
 ) -> Figure | None:
     """Generates a heatmap of second-order interaction indices (S2)."""
     if "S2" not in si or si["S2"] is None:
@@ -79,12 +87,58 @@ def plot_sobol_heatmap(
     sns.heatmap(s2, annot=True, xticklabels=names, yticklabels=names, cmap="YlGnBu", ax=ax)
     ax.set_title("Sobol Analysis: Interaction Indices (S2)", fontsize=config.fontsize_title)
 
+    if path:
+        save_figure(fig, path, config)
+
+    return fig
+
+
+def plot_sobol_interaction_bars(
+    si: dict[str, Any],
+    top_n: int = 10,
+    path: str | Path | None = None,
+    config: PlotConfig | None = None,
+) -> Figure | None:
+    """
+    Plots the top second-order interactions (S2) as a bar chart.
+    """
+    if "S2" not in si or si["S2"] is None:
+        return None
+
+    if config is None:
+        config = PlotConfig()
+
+    names = si["names"]
+    s2 = si["S2"]
+
+    interactions = []
+    for i in range(len(names)):
+        for j in range(i + 1, len(names)):
+            val = s2[i, j]
+            if not np.isnan(val) and val > 0:
+                interactions.append({"Interaction": f"{names[i]} x {names[j]}", "S2": val})
+
+    if not interactions:
+        return None
+
+    df_s2 = pd.DataFrame(interactions).sort_values("S2", ascending=False).head(top_n)
+
+    fig, ax = plt.subplots(figsize=config.default_figsize)
+    sns.barplot(data=df_s2, x="S2", y="Interaction", palette="flare", ax=ax)
+
+    ax.set_title(f"Top {top_n} Sobol Second-Order Interactions", fontsize=config.fontsize_title)
+    ax.grid(True, axis="x", alpha=config.alpha_grid)
+
+    if path:
+        save_figure(fig, path, config)
+
     return fig
 
 
 def plot_morris_tornado(
     data: pd.DataFrame,
     config: PlotConfig | None = None,
+    path: str | Path | None = None,
 ) -> Figure:
     """Generates a Morris Tornado plot (mu_star ranking)."""
     if config is None:
@@ -95,11 +149,21 @@ def plot_morris_tornado(
     fig = plt.figure(figsize=config.default_figsize)
     ax = fig.gca()
 
-    ax.barh(df.index, df["mu_star"], xerr=df["mu_star_conf"], color="skyblue", capsize=5)
+    ax.barh(
+        df.index,
+        df["mu_star"],
+        xerr=df["mu_star_conf"],
+        color=config.primary_color,
+        capsize=5,
+        alpha=0.8,
+    )
     ax.set_xlabel("mu_star (Absolute mean elementary effect)", fontsize=config.fontsize_label)
     ax.set_title("Morris Screening: Parameter Influence", fontsize=config.fontsize_title)
     ax.grid(axis="x", alpha=config.alpha_grid)
     ax.tick_params(axis="both", labelsize=config.fontsize_tick)
+
+    if path:
+        save_figure(fig, path, config)
 
     return fig
 
@@ -110,6 +174,7 @@ def plot_rank_tornado(
     params: list[str],
     config: PlotConfig | None = None,
     topk: int = 10,
+    path: str | Path | None = None,
 ) -> Figure:
     """Rank-correlation tornado using Spearman rho."""
     if config is None:
@@ -130,11 +195,14 @@ def plot_rank_tornado(
     fig = plt.figure(figsize=(config.default_figsize[0], height))
     ax = fig.gca()
 
-    ax.barh(labels, vals, color=config.primary_color)
+    ax.barh(labels, vals, color=config.primary_color, alpha=0.8)
     ax.axvline(0, color="black", linewidth=1)
     ax.set_xlabel("Spearman rank correlation", fontsize=config.fontsize_label)
     ax.set_title(f"Sensitivity (tornado): {outcome_col}", fontsize=config.fontsize_title)
     ax.grid(True, axis="x", alpha=config.alpha_grid)
     ax.tick_params(axis="both", labelsize=config.fontsize_tick)
+
+    if path:
+        save_figure(fig, path, config)
 
     return fig

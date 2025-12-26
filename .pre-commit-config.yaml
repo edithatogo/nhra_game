@@ -10,8 +10,14 @@ repos:
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
+        args: ["--markdown-linebreak-ext=md,markdown"]
       - id: check-yaml
       - id: check-added-large-files
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.13.0
+    hooks:
+      - id: markdownlint-cli2
+        files: \.(md|markdown)$
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.13.0
     hooks:

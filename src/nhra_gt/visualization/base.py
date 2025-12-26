@@ -1,13 +1,16 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
-from typing import Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.figure import Figure
 
 from .config import PlotConfig
+
+logger = logging.getLogger(__name__)
 
 
 @runtime_checkable
@@ -19,18 +22,37 @@ class Plotter(Protocol):
     ) -> Figure: ...
 
 
-def save_figure(fig: Figure, path: Path, config: PlotConfig) -> None:
-    """Standardized utility to save figures using PlotConfig."""
-    path.parent.mkdir(parents=True, exist_ok=True)
+def save_figure(
+    fig: Figure,
+    path: str | Path,
+    config: PlotConfig | None = None,
+    formats: list[str] | None = None,
+) -> None:
+    """
+    Saves a matplotlib figure in multiple formats defined by PlotConfig.
 
-    # Ensure extension matches config if not provided in path
-    if not path.suffix:
-        path = path.with_suffix(f".{config.format}")
+    Args:
+        fig: The matplotlib Figure object.
+        path: File path (extension optional).
+        config: PlotConfig for DPI and other settings.
+        formats: List of formats (e.g. ['png', 'svg']). If None, uses config.format.
+    """
+    if config is None:
+        config = PlotConfig()
 
-    fig.savefig(
-        path,
-        dpi=config.dpi,
-        bbox_inches=config.bbox_inches,
-        transparent=config.transparent,
-    )
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+
+    target_formats = formats or [config.format]
+
+    for fmt in target_formats:
+        out_path = p.with_suffix(f".{fmt}")
+        fig.savefig(
+            out_path,
+            dpi=config.dpi,
+            bbox_inches=config.bbox_inches,
+            transparent=config.transparent,
+        )
+        logger.info(f"Figure saved to {out_path}")
+
     plt.close(fig)

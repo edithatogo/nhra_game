@@ -13,11 +13,11 @@ Focus on auditing the current game theoretic implementations and identifying log
 ## Phase 2: Data Pipeline & Provenance Audit
 Deep dive into AIHW API and IHACPA pricing table integration.
 
-- [~] Task: Verify AIHW API functionality and document data flow (Source -> Repo -> Model)
-- [ ] Task: Audit IHACPA NWAU pricing table usage across all relevant years
-- [ ] Task: Perform sample-based manual cross-reference of downloaded data vs source documentation
-- [ ] Task: Document data provenance and update `data/empirical/README.md` if necessary
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Data Pipeline & Provenance Audit' (Protocol in workflow.md)
+- [x] Task: Verify AIHW API functionality and document data flow (Source -> Repo -> Model) [commit: 99911d0]
+- [x] Task: Audit IHACPA NWAU pricing table usage across all relevant years [commit: 3b1cca3]
+- [x] Task: Perform sample-based manual cross-reference of downloaded data vs source documentation [commit: 6e38760]
+- [x] Task: Document data provenance and update `data/empirical/README.md` if necessary [commit: 4ff90bc]
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Data Pipeline & Provenance Audit' (Protocol in workflow.md)
 
 ## Phase 3: Infrastructure & Code Quality Review
 Review the technical "machine" running the simulation.

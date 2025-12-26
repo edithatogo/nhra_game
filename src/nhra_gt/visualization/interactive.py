@@ -32,7 +32,74 @@ def plot_risk_pressure(
             "Strategic Scenario Analysis": config.primary_color,
         },
     )
-    fig.update_layout(template="simple_white", hovermode="x unified")
+    fig.update_layout(
+        template="simple_white",
+        hovermode="x unified",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=40, r=40, t=80, b=40),
+    )
+    fig.update_traces(line=dict(width=3))
+    return fig
+
+
+def plot_what_if_overlay(
+    baseline: pd.DataFrame,
+    scenario: pd.DataFrame,
+    metric: str,
+    title: str,
+    config: PlotConfig | None = None,
+) -> go.Figure:
+    """
+    Standardizes what-if overlays with shaded confidence intervals if available.
+    """
+    if config is None:
+        config = PlotConfig()
+
+    fig = go.Figure()
+
+    # Baseline line
+    fig.add_trace(
+        go.Scatter(
+            x=baseline["year"],
+            y=baseline[f"{metric}_mean"],
+            name="Baseline",
+            line=dict(color="#A9A9A9", width=2, dash="dash"),
+        )
+    )
+
+    # Scenario line
+    fig.add_trace(
+        go.Scatter(
+            x=scenario["year"],
+            y=scenario[f"{metric}_mean"],
+            name="Scenario",
+            line=dict(color=config.primary_color, width=4),
+        )
+    )
+
+    # Shaded ribbon for scenario p10-p90
+    if f"{metric}_p10" in scenario.columns and f"{metric}_p90" in scenario.columns:
+        fig.add_trace(
+            go.Scatter(
+                x=pd.concat([scenario["year"], scenario["year"][::-1]]),
+                y=pd.concat([scenario[f"{metric}_p90"], scenario[f"{metric}_p10"][::-1]]),
+                fill="toself",
+                fillcolor=config.primary_color,
+                opacity=0.2,
+                line=dict(color="rgba(255,255,255,0)"),
+                hoverinfo="skip",
+                showlegend=False,
+                name="Scenario 90% CI",
+            )
+        )
+
+    fig.update_layout(
+        title=title,
+        template="simple_white",
+        hovermode="x unified",
+        xaxis_title="Year",
+        yaxis_title=metric.replace("_", " ").title(),
+    )
     return fig
 
 
