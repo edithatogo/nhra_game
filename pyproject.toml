@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nhra_game"
-version = "0.20.0"
+version = "26.0.1"
 description = "Stylised game-theory mechanism models for NHRA negotiations and downstream system pressure"
 authors = ["Dylan A Mordaunt (RACMA working draft)"]
 readme = "README.md"
