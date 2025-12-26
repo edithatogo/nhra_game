@@ -7,8 +7,8 @@ Focus on auditing the current game theoretic implementations and identifying log
 
 - [x] Task: Audit existing "Stage Game" implementation in `src/` and `context/nhra_stage_game_spec.md` [commit: a4736c8]
 - [x] Task: Research and propose additional Healthcare Game Theory models (e.g., Principal-Agent, Queuing) [commit: a80071a]
-- [~] Task: Identify "stubbed" or planned features in the codebase/docs
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Game & Model Audit' (Protocol in workflow.md)
+- [x] Task: Identify "stubbed" or planned features in the codebase/docs [commit: 0c32653]
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Game & Model Audit' (Protocol in workflow.md)
 
 ## Phase 2: Data Pipeline & Provenance Audit
 Deep dive into AIHW API and IHACPA pricing table integration.

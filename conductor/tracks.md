@@ -30,4 +30,19 @@ This file tracks all major tracks for the project. Each track has its own detail
 ---
 
 ## [x] Track: Release Polish & Workflow Integrity
-*Link: [./conductor/tracks/release_polish_20251225/](./conductor/tracks/release_polish_20251225/)*\n---\n\n## [~] Track: Comprehensive Figure Mapping & API Modernization\n*Link: [./conductor/tracks/figure_mapping_20251226/](./conductor/tracks/figure_mapping_20251226/)*
+*Link: [./conductor/tracks/release_polish_20251225/](./conductor/tracks/release_polish_20251225/)*
+
+---
+
+## [~] Track: Comprehensive Figure Mapping & API Modernization
+*Link: [./conductor/tracks/figure_mapping_20251226/](./conductor/tracks/figure_mapping_20251226/)*
+
+---
+
+## [~] Track: Publications Series (MJA/RACMA)
+*Link: [./conductor/tracks/publications_series_20251226/](./conductor/tracks/publications_series_20251226/)*
+
+---
+
+## [~] Track: Comprehensive Repo Review & Audit
+*Link: [./conductor/tracks/repo_review_audit_20251226/](./conductor/tracks/repo_review_audit_20251226/)*

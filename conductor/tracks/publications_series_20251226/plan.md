@@ -17,7 +17,7 @@
 - [x] Task: Guidelines Acquisition [e288654]
     - [ ] Sub-task: Scrape MJA Author Guidelines to `mja.md` & commit
     - [ ] Sub-task: Scrape RACMA Position Statement standards to `racma.md` & commit
-- [~] Task: Define Expert Personas (Simulated)
+- [x] Task: Define Expert Personas (Simulated) [e8f3838]
     - [ ] Sub-task: Define Initial Panel (Methodologist, Policy Expert, Game Theorist) in `publications/shared/experts/panel_v1.md` & commit
     - [ ] Sub-task: Run "Snowball" simulation (Ask Panel v1 for suggestions) -> `panel_v2.md` & commit
     - [ ] Sub-task: Verify Final Expert Panel composition & commit
