@@ -225,19 +225,6 @@ class HeuristicAgent(Agent):
             # --- Game Logic Implementation ---
             if params.use_stage_game_equilibria and g != "SIGNAL" and g != "SIGNAL_QUALITY":
                 # Equilibrium solver path
-                from nhra_gt.subgames.games import (
-                    GameParams,
-                    aged_care_interface_game,
-                    bargaining_game,
-                    coding_audit_game,
-                    compliance_game,
-                    cost_shifting_game,
-                    definition_game,
-                    governance_integration_game,
-                    ndis_interface_game,
-                )
-                from nhra_gt.subgames.nash import all_nash, select_equilibrium
-
                 gp = GameParams(
                     pressure=float(state.pressure),
                     efficiency_gap=float(state.efficiency_gap),
@@ -285,7 +272,7 @@ class HeuristicAgent(Agent):
                     results["BARG"] = "A" if (r_barg == "A" and c_barg == "A") else "D"
                 elif g == "SHIFT":
                     r_shift, c_shift = _solve(cost_shifting_game(gp))
-                    results["SHIFT"] = "S" if (r_shift == "S" or c_shift == "S") else "I"
+                    results["SHIFT"] = r_shift
                 elif g == "DISC":
                     r_disc, c_disc = _solve(discharge_coordination_game(gp))
                     results["DISC"] = "C" if (r_disc == "C" and c_disc == "C") else "F"

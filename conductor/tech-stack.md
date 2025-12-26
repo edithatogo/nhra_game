@@ -9,6 +9,7 @@
 - **Data Validation:** Pydantic V2 (Models), Pandera (DataFrame Schemas)
 - **Network Analysis:** NetworkX
 - **Optimization & Calibration:** Optuna (Tree-structured Parzen Estimator)
+- **Computational Acceleration (Proposed):** JAX/XLA (For vectorized Nash solving and gradient-based calibration)
 - **Sensitivity Analysis:** SALib (For Sobol and Morris global sensitivity methods)
 
 ## Development & Quality Assurance
@@ -16,6 +17,7 @@
 - **Environment Orchestration:** Nox (Replacing Tox)
 - **Linting & Formatting:** Ruff, Bandit
 - **Static Analysis:** Pyright (Strict), Mypy, Deptry (Dependency Audit)
+- **Profiling & Benchmarking:** Pyinstrument, Scalene
 - **Advanced Testing:** Hypothesis (PBT), Atheris (Fuzzing), Locust (Load), Mutmut (Mutation Testing)
 - **Runtime Verification:** Icontract (Design-by-Contract), Beartype, Typeguard
 - **Documentation:** MkDocs, Mkdocstrings

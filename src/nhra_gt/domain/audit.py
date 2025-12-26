@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import json
-import subprocess
+import shutil
+import subprocess  # nosec B404
 import time
 from datetime import datetime
 from pathlib import Path
@@ -18,8 +19,17 @@ class Recorder:
 
     def _get_git_hash(self) -> str:
         """Retrieves the current git commit hash."""
+        git_path = shutil.which("git")
+        if not git_path:
+            return "unknown"
         try:
-            return subprocess.check_output(["git", "rev-parse", "HEAD"]).decode("utf-8").strip()
+            result = subprocess.run(  # nosec B603
+                [git_path, "rev-parse", "HEAD"],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            return result.stdout.strip()
         except Exception:
             return "unknown"
 
