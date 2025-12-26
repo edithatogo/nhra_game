@@ -28,8 +28,9 @@
 | 4 | Claims submission | Claims reflect coding intensity `θ_pt` within feasibility bounds | choose coding intensity (bounded); documentation effort; claim timing | NWAU computed from episodes + coding; measurement error introduced |
 | 5 | NHFP payment engine (referee) | Applies deterministic rules to submitted activity | – | interim payments; cash positions; cumulative cap-used counters |
 | 6 | Audit / integrity (optional explicit player) | Sees anomaly signals; chooses targeting | audit targeting `A_t`; thresholds | detections/repayments/penalties; update perceived audit risk |
-| 7 | Public signal release | Everyone observes published signals (some lagged/aggregated) | – | belief updates (Bayesian or heuristic); reputation/political salience updates |
-| 8 | Transition | – | – | carry-forward state to next month |
+| 7 | Dispute & Arbitration (Clauses 127-130) | Unresolved audit/payment disputes | Move to formal arbitration; legal evidence | final true-up; political capital hit |
+| 8 | Public signal release | Everyone observes published signals (some lagged/aggregated) | – | belief updates; reputational payoffs (rankings) update |
+| 9 | Transition | – | – | carry-forward state to next month |
 
 ---
 
@@ -42,8 +43,9 @@ At end of each year `Y` (or at a reconciliation boundary), run this “year-end 
 | A1 | **Annual reconciliation** | submitted vs revised activity; lags; dispute outcomes | true-up payments, revised entitlements, corrections to cumulative counters |
 | A2 | **Cap + redistribution** | cap design parameters; total growth and shares | marginal funding kink realised; redistribution amounts assigned |
 | A3 | **Audit outcomes finalised** | audit pipeline, disputes, repayments | net penalties/repayments; update compliance reputations |
-| A4 | **Budget closure** | state fiscal constraints; Commonwealth fiscal stance | end-year deficits/surpluses; political utility impacts |
-| A5 | **Next-year expectations formed** | published year-end results; policy chatter | belief priors for next year (NEP path, enforcement stance, negotiation probabilities) |
+| A4 | **Reputational true-up** | annual performance league tables | update `reputation_score`; political utility impacts |
+| A5 | **Budget closure** | state fiscal constraints; Commonwealth fiscal stance | end-year deficits/surpluses; political utility impacts |
+| A6 | **Next-year expectations formed** | published year-end results; policy chatter | belief priors for next year (NEP path, enforcement stance, negotiation probabilities) |
 
 ---
 
