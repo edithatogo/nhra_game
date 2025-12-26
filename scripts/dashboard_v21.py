@@ -9,19 +9,6 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from nhra_game_theory.visualization.interactive import (
-    plot_risk_pressure,
-    plot_share_drift,
-    plot_ghost_overlay,
-    plot_stability_heatmap,
-)
-from nhra_game_theory.visualization.sensitivity import (
-    plot_sobol_indices as viz_plot_sobol_indices,
-    plot_sobol_heatmap as viz_plot_sobol_heatmap,
-    plot_morris_tornado as viz_plot_morris_tornado,
-)
-from nhra_game_theory.visualization.config import PlotConfig
-
 # Add src to path if needed for relative imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
@@ -43,7 +30,7 @@ def prepare_ghost_overlay_data(
     pred_data = []
     for r in recursive_results:
         pred_data.append(
-            {"year": r["test_year"], "value": r["predicted"][metric], "type": "Backtest Prediction"}
+            {"year": r["test_year"], "value": r["predicted"Математика][metric], "type": "Backtest Prediction"}
         )
     pred_df = pd.DataFrame(pred_data)
 
@@ -100,9 +87,7 @@ def rank_interventions(base_params: Params, intervention_list: list[str]) -> pd.
 
 
 @st.cache_data
-def cached_run_model(
-    p: Params, years: list[int], n_mc: int = 50, overrides: dict[str, str] | None = None
-):
+def cached_run_model(p: Params, years: list[int], n_mc: int = 50, overrides: dict[str, str] | None = None):
     """Run the model with caching to ensure responsive UI."""
     return run_hybrid(years, p, seed=42, n_mc=n_mc, overrides=overrides)
 
@@ -162,16 +147,14 @@ def apply_custom_theme():
 
 
 def main():
-    st.set_page_config(
-        page_title="NHRA Strategic Scenario Dashboard", page_icon="🏥", layout="wide"
-    )
+    st.set_page_config(page_title="NHRA Strategic Scenario Dashboard", page_icon="🏥", layout="wide")
     apply_custom_theme()
 
-    st.title("🏥 NHRA Strategic Scenario Analysis (v26)")
+    st.title("🏥 NHRA Strategic Scenario Analysis (v21)")
     st.markdown("""
-    ### Strategic Negotiation & System Risk Simulator (Cognitive Twin)
-    This simulator models the interaction between policy levers (funding, capacity, integration)
-    and the resulting strategic behavior of Commonwealth and State agents. Use the sidebar
+    ### Strategic Negotiation & System Risk Simulator
+    This simulator models the interaction between policy levers (funding, capacity, integration) 
+    and the resulting strategic behavior of Commonwealth and State agents. Use the sidebar 
     to adjust parameters and observe the projected impact on clinical risk and system pressure.
     """)
 
@@ -272,42 +255,30 @@ def main():
 
     # Expert Mode Toggle
     st.sidebar.markdown("---")
-    expert_mode = st.sidebar.toggle(
-        "🧠 Expert Strategic Mode", help="Manually override game strategies."
-    )
-
+    expert_mode = st.sidebar.toggle("🧠 Expert Strategic Mode", help="Manually override game strategies.")
+    
     overrides = {}
     if expert_mode:
         st.sidebar.info("Manual overrides will bypass simulation logic.")
-        overrides["DEF"] = st.sidebar.selectbox(
-            "Definition Game", ["Auto", "R", "E"], help="R=Realism, E=Strict"
-        )
-        overrides["BARG"] = st.sidebar.selectbox(
-            "Bargaining Game", ["Auto", "A", "D"], help="A=Agree, D=Defer"
-        )
-        overrides["SHIFT"] = st.sidebar.selectbox(
-            "Cost-Shifting Game", ["Auto", "I", "S"], help="I=Invest, S=Shift"
-        )
-        overrides["DISC"] = st.sidebar.selectbox(
-            "Discharge Game", ["Auto", "C", "F"], help="C=Coordinate, F=Fragment"
-        )
-        overrides["GOV"] = st.sidebar.selectbox(
-            "Integration Game", ["Auto", "I", "S"], help="I=Integrate, S=Separate"
-        )
-        overrides["COMP"] = st.sidebar.selectbox(
-            "Compliance Game", ["Auto", "T", "L"], help="T=Tight, L=Light"
-        )
-
+        overrides["DEF"] = st.sidebar.selectbox("Definition Game", ["Auto", "R", "E"], help="R=Realism, E=Strict")
+        overrides["BARG"] = st.sidebar.selectbox("Bargaining Game", ["Auto", "A", "D"], help="A=Agree, D=Defer")
+        overrides["SHIFT"] = st.sidebar.selectbox("Cost-Shifting Game", ["Auto", "I", "S"], help="I=Invest, S=Shift")
+        overrides["DISC"] = st.sidebar.selectbox("Discharge Game", ["Auto", "C", "F"], help="C=Coordinate, F=Fragment")
+        overrides["GOV"] = st.sidebar.selectbox("Integration Game", ["Auto", "I", "S"], help="I=Integrate, S=Separate")
+        overrides["COMP"] = st.sidebar.selectbox("Compliance Game", ["Auto", "T", "L"], help="T=Tight, L=Light")
+        
         # Filter out 'Auto' selections
         overrides = {k: v for k, v in overrides.items() if v != "Auto"}
 
         # Conflict Detection logic
         conflicts = []
-        if "DEF" in overrides and overrides["DEF"] == "E" and nep_growth < 0.03:  # High growth implies Realism
-            conflicts.append("Force 'Strict' Definition contradicts low 'NEP Growth' (Realism) intent.")
-        if "SHIFT" in overrides and overrides["SHIFT"] == "S" and cost_shifting < 0.20:
-            conflicts.append("Force 'Shift' strategy contradicts low 'Cost-Shifting Intensity' policy.")
-
+        if "DEF" in overrides:
+            if overrides["DEF"] == "E" and nep_growth < 0.03: # High growth implies Realism
+                conflicts.append("Force 'Strict' Definition contradicts low 'NEP Growth' (Realism) intent.")
+        if "SHIFT" in overrides:
+            if overrides["SHIFT"] == "S" and cost_shifting < 0.20:
+                conflicts.append("Force 'Shift' strategy contradicts low 'Cost-Shifting Intensity' policy.")
+        
         if conflicts:
             st.sidebar.warning("⚠️ **Strategic Contradictions Detected:**")
             for c in conflicts:
@@ -356,13 +327,12 @@ def main():
     # Calculate average SEM for pressure as a confidence proxy
     avg_sem = float(traj_base["pressure_sem"].mean())
     confidence_level = "High" if avg_sem < 0.01 else "Medium" if avg_sem < 0.03 else "Low"
-    conf_color = (
+    conf_color =
         "green"
         if confidence_level == "High"
         else "orange"
         if confidence_level == "Medium"
         else "red"
-    )
 
     st.sidebar.markdown(f"Confidence: :{conf_color}[**{confidence_level}**] (SEM: {avg_sem:.4f})")
 
@@ -424,7 +394,19 @@ def main():
 
                 # Risk Plot
                 st.markdown("**Patient Safety Risk Proxy**")
-                fig_risk = plot_risk_pressure(combined, "rr_mean", "Relative Risk Proxy (Trajectories)", "Relative Risk")
+                fig_risk = px.line(
+                    combined,
+                    x="year",
+                    y="rr_mean",
+                    color="Scenario",
+                    title="Relative Risk Proxy (Trajectories)",
+                    labels={"rr_mean": "Relative Risk", "year": "Year"},
+                    color_discrete_map={
+                        "Baseline": "#A9A9A9",
+                        "Strategic Scenario Analysis": "#008080",
+                    },
+                )
+                fig_risk.update_layout(template="simple_white", hovermode="x unified")
                 st.plotly_chart(fig_risk, width="stretch")
                 st.caption(
                     "Lower is better. Reflects the estimated impact of system delays on clinical outcomes."
@@ -432,11 +414,24 @@ def main():
 
                 # Pressure Plot
                 st.markdown("**Hospital System Pressure**")
-                fig_pres = plot_risk_pressure(combined, "pressure_mean", "System Pressure Index", "Pressure Index")
+                fig_pres = px.line(
+                    combined,
+                    x="year",
+                    y="pressure_mean",
+                    color="Scenario",
+                    title="System Pressure Index",
+                    labels={"pressure_mean": "Pressure Index", "year": "Year"},
+                    color_discrete_map={
+                        "Baseline": "#A9A9A9",
+                        "Strategic Scenario Analysis": "#008080",
+                    },
+                )
+                fig_pres.update_layout(template="simple_white", hovermode="x unified")
                 st.plotly_chart(fig_pres, width="stretch")
                 st.caption(
                     "Index of operational strain. Values > 1.0 indicate severe capacity constraints."
                 )
+
             with col2:
                 st.markdown("#### Executive Summary")
 
@@ -504,7 +499,22 @@ def main():
             drift_df, breaches = prepare_share_drift_data(traj_game, threshold)
 
             # Plot Nominal vs Effective
-            fig_share = plot_share_drift(drift_df, threshold)
+            fig_share = px.line(
+                drift_df,
+                x="year",
+                y=["cth_nominal_mean", "cth_effective_mean"],
+                title="Nominal vs Effective Commonwealth Share",
+                labels={"value": "Share", "year": "Year", "variable": "Type"},
+                color_discrete_map={"cth_nominal_mean": "blue", "cth_effective_mean": "red"},
+            )
+            # Add threshold line
+            fig_share.add_hline(
+                y=threshold,
+                line_dash="dash",
+                line_color="black",
+                annotation_text=f"Threshold {threshold:.0%}",
+            )
+
             st.plotly_chart(fig_share, width="stretch")
 
             if breaches:
@@ -555,9 +565,10 @@ def main():
     with tab2:
         st.markdown("### 🕸️ Interactive Strategic Map")
         st.markdown("""
-        This map visualizes the influence pathways between negotiation 'games' and hospital operational states.
+        This map visualizes the influence pathways between negotiation 'games' and hospital operational states. 
         **Drag nodes** to explore the topology. **Node size** reflects its centrality in the mechanism.
-        """)
+        """
+        )
 
         # Embed the D3 HTML
         d3_path = Path("outputs/v26/interactive/games_network_d3.html")
@@ -565,9 +576,7 @@ def main():
             with open(d3_path, encoding="utf-8") as f:
                 st.components.v1.html(f.read(), height=600, scrolling=True)
         else:
-            st.error(
-                "D3 network assets not found. Ensure `scripts/interactive/make_d3_network_v26.py` has been run."
-            )
+            st.error("D3 network assets not found. Ensure `scripts/interactive/make_d3_network_v26.py` has been run.")
 
         st.caption("Strategic nodes (BARG, DEF, etc.) parameterize the simulation logic.")
 
@@ -586,8 +595,8 @@ def main():
         st.markdown("Performance of the model against historical NHRA data (2011–2024).")
 
         # Load Historical
-        hist_path = Path("data/calibration/historical_normalized.csv")
-        results_path = Path("data/calibration/recursive_results.json")
+        hist_path = Path("data/calibration_v21/historical_normalized.csv")
+        results_path = Path("data/calibration_v21/recursive_results.json")
 
         if hist_path.exists() and results_path.exists():
             df_hist = pd.read_csv(hist_path)
@@ -613,7 +622,15 @@ def main():
                 sel_metric = st.selectbox("Select Metric for Overlay:", ["within4", "occupancy"])
                 overlay_df = prepare_ghost_overlay_data(df_hist, recursive_results, sel_metric)
 
-                fig_ghost = plot_ghost_overlay(overlay_df, sel_metric)
+                fig_ghost = px.line(
+                    overlay_df,
+                    x="year",
+                    y="value",
+                    color="type",
+                    title=f"Forecasting Check: {sel_metric} (Ghost Overlay)",
+                    color_discrete_map={"Historical": "#008080", "Backtest Prediction": "#FF7F50"},
+                )
+                fig_ghost.update_layout(template="simple_white", hovermode="x unified")
                 st.plotly_chart(fig_ghost, width="stretch")
         else:
             st.warning(
@@ -641,57 +658,83 @@ def main():
                         index="pressure", columns="cost_shifting_intensity", values="outcome"
                     )
 
-                    fig_stab = plot_stability_heatmap(pivot_table)
+                    fig_stab = px.imshow(
+                        pivot_table,
+                        labels={
+                            "x": "Cost Shifting Intensity",
+                            "y": "Pressure Index",
+                            "color": "Strategy",
+                        },
+                        x=pivot_table.columns,
+                        y=pivot_table.index,
+                        color_continuous_scale="Viridis",
+                    )
+                    fig_stab.update_layout(
+                        title="Stability Landscape: 0=Invest (Teal), 1=Shift (Rose)"
+                    )
                     st.plotly_chart(fig_stab, width="stretch")
 
         with tab5_2:
             st.subheader("🌀 Global Sensitivity Analysis (GSA)")
-            st.markdown(
-                "Quantifying the influence of each policy lever on the total system variance."
-            )
+            st.markdown("Quantifying the influence of each policy lever on the total system variance.")
 
             gsa_tabs = st.tabs(["Morris (Influence)", "Sobol (Variance)", "Interactions (S2)"])
 
             with gsa_tabs[0]:
-                morris_path = Path("data/gsa/morris_results.csv")
+                morris_path = Path("data/gsa_v21/morris_results.csv")
                 if morris_path.exists():
                     df_m = pd.read_csv(morris_path)
                     if "Unnamed: 0" in df_m.columns:
                         df_m = df_m.rename(columns={"Unnamed: 0": "parameter"})
-                    df_m = df_m.set_index("parameter")
 
                     st.markdown("#### 🌪️ Morris Tornado (Parameter Influence)")
-                    fig_m = viz_plot_morris_tornado(df_m)
-                    st.pyplot(fig_m)
+                    fig_m = px.bar(
+                        df_m.sort_values("mu_star", ascending=True),
+                        x="mu_star",
+                        y="parameter",
+                        orientation="h",
+                        title="Morris Screening (Absolute Mean Elementary Effect)",
+                        color="mu_star",
+                        color_continuous_scale="Teal",
+                    )
+                    fig_m.update_layout(template="simple_white")
+                    st.plotly_chart(fig_m, width="stretch")
                 else:
                     st.info("Morris results not found. Run the GSA pipeline to generate.")
+
             with gsa_tabs[1]:
-                sobol_path = Path("data/gsa/sobol_results.csv")
+                sobol_path = Path("data/gsa_v21/sobol_results.csv")
                 if sobol_path.exists():
                     df_s = pd.read_csv(sobol_path)
                     st.markdown("#### 📊 Sobol Variance Decomposition (Total-order)")
-                    # Reconstruct si dict for the plotter
-                    si_plot = {
-                        "names": df_s["Parameter"].tolist(),
-                        "ST": df_s["ST"].tolist(),
-                        "ST_conf": df_s["ST_conf"].tolist()
-                    }
-                    fig_s = viz_plot_sobol_indices(si_plot, total_order=True)
-                    st.pyplot(fig_s)
+                    fig_s = px.bar(
+                        df_s.sort_values("ST", ascending=True),
+                        x="ST",
+                        y="Parameter",
+                        orientation="h",
+                        title="Sobol Total-order Sensitivity Index (ST)",
+                        color="ST",
+                        color_continuous_scale="Viridis",
+                    )
+                    fig_s.update_layout(template="simple_white")
+                    st.plotly_chart(fig_s, width="stretch")
                 else:
                     st.info(
                         "Sobol results not found. Use the CLI `scripts/run_gsa.py --method sobol` to generate."
                     )
 
             with gsa_tabs[2]:
-                s2_path = Path("data/gsa/sobol_s2.csv")
+                s2_path = Path("data/gsa_v21/sobol_s2.csv")
                 if s2_path.exists():
                     df_s2 = pd.read_csv(s2_path, index_col=0)
                     st.markdown("#### 🌡️ Parameter Interaction Heatmap (S2)")
-                    si_s2 = {"names": df_s2.columns.tolist(), "S2": df_s2.to_numpy()}
-                    fig_s2 = viz_plot_sobol_heatmap(si_s2)
-                    if fig_s2:
-                        st.pyplot(fig_s2)
+                    fig_s2 = px.imshow(
+                        df_s2,
+                        labels={"color": "S2 Index"},
+                        title="Sobol Second-order Interactions",
+                        color_continuous_scale="Magma",
+                    )
+                    st.plotly_chart(fig_s2, width="stretch")
                 else:
                     st.info(
                         "S2 interaction data not found. Ensure Sobol analysis is run with interaction terms."
@@ -755,9 +798,7 @@ def main():
 
     with tab7:
         st.markdown("### 🔍 Forensic Audit & State Introspection")
-        st.info(
-            "Direct inspection of raw model state and parameter objects for parity verification."
-        )
+        st.info("Direct inspection of raw model state and parameter objects for parity verification.")
 
         fcol1, fcol2 = st.columns(2)
         with fcol1:
@@ -782,7 +823,7 @@ def main():
                     if summary_base[k] != 0
                     else "N/A",
                 }
-                for k in summary_base
+                for k in summary_base.keys()
             ]
         )
         st.table(diff_df)
