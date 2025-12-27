@@ -93,6 +93,7 @@ mkdocs-section-index = "*"
 mkdocs-jupyter = "*"
 mike = "*"
 pytest-mpl = "^0.18.0"
+pygambit = "^16.4.1"
 
 [tool.coverage.run]
 omit = ["tests/*", "scripts/*", ".nox/*", ".gemini/*", "*/__init__.py"]

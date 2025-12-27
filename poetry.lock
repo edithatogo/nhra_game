@@ -5200,6 +5200,35 @@ carto = ["pydeck-carto"]
 jupyter = ["ipykernel (>=5.1.2) ; python_version >= \"3.4\"", "ipython (>=5.8.0) ; python_version < \"3.4\"", "ipywidgets (>=7,<8)", "traitlets (>=4.3.2)"]
 
 [[package]]
+name = "pygambit"
+version = "16.4.1"
+description = "The package for computation in game theory"
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+files = [
+    {file = "pygambit-16.4.1-cp310-cp310-win32.whl", hash = "sha256:7d7349bf4a733eae1791315ff6a77e266f2d18ceaa77ddbd248f74131419effd"},
+    {file = "pygambit-16.4.1-cp310-cp310-win_amd64.whl", hash = "sha256:aab02a757230874da4d7277ebdfb5269c87a70d67bd6694cdb15fe8202733ec7"},
+    {file = "pygambit-16.4.1-cp311-cp311-win32.whl", hash = "sha256:ec8b7f60a88a0305f33e76bd838c795b9d86ebd73ad07c6838031310366abe9c"},
+    {file = "pygambit-16.4.1-cp311-cp311-win_amd64.whl", hash = "sha256:c41f919b3fbeae533252105fe4a290b6c9cc69fe5bada67c74b47d1f5eb5094c"},
+    {file = "pygambit-16.4.1-cp312-cp312-win32.whl", hash = "sha256:598a4a5e7f999dcc80139091ad6dcc0ac29bd7547d08bcdd9d63eadaec384bc4"},
+    {file = "pygambit-16.4.1-cp312-cp312-win_amd64.whl", hash = "sha256:68e08b90c747f4897d0c35b3ddd5059200781e17f389b5f1c640553ae49c2384"},
+    {file = "pygambit-16.4.1-cp313-cp313-win32.whl", hash = "sha256:1e3abdc70dbf2bc34ce1cbe4e7451ac2bc149abeb0d8f44c64c79518db72d236"},
+    {file = "pygambit-16.4.1-cp313-cp313-win_amd64.whl", hash = "sha256:856f2c7643c072996a8ecd4272b0737df55f30c43279370f06108fe7e62fdab7"},
+    {file = "pygambit-16.4.1-cp314-cp314-win32.whl", hash = "sha256:12bba464a5790a7737213bedefff4d03214af89aa51cee4afe174ba7f3a30fe5"},
+    {file = "pygambit-16.4.1-cp314-cp314-win_amd64.whl", hash = "sha256:d4c09209d1b799db2cc9f25bd6ef9ee25a15ea4d58b7aef0cff5d6326663c183"},
+    {file = "pygambit-16.4.1-cp314-cp314t-win32.whl", hash = "sha256:e05026702efd2c08152ca565107c4cd82cf5ea5805b91e1ce5a0b2b95f1ed55d"},
+    {file = "pygambit-16.4.1-cp314-cp314t-win_amd64.whl", hash = "sha256:925ad1aa960494e6355b63e2fdc64bfb96de752b8c9b3205533de753f4732c87"},
+    {file = "pygambit-16.4.1-cp39-cp39-win32.whl", hash = "sha256:bd2db241b759b79f397d6733a90fda2a66715516848fc7acf9d070b0caee9182"},
+    {file = "pygambit-16.4.1-cp39-cp39-win_amd64.whl", hash = "sha256:2a72c8365f1a1e5c24e28e8cecfa9b8945019c481b0e26afa3b4ffffa9fe2c50"},
+    {file = "pygambit-16.4.1.tar.gz", hash = "sha256:edeb3436ee6fc4751b83e0983d04d0b59f4ab78e219950616ae7395169b2f87d"},
+]
+
+[package.dependencies]
+numpy = "*"
+scipy = "*"
+
+[[package]]
 name = "pygments"
 version = "2.19.2"
 description = "Pygments is a syntax highlighting package written in Python."
@@ -6082,7 +6111,7 @@ version = "1.15.3"
 description = "Fundamental algorithms for scientific computing in Python"
 optional = false
 python-versions = ">=3.10"
-groups = ["main"]
+groups = ["main", "dev"]
 markers = "python_version == \"3.10\""
 files = [
     {file = "scipy-1.15.3-cp310-cp310-macosx_10_13_x86_64.whl", hash = "sha256:a345928c86d535060c9c2b25e71e87c39ab2f22fc96e9636bd74d1dbf9de448c"},
@@ -6147,7 +6176,7 @@ version = "1.16.3"
 description = "Fundamental algorithms for scientific computing in Python"
 optional = false
 python-versions = ">=3.11"
-groups = ["main"]
+groups = ["main", "dev"]
 markers = "python_version >= \"3.11\""
 files = [
     {file = "scipy-1.16.3-cp311-cp311-macosx_10_14_x86_64.whl", hash = "sha256:40be6cf99e68b6c4321e9f8782e7d5ff8265af28ef2cd56e9c9b2638fa08ad97"},
@@ -7576,4 +7605,4 @@ opt = ["optuna"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "7d7b628a9dd3669fa1ea7a3d7f99c1625e05bdc8b115abe94d233663d04d283c"
+content-hash = "c379b29f1503ebb09c396bf4dd032a3002e29aee2c901730d687392766940033"
