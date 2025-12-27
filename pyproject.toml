@@ -46,6 +46,8 @@ chex = { version = ">=0.1", optional = true }
 numpyro = { version = ">=0.13", optional = true }
 polars = { version = ">=0.20", optional = true }
 logfire = { version = ">=0.46", optional = true }
+reportlab = "^4.4.7"
+kaleido = "^1.2.0"
 
 [tool.poetry.extras]
 opt = ["optuna"]

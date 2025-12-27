@@ -186,3 +186,90 @@ def plot_stability_heatmap(
         title="Stability Landscape: 0=Invest (Teal), 1=Shift (Rose)", template="simple_white"
     )
     return fig
+
+
+def plot_vfi_waterfall(
+    nominal_share: float,
+    indexation_loss: float,
+    cap_loss: float,
+    audit_loss: float,
+    effective_share: float,
+    title: str = "VFI Funding Leakage (Waterfall)",
+    config: PlotConfig | None = None,
+) -> go.Figure:
+    """
+    Visualises the 'leakage' from nominal funding to effective share.
+    """
+    if config is None:
+        config = PlotConfig()
+
+    fig = go.Figure(
+        go.Waterfall(
+            name="Funding",
+            orientation="v",
+            measure=["absolute", "relative", "relative", "relative", "total"],
+            x=["Nominal Share", "Indexation Gap", "Cap Limit", "Audit Clawback", "Effective Share"],
+            textposition="outside",
+            text=[
+                f"{nominal_share*100:.1f}%",
+                f"-{indexation_loss*100:.1f}%",
+                f"-{cap_loss*100:.1f}%",
+                f"-{audit_loss*100:.1f}%",
+                f"{effective_share*100:.1f}%",
+            ],
+            y=[nominal_share, -indexation_loss, -cap_loss, -audit_loss, effective_share],
+            connector={"line": {"color": "rgb(63, 63, 63)"}},
+            decreasing={"marker": {"color": "#FF4B4B"}},
+            increasing={"marker": {"color": "#00CC96"}},
+            totals={"marker": {"color": config.primary_color}},
+        )
+    )
+
+    fig.update_layout(title=title, template="simple_white", showlegend=False)
+    return fig
+
+
+def plot_phase_space(
+    traj: pd.DataFrame,
+    x_col: str = "pressure_mean",
+    y_col: str = "occupancy_mean",
+    title: str = "System Phase-Space (Hysteresis Loop)",
+) -> go.Figure:
+    """
+    Plots a 2D phase-space trajectory of the system state.
+    """
+    fig = px.line(
+        traj,
+        x=x_col,
+        y=y_col,
+        title=title,
+        labels={x_col: "Pressure Index", y_col: "Occupancy"},
+        hover_data=["year"],
+    )
+
+    # Add markers for start and end
+    fig.add_trace(
+        go.Scatter(
+            x=[traj[x_col].iloc[0]],
+            y=[traj[y_col].iloc[0]],
+            mode="markers+text",
+            name="Start",
+            text=["Start"],
+            textposition="top center",
+            marker=dict(color="green", size=12),
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=[traj[x_col].iloc[-1]],
+            y=[traj[y_col].iloc[-1]],
+            mode="markers+text",
+            name="End",
+            text=["End"],
+            textposition="top center",
+            marker=dict(color="red", size=12),
+        )
+    )
+
+    fig.update_layout(template="simple_white")
+    return fig

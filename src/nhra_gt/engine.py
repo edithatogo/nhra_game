@@ -555,8 +555,10 @@ def run_hybrid(
             np.random.default_rng(np.random.default_rng(seed).integers(1, 2**32 - 1)),
             years[-1],
         )
+        cum_press = 0.0
         while s.year <= end_year:
             rr = relative_risk(s.pressure, s.offload_min, p)
+            cum_press += s.pressure / 12.0
             rows.append(
                 {
                     "rollout": r,
@@ -574,6 +576,7 @@ def run_hybrid(
                     "system_mode": s.system_mode.value,
                     "equity_index": s.equity_index,
                     "rr_proxy": rr,
+                    "cumulative_pressure": cum_press,
                 }
             )
 
@@ -636,6 +639,7 @@ def run_hybrid(
             discharge_mean=("discharge_delay", "mean"),
             polcap_mean=("political_capital", "mean"),
             equity_mean=("equity_index", "mean"),
+            cumulative_pressure_mean=("cumulative_pressure", "mean"),
             index_gap_mean=("index_gap", "mean"),
             cap_gap_mean=("cap_gap", "mean"),
             audit_gap_mean=("audit_gap", "mean"),
@@ -720,5 +724,8 @@ def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
         "rr_2030": float(last["rr_mean"]),
         "effshare_nominal_2030": float(last["cth_nominal_mean"]),
         "effshare_effective_2030": float(last["cth_effective_mean"]),
-        "effgap_2030": float(last["effgap_mean"]),
+        "cumulative_pressure_2030": float(last["cumulative_pressure_mean"]),
+        "leakage_indexation": float(last["index_gap_mean"]),
+        "leakage_cap": float(last["cap_gap_mean"]),
+        "leakage_audit": float(last["audit_gap_mean"]),
     }

@@ -31,6 +31,11 @@ class MetricsJax:
     cumulative_budget_variance: float = 0.0
     max_occupancy: float = 0.0
     min_within4: float = 1.0
+    
+    # Leakage Metrics
+    cumulative_indexation_loss: float = 0.0
+    cumulative_cap_loss: float = 0.0
+    cumulative_audit_loss: float = 0.0
 
 
 @struct.dataclass

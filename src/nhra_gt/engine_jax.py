@@ -407,6 +407,17 @@ def step_jax(
     # BARG is index 2
     barg_agree = strategies[2]
 
+    # Leakage calculations for this step
+    # Indexation gap: diff between input growth and NEP growth
+    # For now, we proxy it as the change in eff_gap
+    idx_loss = (p.input_cost_annual_growth - p.nep_annual_growth) * mgf * 0.1 # Scaled proxy
+    
+    # Cap loss: proxied by bargaining deferrals or high pressure
+    cap_loss = jnp.where(barg_agree == 0, 0.02 * mgf, 0.0)
+    
+    # Audit loss: derived from recon balance change
+    audit_loss = jnp.maximum(0.0, s.reconciliation_balance - recon)
+
     pol_cap_change = (
         -pol_cap_hit
         - (1.0 - sig_quality) * 0.2 * mgf
@@ -427,6 +438,9 @@ def step_jax(
         + jnp.abs(final_share - p.nominal_cth_share_target) * mgf,
         max_occupancy=jnp.maximum(s.metrics.max_occupancy, avg_occ),
         min_within4=jnp.minimum(s.metrics.min_within4, avg_w4),
+        cumulative_indexation_loss=s.metrics.cumulative_indexation_loss + idx_loss,
+        cumulative_cap_loss=s.metrics.cumulative_cap_loss + cap_loss,
+        cumulative_audit_loss=s.metrics.cumulative_audit_loss + audit_loss,
     )
 
     # Handle time rollover
