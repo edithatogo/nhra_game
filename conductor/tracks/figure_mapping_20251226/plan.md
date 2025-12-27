@@ -14,18 +14,18 @@
 - [x] Task: Set up `pytest-mpl` and `tests/visualization/` directory with a baseline image cache.
 - [x] Task: Conductor - User Manual Verification 'API Design & Core Infrastructure' (Protocol in workflow.md) 2231a0f
 
-## Phase 3: Migration & Modernization (Iterative)
+## Phase 3: Migration & Modernization (Iterative) [checkpoint: 1ddf580]
 - [x] Task: Refactor "Trajectory" plots (from `plotting.py`) to the new API, adding docstrings and type hints.
 - [x] Task: Refactor "Strategy Heatmaps" and "Tornado Plots" to the new API.
 - [x] Task: Migrate complex script-based figures (e.g., from `dashboard.py` or `make_plots_v*.py`) into reusable library functions.
 - [x] Task: Verify parity: Ensure new functions produce identical (or strictly better) outputs than legacy scripts.
-- [x] Task: Conductor - User Manual Verification 'Migration & Modernization' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Migration & Modernization' (Protocol in workflow.md) 1ddf580
 
-## Phase 4: Testing & Verification
+## Phase 4: Testing & Verification [checkpoint: 1ddf580]
 - [x] Task: Implement Smoke Tests: Verify all registered functions execute without error on sample data.
 - [x] Task: Implement Data Integrity Tests: Assert input DataFrames meet schema expectations (columns, types) before plotting.
 - [x] Task: Implement Visual Regression Tests: Compare outputs against "gold standard" baselines for key figures.
-- [~] Task: Conductor - User Manual Verification 'Testing & Verification' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Testing & Verification' (Protocol in workflow.md) 1ddf580
 
 ## Phase 5: Documentation & Cleanup
 - [ ] Task: Update `docs/models.md` and `docs/usage.md` with new visualization API usage examples.
