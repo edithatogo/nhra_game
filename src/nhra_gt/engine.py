@@ -242,6 +242,7 @@ class State:
     reconciliation_balance: float = 0.0
     bailout_expectation: float = 0.0
     coding_intensity: float = 1.0
+    reputation_score: float = 1.0
 
     def to_dict(self) -> dict[str, Any]:
         """Convert state to a dictionary."""
@@ -289,6 +290,7 @@ def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
         reconciliation_balance=0.0,
         bailout_expectation=0.0,
         coding_intensity=1.0,
+        reputation_score=1.0,
     )
 
 
