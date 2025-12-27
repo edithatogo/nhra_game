@@ -35,7 +35,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 ---
 
 ## [x] Track: Comprehensive Figure Mapping & API Modernization
-*Link: [./conductor/tracks/figure_mapping_20251226/](./conductor/tracks/figure_mapping_20251226/)*
+*Link: [./conductor/archive/figure_mapping_20251226/](./conductor/archive/figure_mapping_20251226/)*
 
 ---
 
