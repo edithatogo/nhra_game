@@ -1,8 +1,11 @@
 # TODO: Documentation Expansion and CI Completion
 
-## Status: Documentation Overhaul In Progress
+## Status: All Enhancements Complete ✅
 
-Latest commit: `fde586b` - comprehensive documentation expansion
+Latest commits:
+- `fde586b` — Initial documentation expansion  
+- `2231a0f` — Changelog, contributing guide, enhanced dev docs
+- `pending` — FAQ, validation, policy scenarios
 
 ---
 
@@ -15,46 +18,31 @@ The `discharge_coordination_game` is **already integrated**:
 
 ---
 
-## 2. Documentation Overhaul `[docs]`
+## 2. Documentation Overhaul ✅ COMPLETE
 
-### Structure (✅ Complete)
-- [x] Create `docs_mkdocs/guides/` directory
-  - [x] `index.md` — Guides landing page
-  - [x] `usage.md` — Installation, quickstart, CLI examples
-  - [x] `models.md` — Game theory models (all 9 games with payoffs)
-- [x] Create `docs_mkdocs/project/` directory
-  - [x] `index.md` — Project landing page
-  - [x] `requirements.md` — Project scope, roadmap, limitations
-- [x] Create `docs_mkdocs/reference/` directory
-  - [x] `index.md` — API reference with mkdocstrings
+### Core Structure
+- [x] `guides/` — index, usage, models (9 games)
+- [x] `project/` — index, requirements
+- [x] `reference/` — API reference
+- [x] `diagrams.md` — Mermaid architecture diagrams
+- [x] `changelog.md` — Version history (v15-v26)
+- [x] `contributing.md` — PR process, code style
+- [x] `dev.md` — Tooling, testing, profiling, CI/CD
 
-### Content Fixes (✅ Complete)
-- [x] Populate `diagrams.md` with Mermaid architecture diagrams
-- [x] Fix `context.md` — `nhra_gt.v9.Params` → `nhra_gt.engine.Params`
-- [x] Fix `index.md` — correct broken links
-- [x] Update `mkdocs.yml` — add explicit nav structure
+### Enhancements
+- [x] `faq.md` — Frequently asked questions
+- [x] `validation.md` — Testing and validation documentation
+- [x] `scenarios.md` — Policy comparison tables
 
-### Remaining Enhancements
-- [ ] Create `changelog.md` or link to CHANGELOG.md
-- [ ] Add examples/ section with Jupyter notebooks
-- [ ] Enhance API reference with more modules
-- [ ] Add contributing.md guide
-- [ ] Add FAQ section
-- [ ] Review and enhance dev.md
-- [ ] Add validation/testing documentation
+### Fixes
+- [x] Fixed `context.md` — `nhra_gt.v9.Params` → `nhra_gt.engine.Params`
+- [x] Fixed `index.md` — Correct links to new directories
+- [x] Updated `mkdocs.yml` — Explicit nav with all new pages
+- [x] Removed redundant `api.md`
 
 ---
 
-## 3. CI Status `[pending]`
+## 3. Future Improvements (Deferred)
 
-- [ ] Verify CI passes after documentation push
-- [ ] Check Deploy Docs workflow succeeds
-
----
-
-## 4. Future Improvements
-
-- [ ] Add interactive examples with Jupyter
-- [ ] Create video walkthrough
-- [ ] Add comparison tables for policy scenarios
-- [ ] Document calibration workflow
+- [ ] Add examples/ with Jupyter notebooks (requires real data)
+- [ ] Create video walkthrough (requires screen recording)

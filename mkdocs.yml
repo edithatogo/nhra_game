@@ -15,6 +15,7 @@ nav:
     - guides/index.md
     - Usage: guides/usage.md
     - Game Theory Models: guides/models.md
+    - Policy Scenarios: scenarios.md
   - Project:
     - project/index.md
     - Requirements & Scope: project/requirements.md
@@ -24,7 +25,9 @@ nav:
   - Development:
     - Development Guide: dev.md
     - Contributing: contributing.md
+    - Validation & Testing: validation.md
   - API Reference: reference/index.md
+  - FAQ: faq.md
   - Changelog: changelog.md
 
 theme:
