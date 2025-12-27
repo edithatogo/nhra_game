@@ -3,9 +3,9 @@ import yaml
 
 from scripts.pub_tools.manage_refs import (
     load_references,
-    validate_metadata,
-    validate_quality,
+    validate_references,
     validate_recency,
+    validate_quality,
 )
 
 # ... existing code ...
@@ -93,9 +93,9 @@ def test_load_references(valid_yaml):
 
 def test_validate_metadata_valid(valid_yaml):
     refs = load_references(valid_yaml)
-    assert validate_metadata(refs) is True
+    assert validate_references(refs) is True
 
 
 def test_validate_metadata_invalid(invalid_yaml):
     refs = load_references(invalid_yaml)
-    assert validate_metadata(refs) is False
+    assert validate_references(refs) is False

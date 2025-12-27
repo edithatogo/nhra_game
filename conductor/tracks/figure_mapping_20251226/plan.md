@@ -28,7 +28,7 @@
 - [x] Task: Conductor - User Manual Verification 'Testing & Verification' (Protocol in workflow.md) 1ddf580
 
 ## Phase 5: Documentation & Cleanup
-- [ ] Task: Update `docs/models.md` and `docs/usage.md` with new visualization API usage examples.
-- [ ] Task: Deprecate and remove legacy plotting code from `src/nhra_game_theory/plotting.py` and `scripts/`.
-- [ ] Task: Final generation of `figure_inventory.md` reflecting the new, clean state.
-- [ ] Task: Conductor - User Manual Verification 'Documentation & Cleanup' (Protocol in workflow.md)
+- [x] Task: Update `docs/models.md` and `docs/usage.md` with new visualization API usage examples.
+- [x] Task: Deprecate and remove legacy plotting code from `src/nhra_gt/plotting.py` and `scripts/`.
+- [x] Task: Final generation of `figure_inventory.md` reflecting the new, clean state.
+- [~] Task: Conductor - User Manual Verification 'Documentation & Cleanup' (Protocol in workflow.md)

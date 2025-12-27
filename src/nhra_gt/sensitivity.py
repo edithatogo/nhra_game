@@ -63,57 +63,6 @@ def get_parameter_lineage() -> dict[str, str]:
     }
 
 
-import warnings
-
-from .visualization.base import PlotConfig, save_figure
-from .visualization.sensitivity import plot_morris_tornado as new_plot_morris_tornado
-from .visualization.sensitivity import plot_sobol_heatmap as new_plot_sobol_heatmap
-from .visualization.sensitivity import plot_sobol_indices as new_plot_sobol_indices
-
-
-def plot_sobol_indices(si: dict[str, Any], output_path: Path) -> None:
-    """Generates Sobol first-order and total sensitivity plots."""
-    warnings.warn(
-        "plot_sobol_indices is deprecated, use nhra_gt.visualization.sensitivity instead",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-    config = PlotConfig()
-
-    # S1
-    fig_s1 = new_plot_sobol_indices(si, config=config, total_order=False)
-    save_figure(fig_s1, output_path.parent / (output_path.name + "_s1.png"), config)
-
-    # ST
-    fig_st = new_plot_sobol_indices(si, config=config, total_order=True)
-    save_figure(fig_st, output_path.parent / (output_path.name + "_st.png"), config)
-
-
-def plot_sobol_heatmap(si: dict[str, Any], output_path: Path) -> None:
-    """Generates a heatmap of second-order interaction indices (S2)."""
-    warnings.warn(
-        "plot_sobol_heatmap is deprecated, use nhra_gt.visualization.sensitivity instead",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-    config = PlotConfig()
-    fig = new_plot_sobol_heatmap(si, config=config)
-    if fig:
-        save_figure(fig, output_path.with_suffix(".png"), config)
-
-
-def plot_morris_tornado(df: pd.DataFrame, output_path: Path) -> None:
-    """Generates a Morris Tornado plot (mu_star ranking)."""
-    warnings.warn(
-        "plot_morris_tornado is deprecated, use nhra_gt.visualization.sensitivity instead",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-    config = PlotConfig()
-    fig = new_plot_morris_tornado(df, config=config)
-    save_figure(fig, output_path.with_suffix(".png"), config)
-
-
 def get_salib_problem(
     param_names: list[str],
     bounds_override: dict[str, list[float]] | None = None,

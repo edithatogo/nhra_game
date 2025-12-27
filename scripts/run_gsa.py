@@ -17,11 +17,14 @@ from nhra_gt.sensitivity import (
     export_sensitivity_indices,
     generate_sensitivity_summary,
     get_salib_problem,
+    run_morris_analysis,
+    run_sobol_analysis,
+)
+from nhra_gt.visualization.base import PlotConfig
+from nhra_gt.visualization.sensitivity import (
     plot_morris_tornado,
     plot_sobol_heatmap,
     plot_sobol_indices,
-    run_morris_analysis,
-    run_sobol_analysis,
 )
 
 
@@ -99,7 +102,7 @@ def main() -> None:
 
         # Generate plot
         plot_path = args.output.parent / "morris_tornado"
-        plot_morris_tornado(df, plot_path)
+        plot_morris_tornado(df, config=PlotConfig(), path=plot_path)
 
         print(f"Morris results saved to {args.output}")
         print(f"Morris plot saved to {plot_path}.png/.svg/.pdf")
@@ -127,8 +130,14 @@ def main() -> None:
         export_sobol_s2_to_csv(si, s2_path)
 
         # Generate plots
-        plot_sobol_indices(si, args.output.parent / "sobol_indices")
-        plot_sobol_heatmap(si, args.output.parent / "sobol_heatmap")
+        config = PlotConfig()
+        plot_sobol_indices(
+            si, config=config, total_order=False, path=args.output.parent / "sobol_indices_s1"
+        )
+        plot_sobol_indices(
+            si, config=config, total_order=True, path=args.output.parent / "sobol_indices_st"
+        )
+        plot_sobol_heatmap(si, config=config, path=args.output.parent / "sobol_heatmap")
 
         print(f"Sobol results saved to {args.output}")
         print(f"S2 matrix saved to {s2_path}")

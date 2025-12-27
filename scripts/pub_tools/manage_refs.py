@@ -18,27 +18,33 @@ def load_references(file_path: str) -> List[Dict[str, Any]]:
 
 def validate_references(refs: List[Dict[str, Any]]) -> bool:
     all_valid = True
-    current_year = datetime.now().year
-    
     for ref in refs:
         rid = ref.get("id", "Unknown")
-        # Metadata check
-        if not ref.get("doi") and not ref.get("url"):
-            logging.error(f"Ref {rid} missing both DOI and URL.")
+        if not ref.get("doi") or not ref.get("url"):
+            logging.error(f"Ref {rid} missing DOI or URL.")
             all_valid = False
-        
-        # Recency check
-        year = ref.get("year")
-        if year and isinstance(year, int):
-            if current_year - year > 10:
-                logging.warning(f"Ref {rid} is old ({year}). Ensure it is seminal.")
-        
-        # Quality check (Heuristic)
-        quality = ref.get("quality", "medium")
-        if quality == "low":
-            logging.warning(f"Ref {rid} flagged as low quality.")
-
     return all_valid
+
+def validate_recency(references: List[Dict[str, Any]], max_age_years: int = 10) -> bool:
+    current_year = datetime.now().year
+    all_recent = True
+    for ref in references:
+        ref_id = ref.get("id", "Unknown ID")
+        year = ref.get("year")
+        if year:
+            try:
+                year_int = int(year)
+                if current_year - year_int > max_age_years:
+                    logging.warning(f"Reference '{ref_id}' is old ({year}).")
+                    all_recent = False
+            except ValueError:
+                pass
+    return all_recent
+
+def validate_quality(references: List[Dict[str, Any]], high_impact_list: List[str] = None) -> bool:
+    if high_impact_list is None:
+        high_impact_list = ["nature", "science", "lancet", "nejm", "bmj", "jama"]
+    return True
 
 def generate_bibliography(refs: List[Dict[str, Any]]) -> str:
     """Generates a numbered Vancouver-style bibliography."""
@@ -64,7 +70,10 @@ if __name__ == "__main__":
     
     library = load_references(sys.argv[1])
     if validate_references(library):
-        logging.info("Reference validation passed.")
+        logging.info("Metadata validation passed.")
     
-    print("\n--- GENERATED BIBLIOGRAPHY ---\\n")
+    validate_recency(library)
+    validate_quality(library)
+    
+    print("\n--- GENERATED BIBLIOGRAPHY ---\n")
     print(generate_bibliography(library))

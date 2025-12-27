@@ -123,6 +123,63 @@ python scripts/validation/recursive_backtest.py
 
 ---
 
+## Visualization
+
+The toolkit includes a comprehensive visualization suite in `nhra_gt.visualization`.
+
+### Basic Trajectories
+
+```python
+from nhra_gt.visualization.trajectories import plot_trajectory
+from nhra_gt.visualization.base import save_figure
+
+# plot mean + quantile ribbon
+fig = plot_trajectory(
+    df, 
+    y_col="pressure_mean", 
+    ylabel="Pressure Index",
+    q_low_col="pressure_p10",
+    q_high_col="pressure_p90"
+)
+save_figure(fig, "outputs/plots/pressure.png")
+```
+
+### Scenario Comparisons
+
+```python
+from nhra_gt.visualization.trajectories import plot_comparison_trajectory
+
+# combined_df should have a 'Scenario' column
+fig = plot_comparison_trajectory(
+    combined_df, 
+    y_col="within4_mean", 
+    ylabel="ED Within 4h"
+)
+```
+
+### Strategic Heatmaps
+
+```python
+from nhra_gt.visualization.distributional import plot_strategy_heatmap
+
+# strat_df columns: ['year', 'game', 'strategy', 'share']
+fig = plot_strategy_heatmap(strat_df)
+```
+
+### Global Sensitivity (Tornado)
+
+```python
+from nhra_gt.visualization.sensitivity import plot_rank_tornado
+
+fig = plot_rank_tornado(
+    df, 
+    outcome_col="pressure_2030", 
+    params=["rurality_weight", "cost_shifting_intensity"]
+)
+```
+
+---
+
 ## Configuration
 
 ### Parameter Registry

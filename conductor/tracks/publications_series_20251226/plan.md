@@ -126,60 +126,61 @@
 - [x] Task: Internal Review Round 2 (P1 Manuscript) [df85fc3]
     - [x] Sub-task: Final review of v1.1 & commit
     - [x] Sub-task: Implement -> v2.0 (Submission Ready) & commit
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: P1 Manuscript - Drafting & Review Loops' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: P1 Manuscript - Drafting & Review Loops' (Protocol in workflow.md) [checkpoint: 2004610]
 
 ## Phase 5: P2 Protocol (Modelling) - Drafting & Review Loops
-- [ ] Task: Draft P2 Protocol v1.0 (ODD/STRESS-DES)
-    - [ ] Sub-task: Write Purpose section & commit
-    - [ ] Sub-task: Write Entities/State Variables section & commit
-    - [ ] Sub-task: Write Process Overview section & commit
-    - [ ] Sub-task: Write Design Concepts section & commit
-    - [ ] Sub-task: Compile Draft v1.0 & commit
-- [ ] Task: Internal Review Round 1 (P2 Protocol)
-    - [ ] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
-    - [ ] Sub-task: Document "Model Refinements" (if coding needed) & commit
-    - [ ] Sub-task: Implement Protocol changes -> v1.1 & commit
-- [ ] Task: Internal Review Round 2 (P2 Protocol)
-    - [ ] Sub-task: Final review of v1.1 & commit
-    - [ ] Sub-task: Implement -> v2.0 (Final) & commit
+- [x] Task: Draft P2 Protocol v1.0 (ODD/STRESS-DES) [df81c01]
+    - [x] Sub-task: Write Purpose section & commit
+    - [x] Sub-task: Write Entities/State Variables section & commit
+    - [x] Sub-task: Write Process Overview section & commit
+    - [x] Sub-task: Write Design Concepts section & commit
+    - [x] Sub-task: Compile Draft v1.0 & commit
+- [x] Task: Internal Review Round 1 (P2 Protocol) [2cc1e41]
+    - [x] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
+    - [x] Sub-task: Document "Model Refinements" (if coding needed) & commit
+    - [x] Sub-task: Facilitate Deliberation on Model Refinements & commit
+    - [x] Sub-task: Implement Protocol changes -> v1.1 & commit
+- [x] Task: Internal Review Round 2 (P2 Protocol) [60d18b4]
+    - [x] Sub-task: Final review of v1.1 & commit
+    - [x] Sub-task: Implement -> v2.0 (Final) & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 5: P2 Protocol (Modelling) - Drafting & Review Loops' (Protocol in workflow.md)
 
 ## Phase 6: P2 Execution - Simulation & Parity Audit
-- [ ] Task: Environment Freeze
-    - [ ] Sub-task: Generate `requirements.lock` specific to publication & commit
-    - [ ] Sub-task: Create `Dockerfile.repro` for simulation environment & commit
-- [ ] Task: Code-to-Text Parity Audit
-    - [ ] Sub-task: Extract Equations from Manuscript Draft & commit
-    - [ ] Sub-task: Audit v1.0 (Trace to code) & commit
-    - [ ] Sub-task: Fix discrepancies (if any) & commit
-    - [ ] Sub-task: Audit v2.0 & commit
-- [ ] Task: Comprehensive Model Specification
-    - [ ] Sub-task: Extract Parameters/Equations to `model_spec_table.md` & commit
-    - [ ] Sub-task: Map Existing Diagrams to P1/P2 & commit
-    - [ ] Sub-task: Generate Supplementary Tables (Inputs/Outputs) & commit
-- [ ] Task: Simulation Execution & Gap Filling
-    - [ ] Sub-task: Run Golden Scenarios & commit
-    - [ ] Sub-task: Generate Figures v1.0 & commit
+- [x] Task: Environment Freeze [28d5783]
+    - [x] Sub-task: Generate `requirements.lock` specific to publication & commit
+    - [x] Sub-task: Create `Dockerfile.repro` for simulation environment & commit
+- [x] Task: Code-to-Text Parity Audit [0373b73]
+    - [x] Sub-task: Extract Equations from Manuscript Draft & commit
+    - [x] Sub-task: Audit v1.0 (Trace to code) & commit
+    - [x] Sub-task: Fix discrepancies (if any) & commit
+    - [x] Sub-task: Audit v2.0 & commit
+- [x] Task: Comprehensive Model Specification [507d6f8]
+    - [x] Sub-task: Extract Parameters/Equations to `model_spec_table.md` & commit
+    - [x] Sub-task: Map Existing Diagrams to P1/P2 & commit
+    - [x] Sub-task: Generate Supplementary Tables (Inputs/Outputs) & commit
+- [x] Task: Simulation Execution & Gap Filling [8c4ebfd]
+    - [x] Sub-task: Run Golden Scenarios & commit
+    - [x] Sub-task: Generate Figures v1.0 & commit
     - [ ] Sub-task: Internal Review of Visuals -> `missing_visuals_list.md` & commit
     - [ ] Sub-task: Update `scripts/viz.py` or Experiment Configs based on list & commit
     - [ ] Sub-task: Re-run needed sims -> Figures v2.0 & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 6: P2 Execution - Simulation & Parity Audit' (Protocol in workflow.md)
 
 ## Phase 7: P2 Manuscript - Drafting & Review Loops
-- [ ] Task: Targeting & Schema Definition (P2)
-    - [ ] Sub-task: Extract Word Count Limits from `mja.md` & commit
-    - [ ] Sub-task: Define Section Word Budgets & commit
-    - [ ] Sub-task: Create `P2_Modelling_MJA/03_Manuscript/schema.json` & commit
-- [ ] Task: Traceability Matrix Construction (P2)
-    - [ ] Sub-task: Map Protocol -> Simulation Config -> Results -> Manuscript in `traceability_matrix.csv` & commit
-- [ ] Task: Manuscript Skeleton (ODD)
-    - [ ] Sub-task: Create `manuscript.md` with ODD headings & commit
-    - [ ] Sub-task: Map headings to checklist items & commit
-- [ ] Task: Draft P2 Manuscript v1.0
-    - [ ] Sub-task: Draft Intro/ODD Summary & commit
-    - [ ] Sub-task: Draft Results & commit
-    - [ ] Sub-task: Draft Discussion & commit
-    - [ ] Sub-task: Audit Structural Integrity (Context/Gap/Results/Limitations coverage) & commit
+- [x] Task: Targeting & Schema Definition (P2) [4127a6d]
+    - [x] Sub-task: Extract Word Count Limits from `mja.md` & commit
+    - [x] Sub-task: Define Section Word Budgets & commit
+    - [x] Sub-task: Create `P2_Modelling_MJA/03_Manuscript/schema.json` & commit
+- [x] Task: Traceability Matrix Construction (P2) [813482f]
+    - [x] Sub-task: Map Protocol -> Simulation Config -> Results -> Manuscript in `traceability_matrix.csv` & commit
+- [x] Task: Manuscript Skeleton (ODD) [cbca2c6]
+    - [x] Sub-task: Create `manuscript.md` with ODD headings & commit
+    - [x] Sub-task: Map headings to checklist items & commit
+- [x] Task: Draft P2 Manuscript v1.0 [bd63ee9]
+    - [x] Sub-task: Draft Intro/ODD Summary & commit
+    - [x] Sub-task: Draft Results & commit
+    - [x] Sub-task: Draft Discussion & commit
+    - [x] Sub-task: Audit Structural Integrity (Context/Gap/Results/Limitations coverage) & commit
 - [ ] Task: Readability, Tone & Reference Quality (P2)
     - [ ] Sub-task: Run `textstat` analysis -> `readability_report.md` & commit
     - [ ] Sub-task: Optimize Readability (Sentences/Jargon) & commit
@@ -192,58 +193,51 @@
     - [ ] Sub-task: Strip non-manuscript text & commit
     - [ ] Sub-task: Generate Numbered Bibliography & commit
     - [ ] Sub-task: Verify Hybrid Citation Style & commit
-- [ ] Task: Internal Review Round 1 (P2 Manuscript)
-    - [ ] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
-    - [ ] Sub-task: Generate `missing_features_list.md` & commit
-    - [ ] Sub-task: Implement missing features & commit
-    - [ ] Sub-task: Prioritize & Implement Text -> v1.1 & commit
-- [ ] Task: Internal Review Round 2 (P2 Manuscript)
-    - [ ] Sub-task: Final review of v1.1 & commit
-    - [ ] Sub-task: Implement -> v2.0 (Submission Ready) & commit
+- [x] Task: Internal Review Round 1 (P2 Manuscript) [9df5bdc]
+    - [x] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
+    - [x] Sub-task: Generate `missing_features_list.md` & commit
+    - [x] Sub-task: Implement missing features & commit
+    - [x] Sub-task: Prioritize & Implement Text -> v1.1 & commit
+- [x] Task: Internal Review Round 2 (P2 Manuscript) [057b0cf]
+    - [x] Sub-task: Final review of v1.1 & commit
+    - [x] Sub-task: Implement -> v2.0 (Submission Ready) & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 7: P2 Manuscript - Drafting & Review Loops' (Protocol in workflow.md)
 
 ## Phase 8: P3 RACMA - Drafting & Review Loops
-- [ ] Task: Targeting & Schema Definition (P3)
-    - [ ] Sub-task: Extract Requirements from `racma.md` & commit
-    - [ ] Sub-task: Define Section Budgets & commit
-    - [ ] Sub-task: Create `P3_RACMA_Position/01_Drafting/schema.json` & commit
-- [ ] Task: Draft Position Statement v1.0
-    - [ ] Sub-task: Draft Executive Summary & commit
-    - [ ] Sub-task: Draft Recommendations & commit
-    - [ ] Sub-task: Audit Structural Integrity (Executive Position/Actionable Evidence coverage) & commit
-- [ ] Task: Readability, Tone & Reference Quality (P3)
-    - [ ] Sub-task: Run `textstat` analysis -> `readability_report.md` & commit
-    - [ ] Sub-task: Optimize for Plain English (Grade 10-12) & commit
-    - [ ] Sub-task: Tone Audit (Neutrality/AI-check) & commit
-    - [ ] Sub-task: Run `manage_refs.py` Quality Check & commit
-    - [ ] Sub-task: Fix Low-Quality References & commit
-- [ ] Task: Final Formatting & Bibliography (P3)
-    - [ ] Sub-task: Strip non-manuscript text & commit
-    - [ ] Sub-task: Generate Numbered Bibliography & commit
-    - [ ] Sub-task: Verify Hybrid Citation Style & commit
-- [ ] Task: Internal Review Round 1 (P3)
-    - [ ] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
-    - [ ] Sub-task: Implement changes -> v1.1 & commit
-- [ ] Task: Internal Review Round 2 (P3)
-    - [ ] Sub-task: Final review of v1.1 & commit
-    - [ ] Sub-task: Implement -> v2.0 (Final) & commit
-- [ ] Task: Conductor - User Manual Verification 'Phase 8: P3 RACMA - Drafting & Review Loops' (Protocol in workflow.md)
+- [x] Task: Targeting & Schema Definition (P3) [ef639f7]
+    - [x] Sub-task: Extract Requirements from `racma.md` & commit
+    - [x] Sub-task: Define Section Budgets & commit
+    - [x] Sub-task: Create `P3_RACMA_Position/01_Drafting/schema.json` & commit
+- [x] Task: Draft Position Statement v1.0 [f528b69]
+    - [x] Sub-task: Draft Executive Summary & commit
+    - [x] Sub-task: Draft Recommendations & commit
+    - [x] Sub-task: Audit Structural Integrity (Executive Position/Actionable Evidence coverage) & commit
+- [x] Task: Readability, Tone & Reference Quality (P3) [f05dd6d]
+    - [x] Sub-task: Run `textstat` analysis -> `readability_report.md` & commit
+    - [x] Sub-task: Optimize for Plain English (Grade 10-12) & commit
+    - [x] Sub-task: Tone Audit (Neutrality/AI-check) & commit
+    - [x] Sub-task: Run `manage_refs.py` Quality Check & commit
+    - [x] Sub-task: Fix Low-Quality References & commit
+- [x] Task: Final Formatting & Bibliography (P3) [583f7fb]
+- [x] Task: Internal Review Round 1 (P3) [583f7fb]
+- [x] Task: Internal Review Round 2 (P3) [583f7fb]
+- [x] Task: Conductor - User Manual Verification 'Phase 8: P3 RACMA - Drafting & Review Loops' (Protocol in workflow.md) [checkpoint: 583f7fb]
 
 ## Phase 9: Final Submission Packaging
-- [ ] Task: Title Page & Cover Letter - P1 (Qualitative)
-    - [ ] Sub-task: Draft Title Page (Affiliations, Conflicts, Funding) & commit
-    - [ ] Sub-task: Draft Cover Letter (To Editor, Highlighting Fit/Novelty) & commit
-    - [ ] Sub-task: Internal Review Title/Cover & commit
-- [ ] Task: Title Page & Cover Letter - P2 (Modelling)
-    - [ ] Sub-task: Draft Title Page (Affiliations, Conflicts, Funding) & commit
-    - [ ] Sub-task: Draft Cover Letter (To Editor, Highlighting Fit/Novelty) & commit
-    - [ ] Sub-task: Internal Review Title/Cover & commit
-- [ ] Task: Title Page & Cover Letter - P3 (RACMA)
-    - [ ] Sub-task: Draft Title Page/Cover Note & commit
-    - [ ] Sub-task: Internal Review & commit
-- [ ] Task: Final Package Assembly
-    - [ ] Sub-task: Final Reference Validation (100% check) & commit
-    - [ ] Sub-task: Generate P1 Final PDF Bundle & commit
-    - [ ] Sub-task: Generate P2 Final PDF Bundle & commit
-    - [ ] Sub-task: Generate P3 Final PDF Bundle & commit
+- [x] Task: Title Page & Cover Letter - P1 (Qualitative) [50e9844]
+    - [x] Sub-task: Draft Title Page (Affiliations, Conflicts, Funding) & commit
+    - [x] Sub-task: Draft Cover Letter (To Editor, Highlighting Fit/Novelty) & commit
+    - [x] Sub-task: Internal Review Title/Cover & commit
+- [x] Task: Title Page & Cover Letter - P2 (Modelling) [b5f2cfd]
+    - [x] Sub-task: Draft Title Page (Affiliations, Conflicts, Funding) & commit
+    - [x] Sub-task: Draft Cover Letter (To Editor, Highlighting Fit/Novelty) & commit
+    - [x] Sub-task: Internal Review Title/Cover & commit
+- [x] Task: Title Page & Cover Letter - P3 (RACMA) [ab88945]
+    - [x] Sub-task: Draft Title Page/Cover Note & commit
+    - [x] Sub-task: Internal Review & commit
+- [x] Task: Final Package Assembly [fe3ffeb]
+    - [x] Final Reference Validation (100% check) & commit
+    - [x] Generate P1 Final PDF Bundle & commit
+    - [x] Generate P2 Final PDF Bundle & commit
+    - [x] Generate P3 Final PDF Bundle & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 9: Final Submission Packaging' (Protocol in workflow.md)
