@@ -5,6 +5,7 @@ import pandas as pd
 from matplotlib.figure import Figure
 
 from .config import PlotConfig
+from .schemas import TrajectorySchema
 
 
 def plot_trajectory(
@@ -31,6 +32,11 @@ def plot_trajectory(
     Returns:
         A matplotlib Figure object.
     """
+    # Validation
+    TrajectorySchema.validate(data)
+    if y_col not in data.columns:
+        raise ValueError(f"y_col '{y_col}' not found in data.")
+
     if config is None:
         config = PlotConfig()
 
@@ -57,3 +63,105 @@ def plot_trajectory(
     ax.grid(True, alpha=config.alpha_grid)
 
     return fig
+
+
+def plot_comparison_trajectory(
+    data: pd.DataFrame,
+    y_col: str,
+    ylabel: str,
+    group_col: str = "Scenario",
+    config: PlotConfig | None = None,
+    **kwargs,
+) -> Figure:
+    """
+    Plots multiple trajectories for comparison across scenarios.
+
+    Args:
+        data: DataFrame containing 'year', y_col, and group_col.
+        y_col: Column name for the metric.
+        ylabel: Label for the y-axis.
+        group_col: Column name to group by (e.g. 'Scenario').
+        config: PlotConfig object.
+        **kwargs: Passed to ax.plot.
+    """
+    if config is None:
+        config = PlotConfig()
+
+    fig = plt.figure(figsize=config.default_figsize)
+    ax = fig.gca()
+
+    groups = data[group_col].unique()
+    for i, grp in enumerate(groups):
+        sub = data[data[group_col] == grp]
+        color = config.color_palette[i % len(config.color_palette)]
+        ax.plot(
+            sub["year"],
+            sub[y_col],
+            label=str(grp),
+            color=color,
+            linewidth=config.linewidth,
+            **kwargs,
+        )
+
+    ax.set_xlabel("Year", fontsize=config.fontsize_label)
+    ax.set_ylabel(ylabel, fontsize=config.fontsize_label)
+    ax.grid(True, alpha=config.alpha_grid)
+
+    return fig
+
+
+def plot_swarm(
+    data: pd.DataFrame,
+    y_col: str,
+    ylabel: str,
+    run_col: str = "run",
+    config: PlotConfig | None = None,
+    **kwargs,
+) -> Figure:
+    """
+    Plots a 'swarm' of Monte Carlo trajectories.
+
+    Args:
+        data: DataFrame with 'year', y_col, and run_col.
+        y_col: Column name for the metric.
+        ylabel: Label for the y-axis.
+        run_col: Column name for the MC run ID.
+        config: PlotConfig object.
+        **kwargs: Passed to ax.plot for individual lines.
+    """
+    if config is None:
+        config = PlotConfig()
+
+    fig = plt.figure(figsize=config.default_figsize)
+    ax = fig.gca()
+
+    runs = data[run_col].unique()
+    for r in runs:
+        sub = data[data[run_col] == r]
+        ax.plot(
+            sub["year"],
+            sub[y_col],
+            color=config.primary_color,
+            alpha=0.1,
+            linewidth=0.5,
+            **kwargs,
+        )
+
+    # Mean line
+    mean_df = data.groupby("year")[y_col].mean().reset_index()
+    ax.plot(
+        mean_df["year"],
+        mean_df[y_col],
+        color=config.error_color,
+        linewidth=config.linewidth,
+        label="Mean",
+    )
+
+    ax.set_xlabel("Year", fontsize=config.fontsize_label)
+    ax.set_ylabel(ylabel, fontsize=config.fontsize_label)
+    ax.legend(fontsize=config.fontsize_legend, frameon=False)
+    ax.tick_params(axis="both", labelsize=config.fontsize_tick)
+    ax.grid(True, alpha=config.alpha_grid)
+
+    return fig
+

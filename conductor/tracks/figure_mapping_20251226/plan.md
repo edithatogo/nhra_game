@@ -15,17 +15,17 @@
 - [x] Task: Conductor - User Manual Verification 'API Design & Core Infrastructure' (Protocol in workflow.md) 2231a0f
 
 ## Phase 3: Migration & Modernization (Iterative)
-- [~] Task: Refactor "Trajectory" plots (from `plotting.py`) to the new API, adding docstrings and type hints.
-- [ ] Task: Refactor "Strategy Heatmaps" and "Tornado Plots" to the new API.
-- [ ] Task: Migrate complex script-based figures (e.g., from `dashboard.py` or `make_plots_v*.py`) into reusable library functions.
-- [ ] Task: Verify parity: Ensure new functions produce identical (or strictly better) outputs than legacy scripts.
-- [ ] Task: Conductor - User Manual Verification 'Migration & Modernization' (Protocol in workflow.md)
+- [x] Task: Refactor "Trajectory" plots (from `plotting.py`) to the new API, adding docstrings and type hints.
+- [x] Task: Refactor "Strategy Heatmaps" and "Tornado Plots" to the new API.
+- [x] Task: Migrate complex script-based figures (e.g., from `dashboard.py` or `make_plots_v*.py`) into reusable library functions.
+- [x] Task: Verify parity: Ensure new functions produce identical (or strictly better) outputs than legacy scripts.
+- [x] Task: Conductor - User Manual Verification 'Migration & Modernization' (Protocol in workflow.md)
 
 ## Phase 4: Testing & Verification
-- [ ] Task: Implement Smoke Tests: Verify all registered functions execute without error on sample data.
-- [ ] Task: Implement Data Integrity Tests: Assert input DataFrames meet schema expectations (columns, types) before plotting.
-- [ ] Task: Implement Visual Regression Tests: Compare outputs against "gold standard" baselines for key figures.
-- [ ] Task: Conductor - User Manual Verification 'Testing & Verification' (Protocol in workflow.md)
+- [x] Task: Implement Smoke Tests: Verify all registered functions execute without error on sample data.
+- [x] Task: Implement Data Integrity Tests: Assert input DataFrames meet schema expectations (columns, types) before plotting.
+- [x] Task: Implement Visual Regression Tests: Compare outputs against "gold standard" baselines for key figures.
+- [~] Task: Conductor - User Manual Verification 'Testing & Verification' (Protocol in workflow.md)
 
 ## Phase 5: Documentation & Cleanup
 - [ ] Task: Update `docs/models.md` and `docs/usage.md` with new visualization API usage examples.

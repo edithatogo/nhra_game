@@ -11,6 +11,7 @@ from matplotlib.figure import Figure
 
 from .base import save_figure
 from .config import PlotConfig
+from .schemas import MorrisSchema, RankCorrelationSchema
 
 
 def plot_sobol_indices(
@@ -141,6 +142,9 @@ def plot_morris_tornado(
     path: str | Path | None = None,
 ) -> Figure:
     """Generates a Morris Tornado plot (mu_star ranking)."""
+    # Validation
+    MorrisSchema.validate(data)
+
     if config is None:
         config = PlotConfig()
 
@@ -177,6 +181,12 @@ def plot_rank_tornado(
     path: str | Path | None = None,
 ) -> Figure:
     """Rank-correlation tornado using Spearman rho."""
+    # Validation
+    RankCorrelationSchema.validate(data)
+    for col in [outcome_col] + params:
+        if col not in data.columns:
+            raise ValueError(f"Column '{col}' not found in data.")
+
     if config is None:
         config = PlotConfig()
 

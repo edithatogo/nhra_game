@@ -6,6 +6,7 @@ import seaborn as sns
 from matplotlib.figure import Figure
 
 from .config import PlotConfig
+from .schemas import StrategyFrequencySchema
 
 
 def plot_strategy_heatmap(
@@ -16,6 +17,9 @@ def plot_strategy_heatmap(
     """
     Shows strategy shares over time for each game (one panel per game).
     """
+    # Validation
+    StrategyFrequencySchema.validate(data)
+
     if config is None:
         config = PlotConfig()
 
@@ -162,5 +166,67 @@ def plot_stacked_bar(
     ax.set_xlabel(xlabel, fontsize=config.fontsize_label)
     ax.grid(True, axis="x", alpha=config.alpha_grid)
     ax.tick_params(axis="both", labelsize=config.fontsize_tick)
+
+    return fig
+
+
+def plot_comparison_bar(
+    data: pd.DataFrame,
+    x_col: str,
+    y_col: str,
+    title: str,
+    ylabel: str,
+    config: PlotConfig | None = None,
+    **kwargs,
+) -> Figure:
+    """
+    Plots a simple bar chart for scenario comparison.
+    """
+    if config is None:
+        config = PlotConfig()
+
+    fig, ax = plt.subplots(figsize=config.default_figsize)
+    sns.barplot(
+        data=data, x=x_col, y=y_col, ax=ax, palette=config.color_palette, hue=x_col, legend=False, **kwargs
+    )
+
+    ax.set_title(title, fontsize=config.fontsize_title)
+    ax.set_ylabel(ylabel, fontsize=config.fontsize_label)
+    ax.set_xlabel(x_col.replace("_", " ").title(), fontsize=config.fontsize_label)
+    ax.tick_params(axis="both", labelsize=config.fontsize_tick)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    return fig
+
+
+def plot_cdf(
+    data: pd.Series | pd.DataFrame,
+    value_col: str | None = None,
+    title: str = "Cumulative Distribution Function",
+    config: PlotConfig | None = None,
+) -> Figure:
+    """
+    Plots a Cumulative Distribution Function (CDF).
+    """
+    if config is None:
+        config = PlotConfig()
+
+    if isinstance(data, pd.DataFrame):
+        if value_col is None:
+            raise ValueError("value_col must be provided for DataFrame input")
+        s = data[value_col].dropna().sort_values().reset_index(drop=True)
+    else:
+        s = data.dropna().sort_values().reset_index(drop=True)
+
+    y = (s.index + 1) / len(s)
+
+    fig, ax = plt.subplots(figsize=config.default_figsize)
+    ax.plot(s, y, color=config.primary_color, linewidth=config.linewidth)
+
+    ax.set_title(title, fontsize=config.fontsize_title)
+    ax.set_xlabel(value_col if value_col else "Value", fontsize=config.fontsize_label)
+    ax.set_ylabel("CDF", fontsize=config.fontsize_label)
+    ax.grid(True, alpha=config.alpha_grid)
 
     return fig

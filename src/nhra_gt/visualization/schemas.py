@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import pandera as pa
-from pandera.typing import Series
+import pandera.pandas as pa
+from pandera.typing.pandas import Series
 
 
 class TrajectorySchema(pa.DataFrameModel):

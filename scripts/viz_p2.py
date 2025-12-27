@@ -1,55 +1,50 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 from pathlib import Path
+from nhra_gt.visualization.base import PlotConfig, save_figure
+from nhra_gt.visualization.trajectories import plot_comparison_trajectory
+from nhra_gt.visualization.distributional import plot_comparison_bar
 
 def main():
     out_dir = Path("publications/P2_Modelling_MJA/03_Manuscript/figures")
     out_dir.mkdir(parents=True, exist_ok=True)
     
     data_dir = Path("publications/P2_Modelling_MJA/02_Analysis")
+    config = PlotConfig()
     
     # 1. Trajectory Comparison
     scenarios = ["baseline", "transparency_surge", "audit_blitz", "cooperative_governance"]
-    plt.figure(figsize=(10, 6))
-    
+    all_traj = []
     for scen in scenarios:
         df = pd.read_csv(data_dir / f"traj_{scen}.csv")
-        plt.plot(df["year"], df["pressure_mean"], label=scen.replace("_", " ").title(), marker='o')
-        
-    plt.axhline(1.0, color='red', linestyle='--', alpha=0.5, label="System Limit")
-    plt.xlabel("Year")
-    plt.ylabel("System Pressure Index")
-    plt.title("Figure 1: Projected System Pressure under Alternative NHRA Policies")
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    plt.savefig(out_dir / "figure1_trajectories.png", dpi=300)
-    plt.close()
+        df["Scenario"] = scen.replace("_", " ").title()
+        all_traj.append(df)
     
-    # 2. Strategic Gaming Breakdown (Baseline)
-    # We don't have strategy freq per year in my P2 run yet, I'll use the summary
+    combined_traj = pd.concat(all_traj)
+    fig1 = plot_comparison_trajectory(
+        combined_traj, 
+        "pressure_mean", 
+        "System Pressure Index", 
+        config=config
+    )
+    # Add system limit line
+    fig1.gca().axhline(1.0, color='red', linestyle='--', alpha=0.5, label="System Limit")
+    fig1.gca().legend()
+    fig1.gca().set_title("Figure 1: Projected System Pressure under Alternative NHRA Policies")
+    
+    save_figure(fig1, out_dir / "figure1_trajectories.png", config)
+    
+    # 2. Strategic Gaming Breakdown
     summary = pd.read_csv(data_dir / "experiment_summary.csv")
-    plt.figure(figsize=(8, 6))
-    sns.barplot(data=summary, x="scenario", y="within4")
-    plt.xticks(rotation=45)
-    plt.ylabel("Proportion within 4h")
-    plt.title("Figure 2: Performance Outcome (within 4h) by Policy Scenario")
-    plt.tight_layout()
-    plt.savefig(out_dir / "figure2_performance.png", dpi=300)
-    plt.close()
-
-    # 3. Trade-off: Performance vs. Pressure (Proxy for Admin/System Cost)
-    plt.figure(figsize=(10, 6))
-    sns.scatterplot(data=summary, x="pressure", y="within4", hue="scenario", s=200)
-    for i, row in summary.iterrows():
-        plt.text(row["pressure"]+0.005, row["within4"]+0.005, row["scenario"].replace("_", " ").title())
+    fig2 = plot_comparison_bar(
+        summary,
+        "scenario",
+        "within4",
+        "Figure 2: Performance Outcome (within 4h) by Policy Scenario",
+        "Proportion within 4h",
+        config=config
+    )
     
-    plt.xlabel("End-state System Pressure (Index)")
-    plt.ylabel("Performance (within 4h)")
-    plt.title("Figure 3: Policy Trade-offs - Throughput vs. System Pressure")
-    plt.grid(True, alpha=0.3)
-    plt.savefig(out_dir / "figure3_tradeoff.png", dpi=300)
-    plt.close()
+    save_figure(fig2, out_dir / "figure2_performance.png", config)
     
     print(f"Figures generated in {out_dir}")
 
