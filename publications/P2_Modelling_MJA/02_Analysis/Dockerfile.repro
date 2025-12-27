@@ -1,0 +1,25 @@
+# Reputability Dockerfile for NHRA Game Theory Simulation (P2 Publication)
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    graphviz \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install
+COPY requirements.lock .
+RUN pip install --no-cache-dir -r requirements.lock
+
+# Copy source code
+COPY src/ src/
+COPY context/ context/
+COPY data/ data/
+
+# Set Python path
+ENV PYTHONPATH=/app/src
+
+# Default command: run baseline simulation
+CMD ["python", "scripts/run_baseline.py"]
