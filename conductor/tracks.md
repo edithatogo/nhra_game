@@ -34,11 +34,11 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Comprehensive Figure Mapping & API Modernization
+## [x] Track: Comprehensive Figure Mapping & API Modernization
 *Link: [./conductor/tracks/figure_mapping_20251226/](./conductor/tracks/figure_mapping_20251226/)*
 
 ---
 
-## [~] Track: Publications Series (MJA/RACMA)
+## [x] Track: Publication Series - NHRA Game Theory & Empirical Modelling
 *Link: [./conductor/tracks/publications_series_20251226/](./conductor/tracks/publications_series_20251226/)*
 
