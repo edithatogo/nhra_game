@@ -1,0 +1,30 @@
+{
+  "manuscript_id": "P3_RACMA_Position",
+  "target_org": "Royal Australasian College of Medical Administrators (RACMA)",
+  "article_type": "Position Statement",
+  "author": "Dylan A Mordaunt",
+  "constraints": {
+    "total_word_count_target": 1500,
+    "page_count_target": "2-4 pages",
+    "reading_level_target": "Grade 10-12"
+  },
+  "word_budgets": {
+    "executive_summary": 200,
+    "background_context": 400,
+    "key_issues": 400,
+    "recommendations": 400,
+    "references": 100
+  },
+  "structure": [
+    "Title",
+    "Executive Summary / Key Position",
+    "Background / Context",
+    "Key Issues",
+    "Recommendations / Call to Action",
+    "References"
+  ],
+  "style": {
+    "tone": "Authoritative, Professional, Advocacy-oriented",
+    "audience": "Government Ministers, Policy Makers, Health Executives"
+  }
+}
