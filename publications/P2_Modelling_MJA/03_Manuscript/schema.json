@@ -1,0 +1,31 @@
+{
+  "manuscript_id": "P2_Modelling_MJA",
+  "target_journal": "Medical Journal of Australia",
+  "article_type": "Research Article",
+  "author": "Dylan A Mordaunt",
+  "constraints": {
+    "total_word_count_limit": 3000,
+    "abstract_word_count_limit": 300,
+    "reference_limit": 40,
+    "display_item_limit": 6
+  },
+  "word_budgets": {
+    "abstract": 300,
+    "introduction": 400,
+    "methods": 1000,
+    "results": 800,
+    "discussion": 500
+  },
+  "structure": [
+    "Title",
+    "Abstract",
+    "Introduction",
+    "Methods",
+    "Results",
+    "Discussion",
+    "References"
+  ],
+  "checklist": "ODD + STRESS-DES",
+  "citation_style": "Vancouver (Numbered)",
+  "inline_citation_format": "{Author, Year @Label #RecordNumber}"
+}
