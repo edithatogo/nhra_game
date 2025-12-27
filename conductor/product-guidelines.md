@@ -22,6 +22,8 @@
 To ensure SOTA quality, the project will strictly adhere to the following international guidelines:
 -   **CHEERS 2022:** Consolidated Health Economic Evaluation Reporting Standards.
 -   **STRESS:** Strengthening The Reporting of Empirical Simulation Studies.
+-   **SRQR:** Standards for Reporting Qualitative Research (for statutory mapping).
+-   **PRISMA-ScR:** Preferred Reporting Items for Systematic reviews and Meta-Analyses extension for Scoping Reviews.
 -   **NCBI/NIH:** Best practices for biomedical research reporting.
 
 ## Compliance Enforcement

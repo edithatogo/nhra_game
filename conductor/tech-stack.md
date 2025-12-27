@@ -19,5 +19,9 @@
 - **Static Analysis:** Pyright (Strict), Mypy, Deptry (Dependency Audit)
 - **Profiling & Benchmarking:** Pyinstrument, Scalene
 - **Advanced Testing:** Hypothesis (PBT), Atheris (Fuzzing), Locust (Load), Mutmut (Mutation Testing)
-- **Runtime Verification:** Icontract (Design-by-Contract), Beartype, Typeguard
-- **Documentation:** MkDocs, Mkdocstrings
+- Runtime Verification: Icontract (Design-by-Contract), Beartype, Typeguard
+- Documentation: MkDocs, Mkdocstrings
+
+## Publication & Meta-Research
+- Citation Management: Custom YAML-to-BibTeX/RIS pipeline (`manage_refs.py`)
+- Quality Metrics: Textstat (Readability/Grade Level optimization)

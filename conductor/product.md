@@ -1,6 +1,7 @@
 # Initial Concept
 
 This is a project which was developed in chatgpt, and has over a dozen versions. It's supposed to be incremental development, but there might have been variations throughout. What I'm thinking is that I'll need you to setup the most recent version as a repo, initiatlising git etc. but also archiving the old copies. I'd also want you to then review all of the older versions, and ascertain whether any features have unintentionally been dropped, then develop a plan to add them back in. From there I'm keen for you to develop a roadmap to get this to be a SOTA model for the stated purpose. **Update (Dec 2025):** The repository has undergone a comprehensive structural audit, standardizing the package name to `nhra_gt` and optimizing core Nash Equilibrium solvers for 2x performance.
+**Publication Update (Dec 2025):** A comprehensive publication series has been drafted, including a qualitative mapping of the NHRA statutory text, a quantitative simulation study of strategic gaming equilibria, and a RACMA position statement for the 2025-2030 negotiations.
 
 ---
 
@@ -11,10 +12,10 @@ To develop a State-of-the-Art (SOTA) predictive game-theory model of the Nationa
 
 ## Primary Goals
 1.  **Predictive Fidelity & Calibration:** Elevate the model to predictive forecasting, validated through rigorous backtesting against historical NHRA outcomes. **High-priority focus on JAX/XLA acceleration.**
-2.  **Evidence Grounding:** Establish rigorous, publicly traceable evidence for all parameters.
+2.  **Evidence Grounding:** Establish rigorous, publicly traceable evidence for all parameters, now validated through a systematic qualitative mapping of the NHRA statutory text.
 3.  **Reproducibility:** Ensure all results are independently reproducible via strict provenance tracking and containerization (critical for MJA).
 4.  **Feature Recovery:** Systematically review and re-integrate valuable features lost during iterative development.
-5.  **Publication:** Produce original research suitable for publication in the Medical Journal of Australia (MJA).
+5.  **Publication:** Successfully drafted three manuscripts (P1, P2, P3) adhering to MJA and RACMA standards, incorporating a rigorous single-author analytical review protocol.
 
 ## Target Audience
 -   **Primary:** RACMA Policy & Advocacy Directorate.
