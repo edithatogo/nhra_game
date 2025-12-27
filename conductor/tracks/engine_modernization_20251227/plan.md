@@ -1,13 +1,13 @@
 # Implementation Plan: NHRA Engine Modernization (JAX & Polars)
 
-## Phase 1: JAX Foundation & Logic Parity
-- [~] Task: Define `Pytree` state structures and pure functional `step()` logic.
-- [ ] Task: Implement multi-year rollout logic using `jax.lax.scan`.
-- [ ] Task: Implement **Mirror Test Harness** to verify parity with v26 logic.
-- [ ] Task: Conductor - User Manual Verification 'JAX Foundation' (Protocol in workflow.md)
+## Phase 1: JAX Foundation & Logic Parity [checkpoint: b6b480a]
+- [x] Task: Define `Pytree` state structures and pure functional `step()` logic.
+- [x] Task: Implement multi-year rollout logic using `jax.lax.scan`.
+- [x] Task: Implement **Mirror Test Harness** to verify parity with v26 logic.
+- [x] Task: Conductor - User Manual Verification 'JAX Foundation' (Protocol in workflow.md) b6b480a
 
 ## Phase 2: Differentiable Solvers & Equilibrium Oracle
-- [ ] Task: Implement QRE, Regret-Min, and Discrete (JVP) solvers in JAX.
+- [~] Task: Implement QRE, Regret-Min, and Discrete (JVP) solvers in JAX.
 - [ ] Task: Implement **PyGambit Oracle** test suite to validate solvers.
 - [ ] Task: Conductor - User Manual Verification 'Differentiable Solvers' (Protocol in workflow.md)
 
