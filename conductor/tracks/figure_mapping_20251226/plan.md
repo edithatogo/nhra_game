@@ -7,15 +7,15 @@
 - [x] Task: Implement `scripts/build_figure_report.py` to generate `docs/reports/figure_inventory.md` from the registry.
 - [x] Task: Conductor - User Manual Verification 'Audit & Registry' (Protocol in workflow.md) 190e6fb
 
-## Phase 2: API Design & Core Infrastructure
+## Phase 2: API Design & Core Infrastructure [checkpoint: 2231a0f]
 - [x] Task: Create `src/nhra_gt/visualization/` module structure.
 - [x] Task: Define `PlotConfig` (Pydantic model) for shared styling (palettes, fonts, dimensions) in `src/nhra_gt/visualization/config.py`.
 - [x] Task: Implement `AbstractPlotter` or protocol/interface for standardized function signatures: `plot_X(data, config) -> Figure`.
 - [x] Task: Set up `pytest-mpl` and `tests/visualization/` directory with a baseline image cache.
-- [~] Task: Conductor - User Manual Verification 'API Design & Core Infrastructure' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'API Design & Core Infrastructure' (Protocol in workflow.md) 2231a0f
 
 ## Phase 3: Migration & Modernization (Iterative)
-- [ ] Task: Refactor "Trajectory" plots (from `plotting.py`) to the new API, adding docstrings and type hints.
+- [~] Task: Refactor "Trajectory" plots (from `plotting.py`) to the new API, adding docstrings and type hints.
 - [ ] Task: Refactor "Strategy Heatmaps" and "Tornado Plots" to the new API.
 - [ ] Task: Migrate complex script-based figures (e.g., from `dashboard.py` or `make_plots_v*.py`) into reusable library functions.
 - [ ] Task: Verify parity: Ensure new functions produce identical (or strictly better) outputs than legacy scripts.
