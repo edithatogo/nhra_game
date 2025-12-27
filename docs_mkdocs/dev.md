@@ -85,31 +85,46 @@ memray flamegraph output.bin
 
 ---
 
-## JAX Acceleration
+## JAX Acceleration & Functional Core
 
-The project supports optional JAX-based acceleration for numerical operations.
+The project uses a high-performance JAX/XLA functional core for the simulation engine. This allows for 10-100x speedups via vectorization and hardware acceleration.
 
-### Installation
+### Functional Programming Rules
 
-```bash
-# Install the accel extras
-poetry install --extras accel
+To maintain JIT-compatibility, all code in `src/nhra_gt/engine_jax.py` must be **purely functional**:
+1.  **No Side Effects:** No `print()`, no global variable mutations, no in-place array updates.
+2.  **No Python Control Flow:** Use `jax.lax.cond`, `jax.lax.switch`, and `jax.lax.scan` instead of `if`, `elif`, and `for`.
+3.  **Statelessness:** Use `StateJax` Pytrees instead of objects with `self`.
+
+### Pytree State Management
+
+System state is managed using `flax.struct.dataclass`. This allows JAX to treat complex objects as unified blocks of memory:
+
+```python
+from nhra_gt.domain.state import StateJax
+
+# Transformation (returns a new state)
+new_state = state.replace(pressure=1.2)
 ```
 
-### Compliance Testing
+### Vectorization (vmap)
 
-Verify JAX compatibility:
+Use `jax.vmap` to run thousands of Monte Carlo samples or all 8 Australian jurisdictions in parallel at near-zero extra cost:
 
-```bash
-poetry run pytest tests/test_jax_compliance.py
+```python
+# Run 1000 rollouts in parallel
+keys = jax.random.split(key, 1000)
+parallel_results = jax.vmap(run_simulation)(keys)
 ```
 
-### Usage
+### Performance & Caching
 
-JAX acceleration is automatically used when available for:
-- Matrix operations in Nash solver
-- Monte Carlo simulations
-- Sensitivity analysis
+The engine automatically uses a persistent disk cache for compiled XLA kernels located at `~/.cache/jax_cache`. This minimizes "Time-to-First-Plot" in the dashboard.
+
+To run performance benchmarks:
+```bash
+poetry run python scripts/benchmark_modernization.py
+```
 
 ---
 

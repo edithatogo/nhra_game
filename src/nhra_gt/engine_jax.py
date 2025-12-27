@@ -58,6 +58,40 @@ def within4_from_pressure_jax(pidx: Float[jnp.ndarray, ""]) -> Float[jnp.ndarray
     return jnp.clip(0.80 - 0.45 * jax_logistic((pidx - 1.0) / 0.20), 0.05, 0.85)
 
 
+def baseline_state_jax(start_year: int = 2025, p: ParamsJax | None = None) -> StateJax:
+    if p is None:
+        p = ParamsJax()
+    metro_ratio = p.nep_to_cost_ratio_metro
+    reg_ratio = p.nep_to_cost_ratio_regional
+    rem_ratio = p.nep_to_cost_ratio_remote
+    ratio = (
+        (1 - p.rurality_weight) * metro_ratio
+        + (p.rurality_weight - p.remote_weight) * reg_ratio
+        + p.remote_weight * rem_ratio
+    )
+    efficiency_gap = 1.0 / jnp.maximum(1e-9, ratio) - 1.0
+    return StateJax(
+        year=jnp.array(start_year, dtype=jnp.int32),
+        month=jnp.array(1, dtype=jnp.int32),
+        pressure=1.0,
+        occupancy=p.occupancy_base,
+        offload_min=p.offload_base_min,
+        within4=p.within4_base,
+        effective_cth_share=p.effective_cth_share_base * (1.0 + efficiency_gap),
+        efficiency_gap=efficiency_gap,
+        discharge_delay=p.discharge_delay_base,
+        political_capital=1.0,
+        system_mode=0,
+        target_capacity=p.bed_capacity_index,
+        current_capacity=p.bed_capacity_index,
+        equity_index=1.0,
+        reconciliation_balance=0.0,
+        bailout_expectation=0.0,
+        coding_intensity=1.0,
+        reputation_score=1.0,
+    )
+
+
 # ----------------------------
 # Transitions (JAX versions)
 # ----------------------------
