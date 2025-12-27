@@ -11,14 +11,15 @@
 - [x] Task: Implement **PyGambit Oracle** test suite to validate solvers.
 - [x] Task: Conductor - User Manual Verification 'Differentiable Solvers' (Protocol in workflow.md) 5a952c7
 
-## Phase 3: Polars Integration & Multi-Agent Expansion
-- [x] Task: Rewrite data ingestion using Polars.
-- [~] Task: Implement `vmap` for parallel Jurisdictions and Hierarchical (Cth -> State -> LHN) logic.
-- [ ] Task: Implement `jaxopt` policy optimization mode.
-- [ ] Task: Conductor - User Manual Verification 'Data & Multi-Agent' (Protocol in workflow.md)
+## Phase 3: Polars Integration & Multi-Agent Expansion [checkpoint: 45c4bb3]
+- [x] Task: Rewrite data ingestion scripts (`scripts/run_baseline.py`, etc.) to use Polars.
+- [x] Task: Expand JAX core to support vectorized multi-jurisdiction (N-State) simulation.
+- [x] Task: Implement Hierarchical (Cth -> State -> LHN) game logic hooks.
+- [x] Task: Implement `jaxopt` policy optimization mode.
+- [x] Task: Conductor - User Manual Verification 'Data & Multi-Agent' (Protocol in workflow.md) 45c4bb3
 
 ## Phase 4: Strategic Visualization & Game Tree Explorer
-- [ ] Task: Implement Extensive Form SVG generator for **2-player, Multi-player, and Hybrid** games.
+- [~] Task: Implement Extensive Form SVG generator for **2-player, Multi-player, and Hybrid** games.
 - [ ] Task: Integrate interactive **Game Tree Explorer** (dynamic GTE-style) in Streamlit.
 - [ ] Task: Map tree nodes to Bibliography system and "Live Gradient" sidebar indicators.
 - [ ] Task: Conductor - User Manual Verification 'Visualization' (Protocol in workflow.md)
