@@ -589,13 +589,13 @@ def main():
         """)
 
         # Embed the D3 HTML
-        d3_path = Path("outputs/v26/interactive/games_network_d3.html")
+        d3_path = Path("outputs/interactive/games_network_d3.html")
         if d3_path.exists():
             with open(d3_path, encoding="utf-8") as f:
                 st.components.v1.html(f.read(), height=600, scrolling=True)
         else:
             st.error(
-                "D3 network assets not found. Ensure `scripts/interactive/make_d3_network_v26.py` has been run."
+                "D3 network assets not found. Ensure `scripts/interactive/make_d3_network.py` has been run."
             )
 
         st.caption("Strategic nodes (BARG, DEF, etc.) parameterize the simulation logic.")

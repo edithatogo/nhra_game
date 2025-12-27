@@ -91,6 +91,8 @@ def baseline_state_jax(start_year: int = 2025, p: ParamsJax | None = None) -> St
         reputation_score=1.0,
         lhn_pressure=jnp.zeros(5),
         lhn_nwau=jnp.zeros(5),
+        agreement_clock=5,
+        workforce_pool=1.0,
         jurisdiction_id=0,
         metrics=MetricsJax(),
     )
@@ -108,9 +110,34 @@ def demand_step_jax(
     # SHIFT: I=0, S=1 (index 3)
     shift_val = strategies[3]
     demand_factor = jnp.where(shift_val == 1, 1.04, 0.96)
-    demand = p.demand_base * demand_factor
-    demand += noise
-    return jnp.maximum(0.5, demand)
+    
+    # 1. GP Utility
+    u_gp = - (jnp.array(p.gp_wait_time_min) / 60.0 * jnp.array(p.patient_time_value_hour)) - jnp.array(p.gp_out_of_pocket)
+    
+    # 2. Fixed-point iteration for endogenous demand
+    # demand -> wait -> utility_ed -> p(choose_ed) -> demand
+    def f(d_curr):
+        # Servers = capacity * 10
+        capacity = s.current_capacity + p.capacity_lag * (s.target_capacity - s.current_capacity)
+        wait_min = mm_s_queue_wait_jax(jnp.array(d_curr), 1.0 / jnp.maximum(1e-9, s.discharge_delay), jnp.array(capacity * 10.0))
+        u_ed = - (wait_min / 60.0 * p.patient_time_value_hour)
+        
+        # Logit choice between ED and GP
+        # Use a high sensitivity (scale logits)
+        logits = jnp.array([u_ed, u_gp])
+        prob_ed = jax.nn.softmax(logits * 0.2)[0]
+        
+        # Total base demand * choice probability
+        return p.demand_base * demand_factor * 2.0 * prob_ed 
+    
+    # Run 5 iterations (usually converges fast)
+    d_final = f(jnp.array(p.demand_base))
+    d_final = f(d_final)
+    d_final = f(d_final)
+    d_final = f(d_final)
+    d_final = f(d_final)
+    
+    return jnp.maximum(0.5, d_final + noise)
 
 
 @beartype
@@ -163,6 +190,7 @@ def lhn_step_jax(
     month_growth_factor: float,
     offload_noise: Float[jnp.ndarray, ""],
     discharge_delay_target: Float[jnp.ndarray, ""],
+    workforce_availability: Float[jnp.ndarray, ""],
 ) -> tuple[
     Float[jnp.ndarray, ""],
     Float[jnp.ndarray, ""],
@@ -171,15 +199,25 @@ def lhn_step_jax(
     Float[jnp.ndarray, ""],
     Float[jnp.ndarray, ""],
     Float[jnp.ndarray, ""],
+    Float[jnp.ndarray, ""], # workforce_drain
 ]:
     """Operational step for a single LHN agent."""
     # Logic extracted from original ops_step_jax
+    # WORKFORCE: L=0, H=1 (index 8)
+    wf_intensity = strategies[8]
+    wf_drain = jnp.where(wf_intensity == 1, 0.2, 0.1) * month_growth_factor
+    
+    # Workforce availability impact on discharge efficiency
+    # If pool is low, discharge delay increases (less staff to process patients)
+    wf_impact = jnp.exp(0.5 * jnp.maximum(0.0, 1.0 - workforce_availability))
+    
     aged_effect = jnp.where(strategies[5] == 1, 0.95, 1.02)
     ndis_effect = jnp.where(strategies[6] == 1, 0.96, 1.03)
     disc_effect = jnp.where(strategies[4] == 1, 0.98, 1.01)
 
     discharge = s.discharge_delay
     discharge *= (aged_effect * ndis_effect * disc_effect) ** month_growth_factor
+    discharge *= wf_impact
 
     # Hierarchical link: Discharge target set by State
     discharge = jnp.clip(discharge + 0.1 * (discharge_delay_target - discharge), 0.75, 1.50)
@@ -206,6 +244,7 @@ def lhn_step_jax(
         jnp.array(off),
         jnp.array(pidx),
         within4_from_pressure_jax(pidx),
+        jnp.array(wf_drain)
     )
 
 
@@ -242,6 +281,22 @@ def pay_step_jax(
     coding, recon, pol_cap_hit = lax.cond(strategies[7] == 1, on_upcode, on_honest)
 
     return jnp.clip(eff_share * coding, 0.30, 0.60), coding, recon, pol_cap_hit
+
+
+@beartype
+def renegotiation_step_jax(s: StateJax, p: ParamsJax) -> tuple[Float[jnp.ndarray, ""], Int32[jnp.ndarray, ""]]:
+    """Execute the high-stakes hold-up game at agreement expiry."""
+    # If pressure is high, State has leverage to extract higher share
+    leverage = jnp.maximum(0.0, s.pressure - 1.1)
+    share_increase = leverage * 0.15 # Max increase of ~6-7% if pressure is 1.5
+    
+    # New agreement share
+    new_share = jnp.clip(p.nominal_cth_share_target + share_increase, 0.40, 0.70)
+    
+    # Reset clock to 5 years
+    new_clock = jnp.array(5, dtype=jnp.int32)
+    
+    return new_share, new_clock
 
 
 @beartype
@@ -296,11 +351,29 @@ def step_jax(
     # The state sets a "Discharge Target" based on global pressure
     discharge_target = jnp.where(s.pressure > 1.1, 0.9, 1.0)
     
+    # Handle Renegotiation Cycle
+    def end_of_year_logic():
+        # Check if agreement expired
+        def expire():
+            return renegotiation_step_jax(s, p)
+        
+        def no_expire():
+            return eff_share, jnp.array(s.agreement_clock - 1, dtype=jnp.int32)
+            
+        return lax.cond(s.agreement_clock == 0, expire, no_expire)
+
+    def mid_year_logic():
+        return eff_share, jnp.array(s.agreement_clock, dtype=jnp.int32)
+
+    # Trigger end-of-year logic at Month 12
+    final_eff_share, next_clock = lax.cond(s.month == 12, end_of_year_logic, mid_year_logic)
+
     # 3. LHN Operations Logic (LHN moves - vectorized)
     # Each LHN gets a slightly different demand noise or local multiplier
     # Here we simplify and give them the same macro demand but different operational noise
     vmap_lhn = jax.vmap(lambda key: lhn_step_jax(
-        s, p, strategies, demand_macro, mgf, jax.random.normal(key) * 0.8, discharge_target
+        s, p, strategies, demand_macro, mgf, jax.random.normal(key) * 0.8, 
+        discharge_target, jnp.array(s.workforce_pool)
     ))
     
     lhn_results = vmap_lhn(k_lhn_ops)
@@ -319,8 +392,15 @@ def step_jax(
     avg_pidx = jnp.mean(lhn_results[5])
     avg_w4 = jnp.mean(lhn_results[6])
     
+    # 5. Workforce Pool Update
+    # Total drain from all LHNs
+    total_wf_drain = jnp.sum(lhn_results[7])
+    # Workforce recovery (simplified) - set to match avg low-intensity drain
+    wf_recovery = (n_lhn * 0.1) * mgf 
+    new_wf_pool = jnp.clip(s.workforce_pool - total_wf_drain + wf_recovery, 0.5, 1.5)
+
     final_share, coding, recon, pol_cap_hit = pay_step_jax(
-        s, p, strategies, eff_share, mgf, jax.random.uniform(k_pay)
+        s, p, strategies, final_eff_share, mgf, jax.random.uniform(k_pay)
     )
     # SIGNAL_QUALITY is index 9
     sig_quality = strategies[9]
@@ -370,15 +450,19 @@ def step_jax(
         discharge_delay=avg_discharge,
         political_capital=pol_cap,
         system_mode=update_system_mode_jax(s, p, avg_pidx),
+        lhn_pressure=lhn_results[5],
+        lhn_nwau=lhn_nwau,
+        agreement_clock=next_clock,
+        workforce_pool=new_wf_pool,
         target_capacity=s.target_capacity,
         current_capacity=avg_capacity,
         equity_index=equity,
         reconciliation_balance=recon,
         bailout_expectation=bailout,
         coding_intensity=coding,
+        reputation_score=1.0,
+        jurisdiction_id=0,
         metrics=new_metrics,
-        lhn_pressure=lhn_results[5],
-        lhn_nwau=lhn_nwau
     )
 
 

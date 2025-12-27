@@ -22,7 +22,7 @@ def test_hierarchical_vectorization_smoke():
     
     # Vectorized LHN step
     vmap_lhn_step = jax.vmap(lambda k, d, o: lhn_step_jax(
-        s, p, strategies, d, mgf, o, jnp.array(discharge_target)
+        s, p, strategies, d, mgf, o, jnp.array(discharge_target), jnp.array(1.0)
     ))
     
     results = vmap_lhn_step(keys, demand, offload_noises)
@@ -41,9 +41,9 @@ def test_state_delegation_impact():
     key = jax.random.PRNGKey(0)
     
     # LHN with loose target
-    res_loose = lhn_step_jax(s, p, strategies, jnp.array(1.0), 1.0/12.0, jnp.array(0.0), jnp.array(1.5))
+    res_loose = lhn_step_jax(s, p, strategies, jnp.array(1.0), 1.0/12.0, jnp.array(0.0), jnp.array(1.5), jnp.array(1.0))
     # LHN with tight target
-    res_tight = lhn_step_jax(s, p, strategies, jnp.array(1.0), 1.0/12.0, jnp.array(0.0), jnp.array(0.75))
+    res_tight = lhn_step_jax(s, p, strategies, jnp.array(1.0), 1.0/12.0, jnp.array(0.0), jnp.array(0.75), jnp.array(1.0))
     
     # Tight target should lead to lower discharge delay (more efficiency)
     assert res_tight[0] < res_loose[0]

@@ -80,6 +80,12 @@ class ParamsJax:
     tau: float = 0.25
     bargaining_cost: float = 0.12
     political_salience: float = 0.30
+    
+    # Patient choice / Queuing Game
+    gp_out_of_pocket: float = 40.0
+    gp_wait_time_min: float = 15.0
+    patient_time_value_hour: float = 25.0
+    
     use_equilibrium_bargaining: bool = False
     use_quantal_response: bool = False
     qre_lambda: float = 4.0
@@ -129,6 +135,8 @@ class StateJax:
     # Note: We use jnp.ndarray or structured arrays for vectorized sub-states
     lhn_pressure: jnp.ndarray # [N_LHN]
     lhn_nwau: jnp.ndarray     # [N_LHN]
+    agreement_clock: int 
+    workforce_pool: float
 
     target_capacity: float = 1.0
     current_capacity: float = 1.0
