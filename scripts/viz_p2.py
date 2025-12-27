@@ -37,6 +37,19 @@ def main():
     plt.tight_layout()
     plt.savefig(out_dir / "figure2_performance.png", dpi=300)
     plt.close()
+
+    # 3. Trade-off: Performance vs. Pressure (Proxy for Admin/System Cost)
+    plt.figure(figsize=(10, 6))
+    sns.scatterplot(data=summary, x="pressure", y="within4", hue="scenario", s=200)
+    for i, row in summary.iterrows():
+        plt.text(row["pressure"]+0.005, row["within4"]+0.005, row["scenario"].replace("_", " ").title())
+    
+    plt.xlabel("End-state System Pressure (Index)")
+    plt.ylabel("Performance (within 4h)")
+    plt.title("Figure 3: Policy Trade-offs - Throughput vs. System Pressure")
+    plt.grid(True, alpha=0.3)
+    plt.savefig(out_dir / "figure3_tradeoff.png", dpi=300)
+    plt.close()
     
     print(f"Figures generated in {out_dir}")
 
