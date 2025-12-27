@@ -34,11 +34,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [x] Track: Comprehensive Figure Mapping & API Modernization
-*Link: [./conductor/archive/figure_mapping_20251226/](./conductor/archive/figure_mapping_20251226/)*
 
----
 
-## [x] Track: Publication Series - NHRA Game Theory & Empirical Modelling
-*Link: [./conductor/tracks/publications_series_20251226/](./conductor/tracks/publications_series_20251226/)*
+## [ ] Track: Engine Modernization (JAX/Polars/Gambit)
 
+*Link: [./conductor/tracks/engine_modernization_20251227/](./conductor/tracks/engine_modernization_20251227/)*
