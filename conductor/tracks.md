@@ -32,10 +32,10 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [x] Track: Release Polish & Workflow Integrity
 *Link: [./conductor/tracks/release_polish_20251225/](./conductor/tracks/release_polish_20251225/)*
 
+## [x] Track: Comprehensive Figure Mapping & API Modernization
+*Link: [./conductor/archive/figure_mapping_20251226/](./conductor/archive/figure_mapping_20251226/)*
+
 ---
 
-
-
-## [~] Track: Engine Modernization (JAX/Polars/Gambit)
-
-*Link: [./conductor/tracks/engine_modernization_20251227/](./conductor/tracks/engine_modernization_20251227/)*
+## [x] Track: Engine Modernization (JAX/Polars/Gambit)
+*Link: [./conductor/archive/engine_modernization_20251227/](./conductor/archive/engine_modernization_20251227/)*
