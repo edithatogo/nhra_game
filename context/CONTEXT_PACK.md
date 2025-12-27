@@ -1,4 +1,4 @@
-# Context Pack — NHRA game-theory repo (built 2025-12-26)
+# Context Pack — NHRA game-theory repo (built 2025-12-27)
 
 
 ---

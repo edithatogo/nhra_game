@@ -119,5 +119,6 @@ class StateJax:
     bailout_expectation: float = 0.0
     coding_intensity: float = 1.0
     reputation_score: float = 1.0
+    jurisdiction_id: int = 0
 
     metrics: MetricsJax = MetricsJax()

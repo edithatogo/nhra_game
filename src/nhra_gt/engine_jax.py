@@ -284,10 +284,10 @@ def step_jax(
 
     # Handle time rollover
     def rollover():
-        return 1, s.year + 1
+        return jnp.array(1, dtype=jnp.int32), jnp.array(s.year + 1, dtype=jnp.int32)
 
     def no_rollover():
-        return s.month + 1, s.year
+        return jnp.array(s.month + 1, dtype=jnp.int32), jnp.array(s.year, dtype=jnp.int32)
 
     next_m, next_y = lax.cond(s.month < 12, no_rollover, rollover)
 

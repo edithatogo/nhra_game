@@ -26,7 +26,7 @@ def test_snakemake_baseline_pipeline():
     )
 
     assert result.returncode == 0
-    assert Path("data/baseline_v21/tables/trajectory.csv").exists()
+    assert Path("data/baseline/tables/trajectory.csv").exists()
 
 
 def test_snakemake_context_pack():

@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import json
 from dataclasses import replace
 from pathlib import Path
 
-import pandas as pd
+import polars as pl
+import numpy as np
 
 from nhra_gt.engine import Params, nep_series, nep_vs_cost_series, run_hybrid
 from nhra_gt.subgames.games import (
@@ -18,7 +20,7 @@ from nhra_gt.subgames.games import (
 from nhra_gt.subgames.nash import all_nash
 
 
-def equilibria_snapshot(p: Params) -> pd.DataFrame:
+def equilibria_snapshot(p: Params) -> pl.DataFrame:
     """Count equilibria for each stage game over a small grid (pressure × effgap)."""
     rows: list[dict[str, object]] = []
     pressures = [0.8, 1.0, 1.2, 1.4]
@@ -53,13 +55,14 @@ def equilibria_snapshot(p: Params) -> pd.DataFrame:
                         "has_mixed": any(e.kind == "mixed" for e in eqs),
                     }
                 )
-    return pd.DataFrame(rows)
+    return pl.DataFrame(rows)
 
 
-def equilibria_by_year(df: pd.DataFrame, p: Params) -> pd.DataFrame:
+def equilibria_by_year(df: pl.DataFrame, p: Params) -> pl.DataFrame:
     """Solve *all* Nash equilibria for each stage game at each year's mean state."""
     eq_rows: list[dict[str, object]] = []
-    for _, row in df.iterrows():
+    # df is expected to have aggregated results (means)
+    for row in df.to_dicts():
         gp = GameParams(
             pressure=float(row["pressure_mean"]),
             efficiency_gap=float(row["effgap_mean"]),
@@ -95,17 +98,19 @@ def equilibria_by_year(df: pd.DataFrame, p: Params) -> pd.DataFrame:
                         "n_equilibria_in_game": len(eqs),
                     }
                 )
-    return pd.DataFrame(eq_rows)
+    return pl.DataFrame(eq_rows)
 
 
 def scenario_endpoints(
     years: list[int], scenarios: dict[str, Params], seed: int = 123
-) -> pd.DataFrame:
+) -> pl.DataFrame:
     """Run a set of scenarios and return end-year summary metrics."""
     rows: list[dict[str, object]] = []
     for name, pp in scenarios.items():
-        d, _ = run_hybrid(years=years, p=pp, seed=seed, n_mc=200)
-        end = d.iloc[-1]
+        # run_hybrid currently returns Pandas DataFrames, we convert to Polars
+        d_pd, _ = run_hybrid(years=years, p=pp, seed=seed, n_mc=200)
+        d = pl.from_pandas(d_pd)
+        end = d.tail(1).to_dicts()[0]
         rows.append(
             {
                 "scenario": name,
@@ -117,7 +122,7 @@ def scenario_endpoints(
                 "occ_mean_2030": float(end["occupancy_mean"]),
             }
         )
-    df = pd.DataFrame(rows).sort_values("scenario").reset_index(drop=True)
+    df = pl.DataFrame(rows).sort("scenario")
     return df
 
 
@@ -130,22 +135,34 @@ def main() -> None:
     base = Params()
 
     # Baseline
-    traj, strat = run_hybrid(years=years, p=base, seed=123, n_mc=250)
-    traj.to_csv(tables / "trajectory.csv", index=False)
-    strat.to_csv(tables / "strategy_frequency.csv", index=False)
+    traj_pd, strat_pd = run_hybrid(years=years, p=base, seed=123, n_mc=250)
+    traj = pl.from_pandas(traj_pd)
+    
+    # Ensure types are correct for Polars ingestion
+    if not strat_pd.empty:
+        strat_pd["year"] = strat_pd["year"].astype(int)
+        strat_pd["game"] = strat_pd["game"].astype(str)
+        strat_pd["strategy"] = strat_pd["strategy"].astype(str)
+        strat_pd["n"] = strat_pd["n"].astype(int)
+        strat_pd["share"] = strat_pd["share"].astype(float)
+    
+    strat = pl.from_pandas(strat_pd)
+    
+    traj.write_csv(tables / "trajectory.csv")
+    strat.write_csv(tables / "strategy_frequency.csv")
 
-    nep_cost = nep_vs_cost_series(years, base)
-    nep_cost.to_csv(tables / "nep_cost_series.csv", index=False)
+    nep_cost = pl.from_pandas(nep_vs_cost_series(years, base))
+    nep_cost.write_csv(tables / "nep_cost_series.csv")
 
     # NEP series (index discipline; NEP is annual $/NWAU index)
-    nep = nep_series(years=years, p=base)
-    nep.to_csv(tables / "nep_series.csv", index=False)
+    nep = pl.from_pandas(nep_series(years=years, p=base))
+    nep.write_csv(tables / "nep_series.csv")
 
     # Equilibria exports
     eq_grid = equilibria_snapshot(base)
-    eq_grid.to_csv(tables / "equilibria_grid.csv", index=False)
+    eq_grid.write_csv(tables / "equilibria_grid.csv")
     eq_year = equilibria_by_year(traj, base)
-    eq_year.to_csv(tables / "equilibria_by_year.csv", index=False)
+    eq_year.write_csv(tables / "equilibria_by_year.csv")
 
     # Core scenario set
     scenarios_core = {
@@ -168,63 +185,46 @@ def main() -> None:
         "equilibrium_random": Params(equilibrium_selection_rule="random"),
     }
     core = scenario_endpoints(years, scenarios_core, seed=123)
-    core.to_csv(tables / "scenario_summary.csv", index=False)
+    core.write_csv(tables / "scenario_summary.csv")
 
-    # Policy intervention scenarios (stylised levers; intended for directionality, not point prediction)
+    # Policy intervention scenarios
     interventions = {
-        # Governance integration / pooled budgets reduce fragmentation and cost-shifting incentives
         "pooled_funding_pilot": replace(
-            base, fragmentation_index=0.92, cost_shifting_intensity=0.90
+            base, cost_shifting_intensity=0.90, fragmentation_index=0.92
         ),
         "ucc_integrated_governance": replace(
-            base, fragmentation_index=0.95, admin_burden_weight=0.95
+            base, admin_burden_weight=0.95, fragmentation_index=0.95
         ),
-        # Aged care / NDIS throughput improves discharge delay
         "aged_care_places_increase": replace(
-            base, discharge_delay_base=0.90, bed_capacity_index=1.02
+            base, bed_capacity_index=1.02, discharge_delay_base=0.90
         ),
-        # NEP indexation realism (raises NEP-to-cost ratio, reducing the efficiency gap for rurality/remote)
         "nep_indexation_uplift": replace(
             base,
             nep_to_cost_ratio_metro=min(1.0, base.nep_to_cost_ratio_metro + 0.03),
             nep_to_cost_ratio_regional=min(1.0, base.nep_to_cost_ratio_regional + 0.05),
             nep_to_cost_ratio_remote=min(1.0, base.nep_to_cost_ratio_remote + 0.07),
         ),
-        # Compliance/audit push (may reduce gaming but adds admin burden)
-        "audit_blitz": replace(base, audit_pressure=1.25, admin_burden_weight=1.10),
+        "audit_blitz": replace(base, admin_burden_weight=1.10, audit_pressure=1.25),
     }
     interv = scenario_endpoints(years, interventions, seed=123)
-    interv.to_csv(tables / "intervention_scenarios.csv", index=False)
+    interv.write_csv(tables / "intervention_scenarios.csv")
 
     # Intervention deltas vs baseline
-    baseline_row = (
-        interv.assign(_k=1)
-        .merge(
-            core[core["scenario"] == "baseline_equilibria"].assign(_k=1),
-            on="_k",
-            suffixes=("", "_baseline"),
-        )
-        .drop(columns=["_k"])
-    )
+    baseline_metrics = core.filter(pl.col("scenario") == "baseline_equilibria").drop("scenario")
+    
     deltas = []
-    for _, r in baseline_row.iterrows():
+    for row in interv.to_dicts():
         deltas.append(
             {
-                "scenario": str(r["scenario"]),
-                "delta_rr_2030": float(r["rr_mean_2030"] - r["rr_mean_2030_baseline"]),
-                "delta_offload_2030": float(
-                    r["offload_mean_2030"] - r["offload_mean_2030_baseline"]
-                ),
-                "delta_within4_2030": float(
-                    r["within4_mean_2030"] - r["within4_mean_2030_baseline"]
-                ),
-                "delta_pressure_2030": float(
-                    r["pressure_mean_2030"] - r["pressure_mean_2030_baseline"]
-                ),
-                "delta_effgap_2030": float(r["effgap_mean_2030"] - r["effgap_mean_2030_baseline"]),
+                "scenario": row["scenario"],
+                "delta_rr_2030": row["rr_mean_2030"] - baseline_metrics[0, "rr_mean_2030"],
+                "delta_offload_2030": row["offload_mean_2030"] - baseline_metrics[0, "offload_mean_2030"],
+                "delta_within4_2030": row["within4_mean_2030"] - baseline_metrics[0, "within4_mean_2030"],
+                "delta_pressure_2030": row["pressure_mean_2030"] - baseline_metrics[0, "pressure_mean_2030"],
+                "delta_effgap_2030": row["effgap_mean_2030"] - baseline_metrics[0, "effgap_mean_2030"],
             }
         )
-    pd.DataFrame(deltas).to_csv(tables / "intervention_deltas.csv", index=False)
+    pl.DataFrame(deltas).write_csv(tables / "intervention_deltas.csv")
 
 
 if __name__ == "__main__":

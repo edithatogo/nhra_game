@@ -62,5 +62,5 @@ def test_step_logic_parity():
     s_next = step(s, p, strats, rng)
 
     assert isinstance(s_next, State)
-    assert s_next.year == s.year + 1
+    assert s_next.month == s.month + 1
     assert 0.78 <= s_next.occupancy <= 0.98

@@ -3,9 +3,14 @@ from __future__ import annotations
 from unittest.mock import patch
 
 import pandas as pd
+
+import polars as pl
+
 import pytest
 
 from nhra_gt.domain.aihw_api import AIHWClient
+
+
 
 
 @pytest.fixture
@@ -37,9 +42,9 @@ def test_fetch_data_items(mock_get, client):
     mock_get.return_value.status_code = 200
 
     df = client.get_measure_data("ED_WAIT")
-    assert isinstance(df, pd.DataFrame)
+    assert isinstance(df, pl.DataFrame)
     assert len(df) == 2
-    assert df["value"].iloc[0] == 0.53
+    assert df["value"][0] == 0.53
 
 
 if __name__ == "__main__":

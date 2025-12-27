@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, cast
 
-import pandas as pd
+import polars as pl
 import requests  # type: ignore
 
 
@@ -33,11 +33,11 @@ class AIHWClient:
         """Fetch all available measures."""
         return cast(list[dict[str, Any]], self._get("/measures"))
 
-    def get_measure_data(self, measure_code: str) -> pd.DataFrame:
+    def get_measure_data(self, measure_code: str) -> pl.DataFrame:
         """Fetch data items for a specific measure code."""
         endpoint = f"/measures/{measure_code}/data-items"
         data = self._get(endpoint)
-        return pd.DataFrame(data)
+        return pl.DataFrame(data)
 
     def get_reporting_units(self) -> list[dict[str, Any]]:
         """Fetch all available reporting units."""

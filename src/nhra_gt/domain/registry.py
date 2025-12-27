@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-import pandas as pd
+import polars as pl
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
@@ -84,12 +84,26 @@ class EvidenceRegistry(BaseModel):
 
     def sync_to_targets(self, targets_path: Path | str) -> None:
         """Updates the calibration targets CSV with promoted evidence."""
-        df = pd.read_csv(targets_path)
+        df = pl.read_csv(targets_path)
+        
+        # Update targets by joining with a temporary dataframe of best entries
+        best_entries = []
         for param in self.entries:
             e = self.get_entry(param)
             if e:
-                df.loc[df["metric"] == param, "target"] = e.mean
-        df.to_csv(targets_path, index=False)
+                best_entries.append({"metric": param, "target_new": e.mean})
+        
+        if best_entries:
+            updates = pl.DataFrame(best_entries)
+            df = df.join(updates, on="metric", how="left")
+            df = df.with_columns(
+                pl.when(pl.col("target_new").is_not_null())
+                .then(pl.col("target_new"))
+                .otherwise(pl.col("target"))
+                .alias("target")
+            ).drop("target_new")
+
+            df.write_csv(targets_path)
 
     def promote_to_params(self, base_params: Any) -> Any:
         """Returns a new Params object with all promoted registry values applied."""
@@ -102,7 +116,10 @@ class EvidenceRegistry(BaseModel):
         return base_params.model_copy(update=p_dict)
 
     def is_sane(
-        self, entry: EvidenceEntry, baseline: dict[str, float], threshold: float = 0.5
+        self,
+        entry: EvidenceEntry,
+        baseline: dict[str, float],
+        threshold: float = 0.5,
     ) -> bool:
         """Check if an entry's mean deviates more than threshold fraction from a baseline."""
         if entry.parameter not in baseline:
@@ -118,15 +135,15 @@ class EvidenceRegistry(BaseModel):
         for p_entries in self.entries.values():
             for e in p_entries:
                 flat_data.append(e.model_dump())
-        df = pd.DataFrame(flat_data)
-        df.to_csv(path, index=False)
+        df = pl.DataFrame(flat_data)
+        df.write_csv(path)
 
     @classmethod
     def load_from_csv(cls, path: Path | str) -> EvidenceRegistry:
-        df = pd.read_csv(path)
+        df = pl.read_csv(path)
         registry = cls()
-        df = df.where(pd.notnull(df), None)
-        for _, row in df.iterrows():
+        # Polars handles nulls better than Pandas .where(pd.notnull(df), None)
+        for row in df.to_dicts():
             entry = EvidenceEntry(
                 parameter=str(row["parameter"]),
                 mean=float(row["mean"]),

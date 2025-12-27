@@ -12,8 +12,8 @@
 - [x] Task: Conductor - User Manual Verification 'Differentiable Solvers' (Protocol in workflow.md) 5a952c7
 
 ## Phase 3: Polars Integration & Multi-Agent Expansion
-- [~] Task: Rewrite data ingestion using Polars.
-- [ ] Task: Implement `vmap` for parallel Jurisdictions and Hierarchical (Cth -> State -> LHN) logic.
+- [x] Task: Rewrite data ingestion using Polars.
+- [~] Task: Implement `vmap` for parallel Jurisdictions and Hierarchical (Cth -> State -> LHN) logic.
 - [ ] Task: Implement `jaxopt` policy optimization mode.
 - [ ] Task: Conductor - User Manual Verification 'Data & Multi-Agent' (Protocol in workflow.md)
 

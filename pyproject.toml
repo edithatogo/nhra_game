@@ -41,13 +41,15 @@ optuna = { version = ">=3.6", optional = true }
 jax = { version = ">=0.4", optional = true }
 jaxlib = { version = ">=0.4", optional = true }
 jaxtyping = { version = ">=0.2", optional = true }
+flax = { version = ">=0.8", optional = true }
+chex = { version = ">=0.1", optional = true }
 numpyro = { version = ">=0.13", optional = true }
 polars = { version = ">=0.20", optional = true }
 logfire = { version = ">=0.46", optional = true }
 
 [tool.poetry.extras]
 opt = ["optuna"]
-accel = ["jax", "jaxlib", "jaxtyping", "numpyro", "polars"]
+accel = ["jax", "jaxlib", "jaxtyping", "flax", "chex", "numpyro", "polars"]
 observability = ["logfire"]
 dev = [
     "pytest", "hypothesis", "hypothesis-auto", "icontract-hypothesis",
@@ -64,7 +66,6 @@ dev = [
 pytest = ">=7.4"
 hypothesis = ">=6.100"
 hypothesis-auto = "*"
-icontract-hypothesis = "*"
 icontract = "*"
 locust = "*"
 atheris = {version = "*", markers = "sys_platform == 'linux'"}
@@ -94,6 +95,10 @@ mkdocs-jupyter = "*"
 mike = "*"
 pytest-mpl = "^0.18.0"
 pygambit = "^16.4.1"
+
+
+[tool.poetry.group.accel.dependencies]
+jaxopt = "^0.8.5"
 
 [tool.coverage.run]
 omit = ["tests/*", "scripts/*", ".nox/*", ".gemini/*", "*/__init__.py"]
