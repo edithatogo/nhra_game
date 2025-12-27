@@ -27,8 +27,8 @@
 - [x] Task: Implement Visual Regression Tests: Compare outputs against "gold standard" baselines for key figures.
 - [x] Task: Conductor - User Manual Verification 'Testing & Verification' (Protocol in workflow.md) 1ddf580
 
-## Phase 5: Documentation & Cleanup
+## Phase 5: Documentation & Cleanup [checkpoint: 2da3555]
 - [x] Task: Update `docs/models.md` and `docs/usage.md` with new visualization API usage examples.
 - [x] Task: Deprecate and remove legacy plotting code from `src/nhra_gt/plotting.py` and `scripts/`.
 - [x] Task: Final generation of `figure_inventory.md` reflecting the new, clean state.
-- [~] Task: Conductor - User Manual Verification 'Documentation & Cleanup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Documentation & Cleanup' (Protocol in workflow.md) 2da3555
