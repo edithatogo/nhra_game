@@ -42,3 +42,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ## [x] Track: Engine Modernization (JAX/Polars/Gambit)
 *Link: [./conductor/archive/engine_modernization_20251227/](./conductor/archive/engine_modernization_20251227/)*
+
+---
+
+## [x] Track: Advanced Game Theoretic Enhancements (Mechanistic Demand & Cycles)
+*Link: [./conductor/tracks/game_theoretic_enhancements_20251227/](./conductor/tracks/game_theoretic_enhancements_20251227/)*
