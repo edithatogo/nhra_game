@@ -5,12 +5,14 @@
 - **Containerization:** Docker (Mandatory for MJA reproducibility and deployment)
 
 ## Core Modeling & Simulation
-- **Numerical Computing:** NumPy, Pandas, SciPy
+- **Numerical Computing:** JAX/XLA (Functional Core), Polars (Data Spine), NumPy, SciPy
 - **Data Validation:** Pydantic V2 (Models), Pandera (DataFrame Schemas)
 - **Network Analysis:** NetworkX
 - **Optimization & Calibration:** Optuna (Tree-structured Parzen Estimator)
-- **Computational Acceleration (Proposed):** JAX/XLA (For vectorized Nash solving and gradient-based calibration)
+- **Computational Acceleration:** JAX/XLA (Vectorized Nash solving and differentiable simulation)
+- **Bayesian Inference:** NumPyro (Hamiltonian Monte Carlo calibration)
 - **Sensitivity Analysis:** SALib (For Sobol and Morris global sensitivity methods)
+- **Strategic Game Analysis:** PyGambit (C++ Nash Oracle and tree construction)
 
 ## Development & Quality Assurance
 - **Build System:** Hatch

@@ -36,6 +36,8 @@ def test_multi_jurisdiction_vmap():
         discharge_delay=jnp.full(num_j, 1.0),
         political_capital=jnp.full(num_j, 1.0),
         system_mode=jnp.zeros(num_j, dtype=jnp.int32),
+        lhn_pressure=jnp.zeros((num_j, 5)),
+        lhn_nwau=jnp.zeros((num_j, 5)),
         target_capacity=jnp.ones(num_j),
         current_capacity=jnp.ones(num_j),
         equity_index=jnp.ones(num_j),
@@ -47,10 +49,10 @@ def test_multi_jurisdiction_vmap():
         metrics=mj
     )
     
-    cs = StateJax(year=2025, month=1, pressure=1.0, occupancy=0.88, offload_min=18.0, 
-                  within4=0.53, effective_cth_share=0.45, efficiency_gap=0.1, 
-                  discharge_delay=1.0, political_capital=1.0, system_mode=0)
-    
+    cs = StateJax(year=2025, month=1, pressure=1.0, occupancy=0.88, offload_min=18.0,
+                  within4=0.53, effective_cth_share=0.45, efficiency_gap=0.1,
+                  discharge_delay=1.0, political_capital=1.0, system_mode=0,
+                  lhn_pressure=jnp.zeros(5), lhn_nwau=jnp.zeros(5))
     macro_strats = jnp.array([1.0, 1.0]) # DEF=R, BARG=A
     key = jax.random.PRNGKey(42)
     

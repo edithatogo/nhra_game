@@ -98,6 +98,18 @@ class ParamsJax:
 
 
 @struct.dataclass
+class LhnState:
+    """State for a single Local Hospital Network (LHN)."""
+    id: int
+    pressure: float = 1.0
+    occupancy: float = 0.85
+    within4: float = 0.70
+    nwau_reported: float = 0.0
+    cost_actual: float = 0.0
+    discharge_delay: float = 1.0
+    coding_intensity: float = 1.0
+
+@struct.dataclass
 class StateJax:
     """JAX-compatible simulation state."""
 
@@ -112,6 +124,12 @@ class StateJax:
     discharge_delay: float
     political_capital: float
     system_mode: int  # Mapped from SystemModeJax
+
+    # Nested Agents (for 1:N mapping)
+    # Note: We use jnp.ndarray or structured arrays for vectorized sub-states
+    lhn_pressure: jnp.ndarray # [N_LHN]
+    lhn_nwau: jnp.ndarray     # [N_LHN]
+
     target_capacity: float = 1.0
     current_capacity: float = 1.0
     equity_index: float = 1.0

@@ -27,7 +27,8 @@ To develop a State-of-the-Art (SOTA) predictive game-theory model of the Nationa
 2.  **Strategic Scenario Analysis:** Interactive counterfactuals to simulate negotiation outcomes and strategy shifts with expert-level direct control.
 3.  **Interactive Web Dashboard:** A user-friendly interface (e.g., Streamlit/Dash) for policy engagement.
 4.  **Automated Data Pipelines:** Robust ingestion of public health data (AIHW/ABS) to maintain model currency.
-5.  **Modular Pipeline Execution (GUI):** Capability to select individual "games" from the strategic map (Mermaid/Graphviz) via the dashboard to isolate their impact on system performance.
-6.  **Real-time Simulation Visualization:** Live visual feedback of agent behaviors and state transitions while the simulation is executing.
-7.  **Performance Profiling & Benchmarking Suite:** Automated profiling (e.g., using `pyinstrument` or `scalene`) to ensure computational efficiency as MC rollouts scale.
-8.  **Automated Quality & Security Audits:** Formalized mutation testing (mutmut) and security scanning (bandit/safety) integrated into the CI pipeline.
+5.  **Extensive Form Game Explorer:** Interactive decision-tree visualization (GTE-style) for all subgames, including **Hybrid/Hierarchical** structures (Commonwealth -> State -> LHN).
+6.  **Prescription & Policy Optimization:** Automated search for optimal policy settings using JAX gradients to minimize system pressure or maximize welfare.
+7.  **Real-time Simulation Visualization:** JAX-accelerated live feedback of state transitions and vectorized jurisdictional outcomes.
+8.  **Performance Modernization Reporting:** Automated benchmarking comparing NumPy vs. JAX cores to maintain 10-100x speedup targets.
+9.  **Automated Quality & Security Audits:** Formalized mutation testing (mutmut) and security scanning (bandit/safety) integrated into the CI pipeline.

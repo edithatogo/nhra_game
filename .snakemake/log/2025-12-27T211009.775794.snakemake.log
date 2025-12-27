@@ -1,0 +1,24 @@
+Assuming unrestricted shared filesystem usage.
+host: Pleiades-M1-14-MBP.local
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job             count
+------------  -------
+context_pack        1
+total               1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Sat Dec 27 21:10:09 2025]
+localrule context_pack:
+    output: context/CONTEXT_PACK.md
+    jobid: 0
+    reason: Forced execution
+    resources: tmpdir=/var/folders/m9/_g3wndrn04d80ys2382r700r0000gn/T
+[Sat Dec 27 21:11:25 2025]
+Finished jobid: 0 (Rule: context_pack)
+1 of 1 steps (100%) done
+Complete log(s): /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/.snakemake/log/2025-12-27T211009.775794.snakemake.log

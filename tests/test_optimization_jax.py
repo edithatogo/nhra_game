@@ -14,9 +14,10 @@ def test_policy_optimization():
     
     num_months = 12
     sj = StateJax(
-        year=2025, month=1, pressure=1.0, occupancy=0.88, offload_min=18.0, 
-        within4=0.53, effective_cth_share=0.45, efficiency_gap=0.1, 
-        discharge_delay=1.0, political_capital=1.0, system_mode=0
+        year=2025, month=1, pressure=1.0, occupancy=0.88, offload_min=18.0,
+        within4=0.53, effective_cth_share=0.45, efficiency_gap=0.1,
+        discharge_delay=1.0, political_capital=1.0, system_mode=0,
+        lhn_pressure=jnp.zeros(5), lhn_nwau=jnp.zeros(5)
     )
     
     # Fill in vector fields if needed (not needed for scalar rollout)

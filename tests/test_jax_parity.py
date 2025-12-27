@@ -67,14 +67,6 @@ def params_to_jax(p: Params) -> ParamsJax:
 
 
 def state_to_jax(s: State) -> StateJax:
-    from nhra_gt.domain.state import MetricsJax
-
-    mode_map = {
-        SystemMode.NORMAL: 0,
-        SystemMode.STRESS: 1,
-        SystemMode.CRISIS: 2,
-        SystemMode.RECOVERY: 3,
-    }
     return StateJax(
         year=s.year,
         month=s.month,
@@ -86,7 +78,9 @@ def state_to_jax(s: State) -> StateJax:
         efficiency_gap=s.efficiency_gap,
         discharge_delay=s.discharge_delay,
         political_capital=s.political_capital,
-        system_mode=mode_map[s.system_mode],
+        system_mode=int(s.system_mode.value) if isinstance(s.system_mode.value, (int, float)) else 0,
+        lhn_pressure=jnp.zeros(5),
+        lhn_nwau=jnp.zeros(5),
         target_capacity=s.target_capacity,
         current_capacity=s.current_capacity,
         equity_index=s.equity_index,
@@ -94,7 +88,6 @@ def state_to_jax(s: State) -> StateJax:
         bailout_expectation=s.bailout_expectation,
         coding_intensity=s.coding_intensity,
         reputation_score=s.reputation_score,
-        metrics=MetricsJax(),
     )
 
 

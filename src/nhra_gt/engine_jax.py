@@ -89,6 +89,10 @@ def baseline_state_jax(start_year: int = 2025, p: ParamsJax | None = None) -> St
         bailout_expectation=0.0,
         coding_intensity=1.0,
         reputation_score=1.0,
+        lhn_pressure=jnp.zeros(5),
+        lhn_nwau=jnp.zeros(5),
+        jurisdiction_id=0,
+        metrics=MetricsJax(),
     )
 
 
@@ -151,13 +155,14 @@ def policy_step_jax(
 
 
 @beartype
-def ops_step_jax(
+def lhn_step_jax(
     s: StateJax,
     p: ParamsJax,
     strategies: Float[jnp.ndarray, "10"],
     demand: Float[jnp.ndarray, ""],
     month_growth_factor: float,
     offload_noise: Float[jnp.ndarray, ""],
+    discharge_delay_target: Float[jnp.ndarray, ""],
 ) -> tuple[
     Float[jnp.ndarray, ""],
     Float[jnp.ndarray, ""],
@@ -167,15 +172,17 @@ def ops_step_jax(
     Float[jnp.ndarray, ""],
     Float[jnp.ndarray, ""],
 ]:
-    # AGED: F=0, C=1 (index 5)
-    # NDIS: F=0, C=1 (index 6)
-    # DISC: F=0, C=1 (index 4)
+    """Operational step for a single LHN agent."""
+    # Logic extracted from original ops_step_jax
     aged_effect = jnp.where(strategies[5] == 1, 0.95, 1.02)
     ndis_effect = jnp.where(strategies[6] == 1, 0.96, 1.03)
     disc_effect = jnp.where(strategies[4] == 1, 0.98, 1.01)
 
     discharge = s.discharge_delay
     discharge *= (aged_effect * ndis_effect * disc_effect) ** month_growth_factor
+
+    # Hierarchical link: Discharge target set by State
+    discharge = jnp.clip(discharge + 0.1 * (discharge_delay_target - discharge), 0.75, 1.50)
 
     feedback_factor = jnp.exp(
         p.burden_to_throughput_beta * jnp.maximum(0.0, s.pressure - 1.0) * month_growth_factor
@@ -185,7 +192,7 @@ def ops_step_jax(
 
     capacity = s.current_capacity + p.capacity_lag * (s.target_capacity - s.current_capacity)
     wait_min = mm_s_queue_wait_jax(
-        jnp.array(demand), 1.0 / jnp.maximum(1e-9, jnp.array(discharge)), jnp.array(capacity * 10.0)
+        demand, 1.0 / jnp.maximum(1e-9, discharge), jnp.array(capacity * 10.0)
     )
     occ = jnp.clip(s.occupancy + 0.015 * (demand - 1.0) + 0.035 * (discharge - 1.0), 0.78, 0.98)
     off = jnp.clip(s.offload_min + 8.0 * (occ - 0.88) + offload_noise, 5.0, 120.0)
@@ -273,22 +280,48 @@ def step_jax(
     prng_key: Any,
 ) -> StateJax:
     mgf = 1.0 / 12.0
+    n_lhn = 5 # Example: 5 LHNs per state
 
     # Split keys for stochasticity
-    k1, k2, k3 = jax.random.split(prng_key, 3)
-    demand_noise = jax.random.normal(k1) * 0.02
-    offload_noise = jax.random.normal(k2) * 0.8
-    audit_random = jax.random.uniform(k3)
-
-    demand = demand_step_jax(s, p, strategies, demand_noise)
+    k_dem, k_ops, k_pay = jax.random.split(prng_key, 3)
+    k_lhn_ops = jax.random.split(k_ops, n_lhn)
+    
+    # 1. Macro demand noise
+    demand_noise = jax.random.normal(k_dem) * 0.02
+    demand_macro = demand_step_jax(s, p, strategies, demand_noise)
+    
     eff_gap, eff_share, bailout = policy_step_jax(s, p, strategies, mgf)
-    discharge, capacity, wait_min, occ, off, pidx, w4 = ops_step_jax(
-        s, p, strategies, demand, mgf, offload_noise
-    )
+    
+    # 2. State Delegation Logic (State moves)
+    # The state sets a "Discharge Target" based on global pressure
+    discharge_target = jnp.where(s.pressure > 1.1, 0.9, 1.0)
+    
+    # 3. LHN Operations Logic (LHN moves - vectorized)
+    # Each LHN gets a slightly different demand noise or local multiplier
+    # Here we simplify and give them the same macro demand but different operational noise
+    vmap_lhn = jax.vmap(lambda key: lhn_step_jax(
+        s, p, strategies, demand_macro, mgf, jax.random.normal(key) * 0.8, discharge_target
+    ))
+    
+    lhn_results = vmap_lhn(k_lhn_ops)
+    
+    # 4. State Budget Allocation (Internal Contracting)
+    # The state receives funding (final_share) and must distribute it.
+    # For now, we simulate NWAU generation based on occupancy/throughput
+    lhn_nwau = jnp.clip(lhn_results[3] * 100.0 * (1.0 + jax.random.normal(k_pay, (n_lhn,)) * 0.05), 50.0, 150.0)
+    
+    # Aggregation
+    avg_discharge = jnp.mean(lhn_results[0])
+    avg_capacity = jnp.mean(lhn_results[1])
+    avg_wait = jnp.mean(lhn_results[2])
+    avg_occ = jnp.mean(lhn_results[3])
+    avg_off = jnp.mean(lhn_results[4])
+    avg_pidx = jnp.mean(lhn_results[5])
+    avg_w4 = jnp.mean(lhn_results[6])
+    
     final_share, coding, recon, pol_cap_hit = pay_step_jax(
-        s, p, strategies, eff_share, mgf, audit_random
+        s, p, strategies, eff_share, mgf, jax.random.uniform(k_pay)
     )
-
     # SIGNAL_QUALITY is index 9
     sig_quality = strategies[9]
     # BARG is index 2
@@ -298,7 +331,7 @@ def step_jax(
         -pol_cap_hit
         - (1.0 - sig_quality) * 0.2 * mgf
         + jnp.where(barg_agree == 1, 0.05, -0.10) * mgf
-        - jnp.where(wait_min > 240, 0.05 * (wait_min / 240.0), 0.0)
+        - jnp.where(avg_wait > 240, 0.05 * (avg_wait / 240.0), 0.0)
     )
     pol_cap = jnp.clip(s.political_capital + pol_cap_change, 0.0, 2.0)
 
@@ -309,11 +342,11 @@ def step_jax(
 
     # Update accumulated metrics
     new_metrics = MetricsJax(
-        cumulative_pressure=s.metrics.cumulative_pressure + pidx * mgf,
+        cumulative_pressure=s.metrics.cumulative_pressure + avg_pidx * mgf,
         cumulative_budget_variance=s.metrics.cumulative_budget_variance
         + jnp.abs(final_share - p.nominal_cth_share_target) * mgf,
-        max_occupancy=jnp.maximum(s.metrics.max_occupancy, occ),
-        min_within4=jnp.minimum(s.metrics.min_within4, w4),
+        max_occupancy=jnp.maximum(s.metrics.max_occupancy, avg_occ),
+        min_within4=jnp.minimum(s.metrics.min_within4, avg_w4),
     )
 
     # Handle time rollover
@@ -328,22 +361,24 @@ def step_jax(
     return StateJax(
         year=next_y,
         month=next_m,
-        pressure=pidx,
-        occupancy=occ,
-        offload_min=off,
-        within4=w4,
+        pressure=avg_pidx,
+        occupancy=avg_occ,
+        offload_min=avg_off,
+        within4=avg_w4,
         effective_cth_share=final_share,
         efficiency_gap=eff_gap,
-        discharge_delay=discharge,
+        discharge_delay=avg_discharge,
         political_capital=pol_cap,
-        system_mode=update_system_mode_jax(s, p, pidx),
+        system_mode=update_system_mode_jax(s, p, avg_pidx),
         target_capacity=s.target_capacity,
-        current_capacity=capacity,
+        current_capacity=avg_capacity,
         equity_index=equity,
         reconciliation_balance=recon,
         bailout_expectation=bailout,
         coding_intensity=coding,
         metrics=new_metrics,
+        lhn_pressure=lhn_results[5],
+        lhn_nwau=lhn_nwau
     )
 
 
