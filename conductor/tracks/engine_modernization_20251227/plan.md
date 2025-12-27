@@ -24,7 +24,7 @@
 - [x] Task: Map tree nodes to Bibliography system and "Live Gradient" sidebar indicators.
 - [x] Task: Conductor - User Manual Verification 'Visualization' (Protocol in workflow.md) 7e84853
 
-## Phase 5: Calibration, Caching & Documentation
-- [~] Task: Implement NumPyro HMC calibration and persistent XLA kernel caching.
-- [ ] Task: Generate **Performance Modernization Report** and update `dev.md` guidelines.
-- [ ] Task: Conductor - User Manual Verification 'Calibration & Performance' (Protocol in workflow.md)
+## Phase 5: Calibration, Caching & Documentation [checkpoint: d900eba]
+- [x] Task: Implement NumPyro HMC calibration and persistent XLA kernel caching.
+- [x] Task: Generate **Performance Modernization Report** and update `dev.md` guidelines.
+- [x] Task: Conductor - User Manual Verification 'Calibration & Performance' (Protocol in workflow.md) d900eba
