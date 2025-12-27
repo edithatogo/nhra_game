@@ -93,7 +93,7 @@ To guide coding, we use a preliminary taxonomy of hypothesised gaming behaviours
 1. **Map the formal game structure:** decompose the NHRA and addenda into a clause-linked extensive-form game specification (players, moves, information sets, payoffs).
 2. **Analyse ambiguity and incoherence:** identify how constructive ambiguity and/or circular aggregation logic expands information sets or produces weakly specified payoffs.
 3. **Determine equilibria under imperfect information:** analyse conditions under which gaming dominates honest effort, explicitly including reputational payoffs and monitoring/audit probability.
-4. **Policy stress testing:** evaluate sensitivity to policy levers (e.g., audit pressure, publication timing, penalty strength, measurement noise).
+4. **Policy stress testing:** evaluate sensitivity to policy levers (e.g., audit pressure, publication timing, penalty strength, measurement noise; see `sources.md` and Appendix A: `appendix_ihacpa_changes.md` for year-by-year notes).
 
 ### 4.3 Pre-specified outputs (deliverables)
 - A document index and clause-level extraction table (with stable document locators).
@@ -116,7 +116,29 @@ This study uses a **census** of core governing instruments (primary corpus) plus
 - *National Health Reform Act 2011* (Cth) (Commonwealth of Australia, 2011).
 
 **Secondary corpus (contextual rules and signals):**
-- IHACPA Pricing Frameworks (relevant years) and NEP Determinations (IHACPA, 2024).
+- **IHACPA Pricing Frameworks (all available years, 2012–13 to 2026–27):** the detailed rules for National Efficient Price (NEP) and National Efficient Cost (NEC) determinations, and Hospital Acquired Complications (HAC) adjustments (IHACPA, various years; full list and links in `sources.md`).
+
+  **IHACPA Pricing Frameworks — Year-by-year highlights (2012–13 → 2026–27):**
+
+  | Year | Highlight |
+  |------|-----------|
+  | 2012–13 | First Pricing Framework and Pricing Guidelines — established governance and methodology for NEP determinations. |
+  | 2013–14 | Builds on 2012–13 Pricing Guidelines; consultation submissions documented. |
+  | 2014–15 | Timing change: framework published prior to NEP/NEC to increase transparency (Feb 2014). |
+  | 2015–16 | Continued methodological continuity; NEP/NEC released Mar 2015. |
+  | 2016–17 | Framework builds on earlier editions; NEP/NEC published early 2016. |
+  | 2017–18 | Framework continues iterative development; consultative process documented. |
+  | 2018–19 | Framework issued prior to NEP/NEC for transparency (Feb 2018). |
+  | 2019–20 | Builds on prior years; NEP/NEC determinations published Mar 2019/2020. |
+  | 2020–21 | Schedule and consultation adjusted to align with NHRA Addendum 2020–25. |
+  | 2021–22 | Framework published Feb 2022; schedule modified to accommodate Addendum consultations. |
+  | 2022–23 | Framework published Aug 2022; documented methodology updates and consultation report. |
+  | 2023–24 | Framework published Dec 2022; published ahead of NEP/NEC to provide transparency and capture consultation feedback. |
+  | 2024–25 | Framework published Dec 2023; emphasis on transparency and extended technical appendices. |
+  | 2025–26 | Framework published Dec 2024; NEP/NEC determinations published Mar 2025; consultation report available. |
+  | 2026–27 | Framework published Dec 2025; consultation May–Jun 2025; NEP/NEC pending (Mar 2026). |
+
+  (If you need more than the highlights above, see `sources.md` for a full year-by‑year table with NEP/NEC links and detailed notes; see Appendix A (`appendix_ihacpa_changes.md`) for concise per‑year methodological change summaries.)
 - AIHW hospital performance reporting artefacts used as public signals (AIHW, 2024).
 - Public audit / review reports relevant to ABF and data quality (where included).
 

@@ -142,9 +142,9 @@ def new_game(gp: GameParams) -> TwoPlayerGame:
     u_row = np.array([[...], [...]])
     u_col = np.array([[...], [...]])
     return TwoPlayerGame(
-        u_row=u_row, 
-        u_col=u_col, 
-        row_actions=("A", "B"), 
+        u_row=u_row,
+        u_col=u_col,
+        row_actions=("A", "B"),
         col_actions=("A", "B")
     )
 ```
