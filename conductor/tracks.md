@@ -25,7 +25,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 *Link: [./conductor/tracks/cloud_cognitive_v26/](./conductor/tracks/cloud_cognitive_v26/)*
 
 ## [x] Track: Multi-Agent Logic Refactor (Constitutional Spec)
-*Link: [./conductor/tracks/multi_agent_refactor_20251227/](./conductor/tracks/multi_agent_refactor_20251227/)*
+*Link: [./conductor/archive/multi_agent_refactor_20251227/](./conductor/archive/multi_agent_refactor_20251227/)*
 
 ## [x] Track: Refactoring, Visualization & Forensic Polish (v27)
 *Link: [./conductor/tracks/refactoring_polish_v27/](./conductor/tracks/refactoring_polish_v27/)*
