@@ -18,13 +18,13 @@
 - [x] Task: Implement `jaxopt` policy optimization mode.
 - [x] Task: Conductor - User Manual Verification 'Data & Multi-Agent' (Protocol in workflow.md) 45c4bb3
 
-## Phase 4: Strategic Visualization & Game Tree Explorer
-- [~] Task: Implement Extensive Form SVG generator for **2-player, Multi-player, and Hybrid** games.
-- [ ] Task: Integrate interactive **Game Tree Explorer** (dynamic GTE-style) in Streamlit.
-- [ ] Task: Map tree nodes to Bibliography system and "Live Gradient" sidebar indicators.
-- [ ] Task: Conductor - User Manual Verification 'Visualization' (Protocol in workflow.md)
+## Phase 4: Strategic Visualization & Game Tree Explorer [checkpoint: 7e84853]
+- [x] Task: Implement Extensive Form SVG generator for **2-player, Multi-player, and Hybrid** games.
+- [x] Task: Integrate interactive **Game Tree Explorer** (dynamic GTE-style) in Streamlit.
+- [x] Task: Map tree nodes to Bibliography system and "Live Gradient" sidebar indicators.
+- [x] Task: Conductor - User Manual Verification 'Visualization' (Protocol in workflow.md) 7e84853
 
 ## Phase 5: Calibration, Caching & Documentation
-- [ ] Task: Implement NumPyro HMC calibration and persistent XLA kernel caching.
+- [~] Task: Implement NumPyro HMC calibration and persistent XLA kernel caching.
 - [ ] Task: Generate **Performance Modernization Report** and update `dev.md` guidelines.
 - [ ] Task: Conductor - User Manual Verification 'Calibration & Performance' (Protocol in workflow.md)
