@@ -118,14 +118,14 @@
     - [x] Sub-task: Strip non-manuscript text (Title, Abstract, Body, Refs ONLY) & commit
     - [x] Sub-task: Generate Numbered Bibliography (Append to End) & commit
     - [x] Sub-task: Verify Hybrid Citation Style ({Author, Year} + Numbered Bib) & commit
-- [~] Task: Internal Review Round 1 (P1 Manuscript)
-    - [ ] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
-    - [ ] Sub-task: Generate `missing_visuals_list.md` (Tables/Figures needed) & commit
-    - [ ] Sub-task: Implement missing Visuals (Update `scripts/viz.py` if needed) & commit
-    - [ ] Sub-task: Refine Text -> v1.1 & commit
-- [ ] Task: Internal Review Round 2 (P1 Manuscript)
-    - [ ] Sub-task: Final review of v1.1 & commit
-    - [ ] Sub-task: Implement -> v2.0 (Submission Ready) & commit
+- [x] Task: Internal Review Round 1 (P1 Manuscript) [e9909cc]
+    - [x] Sub-task: Review v1.0 through analytical lenses -> `review_log_r1.md` & commit
+    - [x] Sub-task: Generate `missing_visuals_list.md` (Tables/Figures needed) & commit
+    - [x] Sub-task: Implement missing Visuals (Update `scripts/viz.py` if needed) & commit
+    - [x] Sub-task: Refine Text -> v1.1 & commit
+- [x] Task: Internal Review Round 2 (P1 Manuscript) [df85fc3]
+    - [x] Sub-task: Final review of v1.1 & commit
+    - [x] Sub-task: Implement -> v2.0 (Submission Ready) & commit
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: P1 Manuscript - Drafting & Review Loops' (Protocol in workflow.md)
 
 ## Phase 5: P2 Protocol (Modelling) - Drafting & Review Loops
@@ -179,6 +179,7 @@
     - [ ] Sub-task: Draft Intro/ODD Summary & commit
     - [ ] Sub-task: Draft Results & commit
     - [ ] Sub-task: Draft Discussion & commit
+    - [ ] Sub-task: Audit Structural Integrity (Context/Gap/Results/Limitations coverage) & commit
 - [ ] Task: Readability, Tone & Reference Quality (P2)
     - [ ] Sub-task: Run `textstat` analysis -> `readability_report.md` & commit
     - [ ] Sub-task: Optimize Readability (Sentences/Jargon) & commit
@@ -209,6 +210,7 @@
 - [ ] Task: Draft Position Statement v1.0
     - [ ] Sub-task: Draft Executive Summary & commit
     - [ ] Sub-task: Draft Recommendations & commit
+    - [ ] Sub-task: Audit Structural Integrity (Executive Position/Actionable Evidence coverage) & commit
 - [ ] Task: Readability, Tone & Reference Quality (P3)
     - [ ] Sub-task: Run `textstat` analysis -> `readability_report.md` & commit
     - [ ] Sub-task: Optimize for Plain English (Grade 10-12) & commit

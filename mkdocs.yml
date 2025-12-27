@@ -18,11 +18,14 @@ nav:
   - Project:
     - project/index.md
     - Requirements & Scope: project/requirements.md
-  - Design: design.md
-  - Diagrams: diagrams.md
-  - Context: context.md
-  - Development: dev.md
+    - Design: design.md
+    - Diagrams: diagrams.md
+    - Context: context.md
+  - Development:
+    - Development Guide: dev.md
+    - Contributing: contributing.md
   - API Reference: reference/index.md
+  - Changelog: changelog.md
 
 theme:
   name: material

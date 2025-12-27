@@ -1,12 +1,8 @@
 # TODO: Documentation Expansion and CI Completion
 
-## Status: CI Fixes Pushed (pending verification)
+## Status: Documentation Overhaul In Progress
 
-Commit `26d7b22` includes:
-- [x] `.gitattributes` for LF line endings (Windows fix)
-- [x] `deptry` ignores updated (DEP001/002/003/004)
-- [x] `test_intervention_ranking.py` fix (`dashboard_v21` → `dashboard`)
-- [x] `test_pub_structure.py` skip for CI
+Latest commit: `fde586b` - comprehensive documentation expansion
 
 ---
 
@@ -21,28 +17,44 @@ The `discharge_coordination_game` is **already integrated**:
 
 ## 2. Documentation Overhaul `[docs]`
 
-### Critical Issues (Broken Links from index.md)
-- [ ] Create `docs_mkdocs/guides/` directory <!-- id: 100 -->
-  - [ ] `usage.md` — Installation, quickstart, CLI examples
-  - [ ] `models.md` — Game theory models master reference
-- [ ] Create `docs_mkdocs/project/` directory <!-- id: 110 -->
-  - [ ] `requirements.md` — Project scope, roadmap
-- [ ] Create `docs_mkdocs/reference/` directory <!-- id: 120 -->
-  - [ ] Auto-generated API reference structure
+### Structure (✅ Complete)
+- [x] Create `docs_mkdocs/guides/` directory
+  - [x] `index.md` — Guides landing page
+  - [x] `usage.md` — Installation, quickstart, CLI examples
+  - [x] `models.md` — Game theory models (all 9 games with payoffs)
+- [x] Create `docs_mkdocs/project/` directory
+  - [x] `index.md` — Project landing page
+  - [x] `requirements.md` — Project scope, roadmap, limitations
+- [x] Create `docs_mkdocs/reference/` directory
+  - [x] `index.md` — API reference with mkdocstrings
 
-### Content Fixes
-- [ ] Populate `diagrams.md` with architecture diagrams <!-- id: 130 -->
-- [ ] Fix `context.md` — update `nhra_gt.v9.Params` → `nhra_gt.engine.Params` <!-- id: 131 -->
-- [ ] Create `changelog.md` or link to CHANGELOG.md <!-- id: 132 -->
+### Content Fixes (✅ Complete)
+- [x] Populate `diagrams.md` with Mermaid architecture diagrams
+- [x] Fix `context.md` — `nhra_gt.v9.Params` → `nhra_gt.engine.Params`
+- [x] Fix `index.md` — correct broken links
+- [x] Update `mkdocs.yml` — add explicit nav structure
 
-### Game Theory Models Documentation
-- [ ] Document all 9 stage games with payoff matrices: <!-- id: 140 -->
-  - definition_game
-  - bargaining_game
-  - cost_shifting_game
-  - discharge_coordination_game
-  - governance_integration_game
-  - aged_care_interface_game
-  - ndis_interface_game
-  - coding_audit_game
-  - compliance_game
+### Remaining Enhancements
+- [ ] Create `changelog.md` or link to CHANGELOG.md
+- [ ] Add examples/ section with Jupyter notebooks
+- [ ] Enhance API reference with more modules
+- [ ] Add contributing.md guide
+- [ ] Add FAQ section
+- [ ] Review and enhance dev.md
+- [ ] Add validation/testing documentation
+
+---
+
+## 3. CI Status `[pending]`
+
+- [ ] Verify CI passes after documentation push
+- [ ] Check Deploy Docs workflow succeeds
+
+---
+
+## 4. Future Improvements
+
+- [ ] Add interactive examples with Jupyter
+- [ ] Create video walkthrough
+- [ ] Add comparison tables for policy scenarios
+- [ ] Document calibration workflow

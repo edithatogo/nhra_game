@@ -1,35 +1,212 @@
-# Development
+# Development Guide
 
-## Quality tooling
-- Ruff (lint + format)
-- Pytest (+ Hypothesis properties)
-- Mypy (strict)
-- Pre-commit hooks
-- Tox
-- Dependabot
+This guide covers development workflows, tooling, and advanced features for contributors.
 
-## Performance Profiling (Scalene)
-We use [Scalene](https://github.com/plasma-umass/scalene) for high-performance CPU, GPU, and memory profiling.
+---
 
-### Profiling the Backtest Loop
-To profile the recursive backtest:
+## Quality Tooling Stack
+
+| Tool | Purpose | Command |
+|------|---------|---------|
+| [Ruff](https://docs.astral.sh/ruff/) | Linting + formatting | `poetry run ruff check src tests` |
+| [Mypy](https://mypy.readthedocs.io/) | Static type checking | `poetry run mypy --strict src/nhra_gt` |
+| [Pytest](https://docs.pytest.org/) | Testing framework | `poetry run pytest` |
+| [Hypothesis](https://hypothesis.readthedocs.io/) | Property-based testing | Integrated with pytest |
+| [Pre-commit](https://pre-commit.com/) | Git hooks | `pre-commit run --all-files` |
+| [Bandit](https://bandit.readthedocs.io/) | Security scanning | `poetry run bandit -r src` |
+| [Deptry](https://deptry.com/) | Dependency hygiene | `poetry run deptry .` |
+
+---
+
+## Running Tests
+
+### Basic Test Run
+
 ```bash
-LOGFIRE_SEND_TO_LOGFIRE=false PYTHONPATH=src scalene --cli --profile-all scripts/validation/recursive_backtest.py
+poetry run pytest
 ```
 
-Scalene will provide a detailed breakdown of time spent in `v9.py` (simulations) vs `validation.py` (logic).
+### With Coverage
+
+```bash
+poetry run pytest --cov=src/nhra_gt --cov-report=html
+open htmlcov/index.html
+```
+
+### Specific Test Files
+
+```bash
+# Run only game tests
+poetry run pytest tests/test_games.py
+
+# Run with verbose output
+poetry run pytest -v
+
+# Stop on first failure
+poetry run pytest -x
+```
+
+### Property-Based Tests
+
+We use Hypothesis for property-based testing:
+
+```bash
+poetry run pytest tests/test_properties.py
+```
+
+---
+
+## Performance Profiling
+
+### Scalene (Recommended)
+
+We use [Scalene](https://github.com/plasma-umass/scalene) for high-performance CPU, GPU, and memory profiling:
+
+```bash
+# Profile the backtest loop
+LOGFIRE_SEND_TO_LOGFIRE=false PYTHONPATH=src \
+  scalene --cli --profile-all scripts/validation/recursive_backtest.py
+```
+
+### py-spy (Sampling Profiler)
+
+For low-overhead production profiling:
+
+```bash
+py-spy record -o profile.svg -- python scripts/run_baseline.py
+```
+
+### memray (Memory Profiling)
+
+```bash
+memray run -o output.bin scripts/run_baseline.py
+memray flamegraph output.bin
+```
+
+---
 
 ## JAX Acceleration
-The project is prepared for JAX-based acceleration.
 
-### Requirements
-Ensure the `accel` extra is installed:
+The project supports optional JAX-based acceleration for numerical operations.
+
+### Installation
+
 ```bash
-pip install ".[accel]"
+# Install the accel extras
+poetry install --extras accel
 ```
 
 ### Compliance Testing
-Verify JAX compatibility using the dedicated test suite:
+
+Verify JAX compatibility:
+
 ```bash
-pytest tests/test_jax_compliance.py
+poetry run pytest tests/test_jax_compliance.py
 ```
+
+### Usage
+
+JAX acceleration is automatically used when available for:
+- Matrix operations in Nash solver
+- Monte Carlo simulations
+- Sensitivity analysis
+
+---
+
+## Snakemake Pipelines
+
+The project uses [Snakemake](https://snakemake.github.io/) for reproducible pipelines.
+
+### Available Targets
+
+```bash
+# Run baseline simulation
+poetry run snakemake --cores 4 run_baseline
+
+# Build context pack
+poetry run snakemake --cores 4 context_pack
+
+# Run all experiments
+poetry run snakemake --cores 4 all
+
+# Dry run (show what would execute)
+poetry run snakemake -n all
+```
+
+### Visualize DAG
+
+```bash
+poetry run snakemake --dag all | dot -Tpng > dag.png
+```
+
+---
+
+## CI/CD Pipeline
+
+The GitHub Actions CI runs on every push and PR:
+
+1. **Lint** — Ruff check and format
+2. **Type Check** — Mypy strict mode
+3. **Security** — Bandit scan (Ubuntu/3.12 only)
+4. **Dependency Hygiene** — Deptry (Ubuntu/3.12 only)
+5. **Input Traceability** — Parameter grounding check
+6. **Context Pack** — Build and verify
+7. **Tests** — Full pytest suite
+8. **Pipeline** — Snakemake verification
+9. **Docs** — MkDocs build
+10. **Link Check** — Lychee markdown link validation
+
+### Matrix
+
+Tests run across:
+- **OS**: Ubuntu, macOS, Windows
+- **Python**: 3.10, 3.11, 3.12, 3.13
+
+---
+
+## Observability (Optional)
+
+For production observability, we support [Logfire](https://logfire.pydantic.dev/):
+
+```bash
+# Install observability extras
+poetry install --extras observability
+
+# Enable Logfire
+export LOGFIRE_SEND_TO_LOGFIRE=true
+python scripts/run_baseline.py
+```
+
+---
+
+## Debugging Tips
+
+### Common Issues
+
+| Issue | Solution |
+|-------|----------|
+| Import errors | Ensure `PYTHONPATH=src` is set |
+| Type errors | Run `poetry run mypy --strict src/nhra_gt` |
+| Test failures | Check `poetry run pytest -v` for details |
+| Slow builds | Use `poetry run mkdocs serve` for live reload |
+
+### Debug Logging
+
+```python
+import logging
+logging.basicConfig(level=logging.DEBUG)
+```
+
+Or via environment:
+
+```bash
+NHRA_DEBUG=true python scripts/run_baseline.py
+```
+
+---
+
+## See Also
+
+- [Contributing Guide](contributing.md) — How to contribute
+- [Usage Guide](guides/usage.md) — Getting started
+- [API Reference](reference/index.md) — Module documentation
