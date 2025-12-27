@@ -1,0 +1,7 @@
+Protocol_Item,Config_Parameter,Result_Source,Manuscript_Section
+"Model Purpose","N/A","experiment_summary.csv","Introduction"
+"Strategic Gaming Equilibrium","noise_sd, audit_pressure","traj_transparency_surge.csv","Results 3.1"
+"Audit Blitz Impact","audit_pressure, admin_burden_weight","traj_audit_blitz.csv","Results 3.2"
+"Cooperative Governance","cost_shifting_intensity","traj_cooperative_governance.csv","Results 3.3"
+"System Pressure Dynamics","bed_capacity_index, demand_base","traj_baseline.csv","Methods / Results"
+"Reputation Utility","reputation_score","experiment_summary.csv","Results / Discussion"
