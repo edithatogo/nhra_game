@@ -1,7 +1,7 @@
 # Implementation Plan: NHRA Engine Modernization (JAX & Polars)
 
 ## Phase 1: JAX Foundation & Logic Parity
-- [ ] Task: Define `Pytree` state structures and pure functional `step()` logic.
+- [~] Task: Define `Pytree` state structures and pure functional `step()` logic.
 - [ ] Task: Implement multi-year rollout logic using `jax.lax.scan`.
 - [ ] Task: Implement **Mirror Test Harness** to verify parity with v26 logic.
 - [ ] Task: Conductor - User Manual Verification 'JAX Foundation' (Protocol in workflow.md)

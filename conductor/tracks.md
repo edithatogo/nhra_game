@@ -36,6 +36,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 
 
-## [ ] Track: Engine Modernization (JAX/Polars/Gambit)
+## [~] Track: Engine Modernization (JAX/Polars/Gambit)
 
 *Link: [./conductor/tracks/engine_modernization_20251227/](./conductor/tracks/engine_modernization_20251227/)*
