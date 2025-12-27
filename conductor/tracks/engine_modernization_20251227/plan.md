@@ -6,13 +6,13 @@
 - [x] Task: Implement **Mirror Test Harness** to verify parity with v26 logic.
 - [x] Task: Conductor - User Manual Verification 'JAX Foundation' (Protocol in workflow.md) b6b480a
 
-## Phase 2: Differentiable Solvers & Equilibrium Oracle
-- [~] Task: Implement QRE, Regret-Min, and Discrete (JVP) solvers in JAX.
-- [ ] Task: Implement **PyGambit Oracle** test suite to validate solvers.
-- [ ] Task: Conductor - User Manual Verification 'Differentiable Solvers' (Protocol in workflow.md)
+## Phase 2: Differentiable Solvers & Equilibrium Oracle [checkpoint: 5a952c7]
+- [x] Task: Implement QRE, Regret-Min, and Discrete (JVP) solvers in JAX.
+- [x] Task: Implement **PyGambit Oracle** test suite to validate solvers.
+- [x] Task: Conductor - User Manual Verification 'Differentiable Solvers' (Protocol in workflow.md) 5a952c7
 
 ## Phase 3: Polars Integration & Multi-Agent Expansion
-- [ ] Task: Rewrite data ingestion using Polars.
+- [~] Task: Rewrite data ingestion using Polars.
 - [ ] Task: Implement `vmap` for parallel Jurisdictions and Hierarchical (Cth -> State -> LHN) logic.
 - [ ] Task: Implement `jaxopt` policy optimization mode.
 - [ ] Task: Conductor - User Manual Verification 'Data & Multi-Agent' (Protocol in workflow.md)
