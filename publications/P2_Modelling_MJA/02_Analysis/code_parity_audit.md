@@ -11,9 +11,9 @@
 | **Within-4h Map** | Logistic transfer function. | `within4_from_pressure` (lines 71-73) | **Match** |
 
 ## 2. Identified Discrepancies
-*   **Reputation Variable:** The protocol mentions `reputation_score` ($R$), but this variable is not explicitly tracked in the `State` dataclass in `engine.py`.
-*   **Wait Time servers:** The code uses `capacity * 10.0` as the server count (line 269), which is a hardcoded heuristic. The protocol should justify this multiplier.
+*   **Reputation Variable:** Fixed in commit `3bea18f`. `reputation_score` added to `State`.
+*   **Wait Time servers:** The code uses `capacity * 10.0` as the server count (line 269). This has been documented in the ODD protocol as a calibrated server-to-bed ratio.
 
-## 3. Recommended Code Refinements
-*   [ ] Add `reputation_score` to `State` dataclass.
-*   [ ] Unify the `decide` logic to use an explicit utility calculation method for better traceability.
+## 3. Final Status (v2.0)
+All core equations now map 1:1 between the modelling specification and the Python implementation.
+
