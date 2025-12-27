@@ -95,6 +95,7 @@ mkdocs-jupyter = "*"
 mike = "*"
 pytest-mpl = "^0.18.0"
 pygambit = "^16.4.1"
+graphviz = "^0.21"
 
 
 [tool.poetry.group.accel.dependencies]

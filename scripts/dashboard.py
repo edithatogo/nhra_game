@@ -8,6 +8,10 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+from nhra_gt.visualization.game_trees import (
+    create_extensive_game_from_matrix,
+    render_tree_static,
+)
 from nhra_gt.visualization.interactive import (
     plot_ghost_overlay,
     plot_risk_pressure,
@@ -31,6 +35,15 @@ from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_gt.domain.stability import analyze_cost_shifting_stability
 from nhra_gt.domain.validation import RecursiveResult, aggregate_metrics
 from nhra_gt.engine import Params, apply_intervention, run_hybrid, summarise_outcome
+from nhra_gt.subgames.games import (
+    GameParams,
+    bargaining_game,
+    compliance_game,
+    cost_shifting_game,
+    definition_game,
+    discharge_coordination_game,
+    governance_integration_game,
+)
 from nhra_gt.sensitivity import get_parameter_lineage
 
 
@@ -400,10 +413,11 @@ def main():
     # ----------------------------
     # Main Content Area: Tabs
     # ----------------------------
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
+    tab1, tab2, tab2_5, tab3, tab4, tab5, tab6, tab7 = st.tabs(
         [
             "📈 Scenario Analysis",
             "🕸️ Strategic Map",
+            "🌲 Game Tree Explorer",
             "🧬 Data Lineage",
             "⚖️ Validation Scorecard",
             "🔬 Technical Analytics",
@@ -582,6 +596,65 @@ def main():
             )
 
         st.caption("Strategic nodes (BARG, DEF, etc.) parameterize the simulation logic.")
+
+    with tab2_5:
+        st.markdown("### 🌲 Extensive Form Game Tree Explorer")
+        st.markdown("""
+        Explore the sequential logic of NHRA subgames. 
+        Select a subgame to view its **decision tree** and **payoff structure** (Commonwealth move vs State move).
+        """)
+
+        subgame_options = {
+            "Definition": definition_game,
+            "Bargaining": bargaining_game,
+            "Cost Shifting": cost_shifting_game,
+            "Discharge": discharge_coordination_game,
+            "Governance": governance_integration_game,
+            "Compliance": compliance_game,
+        }
+
+        sel_subgame_name = st.selectbox("Select Subgame:", list(subgame_options.keys()))
+        
+        # Evidence Grounding
+        from nhra_gt.visualization.game_trees import get_game_evidence
+        evidence = get_game_evidence(sel_subgame_name)
+        st.info(f"📚 **Evidence Source:** {evidence['source']}  \n**Context:** {evidence['context']}")
+
+        # Use current parameter state for the tree
+        gp = GameParams(
+            pressure=1.0, # Baseline for explorer
+            efficiency_gap=0.1,
+            discharge_delay=1.0,
+            political_salience=p_base.political_salience,
+            audit_pressure=p_base.audit_pressure,
+            cost_shifting_intensity=p_base.cost_shifting_intensity,
+            political_capital=1.0
+        )
+        
+        game_func = subgame_options[sel_subgame_name]
+        g = game_func(gp)
+        
+        # Convert matrix game to extensive form tree
+        # Extract matrices from TwoPlayerGame object
+        u_row = jnp.array(g.u_row)
+        u_col = jnp.array(g.u_col)
+        
+        extensive_g = create_extensive_game_from_matrix(
+            u_row, u_col, 
+            title=sel_subgame_name,
+            row_action_labels=g.row_actions,
+            col_action_labels=g.col_actions
+        )
+        
+        # Render
+        tree_path = Path("outputs/diagrams") / f"tree_{sel_subgame_name.lower().replace(' ', '_')}"
+        render_tree_static(extensive_g, tree_path)
+        
+        svg_path = tree_path.with_suffix(".svg")
+        if svg_path.exists():
+            st.image(str(svg_path), use_container_width=True)
+            
+        st.caption("Circles = Decision Nodes | Squares = Outcomes (Cth Payoff, State Payoff)")
 
     with tab3:
         st.markdown("### Data & Variable Lineage")
