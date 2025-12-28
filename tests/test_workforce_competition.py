@@ -10,13 +10,13 @@ def test_workforce_depletion():
     
     # 1. High Intensity Scenario
     num_months = 24
-    strat_high = jnp.zeros((num_months, 10)).at[:, 8].set(1.0) # Repurpose COMP as WF_INTENSITY
+    strat_high = jnp.zeros((num_months, 11)).at[:, 8].set(1.0) # Repurpose COMP as WF_INTENSITY
     key = jax.random.PRNGKey(0)
     
     _, traj_high = run_simulation_jax(s, p, strat_high, key, num_months)
     
     # 2. Low Intensity Scenario
-    strat_low = jnp.zeros((num_months, 10)).at[:, 8].set(0.0)
+    strat_low = jnp.zeros((num_months, 11)).at[:, 8].set(0.0)
     _, traj_low = run_simulation_jax(s, p, strat_low, key, num_months)
     
     # High intensity should lead to lower workforce pool
@@ -31,7 +31,7 @@ def test_cannibalization_impact():
     s_empty = baseline_state_jax(2025, p).replace(workforce_pool=0.5)
     
     num_months = 12
-    strat = jnp.zeros((num_months, 10))
+    strat = jnp.zeros((num_months, 11))
     key = jax.random.PRNGKey(0)
     
     _, traj_full = run_simulation_jax(s_full, p, strat, key, num_months)

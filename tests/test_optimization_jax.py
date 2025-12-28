@@ -22,10 +22,9 @@ def test_policy_optimization():
     )
     
     # Fill in vector fields if needed (not needed for scalar rollout)
-    
-    strat = jnp.zeros((num_months, 10))
+    strat = jnp.zeros((num_months, 11))
     key = jax.random.PRNGKey(42)
-    
+
     def objective(final_s, trajectory):
         # We want to minimize final pressure
         return final_s.pressure

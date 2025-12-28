@@ -74,6 +74,10 @@ class ParamsJax:
     fragmentation_index: float = 1.00
     audit_pressure: float = 0.50
     admin_burden_weight: float = 0.25
+    
+    # Boundary Shifting
+    block_funding_base: float = 0.15 # 15% of activity typically block funded
+    shifting_friction: float = 0.05 # Cost of moving activity between streams
 
     # Mapping
     occupancy_base: float = 0.88
@@ -164,6 +168,8 @@ class LhnState:
     cost_actual: float = 0.0
     discharge_delay: float = 1.0
     coding_intensity: float = 1.0
+    abf_share: float = 0.85 # Default share of activity under ABF
+    block_revenue: float = 0.0
 
 @struct.dataclass
 class StateJax:
@@ -196,6 +202,7 @@ class StateJax:
     coding_intensity: float = 1.0
     reputation_score: float = 1.0
     jurisdiction_id: int = 0
+    total_block_revenue: float = 0.0
 
     # Auditor Agent state
     auditor_suspicion: float = 0.0

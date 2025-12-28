@@ -11,14 +11,14 @@ def test_auditor_suspicion_logic():
     key = jax.random.PRNGKey(42)
     
     # Baseline strategies (H=0 for coding)
-    strat_honest = jnp.zeros(10)
+    strat_honest = jnp.zeros(11)
     
     # 1. Step with honesty
     s_next = step_jax(s, p, strat_honest, key)
     assert s_next.auditor_suspicion <= s.auditor_suspicion + 0.01 # Should not grow much
     
     # 2. Step with UPCODING (Index 7 = 1)
-    strat_gaming = jnp.zeros(10).at[7].set(1.0)
+    strat_gaming = jnp.zeros(11).at[7].set(1.0)
     
     # Run multiple steps of intense gaming to see suspicion rise
     # We'll override the state to have high coding intensity first
@@ -46,7 +46,7 @@ def test_auditor_decay():
     s = baseline_state_jax(2025, p).replace(auditor_suspicion=0.8)
     key = jax.random.PRNGKey(42)
     
-    strat_honest = jnp.zeros(10)
+    strat_honest = jnp.zeros(11)
     
     s_next = step_jax(s, p, strat_honest, key)
     assert s_next.auditor_suspicion < s.auditor_suspicion

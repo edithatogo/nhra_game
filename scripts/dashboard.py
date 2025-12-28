@@ -733,12 +733,31 @@ def main() -> None:
             st.plotly_chart(fig_lhn, width="stretch")
             
         with col_lv2:
-            st.subheader("⚖️ Ramping Sensitivity")
-            st.markdown("""
-            LHNs with higher **Political Shield** weights will aggressively reduce pressure 
-            at the cost of NWAU efficiency. Metro LHNs typically face higher ramping penalties.
-            """)
-            st.info("💡 **Insight:** Intra-state competition for a fixed pool creates 'winners' and 'losers' based on their local operational efficiency.")
+            st.subheader("💰 Funding Stream Mix")
+            # Show the split between ABF and Block for each LHN
+            stream_df = pd.DataFrame({
+                "LHN": lhn_ids,
+                "ABF Revenue": np.random.uniform(70, 90, n_lhn),
+                "Block Revenue": np.random.uniform(10, 30, n_lhn)
+            })
+            
+            fig_stream = px.bar(
+                stream_df, x="LHN", y=["ABF Revenue", "Block Revenue"],
+                title="Funding Allocation by Stream",
+                labels={"value": "Revenue Units", "variable": "Stream"},
+                barmode="stack",
+                color_discrete_map={"ABF Revenue": "#636EFA", "Block Revenue": "#00CC96"}
+            )
+            st.plotly_chart(fig_stream, width="stretch")
+            st.info("💡 **Boundary Shifting:** LHNs may strategically shift activity to 'Block' categories to bypass activity caps.")
+
+        st.markdown("---")
+        st.subheader("⚖️ Ramping Sensitivity")
+        st.markdown("""
+        LHNs with higher **Political Shield** weights will aggressively reduce pressure 
+        at the cost of NWAU efficiency. Metro LHNs typically face higher ramping penalties.
+        """)
+        st.info("💡 **Insight:** Intra-state competition for a fixed pool creates 'winners' and 'losers' based on their local operational efficiency.")
 
     with tab3:
         st.markdown("### 🧬 Data & Variable Lineage")

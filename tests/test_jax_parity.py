@@ -96,8 +96,8 @@ def state_to_jax(s: State) -> StateJax:
 
 
 def strategies_to_jax(strat: dict[str, Any]) -> jnp.ndarray:
-    # 0: SIGNAL, 1: DEF, 2: BARG, 3: SHIFT, 4: DISC, 5: AGED, 6: NDIS, 7: CODING, 8: COMP, 9: SIGNAL_QUALITY
-    arr = jnp.zeros(10)
+    # 0: SIGNAL, 1: DEF, 2: BARG, 3: SHIFT, 4: DISC, 5: AGED, 6: NDIS, 7: CODING, 8: COMP, 9: SIGNAL_QUALITY, 10: VENUE_SHIFT
+    arr = jnp.zeros(11)
     arr = arr.at[0].set(1 if strat.get("SIGNAL") == "H" else 0)
     arr = arr.at[1].set(1 if strat.get("DEF") == "R" else 0)
     arr = arr.at[2].set(1 if strat.get("BARG") == "A" else 0)
@@ -108,6 +108,7 @@ def strategies_to_jax(strat: dict[str, Any]) -> jnp.ndarray:
     arr = arr.at[7].set(1 if strat.get("CODING") == "U" else 0)
     arr = arr.at[8].set(1 if strat.get("COMP") == "H" or strat.get("WORKFORCE") == "H" else 0)
     arr = arr.at[9].set(float(strat.get("SIGNAL_QUALITY", 1.0)))
+    arr = arr.at[10].set(1 if strat.get("VENUE_SHIFT") == "B" else 0)
     return arr
 
 

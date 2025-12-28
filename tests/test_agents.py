@@ -6,10 +6,10 @@ def test_lhn_utility_ramping_penalty():
     weights = AgentWeights(ramping_penalty=10.0)
     
     # Case 1: No ramping (pressure <= 1.0)
-    u_base = lhn_utility(pressure=jnp.array(1.0), revenue=jnp.array(100.0), cost=jnp.array(80.0), weights=weights)
+    u_base = lhn_utility(pressure=jnp.array(1.0), revenue=jnp.array(100.0), cost=jnp.array(80.0), is_shifting=False, weights=weights)
     
     # Case 2: Ramping (pressure = 1.2)
-    u_high = lhn_utility(pressure=jnp.array(1.2), revenue=jnp.array(100.0), cost=jnp.array(80.0), weights=weights)
+    u_high = lhn_utility(pressure=jnp.array(1.2), revenue=jnp.array(100.0), cost=jnp.array(80.0), is_shifting=False, weights=weights)
     
     # High pressure should have significantly lower utility
     assert u_high < u_base

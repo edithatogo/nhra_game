@@ -195,6 +195,7 @@ class HeuristicAgent(Agent):
             "CODING": "H",
             "GOV": "S",
             "COMP": "L",
+            "VENUE_SHIFT": "A",
             "SIGNAL_QUALITY": 1.0,
         }
 
@@ -215,6 +216,7 @@ class HeuristicAgent(Agent):
             "CODING",
             "GOV",
             "COMP",
+            "VENUE_SHIFT",
             "SIGNAL_QUALITY",
         ]
 
@@ -292,6 +294,10 @@ class HeuristicAgent(Agent):
                 elif g == "COMP":
                     r_comp, _ = _solve(compliance_game(gp))
                     results["COMP"] = r_comp
+                elif g == "VENUE_SHIFT":
+                    from nhra_gt.subgames.games import venue_shifting_game
+                    r_venue, _ = _solve(venue_shifting_game(gp))
+                    results["VENUE_SHIFT"] = r_venue
 
             else:
                 # Heuristic fallback path
@@ -358,6 +364,10 @@ class HeuristicAgent(Agent):
                 elif g == "COMP":
                     COMP_prob = logistic(0.9 * params.audit_pressure - 0.7 * state.efficiency_gap)
                     results["COMP"] = "T" if rng.random() < COMP_prob else "L"
+
+                elif g == "VENUE_SHIFT":
+                    VENUE_prob = logistic(1.2 * (state.pressure - 1.1) + 0.8 * state.efficiency_gap)
+                    results["VENUE_SHIFT"] = "B" if rng.random() < VENUE_prob else "A"
 
                 elif g == "SIGNAL_QUALITY":
                     sig_quality = (

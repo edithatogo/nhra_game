@@ -10,7 +10,7 @@ def test_agreement_clock_reset():
     
     # Run for 10 years (120 months)
     num_months = 120
-    strat = jnp.zeros((num_months, 10))
+    strat = jnp.zeros((num_months, 11))
     key = jax.random.PRNGKey(0)
     
     final_s, trajectory = run_simulation_jax(s, p, strat, key, num_months)
@@ -32,7 +32,7 @@ def test_renegotiation_leverage():
     
     num_months = 12
     # Use BARG=A (index 2) to avoid Defer drift, and SHIFT=I (index 3) to minimize demand noise
-    strat = jnp.zeros((num_months, 10)).at[:, 2].set(1.0)
+    strat = jnp.zeros((num_months, 11)).at[:, 2].set(1.0)
     key = jax.random.PRNGKey(42)
     
     _, traj_low = run_simulation_jax(s_low, p, strat, key, num_months)

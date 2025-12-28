@@ -9,7 +9,7 @@ def test_gp_spillover_mechanistic():
     p_high = ParamsJax(gp_out_of_pocket=100.0) # High co-pay
     
     s = baseline_state_jax(2025, p_low)
-    strat = jnp.zeros(10)
+    strat = jnp.zeros(11)
     noise = jnp.array(0.0)
     
     # Run demand step
@@ -28,7 +28,7 @@ def test_wait_time_feedback():
     s_high_cap = baseline_state_jax(2025, p).replace(current_capacity=10.0, target_capacity=10.0)
     s_low_cap = baseline_state_jax(2025, p).replace(current_capacity=0.1, target_capacity=0.1)
     
-    strat = jnp.zeros(10)
+    strat = jnp.zeros(11)
     noise = jnp.array(0.0)
     
     d_high = demand_step_jax(s_high_cap, p, strat, noise)

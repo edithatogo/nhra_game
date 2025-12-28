@@ -105,7 +105,7 @@ def baseline_state_jax(start_year: int = 2025, p: ParamsJax | None = None) -> St
 
 @beartype
 def demand_step_jax(
-    s: StateJax, p: ParamsJax, strategies: Float[jnp.ndarray, "10"], noise: Float[jnp.ndarray, ""]
+    s: StateJax, p: ParamsJax, strategies: Float[jnp.ndarray, "11"], noise: Float[jnp.ndarray, ""]
 ) -> Float[jnp.ndarray, ""]:
     # SHIFT: I=0, S=1 (index 3)
     shift_val = strategies[3]
@@ -142,7 +142,7 @@ def demand_step_jax(
 
 @beartype
 def policy_step_jax(
-    s: StateJax, p: ParamsJax, strategies: Float[jnp.ndarray, "10"], month_growth_factor: float
+    s: StateJax, p: ParamsJax, strategies: Float[jnp.ndarray, "11"], month_growth_factor: float
 ) -> tuple[Float[jnp.ndarray, ""], Float[jnp.ndarray, ""], Float[jnp.ndarray, ""]]:
     # Use default drift for now to ensure parity passes
     drift_factor = (1.0 + p.input_cost_annual_growth / 12.0) / (1.0 + p.nep_annual_growth / 12.0)
@@ -185,7 +185,7 @@ def policy_step_jax(
 def lhn_step_jax(
     s: StateJax,
     p: ParamsJax,
-    strategies: Float[jnp.ndarray, "10"],
+    strategies: Float[jnp.ndarray, "11"],
     demand: Float[jnp.ndarray, ""],
     month_growth_factor: float,
     offload_noise: Float[jnp.ndarray, ""],
@@ -252,7 +252,7 @@ def lhn_step_jax(
 def pay_step_jax(
     s: StateJax,
     p: ParamsJax,
-    strategies: Float[jnp.ndarray, "10"],
+    strategies: Float[jnp.ndarray, "11"],
     eff_share: Float[jnp.ndarray, ""],
     month_growth_factor: float,
     audit_random: Float[jnp.ndarray, ""],
@@ -351,10 +351,32 @@ def auditor_step_jax(s: StateJax, p: ParamsJax) -> tuple[Any, Any]:
 
 
 @beartype
+def boundary_shift_step_jax(
+    s: StateJax, p: ParamsJax, venue_shift_strat: Float[jnp.ndarray, ""]
+) -> tuple[Any, Any]:
+    """Calculates the strategic split between ABF and Block funding."""
+    # venue_shift_strat: 0=Baseline, 1=Shift to Block
+    base_abf_share = 1.0 - p.block_funding_base
+    
+    # If strategy is 'Shift', we reduce ABF share (moving activity to Block)
+    target_abf_share = jnp.where(venue_shift_strat == 1, base_abf_share - 0.10, base_abf_share)
+    
+    # Friction prevents instant full shift
+    new_abf_share = s.effective_cth_share # Placeholder - logic needs to be per-LHN or state aggregate
+    # For now, let's assume it moves towards target but limited by friction
+    new_abf_share = jnp.clip(target_abf_share, 0.5, 1.0) 
+    
+    # Block revenue is proxy for the remainder
+    block_rev = (1.0 - new_abf_share) * 50.0 # Arbitrary units for revenue
+    
+    return new_abf_share, block_rev
+
+
+@beartype
 def step_jax(
     s: StateJax,
     p: ParamsJax,
-    strategies: Float[jnp.ndarray, "10"],
+    strategies: Float[jnp.ndarray, "11"],
     prng_key: Any,
 ) -> StateJax:
     mgf = 1.0 / 12.0
@@ -469,6 +491,12 @@ def step_jax(
     # 6. Auditor Strategic Move (NHFB logic)
     new_suspicion, new_pressure_active = auditor_step_jax(s, p)
 
+    # 7. Boundary Shifting (ABF vs Block)
+    # VENUE_SHIFT is index 10 (we'll add this to the strategy vector)
+    # If strategies doesn't have 11 elements, we default to 0
+    venue_strat = strategies[10] if strategies.shape[0] > 10 else 0.0
+    new_abf_share, new_block_rev = boundary_shift_step_jax(s, p, venue_strat)
+
     # Handle time rollover
     def rollover():
         return jnp.array(1, dtype=jnp.int32), jnp.array(s.year + 1, dtype=jnp.int32)
@@ -502,6 +530,7 @@ def step_jax(
         coding_intensity=coding,
         reputation_score=1.0,
         jurisdiction_id=0,
+        total_block_revenue=new_block_rev,
         auditor_suspicion=new_suspicion,
         audit_pressure_active=new_pressure_active,
         metrics=new_metrics,
@@ -512,7 +541,7 @@ def step_jax(
 def run_simulation_jax(
     init_state: StateJax,
     params: ParamsJax,
-    strategies: Float[jnp.ndarray, "num_steps 10"],
+    strategies: Float[jnp.ndarray, "num_steps 11"],
     prng_key: Any,
     num_steps: int,
 ) -> tuple[StateJax, PyTree]:

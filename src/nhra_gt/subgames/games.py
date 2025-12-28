@@ -267,3 +267,26 @@ def compliance_game(gp: GameParams) -> TwoPlayerGame:
     )
 
     return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("T", "L"), col_actions=("T", "L"))
+
+
+def venue_shifting_game(gp: GameParams) -> TwoPlayerGame:
+    """Venue shifting game: LHN chooses ABF 'A' vs Block 'B'; Cth chooses Flexible 'F' vs Strict 'S'."""
+    pr = gp.pressure
+    eg = gp.efficiency_gap
+    
+    # Gain from shifting to Block increases when efficiency gap or pressure is high (cap avoidance)
+    shift_gain = 0.25 + 0.5 * eg + 0.3 * (pr - 1.0)
+    strict_penalty = 0.45
+    enforcement_cost = 0.15
+    
+    u_row = np.array([
+        [1.0, 1.0], # ABF (Baseline)
+        [1.0 + shift_gain, 1.0 + shift_gain - strict_penalty] # Block
+    ])
+    
+    u_col = np.array([
+        [1.0, 1.0 - enforcement_cost], # Flexible
+        [1.0 - 0.15 * shift_gain, 1.0 - enforcement_cost + 0.10] # Strict (Reduces 'leakage' gain)
+    ])
+    
+    return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("A", "B"), col_actions=("F", "S"))

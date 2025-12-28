@@ -18,7 +18,8 @@ def test_hierarchical_vectorization_smoke():
     mgf = 1.0/12.0
     offload_noises = jax.random.normal(key, (n_lhn,))
     discharge_target = 0.95 # Tight target from state
-    strategies = jnp.zeros(10)
+    strategies = jnp.zeros(11)
+
     
     # Vectorized LHN step
     vmap_lhn_step = jax.vmap(lambda k, d, o: lhn_step_jax(
@@ -37,7 +38,8 @@ def test_state_delegation_impact():
     """Verify that the state's discharge target actually influences LHN outcomes."""
     p = ParamsJax()
     s = baseline_state_jax(2025, p)
-    strategies = jnp.zeros(10)
+    strategies = jnp.zeros(11)
+
     key = jax.random.PRNGKey(0)
     
     # LHN with loose target
