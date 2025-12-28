@@ -46,7 +46,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 ---
 
 ## [x] Track: Boundary Shifting & Stream Mix Game (P3)
-*Link: [./conductor/tracks/boundary_shifting_20251228/](./conductor/tracks/boundary_shifting_20251228/)*
+*Link: [./conductor/archive/boundary_shifting_20251228/](./conductor/archive/boundary_shifting_20251228/)*
 
 ## [x] Track: Auditor Agent & Strategic Inspection (P2)
 *Link: [./conductor/archive/auditor_agent_20251228/](./conductor/archive/auditor_agent_20251228/)*
