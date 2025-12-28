@@ -243,6 +243,8 @@ class State:
     bailout_expectation: float = 0.0
     coding_intensity: float = 1.0
     reputation_score: float = 1.0
+    auditor_suspicion: float = 0.0
+    audit_pressure_active: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
         """Convert state to a dictionary."""
@@ -291,6 +293,8 @@ def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
         bailout_expectation=0.0,
         coding_intensity=1.0,
         reputation_score=1.0,
+        auditor_suspicion=0.0,
+        audit_pressure_active=p.audit_pressure if p else 0.5,
     )
 
 
@@ -477,6 +481,21 @@ def step(s: State, p: Params, strategies: dict[str, Any], rng: np.random.Generat
         1.5,
     )
 
+    # Auditor Strategic Move (Heuristic implementation for legacy engine)
+    coding_signal = max(0.0, coding - 1.0)
+    eff_signal = max(0.0, eff_gap - 0.10)
+    anomaly_signal = 0.7 * coding_signal + 0.3 * eff_signal
+    
+    new_suspicion = 0.8 * s.auditor_suspicion + 0.2 * anomaly_signal
+    new_suspicion = max(0.0, min(1.0, new_suspicion))
+    
+    # Sigmoid approximation: 1 / (1 + exp(-x))
+    def sigmoid(x):
+        return 1 / (1 + math.exp(-x))
+        
+    pressure_mult = 0.5 + 1.5 * sigmoid((new_suspicion - 0.5) * 10.0)
+    new_pressure = max(0.05, min(1.0, p.audit_pressure * pressure_mult))
+
     next_m, next_y = (s.month + 1, s.year) if s.month < 12 else (1, s.year + 1)
     return State(
         year=next_y,
@@ -496,6 +515,8 @@ def step(s: State, p: Params, strategies: dict[str, Any], rng: np.random.Generat
         reconciliation_balance=recon,
         bailout_expectation=bailout,
         coding_intensity=coding,
+        auditor_suspicion=new_suspicion,
+        audit_pressure_active=new_pressure,
     )
 
 
@@ -577,6 +598,8 @@ def run_hybrid(
                     "equity_index": s.equity_index,
                     "rr_proxy": rr,
                     "cumulative_pressure": cum_press,
+                    "auditor_suspicion": s.auditor_suspicion,
+                    "audit_pressure": s.audit_pressure_active,
                 }
             )
 
@@ -643,6 +666,8 @@ def run_hybrid(
             index_gap_mean=("index_gap", "mean"),
             cap_gap_mean=("cap_gap", "mean"),
             audit_gap_mean=("audit_gap", "mean"),
+            suspicion_mean=("auditor_suspicion", "mean"),
+            pressure_active_mean=("audit_pressure", "mean"),
         )
         .reset_index()
     )

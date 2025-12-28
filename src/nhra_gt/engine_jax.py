@@ -261,7 +261,8 @@ def pay_step_jax(
     coding = s.coding_intensity
     recon = s.reconciliation_balance
 
-    audit_prob = 0.1 * coding * p.audit_pressure
+    # Use dynamically updated audit pressure from state
+    audit_prob = 0.1 * coding * s.audit_pressure_active
 
     def on_upcode():
         new_coding = coding + 0.02 * month_growth_factor
@@ -325,6 +326,28 @@ def update_system_mode_jax(
     mode = jnp.where(mode == 3, from_recovery(), mode)
 
     return mode
+
+
+@beartype
+def auditor_step_jax(s: StateJax, p: ParamsJax) -> tuple[Any, Any]:
+    """Strategic Auditor updates suspicion and pressure based on observed anomalies."""
+    # Auditor observes coding intensity and efficiency gap
+    # Simple suspicion: current level vs baseline
+    coding_signal = jnp.maximum(0.0, s.coding_intensity - 1.0)
+    eff_signal = jnp.maximum(0.0, s.efficiency_gap - 0.10) # Assume 10% is 'normal'
+    
+    anomaly_signal = 0.7 * coding_signal + 0.3 * eff_signal
+    
+    # Suspicion dynamics: grow with signal, decay slowly
+    new_suspicion = 0.8 * s.auditor_suspicion + 0.2 * anomaly_signal
+    new_suspicion = jnp.clip(new_suspicion, 0.0, 1.0)
+    
+    # Map suspicion to active pressure using sigmoid
+    # Base pressure is p.audit_pressure
+    pressure_mult = 0.5 + 1.5 * jax.nn.sigmoid((new_suspicion - 0.5) * 10.0)
+    new_pressure = jnp.clip(p.audit_pressure * pressure_mult, 0.05, 1.0)
+    
+    return new_suspicion, new_pressure
 
 
 @beartype
@@ -443,6 +466,9 @@ def step_jax(
         cumulative_audit_loss=s.metrics.cumulative_audit_loss + audit_loss,
     )
 
+    # 6. Auditor Strategic Move (NHFB logic)
+    new_suspicion, new_pressure_active = auditor_step_jax(s, p)
+
     # Handle time rollover
     def rollover():
         return jnp.array(1, dtype=jnp.int32), jnp.array(s.year + 1, dtype=jnp.int32)
@@ -476,6 +502,8 @@ def step_jax(
         coding_intensity=coding,
         reputation_score=1.0,
         jurisdiction_id=0,
+        auditor_suspicion=new_suspicion,
+        audit_pressure_active=new_pressure_active,
         metrics=new_metrics,
     )
 

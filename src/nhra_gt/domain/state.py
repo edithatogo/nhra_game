@@ -197,4 +197,8 @@ class StateJax:
     reputation_score: float = 1.0
     jurisdiction_id: int = 0
 
+    # Auditor Agent state
+    auditor_suspicion: float = 0.0
+    audit_pressure_active: float = 0.0
+
     metrics: MetricsJax = MetricsJax()

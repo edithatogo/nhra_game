@@ -935,21 +935,34 @@ def main() -> None:
 
     with tab7:
         st.markdown("### 🔍 Forensic Audit & Solver Integrity")
-        st.markdown("Monitor the numerical stability and convergence of the Nash Equilibrium solvers.")
+        st.markdown("Monitor the numerical stability and regulator response dynamics.")
         
-        # Solver Stability Plot
-        years_audit = list(range(2025, 2031))
-        stability_df = pd.DataFrame({
-            "Year": years_audit,
-            "Iterations to Converge": np.random.poisson(12, len(years_audit)),
-            "Solver Residual": np.random.exponential(1e-4, len(years_audit))
-        })
-        
-        fig_stab_audit = px.line(stability_df, x="Year", y="Iterations to Converge", title="Solver Convergence Profile")
-        st.plotly_chart(fig_stab_audit, width="stretch")
-        st.caption("Lower iterations indicate high strategic stability. Spikes signal 'Strategic Chaos'.")
+        st.subheader("🕵️ Strategic Auditor Surveillance")
+        col_aud1, col_aud2 = st.columns(2)
+        with col_aud1:
+            st.markdown("**Regulator Suspicion Index**")
+            fig_suspicion = px.line(
+                traj_game, x="year", y="suspicion_mean",
+                labels={"year": "Year", "suspicion_mean": "Suspicion (0-1)"},
+                title="Auditor Suspicion (Anomaly Triggered)"
+            )
+            fig_suspicion.update_traces(line_color="orange", line_dash="dot")
+            st.plotly_chart(fig_suspicion, width="stretch")
+            st.caption("Signals detecting upcoding or efficiency gap spikes.")
+
+        with col_aud2:
+            st.markdown("**Active Inspection Pressure**")
+            fig_active_p = px.line(
+                traj_game, x="year", y="pressure_active_mean",
+                labels={"year": "Year", "pressure_active_mean": "Active Pressure"},
+                title="Dynamic Audit Intensity"
+            )
+            fig_active_p.update_traces(line_color="red")
+            st.plotly_chart(fig_active_p, width="stretch")
+            st.caption("The dynamic scrutiny applied based on suspicion levels.")
 
         st.markdown("---")
+        st.markdown("#### Nash Solver Stability Monitor")
         st.info(
             "Direct inspection of raw model state and parameter objects for parity verification."
         )

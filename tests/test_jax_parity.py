@@ -90,6 +90,8 @@ def state_to_jax(s: State) -> StateJax:
         bailout_expectation=s.bailout_expectation,
         coding_intensity=s.coding_intensity,
         reputation_score=s.reputation_score,
+        auditor_suspicion=s.auditor_suspicion,
+        audit_pressure_active=s.audit_pressure_active,
     )
 
 
