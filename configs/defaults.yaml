@@ -1,0 +1,42 @@
+funding:
+  nep_to_cost_ratio_metro: 0.9
+  nep_to_cost_ratio_regional: 0.83
+  nep_to_cost_ratio_remote: 0.75
+  rurality_weight: 0.35
+  remote_weight: 0.07
+  nominal_cth_share_target: 0.45
+  effective_cth_share_base: 0.38
+  cap_growth: 0.065
+  has_cumulative_cap: false
+pricing:
+  nep_annual_growth: 0.03
+  input_cost_annual_growth: 0.04
+  nep_per_nwau_start: 6465.0
+  input_cost_per_nwau_start: 1.0
+  representative_nwau: 1.0
+dynamics:
+  demand_base: 1.0
+  avoidable_ed_share: 0.18
+  discharge_delay_base: 1.0
+  bed_capacity_index: 1.0
+  capacity_lag: 0.15
+  occupancy_base: 0.88
+  offload_base_min: 18.0
+  within4_base: 0.55
+couplings:
+  cost_shifting_intensity: 0.35
+  fragmentation_index: 1.0
+  audit_pressure: 0.5
+  admin_burden_weight: 0.25
+behavioural:
+  tau: 0.25
+  bargaining_cost: 0.12
+  political_salience: 0.3
+  qre_lambda: 4.0
+  use_burden_feedback: false
+  burden_to_throughput_beta: 0.06
+  noise_sd: 0.03
+patient_choice:
+  gp_out_of_pocket: 40.0
+  gp_wait_time_min: 15.0
+  patient_time_value_hour: 25.0

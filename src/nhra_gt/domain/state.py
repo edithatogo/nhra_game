@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from enum import IntEnum
+from pathlib import Path
 from typing import Any
 
+import polars as pl
 import jax.numpy as jnp
 from flax import struct
 
@@ -106,6 +108,49 @@ class ParamsJax:
 
     # Economic Spine (optional JAX arrays)
     spine: EconomicSpineJax | None = None
+
+    @classmethod
+    def from_yaml(cls, path: Path | str) -> ParamsJax:
+        """Loads parameters from a YAML file."""
+        import yaml
+        with open(path, "r") as f:
+            data = yaml.safe_load(f)
+        
+        # Flatten the nested YAML groups
+        flat_data = {}
+        for group in data.values():
+            if isinstance(group, dict):
+                flat_data.update(group)
+        
+        # Filter only fields that exist in the dataclass
+        # We handle default type conversion if needed (e.g. bools to ints for JAX)
+        return cls(**{k: v for k, v in flat_data.items() if k in cls.__dataclass_fields__})
+
+
+class BaselineProvider:
+    """Manages loading of the automated data spine and baseline parameters."""
+    
+    @staticmethod
+    def load_spine(path: Path | str = "data/calibration/historical_normalized.csv") -> EconomicSpineJax:
+        df = pl.read_csv(path)
+        return EconomicSpineJax(
+            years=df["year"].to_numpy().astype(jnp.int32),
+            nep_per_nwau=df["within4"].to_numpy(), # Placeholder for actual NEP if not in spine
+            wpi_health_index=df["occupancy"].to_numpy() # Placeholder
+        )
+
+    @classmethod
+    def get_baseline(cls, config_path: str = "configs/defaults.yaml") -> tuple[ParamsJax, StateJax]:
+        from nhra_gt.engine_jax import baseline_state_jax
+        params = ParamsJax.from_yaml(config_path)
+        # Check if spine exists
+        spine_path = Path("data/calibration/historical_normalized.csv")
+        if spine_path.exists():
+            spine = cls.load_spine(spine_path)
+            params = params.replace(spine=spine)
+            
+        state = baseline_state_jax(2025, params)
+        return params, state
 
 
 @struct.dataclass

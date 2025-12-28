@@ -115,6 +115,24 @@ class EvidenceRegistry(BaseModel):
                     p_dict[param] = e.mean
         return base_params.model_copy(update=p_dict)
 
+    def promote_all_to_yaml(self, config_path: Path | str) -> None:
+        """Overwrites the YAML config defaults with the latest 'best' evidence from the registry."""
+        import yaml
+        with open(config_path, "r") as f:
+            config = yaml.safe_load(f)
+        
+        # Update each group if parameter matches
+        for group_name, group_dict in config.items():
+            if not isinstance(group_dict, dict):
+                continue
+            for param in group_dict.keys():
+                e = self.get_entry(param)
+                if e:
+                    config[group_name][param] = e.mean
+        
+        with open(config_path, "w") as f:
+            yaml.safe_dump(config, f, sort_keys=False)
+
     def is_sane(
         self,
         entry: EvidenceEntry,
