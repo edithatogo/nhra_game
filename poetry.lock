@@ -249,7 +249,8 @@ version = "0.22.9"
 description = "Unbearably fast near-real-time pure-Python runtime-static type-checker."
 optional = false
 python-versions = ">=3.10"
-groups = ["dev"]
+groups = ["main"]
+markers = "extra == \"dev\""
 files = [
     {file = "beartype-0.22.9-py3-none-any.whl", hash = "sha256:d16c9bbc61ea14637596c5f6fbff2ee99cbe3573e46a716401734ef50c3060c2"},
     {file = "beartype-0.22.9.tar.gz", hash = "sha256:8f82b54aa723a2848a56008d18875f91c1db02c32ef6a62319a002e3e25a975f"},
@@ -1922,7 +1923,7 @@ version = "0.21"
 description = "Simple Python interface for Graphviz"
 optional = false
 python-versions = ">=3.9"
-groups = ["dev"]
+groups = ["main"]
 files = [
     {file = "graphviz-0.21-py3-none-any.whl", hash = "sha256:54f33de9f4f911d7e84e4191749cac8cc5653f815b06738c54db9a15ab8b1e42"},
     {file = "graphviz-0.21.tar.gz", hash = "sha256:20743e7183be82aaaa8ad6c93f8893c923bd6658a04c32ee115edb3c8a835f78"},
@@ -2436,14 +2437,14 @@ files = [
 name = "jax"
 version = "0.6.2"
 description = "Differentiate, compile, and transform Numpy code."
-optional = false
+optional = true
 python-versions = ">=3.10"
-groups = ["main", "accel"]
+groups = ["main"]
+markers = "python_version == \"3.10\" and extra == \"accel\""
 files = [
     {file = "jax-0.6.2-py3-none-any.whl", hash = "sha256:bb24a82dc60ccf704dcaf6dbd07d04957f68a6c686db19630dd75260d1fb788c"},
     {file = "jax-0.6.2.tar.gz", hash = "sha256:a437d29038cbc8300334119692744704ca7941490867b9665406b7f90665cd96"},
 ]
-markers = {main = "python_version == \"3.10\" and extra == \"accel\"", accel = "python_version == \"3.10\""}
 
 [package.dependencies]
 jaxlib = "0.6.2"
@@ -2467,14 +2468,14 @@ xprof = ["xprof"]
 name = "jax"
 version = "0.8.2"
 description = "Differentiate, compile, and transform Numpy code."
-optional = false
+optional = true
 python-versions = ">=3.11"
-groups = ["main", "accel"]
+groups = ["main"]
+markers = "python_version >= \"3.11\" and extra == \"accel\""
 files = [
     {file = "jax-0.8.2-py3-none-any.whl", hash = "sha256:d0478c5dc74406441efcd25731166a65ee782f13c352fa72dc7d734351909355"},
     {file = "jax-0.8.2.tar.gz", hash = "sha256:1a685ded06a8223a7b52e45e668e406049dbbead02873f2b5a4d881ba7b421ae"},
 ]
-markers = {main = "python_version >= \"3.11\" and extra == \"accel\"", accel = "python_version >= \"3.11\""}
 
 [package.dependencies]
 jaxlib = "0.8.2"
@@ -2500,9 +2501,10 @@ xprof = ["xprof"]
 name = "jaxlib"
 version = "0.6.2"
 description = "XLA library for JAX"
-optional = false
+optional = true
 python-versions = ">=3.10"
-groups = ["main", "accel"]
+groups = ["main"]
+markers = "python_version == \"3.10\" and extra == \"accel\""
 files = [
     {file = "jaxlib-0.6.2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:da4601b2b5dc8c23d6afb293eacfb9aec4e1d1871cb2f29c5a151d103e73b0f8"},
     {file = "jaxlib-0.6.2-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:4205d098ce8efb5f7fe2fe5098bae6036094dc8d8829f5e0e0d7a9b155326336"},
@@ -2523,7 +2525,6 @@ files = [
     {file = "jaxlib-0.6.2-cp313-cp313t-manylinux2014_aarch64.whl", hash = "sha256:39cf9555f85ae1ce2e2c1a59fc71f2eca4f9867a7cb934fef881ba56b11371d1"},
     {file = "jaxlib-0.6.2-cp313-cp313t-manylinux2014_x86_64.whl", hash = "sha256:3abd536e44b05fb1657507e3ff1fc3691f99613bae3921ecab9e82f27255f784"},
 ]
-markers = {main = "python_version == \"3.10\" and extra == \"accel\"", accel = "python_version == \"3.10\""}
 
 [package.dependencies]
 ml_dtypes = ">=0.5.0"
@@ -2534,9 +2535,10 @@ scipy = ">=1.12"
 name = "jaxlib"
 version = "0.8.2"
 description = "XLA library for JAX"
-optional = false
+optional = true
 python-versions = ">=3.11"
-groups = ["main", "accel"]
+groups = ["main"]
+markers = "python_version >= \"3.11\" and extra == \"accel\""
 files = [
     {file = "jaxlib-0.8.2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:490bf0cb029c73c65c9431124b86cdc95082dbc1fb76fc549d24d75da33e5454"},
     {file = "jaxlib-0.8.2-cp311-cp311-manylinux_2_27_aarch64.whl", hash = "sha256:bb89be452b1b808d3f88fc01c415b364a260be4cc7ac120c038009f6150a32dc"},
@@ -2561,7 +2563,6 @@ files = [
     {file = "jaxlib-0.8.2-cp314-cp314t-manylinux_2_27_aarch64.whl", hash = "sha256:a397ea7dcb37d689ce79173eeb99b2f1347637a36be9a27f20ae6848bfc58bfc"},
     {file = "jaxlib-0.8.2-cp314-cp314t-manylinux_2_27_x86_64.whl", hash = "sha256:aa8701b6356f098e8452c3cec762fb5f706fcb8f67ffd65964f63982479aa23b"},
 ]
-markers = {main = "python_version >= \"3.11\" and extra == \"accel\"", accel = "python_version >= \"3.11\""}
 
 [package.dependencies]
 ml_dtypes = ">=0.5.0"
@@ -2572,9 +2573,10 @@ scipy = ">=1.13"
 name = "jaxopt"
 version = "0.8.5"
 description = "Hardware accelerated, batchable and differentiable optimizers in JAX."
-optional = false
+optional = true
 python-versions = "*"
-groups = ["accel"]
+groups = ["main"]
+markers = "extra == \"accel\""
 files = [
     {file = "jaxopt-0.8.5-py3-none-any.whl", hash = "sha256:ff221d1a86908ec759eb1e219ee1d12bf208a70707e961bf7401076fe7cf4d5e"},
     {file = "jaxopt-0.8.5.tar.gz", hash = "sha256:2790bd68ef132b216c083a8bc7a2704eceb35a92c0fc0a1e652e79dfb1e9e9ab"},
@@ -3785,9 +3787,10 @@ typing-extensions = {version = ">=4.0", markers = "python_version < \"3.11\""}
 name = "ml-dtypes"
 version = "0.5.4"
 description = "ml_dtypes is a stand-alone implementation of several NumPy dtype extensions used in machine learning."
-optional = false
+optional = true
 python-versions = ">=3.9"
-groups = ["main", "accel"]
+groups = ["main"]
+markers = "extra == \"accel\""
 files = [
     {file = "ml_dtypes-0.5.4-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:b95e97e470fe60ed493fd9ae3911d8da4ebac16bd21f87ffa2b7c588bf22ea2c"},
     {file = "ml_dtypes-0.5.4-cp310-cp310-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:b4b801ebe0b477be666696bda493a9be8356f1f0057a57f1e35cd26928823e5a"},
@@ -3829,7 +3832,6 @@ files = [
     {file = "ml_dtypes-0.5.4-cp39-cp39-win_amd64.whl", hash = "sha256:3d277bf3637f2a62176f4575512e9ff9ef51d00e39626d9fe4a161992f355af2"},
     {file = "ml_dtypes-0.5.4.tar.gz", hash = "sha256:8ab06a50fb9bf9666dd0fe5dfb4676fa2b0ac0f31ecff72a6c3af8e22c063453"},
 ]
-markers = {main = "extra == \"accel\""}
 
 [package.dependencies]
 numpy = [
@@ -4265,7 +4267,7 @@ version = "2.2.6"
 description = "Fundamental package for array computing in Python"
 optional = false
 python-versions = ">=3.10"
-groups = ["main", "accel", "dev"]
+groups = ["main", "dev"]
 markers = "python_version == \"3.10\""
 files = [
     {file = "numpy-2.2.6-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:b412caa66f72040e6d268491a59f2c43bf03eb6c96dd8f0307829feb7fa2b6fb"},
@@ -4331,7 +4333,7 @@ version = "2.4.0"
 description = "Fundamental package for array computing in Python"
 optional = false
 python-versions = ">=3.11"
-groups = ["main", "accel", "dev"]
+groups = ["main", "dev"]
 markers = "python_version >= \"3.11\""
 files = [
     {file = "numpy-2.4.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:316b2f2584682318539f0bcaca5a496ce9ca78c88066579ebd11fd06f8e4741e"},
@@ -4582,14 +4584,14 @@ typing-extensions = ">=4.5.0"
 name = "opt-einsum"
 version = "3.4.0"
 description = "Path optimization of einsum functions."
-optional = false
+optional = true
 python-versions = ">=3.8"
-groups = ["main", "accel"]
+groups = ["main"]
+markers = "extra == \"accel\""
 files = [
     {file = "opt_einsum-3.4.0-py3-none-any.whl", hash = "sha256:69bb92469f86a1565195ece4ac0323943e83477171b91d24c35afe028a90d7cd"},
     {file = "opt_einsum-3.4.0.tar.gz", hash = "sha256:96ca72f1b886d148241348783498194c577fa30a8faac108586b14f1ba4473ac"},
 ]
-markers = {main = "extra == \"accel\""}
 
 [[package]]
 name = "optax"
@@ -5642,7 +5644,7 @@ version = "16.4.1"
 description = "The package for computation in game theory"
 optional = false
 python-versions = ">=3.9"
-groups = ["dev"]
+groups = ["main"]
 files = [
     {file = "pygambit-16.4.1-cp310-cp310-win32.whl", hash = "sha256:7d7349bf4a733eae1791315ff6a77e266f2d18ceaa77ddbd248f74131419effd"},
     {file = "pygambit-16.4.1-cp310-cp310-win_amd64.whl", hash = "sha256:aab02a757230874da4d7277ebdfb5269c87a70d67bd6694cdb15fe8202733ec7"},
@@ -5986,6 +5988,18 @@ files = [
     {file = "pywin32-311-cp39-cp39-win32.whl", hash = "sha256:aba8f82d551a942cb20d4a83413ccbac30790b50efb89a75e4f586ac0bb8056b"},
     {file = "pywin32-311-cp39-cp39-win_amd64.whl", hash = "sha256:e0c4cfb0621281fe40387df582097fd796e80430597cb9944f0ae70447bacd91"},
     {file = "pywin32-311-cp39-cp39-win_arm64.whl", hash = "sha256:62ea666235135fee79bb154e695f3ff67370afefd71bd7fea7512fc70ef31e3d"},
+]
+
+[[package]]
+name = "pyxlsb"
+version = "1.0.10"
+description = "Excel 2007-2010 Binary Workbook (xlsb) parser"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "pyxlsb-1.0.10-py2.py3-none-any.whl", hash = "sha256:87c122a9a622e35ca5e741d2e541201d28af00fb46bec492cfa9586890b120b4"},
+    {file = "pyxlsb-1.0.10.tar.gz", hash = "sha256:8062d1ea8626d3f1980e8b1cfe91a4483747449242ecb61013bc2df85435f685"},
 ]
 
 [[package]]
@@ -6585,7 +6599,7 @@ version = "1.15.3"
 description = "Fundamental algorithms for scientific computing in Python"
 optional = false
 python-versions = ">=3.10"
-groups = ["main", "accel", "dev"]
+groups = ["main"]
 markers = "python_version == \"3.10\""
 files = [
     {file = "scipy-1.15.3-cp310-cp310-macosx_10_13_x86_64.whl", hash = "sha256:a345928c86d535060c9c2b25e71e87c39ab2f22fc96e9636bd74d1dbf9de448c"},
@@ -6650,7 +6664,7 @@ version = "1.16.3"
 description = "Fundamental algorithms for scientific computing in Python"
 optional = false
 python-versions = ">=3.11"
-groups = ["main", "accel", "dev"]
+groups = ["main"]
 markers = "python_version >= \"3.11\""
 files = [
     {file = "scipy-1.16.3-cp311-cp311-macosx_10_14_x86_64.whl", hash = "sha256:40be6cf99e68b6c4321e9f8782e7d5ff8265af28ef2cd56e9c9b2638fa08ad97"},
@@ -8302,12 +8316,12 @@ test = ["coverage[toml]", "zope.event", "zope.testing"]
 testing = ["coverage[toml]", "zope.event", "zope.testing"]
 
 [extras]
-accel = ["chex", "flax", "jax", "jaxlib", "jaxtyping", "numpyro", "polars"]
-dev = []
+accel = ["chex", "flax", "jax", "jaxlib", "jaxopt", "jaxtyping", "numpyro", "polars"]
+dev = ["beartype"]
 observability = ["logfire"]
 opt = ["optuna"]
 
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "826b7fc9c3a0f6dcf4335e87262cfee6cdf2d3dad55a09459a93d9923c3d413d"
+content-hash = "776a8c923618c1d97b29f402519c9bee291132acfb5a2dcd1c3ba0c451de92d4"
