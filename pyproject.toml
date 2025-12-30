@@ -40,11 +40,11 @@ pyxlsb = "*"
 beartype = "*"
 pygambit = "^16.4.1"
 graphviz = "^0.21"
+jax = ">=0.4"
+jaxlib = ">=0.4"
 
 # Optional dependencies (extras)
 optuna = { version = ">=3.6", optional = true }
-jax = { version = ">=0.4", optional = true }
-jaxlib = { version = ">=0.4", optional = true }
 jaxtyping = { version = ">=0.2", optional = true }
 flax = { version = ">=0.8", optional = true }
 chex = { version = ">=0.1", optional = true }
@@ -57,7 +57,7 @@ jaxopt = { version = "^0.8.5", optional = true }
 
 [tool.poetry.extras]
 opt = ["optuna"]
-accel = ["jax", "jaxlib", "jaxtyping", "flax", "chex", "numpyro", "polars", "jaxopt"]
+accel = ["jaxtyping", "flax", "chex", "numpyro", "polars", "jaxopt"]
 observability = ["logfire"]
 dev = [
     "pytest", "hypothesis", "hypothesis-auto", "icontract-hypothesis",
@@ -190,6 +190,7 @@ known_first_party = ["nhra_gt", "scripts"]
 [tool.deptry]
 ignore_notebooks = true
 extend_exclude = ["tests", "scripts", "archive", ".nox", ".gemini"]
+known_first_party = ["nhra_gt", "scripts"]
 
 [tool.deptry.per_rule_ignores]
 DEP001 = ["nhra_gt", "scripts"]

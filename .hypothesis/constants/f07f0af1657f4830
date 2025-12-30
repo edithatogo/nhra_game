@@ -1,4 +1,0 @@
-# file: /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/src/nhra_game_theory/sensitivity.py
-# hypothesis_version: 6.148.8
-
-[0.2, 0.7, 0.95, 1.0, 128, 300, 1000, '## 3. Key Findings\n', '--', '.pdf', '.png', '.svg', 'Parameter', 'S1', 'S1_conf', 'S2', 'ST', 'ST_conf', 'YlGnBu', '_s1.pdf', '_s1.png', '_s1.svg', '_st.pdf', '_st.png', '_st.svg', 'audit_pressure', 'bed_capacity_index', 'bounds', 'conf', 'discharge_delay_base', 'index', 'lightgreen', 'mu', 'mu_star', 'mu_star_conf', 'names', 'nep_annual_growth', 'num_vars', 'outcome', 'political_salience', 'rurality_weight', 'salmon', 'sigma', 'skyblue', 'x']

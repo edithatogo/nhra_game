@@ -1,4 +1,0 @@
-# file: /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/scripts/data/ingest_aihw_api.py
-# hypothesis_version: 6.148.8
-
-[100.0, '/datasets', 'AIHW MyHospitals API', 'EndDate', 'Fetching metadata...', 'Lower_CI', 'MYH-RM0015', 'MYH0005', 'Metric', 'NAT', 'Processing...', 'Source', 'Unit_Code', 'Upper_CI', 'Value', 'Within 4 Hours', 'Year', '__main__', 'data_set_id', 'end_date', 'false', 'peer_group_summary', 'reporting_end_date', 'reporting_unit_code', 'value', 'year']

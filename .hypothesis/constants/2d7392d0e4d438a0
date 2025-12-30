@@ -1,4 +1,0 @@
-# file: /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/scripts/reporting/generate_parameter_registry.py
-# hypothesis_version: 6.148.8
-
-[0.8, 1.2, '(DataFrame)', 'ABS', 'IHACPA', 'IHACPA/ABS', 'Input Cost', 'Model Assumption', 'Model parameter', 'NEP Indexation', 'NHRA', 'NHRA Agreement', 'Nep', 'Parameter', 'Share', 'Source', 'Value', 'WPI Health', '_', '__main__', 'assumed', 'bed_capacity_index', 'calibrated', 'citation_or_file', 'default_value', 'description', 'discharge_delay_base', 'economic_spine', 'evidence_source', 'fraction', 'fraction/year', 'fragmentation_index', 'growth', 'input_cost', 'justification', 'locator', 'nep', 'nep_annual_growth', 'parameter', 'political_salience', 'primary', 'range_high', 'range_low', 'secondary', 'share', 'source_type', 'unitless', 'units', 'value', 'w']

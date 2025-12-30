@@ -1,4 +1,0 @@
-# file: /Users/doughnut/Library/CloudStorage/OneDrive-VictoriaUniversityofWellington-STAFF/Project - 2025.12 - NHRA Game/src/nhra_game_theory/domain/audit.py
-# hypothesis_version: 6.148.8
-
-['%H%M%S', '%Y-%m-%d', 'HEAD', 'duration_seconds', 'end_time', 'experiment_dir', 'experiment_name', 'git', 'git_hash', 'metadata.json', 'outputs/experiments', 'rev-parse', 'start_time', 'timestamp', 'unknown', 'utf-8', 'w']

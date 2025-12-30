@@ -26,12 +26,12 @@ repos:
     rev: v0.13.0
     hooks:
       - id: markdownlint-cli2
-        files: \.(md|markdown)$
+        files: ^(README\\.md|docs/|docs_mkdocs/).*(\\.md|\\.markdown)$
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.13.0
     hooks:
       - id: mypy
-        args: ["--config-file", "mypy.ini", "src/nhra_gt/engine.py", "src/nhra_gt/domain"]
+        args: ["--config-file", "mypy.ini"]
         pass_filenames: false
         additional_dependencies: [types-requests, types-setuptools, pandas-stubs, pydantic, pandera, types-PyYAML]
   - repo: https://github.com/PyCQA/bandit
@@ -50,4 +50,4 @@ repos:
         types: [python]
         files: ^pyproject\.toml$|^src/
         pass_filenames: false
-        args: ["--ignore", "DEP003", "."]
+        args: ["."]
