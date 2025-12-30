@@ -2586,10 +2586,9 @@ scipy = ">=1.0.0"
 name = "jaxtyping"
 version = "0.3.4"
 description = "Type annotations and runtime checking for shape and dtype of JAX/NumPy/PyTorch/etc. arrays."
-optional = true
+optional = false
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"accel\""
 files = [
     {file = "jaxtyping-0.3.4-py3-none-any.whl", hash = "sha256:70e438db2f361575d04cccea50f77f9c8fe92f8b2086dc0ce89e5f1658bebaab"},
     {file = "jaxtyping-0.3.4.tar.gz", hash = "sha256:b4aac576a1b6c62a363f76f543f21c7cd4c7bb8714816c2c875f28b7abcdb770"},
@@ -7960,10 +7959,9 @@ tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
 name = "wadler-lindig"
 version = "0.1.7"
 description = "A Wadler–Lindig pretty-printer for Python."
-optional = true
+optional = false
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"accel\""
 files = [
     {file = "wadler_lindig-0.1.7-py3-none-any.whl", hash = "sha256:e3ec83835570fd0a9509f969162aeb9c65618f998b1f42918cfc8d45122fe953"},
     {file = "wadler_lindig-0.1.7.tar.gz", hash = "sha256:81d14d3fe77d441acf3ebd7f4aefac20c74128bf460e84b512806dccf7b2cd55"},
@@ -8298,7 +8296,7 @@ test = ["coverage[toml]", "zope.event", "zope.testing"]
 testing = ["coverage[toml]", "zope.event", "zope.testing"]
 
 [extras]
-accel = ["chex", "jaxopt", "jaxtyping", "numpyro", "polars"]
+accel = ["chex", "jaxopt", "numpyro", "polars"]
 dev = ["beartype"]
 observability = ["logfire"]
 opt = ["optuna"]
@@ -8306,4 +8304,4 @@ opt = ["optuna"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "a8b69941f767097870fdf7310caa0345f7c178a2c4995455dc436402d045945c"
+content-hash = "e3b4e0d535826e1acf0ea261a0e90a1b0af8af01f117c085436a1713eb3acab9"

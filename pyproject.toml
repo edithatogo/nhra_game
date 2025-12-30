@@ -43,10 +43,10 @@ graphviz = "^0.21"
 jax = ">=0.4"
 jaxlib = ">=0.4"
 flax = ">=0.8"
+jaxtyping = ">=0.2"
 
 # Optional dependencies (extras)
 optuna = { version = ">=3.6", optional = true }
-jaxtyping = { version = ">=0.2", optional = true }
 chex = { version = ">=0.1", optional = true }
 numpyro = { version = ">=0.13", optional = true }
 polars = { version = ">=0.20", optional = true }
@@ -57,7 +57,7 @@ jaxopt = { version = "^0.8.5", optional = true }
 
 [tool.poetry.extras]
 opt = ["optuna"]
-accel = ["jaxtyping", "chex", "numpyro", "polars", "jaxopt"]
+accel = ["chex", "numpyro", "polars", "jaxopt"]
 observability = ["logfire"]
 dev = [
     "pytest", "hypothesis", "hypothesis-auto", "icontract-hypothesis",
