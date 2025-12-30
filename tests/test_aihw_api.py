@@ -2,15 +2,10 @@ from __future__ import annotations
 
 from unittest.mock import patch
 
-import pandas as pd
-
 import polars as pl
-
 import pytest
 
 from nhra_gt.domain.aihw_api import AIHWClient
-
-
 
 
 @pytest.fixture

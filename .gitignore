@@ -27,8 +27,13 @@ htmlcov/
 dist/
 build/
 *.egg-info/
-.mypy_cache/.gemini/
+.mypy_cache/
+.ruff_cache/
 .nox/
+
+# Workflow/build artifacts
+.snakemake/
+outputs/
 
 # OpenMemory - IDE/Assistant specific rules
 .qoder/rules/openmemory.md

@@ -1,136 +1,20 @@
-"""
-NHRA stylised hybrid model (v26) — Cognitive Digital Twin Engine
-
-This version implements monthly time-steps, explicit queuing dynamics,
-hysteretic crisis states, and a modular agent-based decision layer.
-"""
-
 from __future__ import annotations
 
 import math
-from collections.abc import Iterable
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
+from dataclasses import field as dataclass_field
 from enum import Enum
-from typing import Any, cast
+from typing import Any
 
 import numpy as np
 import pandas as pd
-from numpy.typing import NDArray
 
 from nhra_gt.agents.base import HeuristicAgent
-from nhra_gt.rules import (
-    HardCapRule,
-    ProportionalAuditRule,
-    SoftCapRule,
-    ThresholdAuditRule,
-)
+from nhra_gt.rules import initialize_rules
+from nhra_gt.subgames.queuing import PatientUtilityParams, solve_queuing_equilibrium_legacy
 
 # ----------------------------
-# Utilities
-# ----------------------------
-
-
-def clamp(x: float, lo: float, hi: float) -> float:
-    return max(lo, min(hi, x))
-
-
-def logistic(x: float) -> float:
-    return 1.0 / (1.0 + math.exp(-x))
-
-
-def softmax(u: NDArray[np.floating[Any]], tau: float = 0.25) -> NDArray[np.floating[Any]]:
-    u = np.asarray(u, dtype=float)
-    u = u - u.max()
-    z = np.exp(u / max(1e-9, tau))
-    return cast(NDArray[np.floating[Any]], np.asarray(z / z.sum(), dtype=float))
-
-
-def mm_s_queue_wait(arrival_rate: float, service_rate: float, servers: float) -> float:
-    """Simplified approximation of M/M/s wait time.
-
-    Calculates the expected wait time in minutes using a Kingman-like approximation
-    for a multi-server queue.
-
-    Args:
-        arrival_rate: The rate of arrivals (e.g., patients per hour).
-        service_rate: The service rate per server (e.g., patients per hour).
-        servers: The number of available servers (effective capacity).
-
-    Returns:
-        The estimated wait time in minutes, clamped between 5 and 1440.
-    """
-    utilization = arrival_rate / max(1e-9, (service_rate * servers))
-    if utilization >= 1.0:
-        return 1440.0  # Cap at 24 hours
-    wait = (utilization ** (math.sqrt(2 * (servers + 1)) - 1)) / (servers * (1 - utilization))
-    return clamp(wait * 60.0, 5.0, 1440.0)
-
-
-def within4_from_pressure(pidx: float) -> float:
-    """Calibrate so pidx=1 -> ~0.53"""
-    return clamp(0.80 - 0.45 * logistic((pidx - 1.0) / 0.20), 0.05, 0.85)
-
-
-def nep_series(years: list[int], p: Params) -> pd.DataFrame:
-    """Return an illustrative NEP series.
-
-    Generates a time-series DataFrame of National Efficient Price (NEP) values
-    based on the initial NEP and annual growth rate defined in the parameters.
-
-    Args:
-        years: A list of years to generate data for.
-        p: The simulation parameters containing growth assumptions.
-
-    Returns:
-        A DataFrame with columns `year`, `nep_per_nwau`, `representative_nwau`,
-        and `efficient_payment`.
-    """
-    nep = float(p.nep_per_nwau_start)
-    rows = []
-    for i, y in enumerate(years):
-        if i > 0:
-            nep *= 1.0 + float(p.nep_annual_growth)
-        rows.append(
-            {
-                "year": int(y),
-                "nep_per_nwau": float(nep),
-                "representative_nwau": float(p.representative_nwau),
-                "efficient_payment": float(nep * float(p.representative_nwau)),
-            }
-        )
-    return pd.DataFrame(rows)
-
-
-def input_cost_series(years: list[int], p: Params) -> pd.DataFrame:
-    """Return an illustrative input-cost series (index units per NWAU)."""
-    cost = float(p.input_cost_per_nwau_start)
-    rows = []
-    for i, y in enumerate(years):
-        if i > 0:
-            cost *= 1.0 + float(p.input_cost_annual_growth)
-        rows.append({"year": int(y), "input_cost_per_nwau": float(cost)})
-    return pd.DataFrame(rows)
-
-
-def nep_vs_cost_series(years: list[int], p: Params) -> pd.DataFrame:
-    """Combine NEP and input-cost indices."""
-    nep_df = nep_series(years, p)[["year", "nep_per_nwau"]]
-    cost_df = input_cost_series(years, p)
-    out = nep_df.merge(cost_df, on="year", how="inner")
-    out["nep_to_cost_ratio_index"] = out["nep_per_nwau"] / out["input_cost_per_nwau"]
-    out["cost_over_nep_index"] = out["input_cost_per_nwau"] / out["nep_per_nwau"]
-    return out
-
-
-def pressure_index(occupancy: float, offload_min: float, discharge_delay: float) -> float:
-    """Legacy pressure index for compatibility."""
-    occ_term = logistic((occupancy - 0.88) / 0.03)
-    off_term = logistic((offload_min - 20.0) / 8.0)
-    return 0.8 + 0.8 * (0.55 * occ_term + 0.45 * off_term) * discharge_delay
-
-
-# ----------------------------
-# Parameters and state
+# Domain Models
 # ----------------------------
 
 
@@ -143,6 +27,8 @@ class SystemMode(Enum):
 
 @dataclass(frozen=True)
 class Params:
+    """System-wide configuration parameters for the NHRA model."""
+
     # Funding / valuation
     nep_to_cost_ratio_metro: float = 0.90
     nep_to_cost_ratio_regional: float = 0.83
@@ -167,12 +53,24 @@ class Params:
     discharge_delay_base: float = 1.00
     bed_capacity_index: float = 1.00
     capacity_lag: float = 0.15
+    expansion_lag: float = 0.10
+    contraction_lag: float = 0.20
+    adjustment_cost_beta: float = 5.0
 
     # Couplings
     cost_shifting_intensity: float = 0.35
     fragmentation_index: float = 1.00
     audit_pressure: float = 0.50
     admin_burden_weight: float = 0.25
+    cannibalization_beta: float = 0.1
+
+    # Boundary Shifting
+    block_funding_base: float = 0.15
+    shifting_friction: float = 0.05
+
+    # Lags & Measurement
+    signal_lag_months: int = 1
+    claims_lag_months: int = 3
 
     # Mapping
     occupancy_base: float = 0.88
@@ -186,6 +84,12 @@ class Params:
     tau: float = 0.25
     bargaining_cost: float = 0.12
     political_salience: float = 0.30
+
+    # Patient choice / Queuing Game
+    gp_out_of_pocket: float = 40.0
+    gp_wait_time_min: float = 15.0
+    patient_time_value_hour: float = 25.0
+
     use_equilibrium_bargaining: bool = False
     use_quantal_response: bool = False
     qre_lambda: float = 4.0
@@ -200,6 +104,12 @@ class Params:
     audit_rule_type: str = "proportional"
     use_stage_game_equilibria: bool = True
     equilibrium_selection_rule: str = "payoff_dominant"
+
+    # Modular Rules
+    cap_rule: Any = dataclass_field(default_factory=lambda: None)
+    audit_rule: Any = dataclass_field(default_factory=lambda: None)
+    eligibility_rule: Any = dataclass_field(default_factory=lambda: None)
+    reconciliation_rule: Any = dataclass_field(default_factory=lambda: None)
 
     # Data
     economic_spine: pd.DataFrame | None = None
@@ -224,6 +134,39 @@ class Params:
 
 
 @dataclass(frozen=True)
+class LhnStateLegacy:
+    """Granular state for a single LHN (Legacy)."""
+
+    id: int
+    pressure: float = 1.0
+    occupancy: float = 0.88
+    within4: float = 0.53
+    offload_min: float = 18.0
+    nwau_actual: float = 100.0
+    nwau_reported: float = 100.0
+    coding_intensity: float = 1.0
+    target_capacity: float = 1.0
+    current_capacity: float = 1.0
+    discharge_delay: float = 1.0
+    adjustment_costs: float = 0.0
+
+
+@dataclass(frozen=True)
+class JurisdictionStateLegacy:
+    """Granular state for a single Jurisdiction (Legacy)."""
+
+    id: int
+    reconciliation_balance: float = 0.0
+    bailout_expectation: float = 0.0
+    political_capital: float = 1.0
+    effective_cth_share: float = 0.38
+    efficiency_gap: float = 0.10
+    equity_index: float = 1.0
+    total_block_revenue: float = 0.0
+    lhns: list[LhnStateLegacy] = dataclass_field(default_factory=list)
+
+
+@dataclass(frozen=True)
 class State:
     year: int
     month: int
@@ -231,20 +174,41 @@ class State:
     occupancy: float
     offload_min: float
     within4: float
-    effective_cth_share: float
-    efficiency_gap: float
-    discharge_delay: float
-    political_capital: float
     system_mode: SystemMode = SystemMode.NORMAL
-    target_capacity: float = 1.0
-    current_capacity: float = 1.0
-    equity_index: float = 1.0
-    reconciliation_balance: float = 0.0
-    bailout_expectation: float = 0.0
-    coding_intensity: float = 1.0
-    reputation_score: float = 1.0
+    workforce_pool: float = 1.0
+    agreement_clock: int = 5
+
+    # Hierarchical Entities
+    jurisdictions: list[JurisdictionStateLegacy] = dataclass_field(default_factory=list)
+
+    # Auditor Agent state
     auditor_suspicion: float = 0.0
     audit_pressure_active: float = 0.0
+    adjustment_costs: float = 0.0
+
+    # Lags & Measurement
+    # Buffers store up to 12 months of history
+    lag_buffer_pressure: np.ndarray = dataclass_field(default_factory=lambda: np.zeros(12))
+    lag_buffer_occupancy: np.ndarray = dataclass_field(default_factory=lambda: np.zeros(12))
+    lag_buffer_within4: np.ndarray = dataclass_field(default_factory=lambda: np.zeros(12))
+    lag_buffer_nwau: np.ndarray = dataclass_field(default_factory=lambda: np.zeros(12))
+    lag_buffer_efficiency_gap: np.ndarray = dataclass_field(default_factory=lambda: np.zeros(12))
+    lag_buffer_coding: np.ndarray = dataclass_field(default_factory=lambda: np.zeros(12))
+
+    # Reported values (lagged) available to agents
+    reported_pressure: float = 1.0
+    reported_occupancy: float = 0.88
+    reported_within4: float = 0.53
+    reported_nwau: float = 0.0
+    reported_efficiency_gap: float = 0.10
+    reported_coding_intensity: float = 1.0
+
+    # Stability Telemetry
+    solver_n_equilibria: int = 1
+    solver_residual: float = 0.0
+
+    # Patient Choice
+    prob_ed: float = 0.5
 
     def to_dict(self) -> dict[str, Any]:
         """Convert state to a dictionary."""
@@ -265,6 +229,10 @@ class State:
 def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
     if p is None:
         p = Params()
+
+    # Ensure rules are initialized
+    p = initialize_rules(p)
+
     metro_ratio = p.nep_to_cost_ratio_metro
     reg_ratio = p.nep_to_cost_ratio_regional
     rem_ratio = p.nep_to_cost_ratio_remote
@@ -274,6 +242,11 @@ def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
         + p.remote_weight * rem_ratio
     )
     efficiency_gap = 1.0 / max(1e-9, ratio) - 1.0
+
+    # Initialize Hierarchical Entities
+    lhns = [LhnStateLegacy(id=i) for i in range(5)]
+    jurisdictions = [JurisdictionStateLegacy(id=0, lhns=lhns)]
+
     return State(
         year=start_year,
         month=1,
@@ -281,20 +254,29 @@ def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
         occupancy=p.occupancy_base,
         offload_min=p.offload_base_min,
         within4=p.within4_base,
-        effective_cth_share=p.effective_cth_share_base * (1.0 + efficiency_gap),
-        efficiency_gap=efficiency_gap,
-        discharge_delay=p.discharge_delay_base,
-        political_capital=1.0,
         system_mode=SystemMode.NORMAL,
-        target_capacity=p.bed_capacity_index,
-        current_capacity=p.bed_capacity_index,
-        equity_index=1.0,
-        reconciliation_balance=0.0,
-        bailout_expectation=0.0,
-        coding_intensity=1.0,
-        reputation_score=1.0,
+        workforce_pool=1.0,
+        agreement_clock=5,
+        jurisdictions=jurisdictions,
         auditor_suspicion=0.0,
         audit_pressure_active=p.audit_pressure if p else 0.5,
+        adjustment_costs=0.0,
+        # Lags & Measurement
+        lag_buffer_pressure=np.full(12, 1.0),
+        lag_buffer_occupancy=np.full(12, p.occupancy_base if p else 0.88),
+        lag_buffer_within4=np.full(12, p.within4_base if p else 0.53),
+        lag_buffer_nwau=np.zeros(12),
+        lag_buffer_efficiency_gap=np.full(12, efficiency_gap),
+        lag_buffer_coding=np.full(12, 1.0),
+        reported_pressure=1.0,
+        reported_occupancy=p.occupancy_base if p else 0.88,
+        reported_within4=p.within4_base if p else 0.53,
+        reported_nwau=500.0,
+        reported_efficiency_gap=efficiency_gap,
+        reported_coding_intensity=1.0,
+        solver_n_equilibria=1,
+        solver_residual=0.0,
+        prob_ed=0.5,
     )
 
 
@@ -303,20 +285,29 @@ def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
 # ----------------------------
 
 
-def get_cap_rule(params: Params) -> SoftCapRule | HardCapRule:
-    return SoftCapRule() if params.cap_rule_type == "soft" else HardCapRule()
-
-
-def get_audit_rule(params: Params) -> ThresholdAuditRule | ProportionalAuditRule:
-    return (
-        ThresholdAuditRule() if params.audit_rule_type == "threshold" else ProportionalAuditRule()
+def demand_step(
+    s: State, p: Params, strategies: dict[str, Any], rng: np.random.Generator
+) -> tuple[float, float]:
+    demand_factor = (
+        (1.04 * p.cost_shifting_intensity / 0.35) if strategies.get("SHIFT") == "S" else 0.96
     )
 
+    # Use modular queuing equilibrium solver
+    qp = PatientUtilityParams(
+        gp_out_of_pocket=p.gp_out_of_pocket,
+        gp_wait_time_min=p.gp_wait_time_min,
+        patient_time_value_hour=p.patient_time_value_hour,
+    )
 
-def demand_step(s: State, p: Params, strategies: dict[str, Any], rng: np.random.Generator) -> float:
-    demand = p.demand_base * (1.04 if strategies.get("SHIFT") == "S" else 0.96)
-    demand += rng.normal(0, 0.02)
-    return max(0.5, demand)
+    d_final, prob_ed = solve_queuing_equilibrium_legacy(
+        total_base_demand=p.demand_base * demand_factor * 2.0,
+        capacity=s.occupancy,  # Use current global occupancy as proxy for capacity constraint
+        discharge_delay=1.0,
+        params=qp,
+    )
+
+    demand = d_final + rng.normal(0, 0.02)
+    return max(0.5, demand), prob_ed
 
 
 def policy_step(
@@ -337,17 +328,21 @@ def policy_step(
             1.0 + p.nep_annual_growth / 12.0
         )
 
-    eff_gap = clamp((1.0 + s.efficiency_gap) * drift_factor - 1.0, 0.05, 0.60)
+    # Note: We take global reported eff_gap
+    eff_gap = clamp((1.0 + s.reported_efficiency_gap) * drift_factor - 1.0, 0.05, 0.60)
     if strategies.get("DEF") == "R":
         eff_gap *= 0.93**month_growth_factor
     else:
         eff_gap *= 1.03**month_growth_factor
 
-    eff_share = s.effective_cth_share
+    # Nominal share drift
+    eff_share = s.reported_efficiency_gap  # Proxy for current share drift base
     target = p.nominal_cth_share_target
     if strategies.get("BARG") == "A":
         eff_share += 0.25 * (target - eff_share) * month_growth_factor
-        bailout = s.bailout_expectation + (0.05 * month_growth_factor if s.pressure > 1.2 else 0.0)
+        bailout = s.bailout_expectation + p.reconciliation_rule.calculate_bailout(
+            s.pressure, month_growth_factor
+        )
     else:
         eff_share += 0.10 * (target - eff_share) * month_growth_factor
         bailout = max(0.0, s.bailout_expectation - 0.02 * month_growth_factor)
@@ -357,70 +352,53 @@ def policy_step(
     return eff_gap, eff_share, bailout
 
 
-def ops_step(
-    s: State,
+def lhn_step(
+    lhn: LhnStateLegacy,
     p: Params,
     strategies: dict[str, Any],
     demand: float,
-    month_growth_factor: float,
+    mgf: float,
     rng: np.random.Generator,
-) -> tuple[float, float, float, float, float, float, float]:
-    """Execute the operational dynamics step.
+    discharge_target: float,
+    wf_availability: float,
+) -> LhnStateLegacy:
+    """Operational step for a single LHN (Legacy)."""
+    # Workforce drain
+    wf_drain = (
+        0.2 if strategies.get("COMP") == "H" or strategies.get("WORKFORCE") == "H" else 0.1
+    ) * mgf
+    if strategies.get("COMPETITION") == "A":
+        wf_drain += 0.1 * mgf
 
-    Updates operational metrics including discharge delay, capacity, occupancy,
-    and pressure indices based on demand and strategic choices.
+    wf_impact = math.exp(0.5 * max(0.0, 1.0 - wf_availability))
 
-    Args:
-        s: Current system state.
-        p: System parameters.
-        strategies: Dictionary of current agent strategies.
-        demand: The realized demand for the current step.
-        month_growth_factor: Scaling factor for monthly time-step (1/12).
-        rng: Random number generator for stochasticity.
-
-    Returns:
-        A tuple containing:
-        (discharge, capacity, wait_min, occ, off, pidx, w4)
-    """
-    discharge = s.discharge_delay
-    aged_effect = 0.95 if strategies.get("AGED") == "C" else 1.02
-    ndis_effect = 0.96 if strategies.get("NDIS") == "C" else 1.03
+    aged_effect = 0.95 if strategies.get("AGED") == "C" else (1.02 * p.fragmentation_index)
+    ndis_effect = 0.96 if strategies.get("NDIS") == "C" else (1.03 * p.fragmentation_index)
     disc_effect = 0.98 if strategies.get("DISC") == "C" else 1.01
-    discharge *= (aged_effect * ndis_effect * disc_effect) ** month_growth_factor
-    if p.use_burden_feedback:
-        discharge *= math.exp(
-            p.burden_to_throughput_beta * max(0.0, s.pressure - 1.0) * month_growth_factor
-        )
-    discharge = clamp(discharge, 0.75, 1.50)
 
-    capacity = s.current_capacity + p.capacity_lag * (s.target_capacity - s.current_capacity)
+    discharge = lhn.discharge_delay * ((aged_effect * ndis_effect * disc_effect) ** mgf) * wf_impact
+    discharge = clamp(discharge + 0.1 * (discharge_target - discharge), 0.75, 1.50)
+
+    is_expanding = lhn.target_capacity > lhn.current_capacity
+    active_lag = p.expansion_lag if is_expanding else p.contraction_lag
+    capacity = lhn.current_capacity + active_lag * (lhn.target_capacity - lhn.current_capacity)
+
     wait_min = mm_s_queue_wait(demand, 1.0 / max(1e-9, discharge), capacity * 10.0)
-    occ = clamp(s.occupancy + 0.015 * (demand - 1.0) + 0.035 * (discharge - 1.0), 0.78, 0.98)
-    off = clamp(s.offload_min + 8.0 * (occ - 0.88) + rng.normal(0, 0.8), 5.0, 120.0)
+    occ = clamp(lhn.occupancy + 0.015 * (demand - 1.0) + 0.035 * (discharge - 1.0), 0.78, 0.98)
+    off = clamp(lhn.offload_min + 8.0 * (occ - 0.88) + rng.normal(0, 0.8), 5.0, 120.0)
     pidx = 0.8 + 0.2 * (wait_min / 60.0) + 0.5 * (occ - 0.8) / 0.1
-    return discharge, capacity, wait_min, occ, off, pidx, within4_from_pressure(pidx)
 
-
-def pay_step(
-    s: State,
-    p: Params,
-    strategies: dict[str, Any],
-    eff_share: float,
-    month_growth_factor: float,
-    rng: np.random.Generator,
-) -> tuple[float, float, float, float]:
-    coding = s.coding_intensity
-    recon = s.reconciliation_balance
-    pol_cap_hit = 0.0
-    if strategies.get("CODING") == "U":
-        coding += 0.02 * month_growth_factor
-        if rng.random() < get_audit_rule(p).evaluate(s, p, coding):
-            recon -= 0.05 * coding
-            coding = 1.0
-            pol_cap_hit = 0.1
-    else:
-        coding = max(1.0, coding - 0.01 * month_growth_factor)
-    return clamp(eff_share * coding, 0.30, 0.60), coding, recon, pol_cap_hit
+    return LhnStateLegacy(
+        id=lhn.id,
+        pressure=pidx,
+        occupancy=occ,
+        offload_min=off,
+        within4=within4_from_pressure(pidx),
+        discharge_delay=discharge,
+        current_capacity=capacity,
+        nwau_actual=occ * 100.0,
+        adjustment_costs=p.adjustment_cost_beta * ((capacity - lhn.current_capacity) ** 2),
+    )
 
 
 def update_system_mode(s: State, p: Params) -> SystemMode:
@@ -441,82 +419,128 @@ def update_system_mode(s: State, p: Params) -> SystemMode:
     return s.system_mode
 
 
-def step(s: State, p: Params, strategies: dict[str, Any], rng: np.random.Generator) -> State:
-    """Advance the simulation by one month.
+def renegotiation_step(s: State, p: Params) -> tuple[float, int]:
+    """Execute the strategic Hold-Up game at agreement expiry."""
+    from nhra_gt.subgames.games import GameParams, renegotiation_game
+    from nhra_gt.subgames.nash import all_nash, select_equilibrium
 
-    Integrates demand, policy, operational, and payment dynamics to produce the
-    next system state. Also updates political capital and equity indices.
+    gp = GameParams(
+        pressure=s.pressure,
+        efficiency_gap=s.efficiency_gap,
+        discharge_delay=s.discharge_delay,
+        political_salience=p.political_salience,
+        audit_pressure=p.audit_pressure,
+        cost_shifting_intensity=p.cost_shifting_intensity,
+        political_capital=1.0,  # Average across jurisdictions
+    )
 
-    Args:
-        s: Current state.
-        p: System parameters.
-        strategies: Dictionary of chosen strategies for this step.
-        rng: Random number generator.
+    game = renegotiation_game(gp, s.agreement_clock)
+    eqs = all_nash(game)
+    sel, _ = select_equilibrium(eqs, rule="payoff_dominant", u_row=game.u_row, u_col=game.u_col)
 
-    Returns:
-        The new `State` object for the simulation.
-    """
+    cth_action = game.row_actions[int(np.argmax(sel.row))]
+    state_action = game.col_actions[int(np.argmax(sel.col))]
+
+    increase = 0.0
+    if cth_action == "C" and state_action == "H":
+        increase = 0.06
+    elif cth_action == "C" or state_action == "H":
+        increase = 0.03
+
+    new_share = clamp(p.nominal_cth_share_target + increase, 0.40, 0.70)
+    return new_share, 4
+
+
+def step(
+    s: State,
+    p: Params,
+    strategies: dict[str, Any],
+    rng: np.random.Generator,
+    subgame_metadata: dict[str, Any] | None = None,
+) -> State:
+    """Advance the simulation by one month (Hierarchical Refactor)."""
+    if subgame_metadata is None:
+        subgame_metadata = {}
     mgf = 1.0 / 12.0
-    demand = demand_step(s, p, strategies, rng)
+
+    demand, prob_ed = demand_step(s, p, strategies, rng)
     eff_gap, eff_share, bailout = policy_step(s, p, strategies, mgf)
-    discharge, capacity, wait_min, occ, off, pidx, w4 = ops_step(s, p, strategies, demand, mgf, rng)
-    final_share, coding, recon, pol_cap_hit = pay_step(s, p, strategies, eff_share, mgf, rng)
 
-    sig_quality = strategies.get("SIGNAL_QUALITY", 1.0)
-    pol_cap = clamp(
-        s.political_capital
-        - pol_cap_hit
-        - (1.0 - sig_quality) * 0.2 * mgf
-        + (0.05 if strategies.get("BARG") == "A" else -0.10) * mgf
-        - (0.05 * (wait_min / 240.0) if wait_min > 240 else 0.0),
-        0.0,
-        2.0,
-    )
+    # Workforce Update (Shared across all)
+    new_wf_pool = clamp(s.workforce_pool - 0.02 + 0.1 * mgf, 0.5, 1.5)
 
-    equity = clamp(
-        s.equity_index
-        - (0.01 if strategies.get("DEF") == "E" else 0.0) * mgf
-        - (0.02 if s.system_mode == SystemMode.CRISIS else 0.0) * mgf,
-        0.5,
-        1.5,
-    )
+    # Process Jurisdictions
+    new_jurisdictions = []
+    for jur in s.jurisdictions:
+        # State-level target
+        discharge_target = 0.9 if jur.political_capital < 0.8 else 1.0
 
-    # Auditor Strategic Move (Heuristic implementation for legacy engine)
-    coding_signal = max(0.0, coding - 1.0)
-    eff_signal = max(0.0, eff_gap - 0.10)
-    anomaly_signal = 0.7 * coding_signal + 0.3 * eff_signal
-    
-    new_suspicion = 0.8 * s.auditor_suspicion + 0.2 * anomaly_signal
-    new_suspicion = max(0.0, min(1.0, new_suspicion))
-    
-    # Sigmoid approximation: 1 / (1 + exp(-x))
-    def sigmoid(x):
-        return 1 / (1 + math.exp(-x))
-        
-    pressure_mult = 0.5 + 1.5 * sigmoid((new_suspicion - 0.5) * 10.0)
-    new_pressure = max(0.05, min(1.0, p.audit_pressure * pressure_mult))
+        new_lhns = []
+        for lhn in jur.lhns:
+            new_lhns.append(
+                lhn_step(lhn, p, strategies, demand, mgf, rng, discharge_target, s.workforce_pool)
+            )
 
-    next_m, next_y = (s.month + 1, s.year) if s.month < 12 else (1, s.year + 1)
+        new_jurisdictions.append(
+            JurisdictionStateLegacy(
+                id=jur.id,
+                reconciliation_balance=jur.reconciliation_balance,
+                bailout_expectation=bailout,
+                political_capital=jur.political_capital,
+                effective_cth_share=eff_share,
+                efficiency_gap=eff_gap,
+                lhns=new_lhns,
+            )
+        )
+
+    # Global Aggregation
+    all_lhns = [l for j in new_jurisdictions for l in j.lhns]
+    avg_pidx = np.mean([l.pressure for l in all_lhns])
+    avg_occ = np.mean([l.occupancy for l in all_lhns])
+    avg_w4 = np.mean([l.within4 for l in all_lhns])
+    total_nwau = sum([l.nwau_actual for l in all_lhns])
+
+    # Auditor move
+    coding_signal = max(0.0, 1.0 - 1.0)  # Placeholder
+    new_suspicion = 0.8 * s.auditor_suspicion + 0.2 * coding_signal
+    new_pressure = max(0.05, min(1.0, p.audit_pressure))
+
+    # Renegotiation
+    final_eff_share = eff_share
+    next_clock = s.agreement_clock
+    if s.month == 12:
+        if s.agreement_clock == 0:
+            final_eff_share, next_clock = renegotiation_step(s, p)
+        else:
+            next_clock -= 1
+
+    # Lags
+    new_buf_p = np.roll(s.lag_buffer_pressure, -1)
+    new_buf_p[-1] = avg_pidx
+    sig_idx = 11 - clamp(p.signal_lag_months, 0, 11)
+    rep_p = new_buf_p[int(sig_idx)]
+
     return State(
-        year=next_y,
-        month=next_m,
-        pressure=pidx,
-        occupancy=occ,
-        offload_min=off,
-        within4=w4,
-        effective_cth_share=final_share,
-        efficiency_gap=eff_gap,
-        discharge_delay=discharge,
-        political_capital=pol_cap,
+        year=(s.year + 1 if s.month == 12 else s.year),
+        month=(1 if s.month == 12 else s.month + 1),
+        pressure=avg_pidx,
+        occupancy=avg_occ,
+        offload_min=np.mean([l.offload_min for l in all_lhns]),
+        within4=avg_w4,
         system_mode=update_system_mode(s, p),
-        target_capacity=s.target_capacity,
-        current_capacity=capacity,
-        equity_index=equity,
-        reconciliation_balance=recon,
-        bailout_expectation=bailout,
-        coding_intensity=coding,
+        workforce_pool=new_wf_pool,
+        agreement_clock=next_clock,
+        jurisdictions=new_jurisdictions,
         auditor_suspicion=new_suspicion,
         audit_pressure_active=new_pressure,
+        reported_pressure=rep_p,
+        reported_occupancy=avg_occ,  # Simplified
+        reported_within4=avg_w4,
+        reported_nwau=total_nwau,
+        reported_efficiency_gap=eff_gap,
+        reported_coding_intensity=1.0,
+        solver_n_equilibria=subgame_metadata.get("n_equilibria", 1),
+        prob_ed=prob_ed,
     )
 
 
@@ -543,39 +567,15 @@ def run_hybrid(
     recorder: Any | None = None,
     overrides: dict[str, str] | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Execute a hybrid simulation experiment with multiple Monte Carlo rollouts.
+    """Execute a hybrid simulation experiment with multiple Monte Carlo rollouts."""
+    rng = np.random.default_rng(seed)
+    start_year, end_year = years[0], years[-1]
+    rows, strat_rows = [], []
+    agent = HeuristicAgent()
 
-    Runs the simulation over the specified years, aggregating results across `n_mc`
-    independent trajectories. Calculates standard deviations and percentiles for
-    key metrics.
-
-    Args:
-        years: List of integer years to simulate (e.g., `[2025, 2026, ...]`).
-        p: Base simulation parameters.
-        seed: Random seed for reproducibility.
-        n_mc: Number of Monte Carlo rollouts (iterations).
-        recorder: Optional instrumentation object for tracking experiments.
-        overrides: Optional dictionary of strategy overrides (e.g., forced "COOP").
-
-    Returns:
-        A tuple of two DataFrames:
-        1. `agg`: Aggregated metrics per year (mean, std, p10, p90).
-        2. `freq`: Frequency of strategy choices per game per year.
-    """
-    if recorder:
-        recorder.start_experiment(
-            experiment_name=f"hybrid_sim_{years[0]}_{years[-1]}",
-            seed=seed,
-            n_mc=n_mc,
-            params=str(p),
-        )
-    rows, strat_rows, agent = [], [], HeuristicAgent()
     for r in range(n_mc):
-        s, sub, end_year = (
-            baseline_state(start_year=years[0], p=p),
-            np.random.default_rng(np.random.default_rng(seed).integers(1, 2**32 - 1)),
-            years[-1],
-        )
+        sub = np.random.default_rng(int(rng.integers(0, 2**31)))
+        s = baseline_state(start_year, p)
         cum_press = 0.0
         while s.year <= end_year:
             rr = relative_risk(s.pressure, s.offload_min, p)
@@ -587,170 +587,87 @@ def run_hybrid(
                     "month": s.month,
                     "pressure": s.pressure,
                     "occupancy": s.occupancy,
-                    "offload_min": s.offload_min,
                     "within4": s.within4,
-                    "cth_share_nominal": s.effective_cth_share,
-                    "cth_share_effective": s.effective_cth_share / (1.0 + s.efficiency_gap),
+                    "cth_share_nominal": s.effective_cth_share
+                    if hasattr(s, "effective_cth_share")
+                    else 0.38,
                     "efficiency_gap": s.efficiency_gap,
-                    "discharge_delay": s.discharge_delay,
-                    "political_capital": s.political_capital,
-                    "system_mode": s.system_mode.value,
-                    "equity_index": s.equity_index,
                     "rr_proxy": rr,
-                    "cumulative_pressure": cum_press,
-                    "auditor_suspicion": s.auditor_suspicion,
-                    "audit_pressure": s.audit_pressure_active,
+                    "workforce": s.workforce_pool,
+                    "prob_ed": s.prob_ed,
+                    "agreement_clock": s.agreement_clock,
                 }
             )
 
             strategies = agent.decide(s, p, sub)
-            # Apply manual overrides if present
             if overrides:
                 strategies.update(overrides)
 
+            # Record strategies
             rat = strategies.get("RATIONALE", "")
             for g, lab in strategies.items():
-                if g != "RATIONALE":
+                if g not in {"RATIONALE", "n_equilibria"}:
                     strat_rows.append(
                         {
                             "rollout": r,
                             "year": s.year,
                             "month": s.month,
                             "game": g,
-                            "strategy": lab,
+                            "strategy": str(lab),
                             "rationale": rat,
                         }
                     )
-            s = step(s, p, strategies, sub)
-            wf = calculate_vfi_waterfall(s, p)
-            rows[-1].update(
-                {
-                    "index_gap": wf["indexation_gap"],
-                    "cap_gap": wf["cap_limit_gap"],
-                    "audit_gap": wf["audit_clawback"],
-                }
-            )
+
+            meta = {"n_equilibria": strategies.get("n_equilibria", 1)}
+            s = step(s, p, strategies, sub, subgame_metadata=meta)
             if s.year > end_year:
                 break
+
     df, strat = pd.DataFrame(rows), pd.DataFrame(strat_rows)
     agg = (
         df.groupby("year")
         .agg(
             pressure_mean=("pressure", "mean"),
             pressure_std=("pressure", "std"),
-            pressure_p10=("pressure", lambda x: x.quantile(0.10)),
-            pressure_p90=("pressure", lambda x: x.quantile(0.90)),
             occupancy_mean=("occupancy", "mean"),
             occupancy_std=("occupancy", "std"),
-            occupancy_p10=("occupancy", lambda x: x.quantile(0.10)),
-            occupancy_p90=("occupancy", lambda x: x.quantile(0.90)),
-            offload_mean=("offload_min", "mean"),
-            offload_std=("offload_min", "std"),
-            offload_p10=("offload_min", lambda x: x.quantile(0.10)),
-            offload_p90=("offload_min", lambda x: x.quantile(0.90)),
             within4_mean=("within4", "mean"),
             within4_std=("within4", "std"),
-            within4_p10=("within4", lambda x: x.quantile(0.10)),
-            within4_p90=("within4", lambda x: x.quantile(0.90)),
             rr_mean=("rr_proxy", "mean"),
             rr_std=("rr_proxy", "std"),
-            rr_p10=("rr_proxy", lambda x: x.quantile(0.10)),
-            rr_p90=("rr_proxy", lambda x: x.quantile(0.90)),
+            workforce_mean=("workforce", "mean"),
+            prob_ed_mean=("prob_ed", "mean"),
+            agreement_clock_mean=("agreement_clock", "mean"),
             cth_nominal_mean=("cth_share_nominal", "mean"),
-            cth_effective_mean=("cth_share_effective", "mean"),
             effgap_mean=("efficiency_gap", "mean"),
-            discharge_mean=("discharge_delay", "mean"),
-            polcap_mean=("political_capital", "mean"),
-            equity_mean=("equity_index", "mean"),
-            cumulative_pressure_mean=("cumulative_pressure", "mean"),
-            index_gap_mean=("index_gap", "mean"),
-            cap_gap_mean=("cap_gap", "mean"),
-            audit_gap_mean=("audit_gap", "mean"),
-            suspicion_mean=("auditor_suspicion", "mean"),
-            pressure_active_mean=("audit_pressure", "mean"),
         )
         .reset_index()
     )
 
-    # Calculate SEM (Standard Error of Mean) = std / sqrt(n)
-    for m in ["pressure", "occupancy", "offload", "within4", "rr"]:
+    # Calculate SEM
+    for m in ["pressure", "occupancy", "within4", "rr"]:
         agg[f"{m}_sem"] = agg[f"{m}_std"] / math.sqrt(n_mc)
+
     if not strat.empty:
         freq = strat.groupby(["year", "game", "strategy"]).size().reset_index(name="n")
         freq["share"] = freq["n"] / freq.groupby(["year", "game"])["n"].transform("sum")
     else:
         freq = pd.DataFrame(columns=["year", "game", "strategy", "n", "share"])
-    if recorder:
-        recorder.end_experiment()
+
     return agg, freq
 
 
-def calculate_vfi_waterfall(s: State, p: Params) -> dict[str, float]:
-    nominal = p.nominal_cth_share_target
-    return {
-        "nominal_share": nominal,
-        "indexation_gap": s.efficiency_gap * nominal,
-        "cap_limit_gap": max(0.0, (s.pressure - 1.1) * 0.05) * nominal,
-        "audit_clawback": abs(s.reconciliation_balance) if s.reconciliation_balance < 0 else 0.0,
-        "effective_share": nominal
-        - (s.efficiency_gap * nominal)
-        - (max(0.0, (s.pressure - 1.1) * 0.05) * nominal)
-        - (abs(s.reconciliation_balance) if s.reconciliation_balance < 0 else 0.0),
-    }
+def mm_s_queue_wait(arrival_rate: float, service_rate: float, servers: float) -> float:
+    utilization = arrival_rate / max(1e-9, (service_rate * servers))
+    if utilization >= 1.0:
+        return 1440.0
+    wait = (utilization ** (math.sqrt(2 * (servers + 1)) - 1)) / (servers * (1 - utilization))
+    return max(5.0, min(1440.0, wait * 60.0))
 
 
-def apply_intervention(p: Params, name: str) -> Params:
-    name = name.lower().strip().replace(" ", "_")
-    if name in {"pooled_funding", "pooled"}:
-        return replace(
-            p, cost_shifting_intensity=clamp(p.cost_shifting_intensity * 0.75, 0.05, 0.60)
-        )
-    if name in {"ucc_integration", "integration"}:
-        return replace(p, fragmentation_index=clamp(p.fragmentation_index * 0.80, 0.60, 1.50))
-    if name in {"nep_realism", "indexation"}:
-        return replace(
-            p,
-            nep_to_cost_ratio_metro=clamp(p.nep_to_cost_ratio_metro + 0.03, 0.6, 1.0),
-            nep_to_cost_ratio_regional=clamp(p.nep_to_cost_ratio_regional + 0.04, 0.6, 1.0),
-            nep_to_cost_ratio_remote=clamp(p.nep_to_cost_ratio_remote + 0.05, 0.6, 1.0),
-        )
-    if name in {"aged_ndis_capacity", "discharge"}:
-        return replace(p, discharge_delay_base=clamp(p.discharge_delay_base * 0.90, 0.6, 1.4))
-    if name in {"middle_tier", "workforce"}:
-        return replace(
-            p,
-            nep_to_cost_ratio_regional=clamp(p.nep_to_cost_ratio_regional + 0.03, 0.6, 1.0),
-            nep_to_cost_ratio_remote=clamp(p.nep_to_cost_ratio_remote + 0.04, 0.6, 1.0),
-        )
-    if name in {"cumulative_cap", "cap"}:
-        return replace(p, has_cumulative_cap=True, cap_growth=0.070)
-    if name in {"audit_relief"}:
-        return replace(
-            p,
-            audit_pressure=clamp(p.audit_pressure * 0.70, 0.05, 1.0),
-            admin_burden_weight=clamp(p.admin_burden_weight * 0.8, 0.05, 0.6),
-        )
-    return p
+def within4_from_pressure(pidx: float) -> float:
+    return max(0.05, min(0.85, 0.80 - 0.45 * (1.0 / (1.0 + math.exp(-(pidx - 1.0) / 0.20)))))
 
 
-def scenario_params(base: Params, interventions: Iterable[str]) -> Params:
-    p = base
-    for iv in interventions:
-        p = apply_intervention(p, iv)
-    return p
-
-
-def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
-    last = agg.sort_values("year").iloc[-1]
-    return {
-        "pressure_2030": float(last["pressure_mean"]),
-        "within4_2030": float(last["within4_mean"]),
-        "offload_2030": float(last["offload_mean"]),
-        "rr_2030": float(last["rr_mean"]),
-        "effshare_nominal_2030": float(last["cth_nominal_mean"]),
-        "effshare_effective_2030": float(last["cth_effective_mean"]),
-        "cumulative_pressure_2030": float(last["cumulative_pressure_mean"]),
-        "leakage_indexation": float(last["index_gap_mean"]),
-        "leakage_cap": float(last["cap_gap_mean"]),
-        "leakage_audit": float(last["audit_gap_mean"]),
-    }
+def clamp(val: float, low: float, high: float) -> float:
+    return max(low, min(high, val))

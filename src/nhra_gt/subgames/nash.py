@@ -108,8 +108,8 @@ def select_equilibrium(
     rule: str = "payoff_dominant",
     u_row: np.ndarray[Any, Any] | None = None,
     u_col: np.ndarray[Any, Any] | None = None,
-) -> NashEquilibrium:
-    """Select one equilibrium from a set.
+) -> tuple[NashEquilibrium, int]:
+    """Select one equilibrium from a set and return the total count found.
 
     Rules:
         - 'payoff_dominant': maximise sum of expected payoffs
@@ -118,10 +118,11 @@ def select_equilibrium(
 
     For mixed equilibria, expected payoffs use row@U@col.
     """
+    n_eqs = len(eqs)
     if not eqs:
         raise ValueError("No equilibria to select from")
     if rule == "random" or u_row is None or u_col is None:
-        return eqs[0]
+        return eqs[0], n_eqs
 
     def exp_pay(eq: NashEquilibrium) -> tuple[float, float]:
         r = float(eq.row @ u_row @ eq.col)
@@ -134,7 +135,7 @@ def select_equilibrium(
         s = r if rule == "row_favourable" else r + c
         scores.append(s)
     idx = int(np.argmax(np.array(scores)))
-    return eqs[idx]
+    return eqs[idx], n_eqs
 
 
 def get_best_response_path(game: TwoPlayerGame, max_iter: int = 10) -> list[tuple[int, int]]:

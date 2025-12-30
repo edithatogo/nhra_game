@@ -4,8 +4,8 @@ from enum import IntEnum
 from pathlib import Path
 from typing import Any
 
-import polars as pl
 import jax.numpy as jnp
+import polars as pl
 from flax import struct
 
 
@@ -33,11 +33,16 @@ class MetricsJax:
     cumulative_budget_variance: float = 0.0
     max_occupancy: float = 0.0
     min_within4: float = 1.0
-    
+
     # Leakage Metrics
     cumulative_indexation_loss: float = 0.0
     cumulative_cap_loss: float = 0.0
     cumulative_audit_loss: float = 0.0
+    cumulative_adjustment_costs: float = 0.0
+
+    # Stability Metrics
+    max_solver_n_equilibria: int = 0
+    mean_solver_residual: float = 0.0
 
 
 @struct.dataclass
@@ -68,16 +73,24 @@ class ParamsJax:
     discharge_delay_base: float = 1.00
     bed_capacity_index: float = 1.00
     capacity_lag: float = 0.15
+    expansion_lag: float = 0.10  # Harder to hire
+    contraction_lag: float = 0.20  # Easier to reduce (simplified)
+    adjustment_cost_beta: float = 5.0  # Sensitivity of fiscal cost to Delta Capacity
 
     # Couplings
     cost_shifting_intensity: float = 0.35
     fragmentation_index: float = 1.00
     audit_pressure: float = 0.50
     admin_burden_weight: float = 0.25
-    
+    cannibalization_beta: float = 0.1  # Drain factor for workforce/volume competition
+
     # Boundary Shifting
-    block_funding_base: float = 0.15 # 15% of activity typically block funded
-    shifting_friction: float = 0.05 # Cost of moving activity between streams
+    block_funding_base: float = 0.15  # 15% of activity typically block funded
+    shifting_friction: float = 0.05  # Cost of moving activity between streams
+
+    # Lags & Measurement
+    signal_lag_months: int = 1  # Lag for public indicators (pressure, occupancy)
+    claims_lag_months: int = 3  # Lag for financial data (NWAU, coding)
 
     # Mapping
     occupancy_base: float = 0.88
@@ -91,12 +104,12 @@ class ParamsJax:
     tau: float = 0.25
     bargaining_cost: float = 0.12
     political_salience: float = 0.30
-    
+
     # Patient choice / Queuing Game
     gp_out_of_pocket: float = 40.0
     gp_wait_time_min: float = 15.0
     patient_time_value_hour: float = 25.0
-    
+
     use_equilibrium_bargaining: bool = False
     use_quantal_response: bool = False
     qre_lambda: float = 4.0
@@ -110,6 +123,12 @@ class ParamsJax:
     # audit_rule_type: 0 for proportional, 1 for threshold
     audit_rule_type: int = 0
 
+    # Modular Rules (JAX-compatible PyTrees)
+    cap_rule: Any = struct.field(default_factory=lambda: None)
+    audit_rule: Any = struct.field(default_factory=lambda: None)
+    eligibility_rule: Any = struct.field(default_factory=lambda: None)
+    reconciliation_rule: Any = struct.field(default_factory=lambda: None)
+
     # Economic Spine (optional JAX arrays)
     spine: EconomicSpineJax | None = None
 
@@ -117,15 +136,16 @@ class ParamsJax:
     def from_yaml(cls, path: Path | str) -> ParamsJax:
         """Loads parameters from a YAML file."""
         import yaml
-        with open(path, "r") as f:
+
+        with open(path) as f:
             data = yaml.safe_load(f)
-        
+
         # Flatten the nested YAML groups
         flat_data = {}
         for group in data.values():
             if isinstance(group, dict):
                 flat_data.update(group)
-        
+
         # Filter only fields that exist in the dataclass
         # We handle default type conversion if needed (e.g. bools to ints for JAX)
         return cls(**{k: v for k, v in flat_data.items() if k in cls.__dataclass_fields__})
@@ -133,47 +153,71 @@ class ParamsJax:
 
 class BaselineProvider:
     """Manages loading of the automated data spine and baseline parameters."""
-    
+
     @staticmethod
-    def load_spine(path: Path | str = "data/calibration/historical_normalized.csv") -> EconomicSpineJax:
+    def load_spine(
+        path: Path | str = "data/calibration/historical_normalized.csv",
+    ) -> EconomicSpineJax:
         df = pl.read_csv(path)
         return EconomicSpineJax(
             years=df["year"].to_numpy().astype(jnp.int32),
-            nep_per_nwau=df["within4"].to_numpy(), # Placeholder for actual NEP if not in spine
-            wpi_health_index=df["occupancy"].to_numpy() # Placeholder
+            nep_per_nwau=df["within4"].to_numpy(),  # Placeholder for actual NEP if not in spine
+            wpi_health_index=df["occupancy"].to_numpy(),  # Placeholder
         )
 
     @classmethod
     def get_baseline(cls, config_path: str = "configs/defaults.yaml") -> tuple[ParamsJax, StateJax]:
         from nhra_gt.engine_jax import baseline_state_jax
+
         params = ParamsJax.from_yaml(config_path)
         # Check if spine exists
         spine_path = Path("data/calibration/historical_normalized.csv")
         if spine_path.exists():
             spine = cls.load_spine(spine_path)
             params = params.replace(spine=spine)
-            
+
         state = baseline_state_jax(2025, params)
         return params, state
 
 
 @struct.dataclass
 class LhnState:
-    """State for a single Local Hospital Network (LHN)."""
+    """Granular state for a single Local Hospital Network (LHN)."""
+
     id: int
     pressure: float = 1.0
-    occupancy: float = 0.85
-    within4: float = 0.70
-    nwau_reported: float = 0.0
-    cost_actual: float = 0.0
-    discharge_delay: float = 1.0
+    occupancy: float = 0.88
+    within4: float = 0.53
+    offload_min: float = 18.0
+    nwau_actual: float = 100.0
+    nwau_reported: float = 100.0
     coding_intensity: float = 1.0
-    abf_share: float = 0.85 # Default share of activity under ABF
-    block_revenue: float = 0.0
+    target_capacity: float = 1.0
+    current_capacity: float = 1.0
+    discharge_delay: float = 1.0
+    adjustment_costs: float = 0.0
+
+
+@struct.dataclass
+class JurisdictionState:
+    """Granular state for a single Jurisdiction (State/Territory)."""
+
+    id: int
+    reconciliation_balance: float = 0.0
+    bailout_expectation: float = 0.0
+    political_capital: float = 1.0
+    effective_cth_share: float = 0.38
+    efficiency_gap: float = 0.10
+    equity_index: float = 1.0
+    total_block_revenue: float = 0.0
+    lhn_states: LhnState = struct.field(
+        default_factory=lambda: LhnState(0)
+    )  # Vectorized in practice
+
 
 @struct.dataclass
 class StateJax:
-    """JAX-compatible simulation state."""
+    """JAX-compatible simulation state (Global Orchestrator)."""
 
     year: int
     month: int
@@ -181,31 +225,39 @@ class StateJax:
     occupancy: float
     offload_min: float
     within4: float
-    effective_cth_share: float
-    efficiency_gap: float
-    discharge_delay: float
-    political_capital: float
     system_mode: int  # Mapped from SystemModeJax
+    workforce_pool: float = 1.0
+    agreement_clock: int = 5
 
-    # Nested Agents (for 1:N mapping)
-    # Note: We use jnp.ndarray or structured arrays for vectorized sub-states
-    lhn_pressure: jnp.ndarray # [N_LHN]
-    lhn_nwau: jnp.ndarray     # [N_LHN]
-    agreement_clock: int 
-    workforce_pool: float
-
-    target_capacity: float = 1.0
-    current_capacity: float = 1.0
-    equity_index: float = 1.0
-    reconciliation_balance: float = 0.0
-    bailout_expectation: float = 0.0
-    coding_intensity: float = 1.0
-    reputation_score: float = 1.0
-    jurisdiction_id: int = 0
-    total_block_revenue: float = 0.0
+    # Hierarchical Entities (Vectorized PyTrees)
+    jurisdictions: JurisdictionState = struct.field(default_factory=lambda: JurisdictionState(0))
 
     # Auditor Agent state
     auditor_suspicion: float = 0.0
     audit_pressure_active: float = 0.0
+
+    # Lags & Measurement
+    # Buffers store up to 12 months of history
+    lag_buffer_pressure: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
+    lag_buffer_occupancy: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
+    lag_buffer_within4: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
+    lag_buffer_nwau: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
+    lag_buffer_efficiency_gap: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
+    lag_buffer_coding: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
+
+    # Reported values (lagged) available to agents
+    reported_pressure: float = 1.0
+    reported_occupancy: float = 0.88
+    reported_within4: float = 0.53
+    reported_nwau: float = 0.0
+    reported_efficiency_gap: float = 0.10
+    reported_coding_intensity: float = 1.0
+
+    # Stability Telemetry
+    solver_n_equilibria: int = 1
+    solver_residual: float = 0.0
+
+    # Patient Choice
+    prob_ed: float = 0.5
 
     metrics: MetricsJax = MetricsJax()

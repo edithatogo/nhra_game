@@ -50,3 +50,34 @@ def analyze_cost_shifting_stability(
             )
 
     return pd.DataFrame(results)
+
+
+def calculate_hysteresis_area(x: np.ndarray, y: np.ndarray) -> float:
+    """Calculates the area of the hysteresis loop in phase-space using the Shoelace formula.
+
+    A larger area indicates greater system lag or inertia in responding to demand shocks.
+    """
+    if len(x) < 3:
+        return 0.0
+    return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
+
+
+def calculate_recovery_metrics(modes: list[str]) -> dict[str, Any]:
+    """Calculates system resilience metrics based on mode transitions."""
+    if not modes:
+        return {"recovery_time": 0, "crisis_count": 0, "resilience_index": 1.0}
+
+    recovery_time = sum(1 for m in modes if m != "normal")
+    crisis_count = sum(
+        1 for i in range(1, len(modes)) if modes[i] == "crisis" and modes[i - 1] != "crisis"
+    )
+    if modes[0] == "crisis":
+        crisis_count += 1
+
+    resilience_index = 1.0 - (recovery_time / len(modes))
+
+    return {
+        "recovery_time": recovery_time,
+        "crisis_count": crisis_count,
+        "resilience_index": resilience_index,
+    }

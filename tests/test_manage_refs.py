@@ -3,9 +3,9 @@ import yaml
 
 from scripts.pub_tools.manage_refs import (
     load_references,
-    validate_references,
-    validate_recency,
     validate_quality,
+    validate_recency,
+    validate_references,
 )
 
 # ... existing code ...

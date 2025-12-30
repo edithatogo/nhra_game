@@ -4,29 +4,12 @@ from pathlib import Path
 
 import pandas as pd
 
+from nhra_gt.domain.abs_api import ABSApiClient
+from nhra_gt.domain.ihacpa_api import IHACPAClient
 from nhra_gt.domain.schemas import EconomicSpineSchema
 
-# Ground Truth Data (Sourced from IHACPA Determinations 2011-2025)
-NEP_SERIES = {
-    2011: 4808.0,
-    2012: 4808.0,
-    2013: 4993.0,
-    2014: 5007.0,
-    2015: 4971.0,
-    2016: 4883.0,
-    2017: 4933.07,
-    2018: 5012.0,
-    2019: 5134.0,
-    2020: 5320.0,
-    2021: 5597.0,
-    2022: 5797.0,
-    2023: 6032.0,
-    2024: 6465.0,
-    2025: 7258.0,
-}
-
-# Ground Truth Data (Synthetic based on ABS WPI Health trends)
-WPI_SERIES = {
+# Fallback Data (Synthetic based on ABS WPI Health trends)
+WPI_SERIES_FALLBACK = {
     2011: 100.0,
     2012: 103.5,
     2013: 106.8,
@@ -47,10 +30,12 @@ WPI_SERIES = {
 
 def process_economic_data(nep_df: pd.DataFrame, wpi_df: pd.DataFrame) -> pd.DataFrame:
     """Merges and validates NEP and WPI data."""
-    merged = pd.merge(nep_df, wpi_df, on="Year")
-    merged = merged.rename(
-        columns={"Year": "year", "NEP": "nep_per_nwau", "WPI": "wpi_health_index"}
-    )
+    merged = pd.merge(nep_df, wpi_df, on="year")
+    # Ensure column names match schema
+    if "NEP" in merged.columns:
+        merged = merged.rename(columns={"NEP": "nep_per_nwau"})
+    if "WPI" in merged.columns:
+        merged = merged.rename(columns={"WPI": "wpi_health_index"})
 
     # Sort and validate
     merged = merged.sort_values("year")
@@ -60,9 +45,28 @@ def process_economic_data(nep_df: pd.DataFrame, wpi_df: pd.DataFrame) -> pd.Data
 
 
 def main():
-    # Convert dictionaries to DataFrames
-    nep_df = pd.DataFrame(list(NEP_SERIES.items()), columns=["Year", "NEP"])
-    wpi_df = pd.DataFrame(list(WPI_SERIES.items()), columns=["Year", "WPI"])
+    # 1. Fetch WPI Data (Automated)
+    abs_client = ABSApiClient()
+    try:
+        print("Fetching automated WPI data from ABS API...")
+        wpi_df = abs_client.fetch_wpi_health(use_cache=False)
+        wpi_df = wpi_df[wpi_df["year"] >= 2011]
+    except Exception as e:
+        print(f"Warning: Failed to fetch automated WPI data: {e}")
+        print("Using fallback synthetic WPI series.")
+        wpi_df = pd.DataFrame(
+            list(WPI_SERIES_FALLBACK.items()), columns=["year", "wpi_health_index"]
+        )
+
+    # 2. Fetch NEP Data (Automated via local file parsing)
+    ihacpa_client = IHACPAClient()
+    try:
+        print("Parsing local IHACPA calculators for NEP data...")
+        nep_df = ihacpa_client.fetch_nep_series()
+        nep_df = nep_df[nep_df["year"] >= 2011]
+    except Exception as e:
+        print(f"Error: Failed to process IHACPA data: {e}")
+        return
 
     print("Processing Economic Spine data...")
     spine_df = process_economic_data(nep_df, wpi_df)

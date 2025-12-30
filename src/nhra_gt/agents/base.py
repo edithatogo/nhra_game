@@ -6,20 +6,6 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
-from nhra_gt.subgames.games import (
-    GameParams,
-    aged_care_interface_game,
-    bargaining_game,
-    coding_audit_game,
-    compliance_game,
-    cost_shifting_game,
-    definition_game,
-    discharge_coordination_game,
-    governance_integration_game,
-    ndis_interface_game,
-)
-from nhra_gt.subgames.nash import all_nash, select_equilibrium
-
 if TYPE_CHECKING:
     from nhra_gt.engine import Params, State
 
@@ -150,234 +136,113 @@ class LLMAgent(Agent):
         # that uses the HeuristicAgent as a 'smart fallback'.
 
         # MOCK/STUB logic for now:
-        heuristic_response = HeuristicAgent().decide(state, params, rng)
+        heuristic_response = CommonwealthAgent().decide(state, params, rng)
+        heuristic_response.update(JurisdictionAgent().decide(state, params, rng))
+        heuristic_response.update(LHNAgent().decide(state, params, rng))
 
         # Add 'Rationale' for Cognitive Trace
         heuristic_response["RATIONALE"] = (
-            f"Decided based on heuristic fallback for {self.role}. Pressure is {state.pressure:.2f}."
+            f"Decided based on multi-agent refactor for {self.role}. Pressure is {state.pressure:.2f}."
         )
 
         return heuristic_response
 
 
+class CommonwealthAgent(Agent):
+    """The Principal (Federal Govt) setting price and compliance rules."""
+
+    def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
+        obs_pressure = getattr(state, "reported_pressure", state.pressure)
+        obs_efficiency_gap = getattr(state, "reported_efficiency_gap", state.efficiency_gap)
+
+        # Commonwealth moves: DEF, COMP, BARG(offer)
+        results = {}
+
+        # 1. Compliance Strategy (COMP)
+        comp_prob = logistic(0.9 * params.audit_pressure - 0.7 * obs_efficiency_gap)
+        results["COMP"] = "T" if rng.random() < comp_prob else "L"
+
+        # 2. Framing Strategy (DEF)
+        def_prob = logistic(1.3 * (obs_efficiency_gap - 0.25) + 0.9 * (obs_pressure - 1.0))
+        results["DEF"] = "R" if rng.random() < def_prob else "E"
+
+        return results
+
+
+class JurisdictionAgent(Agent):
+    """The Intermediary (State/Territory Govt) managing the Agreement."""
+
+    def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
+        obs_pressure = getattr(state, "reported_pressure", state.pressure)
+        obs_efficiency_gap = getattr(state, "reported_efficiency_gap", state.efficiency_gap)
+
+        # State moves: BARG, SHIFT, GOV
+        results = {}
+
+        # 1. Bargaining Strategy (BARG)
+        barg_prob = logistic(0.6 * (1.2 - obs_pressure) + state.bailout_expectation)
+        results["BARG"] = "A" if rng.random() < barg_prob else "D"
+
+        # 2. Cost Shifting (SHIFT)
+        shift_prob = logistic(-1.1 * (obs_pressure - 1.0) - 1.0 * obs_efficiency_gap)
+        results["SHIFT"] = "I" if rng.random() < shift_prob else "S"
+
+        # 3. Governance (GOV)
+        gov_prob = logistic(-0.8 * (obs_pressure - 1.0) - 0.7 * params.political_salience)
+        results["GOV"] = "I" if rng.random() < gov_prob else "S"
+
+        return results
+
+
+class LHNAgent(Agent):
+    """The Operator (Hospital/LHN) managing clinical demand and revenue."""
+
+    def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
+        obs_pressure = getattr(state, "reported_pressure", state.pressure)
+        obs_efficiency_gap = getattr(state, "reported_efficiency_gap", state.efficiency_gap)
+
+        # LHN moves: CODING, VENUE_SHIFT, DISC, AGED, NDIS, COMPETITION
+        results = {}
+
+        # 1. Revenue Strategy (CODING)
+        coding_prob = logistic(1.5 * (obs_pressure - 1.1) + 1.2 * obs_efficiency_gap)
+        results["CODING"] = "U" if rng.random() < coding_prob else "H"
+
+        # 2. Venue Selection (VENUE_SHIFT)
+        venue_prob = logistic(1.2 * (obs_pressure - 1.1) + 0.8 * obs_efficiency_gap)
+        results["VENUE_SHIFT"] = "B" if rng.random() < venue_prob else "A"
+
+        # 3. Operations Coordination (DISC, AGED, NDIS)
+        results["DISC"] = "C" if rng.random() < 0.7 else "F"
+        results["AGED"] = "C" if rng.random() < 0.6 else "F"
+        results["NDIS"] = "C" if rng.random() < 0.6 else "F"
+
+        # 4. Competition Strategy
+        comp_prob = logistic(1.1 * (obs_pressure - 1.0) + 0.5 * params.cannibalization_beta)
+        results["COMPETITION"] = "A" if rng.random() < comp_prob else "M"
+
+        return results
+
+
 class HeuristicAgent(Agent):
     """
-    An agent that implements the original heuristic and Nash-equilibrium
-    selection logic from the v9 engine.
-    Supports simultaneous, sequential, and isolation modes.
+    Orchestrator that delegates to distinct Commonwealth, State, and LHN agents.
     """
 
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
-        """Choose strategies based on current system state and orchestration mode.
+        cw = CommonwealthAgent()
+        jr = JurisdictionAgent()
+        lhn = LHNAgent()
 
-        Implements the hybrid game-theory logic, determining actions for all subgames
-        (SIGNAL, BARG, DEF, etc.) based on either Nash Equilibrium or heuristics.
-
-        Args:
-            state: Current system state.
-            params: System parameters including orchestration definition.
-            rng: Random number generator.
-
-        Returns:
-            A dictionary containing the chosen action for each game (e.g., "SIGNAL": "H").
-        """
-        noise = float(rng.normal(0.0, params.noise_sd))
-
-        # Default Baseline Actions (Neutral)
         results = {
             "SIGNAL": "L",
-            "DEF": "E",
-            "BARG": "D",
-            "SHIFT": "I",
-            "DISC": "C",
-            "AGED": "C",
-            "NDIS": "C",
-            "CODING": "H",
-            "GOV": "S",
-            "COMP": "L",
-            "VENUE_SHIFT": "A",
-            "SIGNAL_QUALITY": 1.0,
+            "SIGNAL_QUALITY": 0.9,
         }
 
-        # Determine which games to play based on orchestration mode
-        games_to_play = list(results.keys())
-        if params.orchestration_mode == "isolation" and params.isolated_game:
-            games_to_play = [params.isolated_game]
+        # Aggregate decisions from all levels
+        results.update(cw.decide(state, params, rng))
+        results.update(jr.decide(state, params, rng))
+        results.update(lhn.decide(state, params, rng))
 
-        # Order of play for sequential mode
-        play_order = [
-            "SIGNAL",
-            "BARG",
-            "DEF",
-            "SHIFT",
-            "DISC",
-            "AGED",
-            "NDIS",
-            "CODING",
-            "GOV",
-            "COMP",
-            "VENUE_SHIFT",
-            "SIGNAL_QUALITY",
-        ]
-
-        for g in play_order:
-            if g not in games_to_play:
-                continue
-
-            # --- Game Logic Implementation ---
-            if params.use_stage_game_equilibria and g != "SIGNAL" and g != "SIGNAL_QUALITY":
-                # Equilibrium solver path
-                gp = GameParams(
-                    pressure=float(state.pressure),
-                    efficiency_gap=float(state.efficiency_gap),
-                    discharge_delay=float(state.discharge_delay),
-                    political_salience=float(params.political_salience),
-                    audit_pressure=float(params.audit_pressure),
-                    cost_shifting_intensity=float(params.cost_shifting_intensity),
-                    political_capital=float(state.political_capital),
-                )
-
-                def _solve(game: Any) -> tuple[str, str]:
-                    if params.use_quantal_response:
-                        u_row_expected = np.mean(game.u_row, axis=1)
-                        u_col_expected = np.mean(game.u_col, axis=0)
-                        prob_row = softmax(u_row_expected, tau=1.0 / max(1e-9, params.qre_lambda))
-                        prob_col = softmax(u_col_expected, tau=1.0 / max(1e-9, params.qre_lambda))
-                        row_a = (
-                            game.row_actions[1]
-                            if rng.random() < prob_row[1]
-                            else game.row_actions[0]
-                        )
-                        col_a = (
-                            game.col_actions[1]
-                            if rng.random() < prob_col[1]
-                            else game.col_actions[0]
-                        )
-                        return row_a, col_a
-                    else:
-                        eqs = all_nash(game)
-                        sel = select_equilibrium(
-                            eqs,
-                            rule=params.equilibrium_selection_rule,
-                            u_row=game.u_row,
-                            u_col=game.u_col,
-                        )
-                        row_a = game.row_actions[int(np.argmax(sel.row))]
-                        col_a = game.col_actions[int(np.argmax(sel.col))]
-                        return row_a, col_a
-
-                if g == "DEF":
-                    r_def, _ = _solve(definition_game(gp))
-                    results["DEF"] = r_def
-                elif g == "BARG":
-                    r_barg, c_barg = _solve(bargaining_game(gp))
-                    results["BARG"] = "A" if (r_barg == "A" and c_barg == "A") else "D"
-                elif g == "SHIFT":
-                    r_shift, c_shift = _solve(cost_shifting_game(gp))
-                    results["SHIFT"] = r_shift
-                elif g == "DISC":
-                    r_disc, c_disc = _solve(discharge_coordination_game(gp))
-                    results["DISC"] = "C" if (r_disc == "C" and c_disc == "C") else "F"
-                elif g == "AGED":
-                    r_aged, c_aged = _solve(aged_care_interface_game(gp))
-                    results["AGED"] = "C" if (r_aged == "C" and c_aged == "C") else "F"
-                elif g == "NDIS":
-                    r_ndis, c_ndis = _solve(ndis_interface_game(gp))
-                    results["NDIS"] = "C" if (r_ndis == "C" and c_ndis == "C") else "F"
-                elif g == "CODING":
-                    r_coding, c_audit = _solve(coding_audit_game(gp))
-                    results["CODING"] = r_coding
-                    results["COMP"] = "T" if c_audit == "T" else "L"
-                elif g == "GOV":
-                    r_gov, c_gov = _solve(governance_integration_game(gp))
-                    results["GOV"] = "I" if (r_gov == "I" and c_gov == "I") else "S"
-                elif g == "COMP":
-                    r_comp, _ = _solve(compliance_game(gp))
-                    results["COMP"] = r_comp
-                elif g == "VENUE_SHIFT":
-                    from nhra_gt.subgames.games import venue_shifting_game
-                    r_venue, _ = _solve(venue_shifting_game(gp))
-                    results["VENUE_SHIFT"] = r_venue
-
-            else:
-                # Heuristic fallback path
-                if g == "SIGNAL":
-                    u_H = +0.10 + 0.30 * (state.pressure - 1.0) + noise
-                    u_L = +0.05 - 0.10 * (state.pressure - 1.0) - noise
-                    prob_sig = softmax(np.array([u_L, u_H]), tau=params.tau)
-                    results["SIGNAL"] = "H" if rng.random() < prob_sig[1] else "L"
-
-                elif g == "BARG":
-                    sig_bonus = 0.1 if results.get("SIGNAL") == "H" else 0.0
-                    BARG_prob = logistic(
-                        0.6 * (1.2 - state.pressure)
-                        - 0.4 * params.political_salience
-                        + state.bailout_expectation
-                        + sig_bonus
-                    )
-                    results["BARG"] = "A" if rng.random() < BARG_prob else "D"
-
-                elif g == "DEF":
-                    barg_multiplier = 1.2 if results.get("BARG") == "A" else 0.8
-                    DEF_prob = (
-                        logistic(1.3 * (state.efficiency_gap - 0.25) + 0.9 * (state.pressure - 1.0))
-                        * barg_multiplier
-                    )
-                    results["DEF"] = "R" if rng.random() < DEF_prob else "E"
-
-                elif g == "SHIFT":
-                    SHIFT_prob = logistic(
-                        -1.1 * (state.pressure - 1.0) - 1.0 * state.efficiency_gap
-                    )
-                    results["SHIFT"] = "I" if rng.random() < SHIFT_prob else "S"
-
-                elif g == "DISC":
-                    DISC_prob = logistic(
-                        -1.0 * (state.pressure - 1.0) - 0.8 * (state.discharge_delay - 1.0)
-                    )
-                    results["DISC"] = "C" if rng.random() < DISC_prob else "F"
-
-                elif g == "AGED":
-                    AGED_prob = logistic(
-                        -0.9 * (state.discharge_delay - 1.0) - 0.5 * (state.pressure - 1.0)
-                    )
-                    results["AGED"] = "C" if rng.random() < AGED_prob else "F"
-
-                elif g == "NDIS":
-                    NDIS_prob = logistic(
-                        -0.7 * (state.discharge_delay - 1.0) - 0.6 * (state.pressure - 1.0)
-                    )
-                    results["NDIS"] = "C" if rng.random() < NDIS_prob else "F"
-
-                elif g == "CODING":
-                    CODING_prob = logistic(
-                        1.5 * (state.pressure - 1.1) + 1.2 * state.efficiency_gap
-                    )
-                    results["CODING"] = "U" if rng.random() < CODING_prob else "H"
-
-                elif g == "GOV":
-                    GOV_prob = logistic(
-                        -0.8 * (state.pressure - 1.0) - 0.7 * params.political_salience
-                    )
-                    results["GOV"] = "I" if rng.random() < GOV_prob else "S"
-
-                elif g == "COMP":
-                    COMP_prob = logistic(0.9 * params.audit_pressure - 0.7 * state.efficiency_gap)
-                    results["COMP"] = "T" if rng.random() < COMP_prob else "L"
-
-                elif g == "VENUE_SHIFT":
-                    VENUE_prob = logistic(1.2 * (state.pressure - 1.1) + 0.8 * state.efficiency_gap)
-                    results["VENUE_SHIFT"] = "B" if rng.random() < VENUE_prob else "A"
-
-                elif g == "SIGNAL_QUALITY":
-                    sig_quality = (
-                        0.7 - 0.2 * (state.pressure - 1.0) if results.get("BARG") == "D" else 0.9
-                    )
-                    results["SIGNAL_QUALITY"] = float(
-                        np.clip(sig_quality + rng.normal(0, 0.05), 0.3, 1.0)
-                    )
-
-        results["RATIONALE"] = (
-            f"Decided using {params.orchestration_mode} mode. Pressure: {state.pressure:.2f}"
-        )
+        results["RATIONALE"] = f"Multi-agent consensus reached in {params.orchestration_mode} mode."
         return results

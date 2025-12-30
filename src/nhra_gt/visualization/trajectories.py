@@ -164,4 +164,3 @@ def plot_swarm(
     ax.grid(True, alpha=config.alpha_grid)
 
     return fig
-

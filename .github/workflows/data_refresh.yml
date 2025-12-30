@@ -30,12 +30,13 @@ jobs:
       - name: Install dependencies
         run: poetry install --only main
 
-      - name: Run AIHW Data Ingestion
+      - name: Run Data Ingestion
         run: |
           poetry run python scripts/data/ingest_aihw_api.py
+          poetry run python scripts/data/ingest_economic_spine.py
 
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: monthly AIHW data refresh [skip ci]"
-          file_pattern: "data/raw/*.csv"
+          commit_message: "chore: automated data refresh (AIHW & WPI) [skip ci]"
+          file_pattern: "data/raw/*.csv data/calibration_v21/*.csv"

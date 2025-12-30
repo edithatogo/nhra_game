@@ -273,20 +273,119 @@ def venue_shifting_game(gp: GameParams) -> TwoPlayerGame:
     """Venue shifting game: LHN chooses ABF 'A' vs Block 'B'; Cth chooses Flexible 'F' vs Strict 'S'."""
     pr = gp.pressure
     eg = gp.efficiency_gap
-    
+
     # Gain from shifting to Block increases when efficiency gap or pressure is high (cap avoidance)
     shift_gain = 0.25 + 0.5 * eg + 0.3 * (pr - 1.0)
     strict_penalty = 0.45
     enforcement_cost = 0.15
-    
-    u_row = np.array([
-        [1.0, 1.0], # ABF (Baseline)
-        [1.0 + shift_gain, 1.0 + shift_gain - strict_penalty] # Block
-    ])
-    
-    u_col = np.array([
-        [1.0, 1.0 - enforcement_cost], # Flexible
-        [1.0 - 0.15 * shift_gain, 1.0 - enforcement_cost + 0.10] # Strict (Reduces 'leakage' gain)
-    ])
-    
+
+    u_row = np.array(
+        [
+            [1.0, 1.0],  # ABF (Baseline)
+            [1.0 + shift_gain, 1.0 + shift_gain - strict_penalty],  # Block
+        ]
+    )
+
+    u_col = np.array(
+        [
+            [1.0, 1.0 - enforcement_cost],  # Flexible
+            [
+                1.0 - 0.15 * shift_gain,
+                1.0 - enforcement_cost + 0.10,
+            ],  # Strict (Reduces 'leakage' gain)
+        ]
+    )
+
     return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("A", "B"), col_actions=("F", "S"))
+
+
+def competition_game(gp: GameParams, cannibalization_beta: float = 0.1) -> TwoPlayerGame:
+    """
+    Competition game between two neighboring LHNs.
+    They compete for a fixed pool of workforce (locums) and elective volume.
+
+    Actions:
+        M: Maintain (Baseline investment/marketing)
+        A: Aggressive (Aggressive hiring/marketing to capture volume)
+    """
+    pr = gp.pressure
+
+    # Aggressive move captures volume but increases costs and drains neighbor
+    capture_gain = 0.4 + 0.6 * cannibalization_beta
+    cost_of_aggression = 0.3 + 0.2 * pr
+
+    # (M, M): Baseline stability
+    # (A, M): LHN 1 drains LHN 2
+    # (M, A): LHN 2 drains LHN 1
+    # (A, A): Both spend high costs, neutral capture (Prisoners Dilemma style)
+
+    u_row = np.array(
+        [
+            [1.0, 1.0 - capture_gain],
+            [1.0 + capture_gain - cost_of_aggression, 1.0 - cost_of_aggression],
+        ]
+    )
+
+    u_col = np.array(
+        [
+            [1.0, 1.0 + capture_gain - cost_of_aggression],
+            [1.0 - capture_gain, 1.0 - cost_of_aggression],
+        ]
+    )
+
+    return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("M", "A"), col_actions=("M", "A"))
+
+
+def renegotiation_game(gp: GameParams, clock: int) -> TwoPlayerGame:
+    """
+    High-stakes Hold-Up game at the 5-year Agreement expiry.
+
+    Players:
+        Row: Commonwealth (Policy Principal)
+        Col: State (Implementation Agent)
+
+    Actions:
+        C: Concede (Offer higher alpha/funding share)
+        E: Enforce (Stick to strict 45% / efficient price target)
+
+        A: Agree (Accept terms)
+        H: Hold-Up (Threaten walk-away/service failure)
+    """
+    pr = gp.pressure
+
+    # Commonwealth wants to minimize share but avoid political fallout of a 'Crisis'
+    cth_fallout_cost = 0.8 * pr
+    state_failure_cost = 0.6 * pr
+
+    # (Enforce, Agree): Status Quo / Commonwealth Win
+    # (Concede, Agree): Smooth Transition / Moderate Share Increase
+    # (Enforce, Hold-Up): Crisis / Political Chaos
+    # (Concede, Hold-Up): State Win / Max Share Increase
+
+    u_row = np.array(
+        [
+            [
+                1.0 - 0.1,
+                1.0 - 0.3,
+            ],  # Concede: low cost if agree, higher cost if state still holds up
+            [
+                1.0,
+                1.0 - cth_fallout_cost,
+            ],  # Enforce: zero cost if agree, MAX cost if hold-up triggers fallout
+        ]
+    )
+
+    u_col = np.array(
+        [
+            [
+                1.0 + 0.2,
+                1.0 + 0.5,
+            ],  # Concede: Gain share if agree, MAX gain if hold-up forces even more
+            [
+                1.0,
+                1.0 - state_failure_cost,
+            ],  # Enforce: Neutral if agree, BAD if hold-up leads to failure
+        ]
+    )
+
+    return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("C", "E"), col_actions=("A", "H"))

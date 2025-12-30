@@ -1,7 +1,7 @@
 {
     "version": 1,
-    "project": "nhra_game",
-    "project_url": "https://github.com/edithatogo/nhra_game",
+    "project": "nhra_gt",
+    "project_url": "https://github.com/edithatogo/nhra_gt",
     "repo": ".",
     "pythons": ["3.10", "3.11", "3.12"],
     "matrix": {

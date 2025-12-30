@@ -4,33 +4,27 @@ import json
 import sys
 from pathlib import Path
 
-import jax
 import jax.numpy as jnp
 import numpy as np
 import pandas as pd
 import streamlit as st
 
-from nhra_gt.visualization.game_trees import (
-    create_extensive_game_from_matrix,
-    render_tree_static,
-)
+from nhra_gt.visualization.game_trees import create_extensive_game_from_matrix, render_tree_static
 from nhra_gt.visualization.interactive import (
+    plot_agreement_cycle,
     plot_ghost_overlay,
+    plot_patient_choice,
     plot_phase_space,
     plot_risk_pressure,
     plot_share_drift,
     plot_stability_heatmap,
+    plot_strategic_stability,
     plot_vfi_waterfall,
+    plot_workforce_dynamics,
 )
-from nhra_gt.visualization.sensitivity import (
-    plot_morris_tornado as viz_plot_morris_tornado,
-)
-from nhra_gt.visualization.sensitivity import (
-    plot_sobol_heatmap as viz_plot_sobol_heatmap,
-)
-from nhra_gt.visualization.sensitivity import (
-    plot_sobol_indices as viz_plot_sobol_indices,
-)
+from nhra_gt.visualization.sensitivity import plot_morris_tornado as viz_plot_morris_tornado
+from nhra_gt.visualization.sensitivity import plot_sobol_heatmap as viz_plot_sobol_heatmap
+from nhra_gt.visualization.sensitivity import plot_sobol_indices as viz_plot_sobol_indices
 
 # Add src to path if needed for relative imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
@@ -39,6 +33,7 @@ from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_gt.domain.stability import analyze_cost_shifting_stability
 from nhra_gt.domain.validation import RecursiveResult, aggregate_metrics
 from nhra_gt.engine import Params, apply_intervention, run_hybrid, summarise_outcome
+from nhra_gt.sensitivity import get_parameter_lineage
 from nhra_gt.subgames.games import (
     GameParams,
     bargaining_game,
@@ -48,7 +43,6 @@ from nhra_gt.subgames.games import (
     discharge_coordination_game,
     governance_integration_game,
 )
-from nhra_gt.sensitivity import get_parameter_lineage
 
 
 def prepare_ghost_overlay_data(
@@ -127,27 +121,49 @@ def cached_run_model(
 
 
 def generate_prose_summary(summary_base, summary_game) -> str:
-    """Generate a rule-based automated prose summary of the Strategic Scenario Analysis results."""
+    """Generate a rich, multi-layered strategic synthesis of the scenario analysis."""
     risk_change = summary_game["rr_2030"] - summary_base["rr_2030"]
     share_change = summary_game["effshare_effective_2030"] - summary_base["effshare_effective_2030"]
+    pressure_final = summary_game["pressure_2030"]
+    resilience = summary_game["resilience_index"]
 
-    narrative = "### 📜 Automated Policy Brief\n"
+    narrative = "### 🏛️ Strategic Synthesis & Policy Implications\n\n"
 
-    if risk_change > 0.05:
-        narrative += (
-            f"⚠️ **Warning:** System risk is projected to increase by {risk_change:.2f} units. "
-        )
-    elif risk_change < -0.05:
-        narrative += f"✅ **Improvement:** System risk is projected to decrease by {abs(risk_change):.2f} units. "
+    # 1. Executive Summary
+    if risk_change < -0.1:
+        exec_sum = "✅ **Outcome:** High-confidence system stabilization. The proposed intervention successfully decouples system pressure from catastrophic failure risks."
+    elif risk_change > 0.1:
+        exec_sum = "⚠️ **Outcome:** Strategic Deterioration. The scenario indicates significant risk of system-wide failure, with high political and operational costs."
     else:
-        narrative += "⚖️ **Stability:** System risk remains stable under this configuration. "
+        exec_sum = "⚖️ **Outcome:** Marginal Stability. The system maintains its current trajectory with limited structural shifts."
 
-    if share_change > 0.02:
-        narrative += f"Despite a {share_change*100:.1f}% gain in Effective Commonwealth Share, "
-    elif share_change < -0.02:
-        narrative += f"Compounded by a {abs(share_change)*100:.1f}% loss in Effective Share, "
+    narrative += f"{exec_sum}\n\n"
 
-    narrative += "Access Block and ED performance remain the primary drivers of system pressure."
+    # 2. Institutional Analysis
+    narrative += "#### 💸 Financial & Constitutional Layer\n"
+    if share_change > 0.03:
+        narrative += f"- **Hold-Up Success:** State agents successfully leveraged system pressure to extract a {share_change*100:.1f}% increase in realized Commonwealth contribution.\n"
+    elif share_change < -0.03:
+        narrative += f"- **Fiscal Leakage:** Despite nominal targets, effective realized funding has drifted downwards by {abs(share_change)*100:.1f}%, primarily driven by cap-breaches and efficiency gap drift.\n"
+    else:
+        narrative += "- **Funding Stability:** Realized contribution shares remain aligned with the 2025-2030 Agreement targets.\n"
+
+    # 3. Operational Analysis
+    narrative += "\n#### 🏥 Operational & Clinical Layer\n"
+    narrative += f"- **Resilience:** The system spends **{resilience*100:.0f}%** of the forecast period in 'Normal' mode. "
+    if pressure_final > 1.3:
+        narrative += "Chronic overcrowding persists, with ED performance likely to remain below the 80% target due to upstream bottlenecks.\n"
+    else:
+        narrative += "The operational state is robust, with sufficient capacity buffer to handle seasonal demand peaks.\n"
+
+    # 4. Mechanism Insight (The 'Why')
+    narrative += "\n#### 🧪 Mechanism Insight\n"
+    if summary_game["hysteresis_area"] > summary_base["hysteresis_area"]:
+        narrative += "- **Increased Inertia:** This scenario increases the system's 'hysteresis area', meaning recovery from shocks will be slower and more costly once failure thresholds are breached.\n"
+    else:
+        narrative += "- **Improved Agility:** The intervention reduces system inertia, allowing for more rapid stabilization following demand surges.\n"
+
+    narrative += "\n---\n*Note: This synthesis is generated by the Digital Twin's Ex-Post Narrator, integrating multi-layer simulation metrics with game-theoretic outcome traces.*"
 
     return narrative
 
@@ -182,17 +198,12 @@ def apply_custom_theme():
 
 def st_traffic_light(status: str, label: str):
     """Renders a traffic light indicator for data provenance."""
-    colors = {
-        "Live": "🟢",
-        "Validated": "🟡",
-        "Assumption": "🔴"
-    }
+    colors = {"Live": "🟢", "Validated": "🟡", "Assumption": "🔴"}
     icon = colors.get(status, "⚪")
     st.markdown(f"{icon} **{label}** ({status})")
 
 
 def main() -> None:
-
     st.set_page_config(
         page_title="NHRA Strategic Scenario Dashboard", page_icon="🏥", layout="wide"
     )
@@ -296,6 +307,25 @@ def main() -> None:
         help="The strength of incentives to shift pressures across Commonwealth/State interfaces.",
     )
 
+    # Lags & Measurement
+    st.sidebar.subheader("⏱️ Lags & Measurement")
+    signal_lag = st.sidebar.slider(
+        "Signal Lag (Months)",
+        0,
+        6,
+        1,
+        1,
+        help="Delay before public indicators (pressure, occupancy) are reported.",
+    )
+    claims_lag = st.sidebar.slider(
+        "Claims Lag (Months)",
+        0,
+        12,
+        3,
+        1,
+        help="Delay before financial activity (NWAU, coding) is reconciled.",
+    )
+
     # Scenario Management
     st.sidebar.markdown("---")
     st.sidebar.subheader("💾 Scenario Management")
@@ -362,6 +392,8 @@ def main() -> None:
             "audit_pressure": audit_pressure,
             "rurality_weight": rurality_weight,
             "cost_shifting_intensity": cost_shifting,
+            "signal_lag_months": signal_lag,
+            "claims_lag_months": claims_lag,
         },
     }
 
@@ -422,6 +454,8 @@ def main() -> None:
         audit_pressure=audit_pressure,
         rurality_weight=rurality_weight,
         cost_shifting_intensity=cost_shifting,
+        signal_lag_months=signal_lag,
+        claims_lag_months=claims_lag,
     )
     traj_game, _ = cached_run_model(p_game, years, n_mc=st.session_state.n_mc, overrides=overrides)
     summary_game = summarise_outcome(traj_game)
@@ -511,6 +545,27 @@ def main() -> None:
                     delta=f"{(w4_val - w4_base)*100:.1f}%",
                 )
 
+                # System Resilience
+                res_val = summary_game["resilience_index"]
+                res_base = summary_base["resilience_index"]
+                st.metric(
+                    "Resilience Index",
+                    f"{res_val*100:.0f}%",
+                    delta=f"{(res_val - res_base)*100:.0f}%",
+                    help="Percentage of time spent in 'Normal' mode. Higher is better.",
+                )
+
+                # Hysteresis Area
+                h_val = summary_game["hysteresis_area"]
+                h_base = summary_base["hysteresis_area"]
+                st.metric(
+                    "Hysteresis Area",
+                    f"{h_val:.3f}",
+                    delta=f"{h_val - h_base:.3f}",
+                    delta_color="inverse",
+                    help="Area of the phase-space loop. Measures system lag/inertia. Lower is better.",
+                )
+
                 # Narrative Summary
                 st.markdown("---")
                 narrative = generate_prose_summary(summary_base, summary_game)
@@ -541,7 +596,7 @@ def main() -> None:
 
         with wg_tab2:
             st.subheader("Funding & System Dynamics")
-            
+
             col_f1, col_f2 = st.columns(2)
             with col_f1:
                 st.markdown("**VFI Funding Leakage (2030 forecast)**")
@@ -551,16 +606,67 @@ def main() -> None:
                     indexation_loss=summary_game["leakage_indexation"],
                     cap_loss=summary_game["leakage_cap"],
                     audit_loss=summary_game["leakage_audit"],
+                    adjustment_loss=summary_game["leakage_adjustment"],
                     effective_share=summary_game["effshare_effective_2030"],
                 )
                 st.plotly_chart(fig_wf, width="stretch")
-                st.caption("Visualises the 'leakage' from nominal commitments to effective realized funding.")
+                st.caption(
+                    "Visualises the 'leakage' from nominal commitments to effective realized funding."
+                )
 
             with col_f2:
                 st.markdown("**System Phase-Space (Hysteresis)**")
                 fig_ps = plot_phase_space(traj_game)
                 st.plotly_chart(fig_ps, width="stretch")
-                st.caption("Traces the path of system pressure vs occupancy. Loops indicate hysteresis.")
+                st.caption(
+                    "Traces the path of system pressure vs occupancy. Loops indicate hysteresis."
+                )
+
+            st.markdown("---")
+            st.subheader("Patient Choice & Queuing Dynamics")
+            col_q1, col_q2 = st.columns([2, 1])
+            with col_q1:
+                fig_q = plot_patient_choice(traj_game)
+                st.plotly_chart(fig_q, width="stretch")
+            with col_q2:
+                st.info("""
+                **Endogenous Demand (Wardrop Equilibrium):**
+                Patients choose between the Emergency Department (ED) and General Practice (GP) based on relative utility:
+                - **ED Utility:** Decreases with longer wait times (Access Block).
+                - **GP Utility:** Decreases with higher Out-of-Pocket costs.
+
+                The model find the equilibrium where no marginal patient can improve their utility by switching. This explains how primary care costs mechanistically drive ED demand.
+                """)
+
+            st.markdown("---")
+            st.subheader("Workforce Competition & Drains")
+            col_w1, col_w2 = st.columns([2, 1])
+            with col_w1:
+                fig_w = plot_workforce_dynamics(traj_game)
+                st.plotly_chart(fig_w, width="stretch")
+            with col_w2:
+                st.info("""
+                **Shared Workforce Pool:**
+                LHNs compete for a finite pool of staff (e.g., locum doctors and nurses).
+                - **Aggressive Hiring:** LHNs may choose to out-compete neighbors for staff during crises.
+                - **Cannibalization:** Aggressive moves by one LHN drain the shared pool, increasing discharge delays for all.
+                - **System Mode Impact:** High pressure increases the 'cost of aggression' as staff burnout rises.
+                """)
+
+            st.markdown("---")
+            st.subheader("5-Year Agreement Cycle & Hold-Up")
+            col_ac1, col_ac2 = st.columns([2, 1])
+            with col_ac1:
+                fig_ac = plot_agreement_cycle(traj_game)
+                st.plotly_chart(fig_ac, width="stretch")
+            with col_ac2:
+                st.info("""
+                **The Hold-Up Game:**
+                The NHRA follows a 5-year cycle. When the clock hits zero, a high-stakes negotiation occurs:
+                - **State Move:** Can 'Agree' or 'Hold-Up' (threaten failure).
+                - **Commonwealth Move:** Can 'Concede' or 'Enforce' (stick to target).
+                - **Pressure Impact:** High system pressure gives States more bargaining leverage to extract a higher `alpha` (contribution share).
+                """)
 
             st.markdown("---")
             st.subheader("Effective Share Drift Analysis")
@@ -640,7 +746,7 @@ def main() -> None:
     with tab2_5:
         st.markdown("### 🌲 Extensive Form Game Tree Explorer")
         st.markdown("""
-        Explore the sequential logic of NHRA subgames. 
+        Explore the sequential logic of NHRA subgames.
         Select a subgame to view its **decision tree** and **payoff structure** (Commonwealth move vs State move).
         """)
 
@@ -654,46 +760,50 @@ def main() -> None:
         }
 
         sel_subgame_name = st.selectbox("Select Subgame:", list(subgame_options.keys()))
-        
+
         # Evidence Grounding
         from nhra_gt.visualization.game_trees import get_game_evidence
+
         evidence = get_game_evidence(sel_subgame_name)
-        st.info(f"📚 **Evidence Source:** {evidence['source']}  \n**Context:** {evidence['context']}")
+        st.info(
+            f"📚 **Evidence Source:** {evidence['source']}  \n**Context:** {evidence['context']}"
+        )
 
         # Use current parameter state for the tree
         gp = GameParams(
-            pressure=1.0, # Baseline for explorer
+            pressure=1.0,  # Baseline for explorer
             efficiency_gap=0.1,
             discharge_delay=1.0,
             political_salience=p_base.political_salience,
             audit_pressure=p_base.audit_pressure,
             cost_shifting_intensity=p_base.cost_shifting_intensity,
-            political_capital=1.0
+            political_capital=1.0,
         )
-        
+
         game_func = subgame_options[sel_subgame_name]
         g = game_func(gp)
-        
+
         # Convert matrix game to extensive form tree
         # Extract matrices from TwoPlayerGame object
         u_row = jnp.array(g.u_row)
         u_col = jnp.array(g.u_col)
-        
+
         extensive_g = create_extensive_game_from_matrix(
-            u_row, u_col, 
+            u_row,
+            u_col,
             title=sel_subgame_name,
             row_action_labels=g.row_actions,
-            col_action_labels=g.col_actions
+            col_action_labels=g.col_actions,
         )
-        
+
         # Render
         tree_path = Path("outputs/diagrams") / f"tree_{sel_subgame_name.lower().replace(' ', '_')}"
         render_tree_static(extensive_g, tree_path)
-        
+
         svg_path = tree_path.with_suffix(".svg")
         if svg_path.exists():
             st.image(str(svg_path), width="stretch")
-            
+
         st.caption("Circles = Decision Nodes | Squares = Outcomes (Cth Payoff, State Payoff)")
 
     with tab2_6:
@@ -702,13 +812,13 @@ def main() -> None:
         Visualize the strategic divergence across Local Hospital Networks (LHNs) within a single Jurisdiction.
         This tab explores the **Internal Contracting Game** where States delegate operational risk.
         """)
-        
+
         # We need a specialized run that returns LHN-level data
         # For simplicity, we use the current simulation's final state LHN vectors
         # Note: In a real run, traj_game should ideally contain these if we updated run_hybrid
-        
+
         col_lv1, col_lv2 = st.columns(2)
-        
+
         with col_lv1:
             st.subheader("🎯 Pressure vs. Revenue Trade-off")
             # Simulated data for now based on engine_jax logic
@@ -716,55 +826,72 @@ def main() -> None:
             lhn_ids = [f"LHN {i+1}" for i in range(n_lhn)]
             # We pull from a mock or real vectorized state if available
             # For this MVP, we generate a scatter plot of sub-agent states
-            lhn_df = pd.DataFrame({
-                "LHN": lhn_ids,
-                "Pressure Index": np.random.normal(1.1, 0.1, n_lhn),
-                "NWAU Capture (Relative)": np.random.normal(100, 10, n_lhn),
-                "Type": ["Regional", "Metro", "Metro", "Remote", "Regional"]
-            })
-            
-            import plotly.express as px
-            fig_lhn = px.scatter(
-                lhn_df, x="Pressure Index", y="NWAU Capture (Relative)", 
-                color="Type", text="LHN", size_max=20,
-                title="LHN Strategic Distribution (Current Scenario)"
+            lhn_df = pd.DataFrame(
+                {
+                    "LHN": lhn_ids,
+                    "Pressure Index": np.random.normal(1.1, 0.1, n_lhn),
+                    "NWAU Capture (Relative)": np.random.normal(100, 10, n_lhn),
+                    "Type": ["Regional", "Metro", "Metro", "Remote", "Regional"],
+                }
             )
-            fig_lhn.add_vline(x=1.0, line_dash="dash", line_color="red", annotation_text="Target Pressure")
+
+            import plotly.express as px
+
+            fig_lhn = px.scatter(
+                lhn_df,
+                x="Pressure Index",
+                y="NWAU Capture (Relative)",
+                color="Type",
+                text="LHN",
+                size_max=20,
+                title="LHN Strategic Distribution (Current Scenario)",
+            )
+            fig_lhn.add_vline(
+                x=1.0, line_dash="dash", line_color="red", annotation_text="Target Pressure"
+            )
             st.plotly_chart(fig_lhn, width="stretch")
-            
+
         with col_lv2:
             st.subheader("💰 Funding Stream Mix")
             # Show the split between ABF and Block for each LHN
-            stream_df = pd.DataFrame({
-                "LHN": lhn_ids,
-                "ABF Revenue": np.random.uniform(70, 90, n_lhn),
-                "Block Revenue": np.random.uniform(10, 30, n_lhn)
-            })
-            
+            stream_df = pd.DataFrame(
+                {
+                    "LHN": lhn_ids,
+                    "ABF Revenue": np.random.uniform(70, 90, n_lhn),
+                    "Block Revenue": np.random.uniform(10, 30, n_lhn),
+                }
+            )
+
             fig_stream = px.bar(
-                stream_df, x="LHN", y=["ABF Revenue", "Block Revenue"],
+                stream_df,
+                x="LHN",
+                y=["ABF Revenue", "Block Revenue"],
                 title="Funding Allocation by Stream",
                 labels={"value": "Revenue Units", "variable": "Stream"},
                 barmode="stack",
-                color_discrete_map={"ABF Revenue": "#636EFA", "Block Revenue": "#00CC96"}
+                color_discrete_map={"ABF Revenue": "#636EFA", "Block Revenue": "#00CC96"},
             )
             st.plotly_chart(fig_stream, width="stretch")
-            st.info("💡 **Boundary Shifting:** LHNs may strategically shift activity to 'Block' categories to bypass activity caps.")
+            st.info(
+                "💡 **Boundary Shifting:** LHNs may strategically shift activity to 'Block' categories to bypass activity caps."
+            )
 
         st.markdown("---")
         st.subheader("⚖️ Ramping Sensitivity")
         st.markdown("""
-        LHNs with higher **Political Shield** weights will aggressively reduce pressure 
+        LHNs with higher **Political Shield** weights will aggressively reduce pressure
         at the cost of NWAU efficiency. Metro LHNs typically face higher ramping penalties.
         """)
-        st.info("💡 **Insight:** Intra-state competition for a fixed pool creates 'winners' and 'losers' based on their local operational efficiency.")
+        st.info(
+            "💡 **Insight:** Intra-state competition for a fixed pool creates 'winners' and 'losers' based on their local operational efficiency."
+        )
 
     with tab3:
         st.markdown("### 🧬 Data & Variable Lineage")
         st.markdown("Trace how model parameters are grounded in public evidence.")
 
         lineage = get_parameter_lineage()
-        
+
         # Traffic light summary
         tl_col1, tl_col2, tl_col3 = st.columns(3)
         with tl_col1:
@@ -823,7 +950,9 @@ def main() -> None:
         st.markdown("### 🔬 Technical Analytics")
         st.markdown("Mechanism sensitivity and structural integrity checks.")
 
-        tab5_1, tab5_2 = st.tabs(["Stability Regions", "Global Sensitivity"])
+        tab5_1, tab5_2, tab5_3, tab5_4 = st.tabs(
+            ["Stability Regions", "Global Sensitivity", "System Hysteresis", "Strategic Stability"]
+        )
 
         with tab5_1:
             st.subheader("🌋 Cost Shifting Tipping Points")
@@ -896,6 +1025,50 @@ def main() -> None:
                         "S2 interaction data not found. Ensure Sobol analysis is run with interaction terms."
                     )
 
+        with tab5_3:
+            st.subheader("🌀 System Hysteresis & Recovery")
+            st.markdown("Analyzing the lag in system response and the path dependency of recovery.")
+
+            col_h1, col_h2 = st.columns([2, 1])
+
+            with col_h1:
+                # Reuse enhanced phase space plot
+                fig_h = plot_phase_space(
+                    traj_game, title="Detailed Hysteresis Loop (Current Scenario)"
+                )
+                st.plotly_chart(fig_h, width="stretch")
+                st.caption(
+                    "Markers indicate the System Mode at each point. The grey line shows the path dependency."
+                )
+
+            with col_h2:
+                st.markdown("#### Resilience Metrics")
+                st.metric("Resilience Index", f"{summary_game['resilience_index']*100:.0f}%")
+                st.metric("Recovery Time (months)", f"{summary_game['recovery_time']:.0f}")
+                st.metric("Loop Area (Lag Proxy)", f"{summary_game['hysteresis_area']:.3f}")
+
+                st.info("""
+                **Interpretation:**
+                - **Area:** A larger area suggests greater inertia. High `capacity_lag` or `signal_lag` will widen this loop.
+                - **Resilience:** Percentage of the simulation period spent in the 'Normal' operating mode.
+                - **Recovery Time:** Total months where the system was in Stress, Crisis, or Recovery modes.
+                """)
+
+        with tab5_4:
+            st.subheader("📡 Strategic Stability & Solver Telemetry")
+            st.markdown(
+                "Monitoring the health of the game-theoretic solvers and the clarity of strategic coordination."
+            )
+
+            fig_stab = plot_strategic_stability(traj_game)
+            st.plotly_chart(fig_stab, width="stretch")
+
+            st.info("""
+            **What this shows:**
+            - **Max Equilibria (Bars):** Indicates "Strategic Ambiguity". If > 1, multiple stable outcomes exist, and the system relies on selection rules (e.g. payoff dominance). Spikes often occur during transitions between policy regimes.
+            - **Mean Residual (Line):** Indicates "Solver Stability". High values suggest the iterative solver (QRE) struggled to converge within `max_iter`. This validates the numerical robustness of the simulation.
+            """)
+
     with tab6:
         st.markdown("### 🛡️ Evidence Manager & Auditor")
         st.markdown("Review and promote evidence from automated ingestion to the active model.")
@@ -955,15 +1128,17 @@ def main() -> None:
     with tab7:
         st.markdown("### 🔍 Forensic Audit & Solver Integrity")
         st.markdown("Monitor the numerical stability and regulator response dynamics.")
-        
+
         st.subheader("🕵️ Strategic Auditor Surveillance")
         col_aud1, col_aud2 = st.columns(2)
         with col_aud1:
             st.markdown("**Regulator Suspicion Index**")
             fig_suspicion = px.line(
-                traj_game, x="year", y="suspicion_mean",
+                traj_game,
+                x="year",
+                y="suspicion_mean",
                 labels={"year": "Year", "suspicion_mean": "Suspicion (0-1)"},
-                title="Auditor Suspicion (Anomaly Triggered)"
+                title="Auditor Suspicion (Anomaly Triggered)",
             )
             fig_suspicion.update_traces(line_color="orange", line_dash="dot")
             st.plotly_chart(fig_suspicion, width="stretch")
@@ -972,9 +1147,11 @@ def main() -> None:
         with col_aud2:
             st.markdown("**Active Inspection Pressure**")
             fig_active_p = px.line(
-                traj_game, x="year", y="pressure_active_mean",
+                traj_game,
+                x="year",
+                y="pressure_active_mean",
                 labels={"year": "Year", "pressure_active_mean": "Active Pressure"},
-                title="Dynamic Audit Intensity"
+                title="Dynamic Audit Intensity",
             )
             fig_active_p.update_traces(line_color="red")
             st.plotly_chart(fig_active_p, width="stretch")

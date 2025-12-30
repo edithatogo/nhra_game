@@ -14,6 +14,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ## [x] Track: Automated Evidence & API Integration (v24)
 *Link: [./conductor/tracks/automated_evidence_api_v24/](./conductor/tracks/automated_evidence_api_v24/)*
+*Note: Realized Evidence Parsing API gap addressed 2025-12-28.*
 
 ## [x] Track: Feature Recovery & Security Hardening (v25)
 *Link: [./conductor/tracks/feature_recovery_security_v25/](./conductor/tracks/feature_recovery_security_v25/)*
@@ -32,6 +33,11 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
+## [x] Track: JAX-Accelerated Nash Solver (P0)
+*Link: [./conductor/archive/engine_modernization_20251227/](./conductor/archive/engine_modernization_20251227/)*
+
+---
+
 ## [x] Track: Release Polish & Workflow Integrity
 *Link: [./conductor/tracks/release_polish_20251225/](./conductor/tracks/release_polish_20251225/)*
 
@@ -44,6 +50,48 @@ This file tracks all major tracks for the project. Each track has its own detail
 *Link: [./conductor/archive/engine_modernization_20251227/](./conductor/archive/engine_modernization_20251227/)*
 
 ---
+
+## [x] Track: Capacity Adjustment Costs & Friction (P3)
+*Link: [./conductor/tracks/capacity_adjustment_costs_20251228/](./conductor/tracks/capacity_adjustment_costs_20251228/)*
+
+## [x] Track: WPI Health Data Automation (P2)
+*Link: [./conductor/tracks/wpi_health_data_automation_20251228/](./conductor/tracks/wpi_health_data_automation_20251228/)*
+
+## [x] Track: Measurement Lags (P3)
+*Link: [./conductor/tracks/measurement_lags_20251228/](./conductor/tracks/measurement_lags_20251228/)*
+
+## [x] Track: Modular Rules Engine (P3)
+*Link: [./conductor/tracks/modular_rules_engine_20251228/](./conductor/tracks/modular_rules_engine_20251228/)*
+
+## [x] Track: Hysteresis Analysis Expansion (P2)
+*Link: [./conductor/tracks/hysteresis_expansion_20251228/](./conductor/tracks/hysteresis_expansion_20251228/)*
+
+## [x] Track: Equilibrium Stability Telemetry (P3)
+*Link: [./conductor/tracks/equilibrium_telemetry_20251228/](./conductor/tracks/equilibrium_telemetry_20251228/)*
+
+## [x] Track: Queuing Game Expansion (P3)
+*Link: [./conductor/tracks/queuing_game_expansion_20251228/](./conductor/tracks/queuing_game_expansion_20251228/)*
+
+## [x] Track: Automated Data Spine Pipeline (P1)
+*Link: [./scripts/data/ingest_economic_spine.py](./scripts/data/ingest_economic_spine.py)*
+
+## [x] Track: Multi-LHN Competition & Workforce Dynamics (P3)
+*Link: [./src/nhra_gt/subgames/games.py](./src/nhra_gt/subgames/games.py)*
+
+## [x] Track: Differentiable Calibration & JAX Optimization (P2)
+*Link: [./src/nhra_gt/calibration/differentiable.py](./src/nhra_gt/calibration/differentiable.py)*
+
+## [x] Track: Multi-Agent Granularity (Jurisdictions & LHNs)
+*Link: [./src/nhra_gt/domain/state.py](./src/nhra_gt/domain/state.py)*
+
+## [x] Track: Narrative Synthesis & Ex-Post Interpretation
+*Link: [./scripts/dashboard.py](./scripts/dashboard.py)*
+
+## [x] Track: Poetry/Package Naming Alignment
+*Link: [./pyproject.toml](./pyproject.toml)*
+
+## [x] Track: Type Hint Rigour & Static Analysis Compliance
+*Link: [./pyproject.toml](./pyproject.toml)*
 
 ## [x] Track: Boundary Shifting & Stream Mix Game (P3)
 *Link: [./conductor/archive/boundary_shifting_20251228/](./conductor/archive/boundary_shifting_20251228/)*
@@ -59,3 +107,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ## [x] Track: Advanced Game Theoretic Enhancements (Mechanistic Demand & Cycles)
 *Link: [./conductor/archive/game_theoretic_enhancements_20251227/](./conductor/archive/game_theoretic_enhancements_20251227/)*
+
+---
+
+## [~] Track: Troubleshoot Performance & Fix Deployment
+*Link: [./conductor/tracks/performance_fix_20251229/](./conductor/tracks/performance_fix_20251229/)*

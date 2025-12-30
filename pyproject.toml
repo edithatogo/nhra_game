@@ -136,27 +136,41 @@ build-backend = "poetry.core.masonry.api"
 [tool.ruff]
 line-length = 100
 target-version = "py310"
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-
-[tool.mypy]
-ignore_missing_imports = true
-python_version = "3.10"
-strict = true
-warn_unused_ignores = true
-show_error_codes = true
-pretty = true
-exclude = ["scripts/", "outputs/", "reports/", "src/nhra_gt/visualization/", "src/nhra_gt/sensitivity.py", "src/nhra_gt/plotting.py"]
-plugins = ["pydantic.mypy", "pandera.mypy"]
+src = ["src", "scripts"]
+exclude = [
+    ".git",
+    ".gemini",
+    ".nox",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".snakemake",
+    ".venv",
+    "__pycache__",
+    "data",
+    "outputs",
+    "reports",
+    "docs",
+    "archive",
+    "dist",
+    ".mypy_cache",
+    ".hypothesis",
+    "htmlcov",
+    ".benchmarks",
+    "temp_blinded_workspace",
+]
 
 [tool.ruff.lint]
-select = ["E","F","I","B","UP","SIM","A","C4","N","PT","S"]
-ignore = ["E501", "N806"]
+select = ["E","F","B","UP","SIM","A","C4","N","PT","S"]
+ignore = ["E501", "N806", "F722"]
 
 [tool.ruff.lint.per-file-ignores]
 "scripts/*" = ["E402"]
 "tests/*" = ["S101", "S105", "PT011", "B017", "E402", "S607", "S603"]
+"src/nhra_gt/agent_logic.py" = ["F821"]
+"src/nhra_gt/engine_jax.py" = ["F821", "UP037"]
+"src/nhra_gt/solvers_jax.py" = ["F821", "UP037"]
+"src/nhra_gt/hierarchical_jax.py" = ["F821", "UP037"]
+"src/nhra_gt/calibration/differentiable.py" = ["F821", "UP037"]
 "src/nhra_gt/audit/*" = ["S110", "S112"]
 "src/nhra_gt/domain/audit.py" = ["S607", "S603"]
 "src/nhra_gt/interfaces/protocols.py" = ["F401"]

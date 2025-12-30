@@ -1,0 +1,8 @@
+{
+  "track_id": "performance_fix_20251229",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2025-12-29T12:00:00Z",
+  "updated_at": "2025-12-29T12:00:00Z",
+  "description": "Troubleshoot Ruff/Snakemake performance and fix Streamlit jaxtyping import error."
+}

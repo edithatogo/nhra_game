@@ -1,24 +1,29 @@
 from __future__ import annotations
 
+from typing import Any
+
 import jax
 import jax.numpy as jnp
 import numpy as np
-import pytest
 
-from nhra_gt.domain.state import ParamsJax, StateJax, SystemModeJax
-from nhra_gt.engine import Params, State, SystemMode, baseline_state, step
+from nhra_gt.domain.state import ParamsJax, StateJax
+from nhra_gt.engine import Params, State, baseline_state, step
 from nhra_gt.engine_jax import run_simulation_jax, step_jax
+from nhra_gt.rules import initialize_rules
 
 
 def params_to_jax(p: Params) -> ParamsJax:
     from nhra_gt.domain.state import EconomicSpineJax
 
+    p = initialize_rules(p)
     spine_jax = None
     if p.economic_spine is not None:
         spine_jax = EconomicSpineJax(
             years=jnp.array(p.economic_spine["year"].values, dtype=jnp.int32),
             nep_per_nwau=jnp.array(p.economic_spine["nep_per_nwau"].values, dtype=jnp.float64),
-            wpi_health_index=jnp.array(p.economic_spine["wpi_health_index"].values, dtype=jnp.float64),
+            wpi_health_index=jnp.array(
+                p.economic_spine["wpi_health_index"].values, dtype=jnp.float64
+            ),
         )
 
     return ParamsJax(
@@ -62,6 +67,10 @@ def params_to_jax(p: Params) -> ParamsJax:
         noise_sd=p.noise_sd,
         cap_rule_type=1 if p.cap_rule_type == "soft" else 0,
         audit_rule_type=1 if p.audit_rule_type == "threshold" else 0,
+        cap_rule=p.cap_rule,
+        audit_rule=p.audit_rule,
+        eligibility_rule=p.eligibility_rule,
+        reconciliation_rule=p.reconciliation_rule,
         spine=spine_jax,
     )
 
@@ -78,9 +87,11 @@ def state_to_jax(s: State) -> StateJax:
         efficiency_gap=s.efficiency_gap,
         discharge_delay=s.discharge_delay,
         political_capital=s.political_capital,
-        system_mode=int(s.system_mode.value) if isinstance(s.system_mode.value, (int, float)) else 0,
+        system_mode=int(s.system_mode.value)
+        if isinstance(s.system_mode.value, (int, float))
+        else 0,
         lhn_pressure=jnp.zeros(5),
-        lhn_nwau=jnp.zeros(5),
+        lhn_nwau=jnp.full(5, 100.0),
         agreement_clock=5,
         workforce_pool=1.0,
         target_capacity=s.target_capacity,
@@ -92,12 +103,25 @@ def state_to_jax(s: State) -> StateJax:
         reputation_score=s.reputation_score,
         auditor_suspicion=s.auditor_suspicion,
         audit_pressure_active=s.audit_pressure_active,
+        # Lags
+        lag_buffer_pressure=jnp.array(s.lag_buffer_pressure),
+        lag_buffer_occupancy=jnp.array(s.lag_buffer_occupancy),
+        lag_buffer_within4=jnp.array(s.lag_buffer_within4),
+        lag_buffer_nwau=jnp.array(s.lag_buffer_nwau),
+        lag_buffer_efficiency_gap=jnp.array(s.lag_buffer_efficiency_gap),
+        lag_buffer_coding=jnp.array(s.lag_buffer_coding),
+        reported_pressure=s.reported_pressure,
+        reported_occupancy=s.reported_occupancy,
+        reported_within4=s.reported_within4,
+        reported_nwau=s.reported_nwau,
+        reported_efficiency_gap=s.reported_efficiency_gap,
+        reported_coding_intensity=s.reported_coding_intensity,
     )
 
 
 def strategies_to_jax(strat: dict[str, Any]) -> jnp.ndarray:
-    # 0: SIGNAL, 1: DEF, 2: BARG, 3: SHIFT, 4: DISC, 5: AGED, 6: NDIS, 7: CODING, 8: COMP, 9: SIGNAL_QUALITY, 10: VENUE_SHIFT
-    arr = jnp.zeros(11)
+    # 0: SIGNAL, 1: DEF, 2: BARG, 3: SHIFT, 4: DISC, 5: AGED, 6: NDIS, 7: CODING, 8: COMP, 9: SIGNAL_QUALITY, 10: VENUE_SHIFT, 11: CAPACITY, 12: COMPETITION
+    arr = jnp.zeros(13)
     arr = arr.at[0].set(1 if strat.get("SIGNAL") == "H" else 0)
     arr = arr.at[1].set(1 if strat.get("DEF") == "R" else 0)
     arr = arr.at[2].set(1 if strat.get("BARG") == "A" else 0)
@@ -109,23 +133,15 @@ def strategies_to_jax(strat: dict[str, Any]) -> jnp.ndarray:
     arr = arr.at[8].set(1 if strat.get("COMP") == "H" or strat.get("WORKFORCE") == "H" else 0)
     arr = arr.at[9].set(float(strat.get("SIGNAL_QUALITY", 1.0)))
     arr = arr.at[10].set(1 if strat.get("VENUE_SHIFT") == "B" else 0)
+    arr = arr.at[11].set(float(strat.get("CAPACITY_MOVE", 0.0)))
+    arr = arr.at[12].set(1 if strat.get("COMPETITION") == "A" else 0)
     return arr
 
 
 def test_step_parity():
     p = Params()
-    s = State(
-        year=2025,
-        month=1,
-        pressure=1.0,
-        occupancy=0.88,
-        offload_min=18.0,
-        within4=0.53,
-        effective_cth_share=0.45,
-        efficiency_gap=0.1,
-        discharge_delay=1.0,
-        political_capital=1.0,
-    )
+    p = initialize_rules(p)
+    s = baseline_state(start_year=2025, p=p)
 
     strategies = {
         "SIGNAL": "L",
@@ -145,11 +161,6 @@ def test_step_parity():
     sj = state_to_jax(s)
     str_j = strategies_to_jax(strategies)
 
-    # To test parity without stochasticity, we'll mock the RNG or use a specific seed
-    # But current engine uses np.random.Generator which is different from JAX.
-    # We might need to override the noise components in both for exact parity.
-
-    # For now, let's just check if the logic flows without error and outputs are reasonable
     key = jax.random.PRNGKey(42)
     next_sj = step_jax(sj, pj, str_j, key)
 
@@ -157,29 +168,16 @@ def test_step_parity():
     rng = np.random.default_rng(42)
     next_s = step(s, p, strategies, rng)
 
-    # Check non-stochastic fields first
     assert next_sj.year == next_s.year
     assert next_sj.month == next_s.month
-    # Floating point fields will differ due to noise and implementation details (math vs jnp)
-    # but they should be in the same ballpark.
     assert np.abs(next_sj.pressure - next_s.pressure) < 0.5
     assert np.abs(next_sj.effective_cth_share - next_s.effective_cth_share) < 0.1
 
 
 def test_run_simulation_jax():
     p = Params()
-    s = State(
-        year=2025,
-        month=1,
-        pressure=1.0,
-        occupancy=0.88,
-        offload_min=18.0,
-        within4=0.53,
-        effective_cth_share=0.45,
-        efficiency_gap=0.1,
-        discharge_delay=1.0,
-        political_capital=1.0,
-    )
+    p = initialize_rules(p)
+    s = baseline_state(start_year=2025, p=p)
 
     strategies = {
         "SIGNAL": "L",
@@ -200,37 +198,30 @@ def test_run_simulation_jax():
 
     key = jax.random.PRNGKey(123)
     num_months = 12
-    
-    # Broadcast strategies to [num_months, 10]
+
     str_j_seq = jnp.tile(str_j, (num_months, 1))
-    
+
     final_s, trajectory = jax.jit(
         lambda init, par, strat, k: jax.vmap(
             lambda sk: run_simulation_jax(init, par, strat, sk, num_months), in_axes=0
         )(jax.random.split(k, 5))
     )(sj, pj, str_j_seq, key)
 
-    # final_s should have shape (5,) - five parallel rollouts
     assert final_s.year.shape == (5,)
     assert final_s.year[0] == 2026
     assert final_s.month[0] == 1
-
-    # trajectory should have shape (5, 12)
     assert trajectory.pressure.shape == (5, 12)
 
 
 def test_full_trajectory_mirror():
-    """Rigorous check: Run 5 years of simulation and compare average results.
-    Note: Noise makes exact bit-parity impossible without synchronized RNGs,
-    but we check if the deterministic parts and averages align.
-    """
+    """Rigorous check: Run 5 years of simulation and compare average results."""
     p = Params()
+    p = initialize_rules(p)
     pj = params_to_jax(p)
 
     years = list(range(2025, 2031))
     num_months = len(years) * 12
 
-    # Fixed strategies for testing
     strat_dict = {
         "SIGNAL": "L",
         "DEF": "E",
@@ -245,8 +236,6 @@ def test_full_trajectory_mirror():
     }
     strat_jax = strategies_to_jax(strat_dict)
 
-    # 1. Legacy Run
-    # Mocking rng to minimize divergence
     class ConstRNG:
         def normal(self, loc=0, scale=1, size=None):
             return loc
@@ -260,27 +249,13 @@ def test_full_trajectory_mirror():
         s_legacy = step(s_legacy, p, strat_dict, ConstRNG())
         legacy_pressure.append(s_legacy.pressure)
 
-    # 2. JAX Run
-    # We'll use a high-sample average or also try to neutralize noise
-    # In JAX, we can't easily 'mock' random functions inside JIT,
-    # but we can set noise parameters to 0 in ParamsJax for this test.
     pj_no_noise = pj.replace(noise_sd=0.0)
-
     sj = state_to_jax(baseline_state(start_year=2025, p=p))
-    # We still have some hardcoded noises in engine_jax (demand_noise, offload_noise)
-    # Let's override them by passing a key that happens to yield small values
-    # or better, implement a 'deterministic' version of step_jax if needed.
-    # For this test, we'll just check if they are within a tight tolerance.
 
     key = jax.random.PRNGKey(0)
     str_jax_seq = jnp.tile(strat_jax, (num_months, 1))
     _, traj = run_simulation_jax(sj, pj_no_noise, str_jax_seq, key, num_months)
 
-    # Compare. Tolerance is slightly higher due to 0.02 normal noise in demand_step_jax
-    # and 0.8 normal noise in offload_noise.
     for i in range(num_months):
-                                                                                            # Pressure is derived from wait_min and occupancy.
-                                                                                            # It should be close.
-                                                                                            diff = np.abs(traj.pressure[i] - legacy_pressure[i])
-                                                                                            assert diff < 1.0, f"Pressure divergence at month {i}: {diff}"
-                                            
+        diff = np.abs(traj.pressure[i] - legacy_pressure[i])
+        assert diff < 1.0, f"Pressure divergence at month {i}: {diff}"

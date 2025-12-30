@@ -8,7 +8,7 @@ title: "NHRA Game Theory Model: A Cognitive Digital Twin for Public Hospital Fun
 version: 26.0.0
 doi: 10.5281/zenodo.0000000
 date-released: 2025-12-26
-url: "https://github.com/edithatogo/nhra_game"
+url: "https://github.com/edithatogo/nhra_gt"
 license: "Apache-2.0"
 keywords:
   - game theory

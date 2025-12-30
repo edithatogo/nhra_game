@@ -71,7 +71,7 @@ class EvidenceRegistry(BaseModel):
         report += "| Parameter | Mean | 95% CI | NHMRC Grade | Source |\n"
         report += "|-----------|------|--------|-------------|--------|\n"
 
-        for param in sorted(self.entries.keys()):
+        for param in sorted(self.entries):
             e = self.get_entry(param)
             if e is None:
                 continue
@@ -85,14 +85,14 @@ class EvidenceRegistry(BaseModel):
     def sync_to_targets(self, targets_path: Path | str) -> None:
         """Updates the calibration targets CSV with promoted evidence."""
         df = pl.read_csv(targets_path)
-        
+
         # Update targets by joining with a temporary dataframe of best entries
         best_entries = []
         for param in self.entries:
             e = self.get_entry(param)
             if e:
                 best_entries.append({"metric": param, "target_new": e.mean})
-        
+
         if best_entries:
             updates = pl.DataFrame(best_entries)
             df = df.join(updates, on="metric", how="left")
@@ -118,18 +118,19 @@ class EvidenceRegistry(BaseModel):
     def promote_all_to_yaml(self, config_path: Path | str) -> None:
         """Overwrites the YAML config defaults with the latest 'best' evidence from the registry."""
         import yaml
-        with open(config_path, "r") as f:
+
+        with open(config_path) as f:
             config = yaml.safe_load(f)
-        
+
         # Update each group if parameter matches
         for group_name, group_dict in config.items():
             if not isinstance(group_dict, dict):
                 continue
-            for param in group_dict.keys():
+            for param in group_dict:
                 e = self.get_entry(param)
                 if e:
                     config[group_name][param] = e.mean
-        
+
         with open(config_path, "w") as f:
             yaml.safe_dump(config, f, sort_keys=False)
 

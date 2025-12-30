@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import jax
 import jax.numpy as jnp
-from flax import struct
-from jaxtyping import Float
 from beartype import beartype
+from flax import struct
+from jaxtyping import Array, Float
+
 
 @struct.dataclass
 class AgentWeights:
@@ -13,35 +13,41 @@ class AgentWeights:
     nwau_utility: float = 1.0
     cost_disutility: float = 1.0
     shifting_penalty: float = 2.0
-    
+    capacity_inertia_weight: float = 5.0
+
     # State Weights
     vfi_disutility: float = 5.0
     kpi_satisfaction: float = 2.0
 
+
 @beartype
 def lhn_utility(
-    pressure: Float[jnp.ndarray, ""],
-    revenue: Float[jnp.ndarray, ""],
-    cost: Float[jnp.ndarray, ""],
+    pressure: Float[Array, ""],
+    revenue: Float[Array, ""],
+    cost: Float[Array, ""],
     is_shifting: bool,
-    weights: AgentWeights
-) -> Float[jnp.ndarray, ""]:
+    delta_target_capacity: Float[Array, ""],
+    weights: AgentWeights,
+) -> Float[Array, ""]:
     """
     Utility for the LHN Agent.
     Prioritizes minimizing ramping (pressure) and maximizing net revenue.
     Ramping penalty is non-linear (squared) to reflect political sensitivity.
+    Inertia penalty discourages rapid target oscillations.
     """
     ramping_cost = weights.ramping_penalty * jnp.square(jnp.maximum(0, pressure - 1.0))
     net_revenue = weights.nwau_utility * revenue - weights.cost_disutility * cost
     shift_cost = jnp.where(is_shifting, weights.shifting_penalty, 0.0)
-    return net_revenue - ramping_cost - shift_cost
+    inertia_cost = weights.capacity_inertia_weight * jnp.square(delta_target_capacity)
+    return net_revenue - ramping_cost - shift_cost - inertia_cost
+
 
 @beartype
 def state_utility(
-    fiscal_gap: Float[jnp.ndarray, ""],
-    lhn_performance: Float[jnp.ndarray, ""], # Mean LHN utility or KPI satisfaction
-    weights: AgentWeights
-) -> Float[jnp.ndarray, ""]:
+    fiscal_gap: Float[Array, ""],
+    lhn_performance: Float[Array, ""],  # Mean LHN utility or KPI satisfaction
+    weights: AgentWeights,
+) -> Float[Array, ""]:
     """
     Utility for the State Agent.
     Focuses on minimizing fiscal gaps (VFI) and maintaining LHN performance.

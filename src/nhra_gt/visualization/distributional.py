@@ -187,7 +187,14 @@ def plot_comparison_bar(
 
     fig, ax = plt.subplots(figsize=config.default_figsize)
     sns.barplot(
-        data=data, x=x_col, y=y_col, ax=ax, palette=config.color_palette, hue=x_col, legend=False, **kwargs
+        data=data,
+        x=x_col,
+        y=y_col,
+        ax=ax,
+        palette=config.color_palette,
+        hue=x_col,
+        legend=False,
+        **kwargs,
     )
 
     ax.set_title(title, fontsize=config.fontsize_title)
