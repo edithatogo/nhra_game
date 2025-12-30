@@ -64,6 +64,24 @@ class BriefGenerator:
             "recovery": "The system is recovering from a crisis.",
         }
 
+        # Get values from first jurisdiction if available, fallback to defaults
+        eff_gap = state.reported_efficiency_gap
+        eff_share = (
+            state.jurisdictions[0].effective_cth_share
+            if hasattr(state, "jurisdictions") and state.jurisdictions
+            else 0.38
+        )
+        pol_cap = (
+            state.jurisdictions[0].political_capital
+            if hasattr(state, "jurisdictions") and state.jurisdictions
+            else 1.0
+        )
+        eq_idx = (
+            state.jurisdictions[0].equity_index
+            if hasattr(state, "jurisdictions") and state.jurisdictions
+            else 1.0
+        )
+
         brief = f"""
 ### NHRA POLICY BRIEF - {role.upper()}
 **Current Year:** {state.year}, Month {state.month}
@@ -72,10 +90,10 @@ class BriefGenerator:
 **Key Metrics:**
 - System Pressure: {state.pressure:.2f} (Base: 1.0)
 - ED Wait Time: {state.within4 * 100:.1f}% within 4h
-- Efficiency Gap: {state.efficiency_gap * 100:.1f}% (Cost vs NEP)
-- Effective Cth Share: {state.effective_cth_share * 100:.1f}%
-- Political Capital: {state.political_capital:.2f}
-- Equity Index: {state.equity_index:.2f}
+- Efficiency Gap: {eff_gap * 100:.1f}% (Cost vs NEP)
+- Effective Cth Share: {eff_share * 100:.1f}%
+- Political Capital: {pol_cap:.2f}
+- Equity Index: {eq_idx:.2f}
 
 **Strategic Context:**
 - Your goal is to maximize your utility while maintaining system stability.
@@ -153,7 +171,7 @@ class CommonwealthAgent(Agent):
 
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
         obs_pressure = getattr(state, "reported_pressure", state.pressure)
-        obs_efficiency_gap = getattr(state, "reported_efficiency_gap", state.efficiency_gap)
+        obs_efficiency_gap = state.reported_efficiency_gap
 
         # Commonwealth moves: DEF, COMP, BARG(offer)
         results = {}
@@ -174,13 +192,20 @@ class JurisdictionAgent(Agent):
 
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
         obs_pressure = getattr(state, "reported_pressure", state.pressure)
-        obs_efficiency_gap = getattr(state, "reported_efficiency_gap", state.efficiency_gap)
+        obs_efficiency_gap = state.reported_efficiency_gap
+
+        # Get bailout expectation from first jurisdiction
+        bailout_exp = (
+            state.jurisdictions[0].bailout_expectation
+            if hasattr(state, "jurisdictions") and state.jurisdictions
+            else 0.0
+        )
 
         # State moves: BARG, SHIFT, GOV
         results = {}
 
         # 1. Bargaining Strategy (BARG)
-        barg_prob = logistic(0.6 * (1.2 - obs_pressure) + state.bailout_expectation)
+        barg_prob = logistic(0.6 * (1.2 - obs_pressure) + bailout_exp)
         results["BARG"] = "A" if rng.random() < barg_prob else "D"
 
         # 2. Cost Shifting (SHIFT)
@@ -199,7 +224,7 @@ class LHNAgent(Agent):
 
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
         obs_pressure = getattr(state, "reported_pressure", state.pressure)
-        obs_efficiency_gap = getattr(state, "reported_efficiency_gap", state.efficiency_gap)
+        obs_efficiency_gap = state.reported_efficiency_gap
 
         # LHN moves: CODING, VENUE_SHIFT, DISC, AGED, NDIS, COMPETITION
         results = {}
