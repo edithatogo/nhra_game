@@ -22,6 +22,7 @@ def tests(session: nox.Session) -> None:
         "jaxtyping",
         "flax",
         "jaxopt",
+        "polars",
         "icontract",
     )
     session.run("pytest", *session.posargs, env=PYTHONPATH)

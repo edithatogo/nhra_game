@@ -19,6 +19,28 @@ config.update("jax_enable_x64", True)
 # ----------------------------
 
 
+def _pad_strategies(strategies: Any, width: int = 13) -> Any:
+    arr = jnp.asarray(strategies)
+
+    if arr.ndim == 1:
+        k = int(arr.shape[0])
+        if k == width:
+            return arr
+        if k > width:
+            return arr[:width]
+        return jnp.pad(arr, (0, width - k))
+
+    if arr.ndim == 2:
+        k = int(arr.shape[1])
+        if k == width:
+            return arr
+        if k > width:
+            return arr[:, :width]
+        return jnp.pad(arr, ((0, 0), (0, width - k)))
+
+    return arr
+
+
 @beartype
 def jax_logistic(x: Float[Array, "*"]) -> Float[Array, "*"]:
     return 1.0 / (1.0 + jnp.exp(-x))
@@ -216,13 +238,14 @@ def lhn_step_jax(
 def jurisdiction_step_jax(
     js: JurisdictionState,
     p: ParamsJax,
-    strategies: Float[Array, "13"],
+    strategies: Any,
     demand_macro: Float[Array, ""],
     mgf: float,
     prng_key: Any,
     wf_pool: Float[Array, ""],
 ) -> JurisdictionState:
     """Step for a single jurisdiction and its batch of LHNs."""
+    strategies = _pad_strategies(strategies)
     k_ops, k_pay = jax.random.split(prng_key)
     n_lhns = js.lhn_states.id.shape[0]
 
@@ -248,7 +271,8 @@ def jurisdiction_step_jax(
 
 
 @beartype
-def step_jax(s: StateJax, p: ParamsJax, strategies: Float[Array, "13"], prng_key: Any) -> StateJax:
+def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> StateJax:
+    strategies = _pad_strategies(strategies)
     mgf = 1.0 / 12.0
     k_dem, k_jur = jax.random.split(prng_key)
 
@@ -302,10 +326,12 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Float[Array, "13"], prng_key
 def run_simulation_jax(
     init_state: StateJax,
     params: ParamsJax,
-    strategies: Float[Array, "num_steps 13"],
+    strategies: Any,
     prng_key: Any,
     num_steps: int,
 ) -> tuple[StateJax, StateJax]:
+    strategies = _pad_strategies(strategies)
+
     def body_func(carry, input_tuple):
         strat, key = input_tuple
         next_s = step_jax(carry, params, strat, key)

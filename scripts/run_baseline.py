@@ -64,7 +64,7 @@ def equilibria_by_year(df: pl.DataFrame, p: Params) -> pl.DataFrame:
         gp = GameParams(
             pressure=float(row["pressure_mean"]),
             efficiency_gap=float(row["effgap_mean"]),
-            discharge_delay=float(row["discharge_mean"]),
+            discharge_delay=float(row.get("discharge_mean", 1.0)),
             political_salience=p.political_salience,
             audit_pressure=p.audit_pressure,
             cost_shifting_intensity=p.cost_shifting_intensity,

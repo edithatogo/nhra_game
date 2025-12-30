@@ -739,3 +739,53 @@ def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
         "effshare_nominal_2030": float(last["cth_nominal_mean"]),
         "effgap_2030": float(last["effgap_mean"]),
     }
+
+
+def nep_series(years: list[int], p: Params) -> pd.DataFrame:
+    """Return an illustrative NEP series.
+
+    NEP is represented as an index by default (`nep_per_nwau_start=1.0`), but can be set to
+    an actual IHACPA $/NWAU level if desired.
+
+    Columns:
+      - year
+      - nep_per_nwau
+      - representative_nwau
+      - efficient_payment
+    """
+
+    nep = float(p.nep_per_nwau_start)
+    rows: list[dict[str, float | int]] = []
+    for i, y in enumerate(years):
+        if i > 0:
+            nep *= 1.0 + float(p.nep_annual_growth)
+        rows.append(
+            {
+                "year": int(y),
+                "nep_per_nwau": float(nep),
+                "representative_nwau": float(p.representative_nwau),
+                "efficient_payment": float(nep * float(p.representative_nwau)),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def nep_vs_cost_series(years: list[int], p: Params) -> pd.DataFrame:
+    """Return NEP and input-cost indices over time."""
+
+    nep = float(p.nep_per_nwau_start)
+    cost = float(p.input_cost_per_nwau_start)
+    rows: list[dict[str, float | int]] = []
+    for i, y in enumerate(years):
+        if i > 0:
+            nep *= 1.0 + float(p.nep_annual_growth)
+            cost *= 1.0 + float(p.input_cost_annual_growth)
+        rows.append(
+            {
+                "year": int(y),
+                "nep_per_nwau": float(nep),
+                "input_cost_per_nwau": float(cost),
+                "nep_to_cost_ratio": float(nep / max(1e-9, cost)),
+            }
+        )
+    return pd.DataFrame(rows)
