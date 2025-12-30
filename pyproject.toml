@@ -35,6 +35,11 @@ pandera = ">=0.18"
 pydantic-settings = ">=2.0"
 seaborn = "*"
 requests = "*"
+PyYAML = "*"
+pyxlsb = "*"
+beartype = "*"
+pygambit = "^16.4.1"
+graphviz = "^0.21"
 
 # Optional dependencies (extras)
 optuna = { version = ">=3.6", optional = true }
@@ -48,10 +53,11 @@ polars = { version = ">=0.20", optional = true }
 logfire = { version = ">=0.46", optional = true }
 reportlab = "^4.4.7"
 kaleido = "^1.2.0"
+jaxopt = { version = "^0.8.5", optional = true }
 
 [tool.poetry.extras]
 opt = ["optuna"]
-accel = ["jax", "jaxlib", "jaxtyping", "flax", "chex", "numpyro", "polars"]
+accel = ["jax", "jaxlib", "jaxtyping", "flax", "chex", "numpyro", "polars", "jaxopt"]
 observability = ["logfire"]
 dev = [
     "pytest", "hypothesis", "hypothesis-auto", "icontract-hypothesis",
@@ -86,7 +92,6 @@ deptry = "*"
 vulture = "*"
 bandit = "^1.9.2"
 pyright = "*"
-beartype = "*"
 typeguard = "*"
 mkdocstrings-python = "^2.0.1"
 mkdocs-gen-files = "^0.6.0"
@@ -96,12 +101,7 @@ mkdocs-section-index = "*"
 mkdocs-jupyter = "*"
 mike = "*"
 pytest-mpl = "^0.18.0"
-pygambit = "^16.4.1"
-graphviz = "^0.21"
 
-
-[tool.poetry.group.accel.dependencies]
-jaxopt = "^0.8.5"
 
 [tool.coverage.run]
 omit = ["tests/*", "scripts/*", ".nox/*", ".gemini/*", "*/__init__.py"]
@@ -193,9 +193,9 @@ extend_exclude = ["tests", "scripts", "archive", ".nox", ".gemini"]
 
 [tool.deptry.per_rule_ignores]
 DEP001 = ["nhra_gt", "scripts"]
-DEP002 = ["scipy", "snakemake", "jaxlib", "jaxtyping", "polars", "seaborn", "pydantic-settings", "pandera"]
-DEP003 = ["nhra_gt", "scripts"]
-DEP004 = ["nox", "pytest", "hypothesis", "logfire", "mypy", "ruff", "bandit", "deptry"]
+DEP002 = ["scipy", "snakemake", "jaxlib", "jaxtyping", "polars", "seaborn", "pydantic-settings", "pandera", "networkx", "streamlit", "optuna", "chex", "reportlab", "kaleido"]
+DEP003 = ["yaml", "pyxlsb"]
+DEP004 = ["nox", "pytest", "hypothesis", "logfire", "mypy", "ruff", "bandit", "deptry", "jaxopt"]
 
 [tool.vulture]
 exclude = [".nox", ".gemini", "outputs", "reports", "docs", "archive", "build", "dist"]

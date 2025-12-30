@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import argparse
-import subprocess
+import subprocess  # nosec B404
 import sys
 from pathlib import Path
 
@@ -32,14 +32,14 @@ def run_profiler(target: str, profiler: str, output_dir: Path):
         )
         cmd.append(str(wrapper))
         try:
-            subprocess.run(cmd, check=True)
+            subprocess.run(cmd, check=True)  # noqa: S603  # nosec B603
         finally:
             if wrapper.exists():
                 wrapper.unlink()
     else:
         # Run module as script
         cmd.extend(["-m", target])
-        subprocess.run(cmd, check=True)
+        subprocess.run(cmd, check=True)  # noqa: S603  # nosec B603
 
 
 if __name__ == "__main__":

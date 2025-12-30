@@ -232,8 +232,8 @@ def jurisdiction_step_jax(
     # Vectorized LHN steps
     keys = jax.random.split(k_ops, n_lhns)
     new_lhns = jax.vmap(
-        lambda l, k: lhn_step_jax(
-            l,
+        lambda lhn, k: lhn_step_jax(
+            lhn,
             p,
             strategies,
             demand_macro,

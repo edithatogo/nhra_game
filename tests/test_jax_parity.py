@@ -87,9 +87,7 @@ def state_to_jax(s: State) -> StateJax:
         efficiency_gap=s.efficiency_gap,
         discharge_delay=s.discharge_delay,
         political_capital=s.political_capital,
-        system_mode=int(s.system_mode.value)
-        if isinstance(s.system_mode.value, (int, float))
-        else 0,
+        system_mode=int(s.system_mode.value) if isinstance(s.system_mode.value, int | float) else 0,
         lhn_pressure=jnp.zeros(5),
         lhn_nwau=jnp.full(5, 100.0),
         agreement_clock=5,

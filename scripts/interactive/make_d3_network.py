@@ -16,7 +16,7 @@ import pandas as pd
 
 def compute_centrality(nodes: list[str], links: list[dict]) -> dict[str, float]:
     # Simple degree-based centrality normalised to [0,1]
-    deg = {n: 0.0 for n in nodes}
+    deg = dict.fromkeys(nodes, 0.0)
     for e in links:
         deg[e["source"]] += e["weight"]
         deg[e["target"]] += e["weight"]

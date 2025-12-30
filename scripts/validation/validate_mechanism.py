@@ -28,7 +28,7 @@ GSA_YEARS = list(range(2025, 2031))
 
 
 def model_wrapper(param_values: np.ndarray) -> float:
-    p_dict = {name: val for name, val in zip(GSA_PARAM_NAMES, param_values, strict=False)}
+    p_dict = dict(zip(GSA_PARAM_NAMES, param_values, strict=False))
     p = replace(Params(), **p_dict)
     traj, _ = run_hybrid(GSA_YEARS, p, seed=42, n_mc=20)  # Low MC for speed in validation
     return float(summarise_outcome(traj)["pressure_2030"])

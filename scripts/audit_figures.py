@@ -17,10 +17,13 @@ def get_plotting_imports(tree: ast.AST) -> set[str]:
                     "matplotlib.figure",
                 ]:
                     aliases.add(alias.asname or alias.name)
-        elif isinstance(node, ast.ImportFrom):
-            if node.module in ["matplotlib", "plotly", "seaborn"]:
-                for alias in node.names:
-                    aliases.add(alias.asname or alias.name)
+        elif isinstance(node, ast.ImportFrom) and node.module in [
+            "matplotlib",
+            "plotly",
+            "seaborn",
+        ]:
+            for alias in node.names:
+                aliases.add(alias.asname or alias.name)
     return aliases
 
 
@@ -42,32 +45,29 @@ def audit_file(filepath: Path) -> list[dict]:
 
     # Check function definitions for 'plot' in name
     for node in ast.walk(tree):
-        if isinstance(node, ast.FunctionDef):
-            if (
-                "plot" in node.name.lower()
-                or "figure" in node.name.lower()
-                or "chart" in node.name.lower()
-            ):
-                findings.append(
-                    {
-                        "file": str(filepath),
-                        "type": "definition",
-                        "name": node.name,
-                        "line": node.lineno,
-                    }
-                )
+        if isinstance(node, ast.FunctionDef) and (
+            "plot" in node.name.lower()
+            or "figure" in node.name.lower()
+            or "chart" in node.name.lower()
+        ):
+            findings.append(
+                {
+                    "file": str(filepath),
+                    "type": "definition",
+                    "name": node.name,
+                    "line": node.lineno,
+                }
+            )
 
     # Check for calls to plotting libraries
     for node in ast.walk(tree):
         if isinstance(node, ast.Call):
             func_name = ""
             if isinstance(node.func, ast.Attribute):
-                if isinstance(node.func.value, ast.Name):
-                    if node.func.value.id in aliases:
-                        func_name = f"{node.func.value.id}.{node.func.attr}"
-            elif isinstance(node.func, ast.Name):
-                if node.func.id in aliases:
-                    func_name = node.func.id
+                if isinstance(node.func.value, ast.Name) and node.func.value.id in aliases:
+                    func_name = f"{node.func.value.id}.{node.func.attr}"
+            elif isinstance(node.func, ast.Name) and node.func.id in aliases:
+                func_name = node.func.id
 
             if func_name:
                 findings.append(
@@ -83,7 +83,7 @@ def main():
 
     # Scan src and scripts
     for path in [root_dir / "src", root_dir / "scripts"]:
-        for r, d, f in os.walk(path):
+        for r, _d, f in os.walk(path):
             for file in f:
                 if file.endswith(".py"):
                     relevant_files.append(Path(r) / file)

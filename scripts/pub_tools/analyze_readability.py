@@ -1,13 +1,15 @@
-import sys
-import textstat
 import os
+import sys
+
+import textstat
+
 
 def analyze_file(file_path):
     if not os.path.exists(file_path):
         print(f"File not found: {file_path}")
         return
 
-    with open(file_path, 'r', encoding='utf-8') as f:
+    with open(file_path, encoding="utf-8") as f:
         text = f.read()
 
     # Basic stats
@@ -23,7 +25,7 @@ def analyze_file(file_path):
     text_standard = textstat.text_standard(text)
 
     # Detailed sentence check
-    sentences = text.split('.')
+    sentences = text.split(".")
     long_sentences = [s.strip() for s in sentences if len(s.split()) > 30]
 
     report = f"""# Readability Report: {os.path.basename(file_path)}
@@ -32,6 +34,10 @@ def analyze_file(file_path):
 - **Flesch Reading Ease:** {flesch_reading_ease} (Higher is easier)
 - **Flesch-Kincaid Grade Level:** {flesch_kincaid_grade} (Target: 12-14 for academic)
 - **SMOG Index:** {smog_index}
+- **Coleman–Liau Index:** {coleman_liau_index}
+- **Automated Readability Index:** {automated_readability_index}
+- **Dale–Chall Readability Score:** {dale_chall_readability_score}
+- **Linsear Write Formula:** {linsear_write_formula}
 - **Gunning Fog Index:** {gunning_fog}
 - **Consensus Grade Level:** {text_standard}
 
@@ -43,14 +49,15 @@ def analyze_file(file_path):
 ### Long Sentences (>30 words)
 """
     for i, s in enumerate(long_sentences):
-        report += f"{i+1}. \"{s}...\"\n"
+        report += f'{i+1}. "{s}..."\n'
 
     return report
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python analyze_readability.py <file_path>")
         sys.exit(1)
-    
+
     report_output = analyze_file(sys.argv[1])
     print(report_output)

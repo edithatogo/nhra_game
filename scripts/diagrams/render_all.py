@@ -14,7 +14,8 @@ Render and cross-convert diagrams.
 This is best-effort: complex Mermaid features may not convert perfectly.
 """
 
-import subprocess
+import shutil
+import subprocess  # nosec B404
 from pathlib import Path
 
 from convert_dot_to_mermaid import dot_to_mermaid
@@ -23,10 +24,19 @@ from convert_mermaid_to_dot import mermaid_to_dot
 
 def render_dot(dot_path: Path, out_dir: Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
+    dot_exe = shutil.which("dot")
+    if dot_exe is None:
+        raise RuntimeError("Graphviz `dot` not found on PATH")
     png = out_dir / f"{dot_path.stem}.png"
     svg = out_dir / f"{dot_path.stem}.svg"
-    subprocess.run(["bash", "-lc", f"dot -Tpng '{dot_path}' -o '{png}'"], check=True)
-    subprocess.run(["bash", "-lc", f"dot -Tsvg '{dot_path}' -o '{svg}'"], check=True)
+    subprocess.run(  # noqa: S603  # nosec B603
+        [dot_exe, "-Tpng", str(dot_path), "-o", str(png)],
+        check=True,
+    )
+    subprocess.run(  # noqa: S603  # nosec B603
+        [dot_exe, "-Tsvg", str(dot_path), "-o", str(svg)],
+        check=True,
+    )
 
 
 def main() -> None:

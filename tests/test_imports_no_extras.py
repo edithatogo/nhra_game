@@ -16,7 +16,9 @@ def test_visualization_imports_without_jaxtyping():
                 del sys.modules["nhra_gt.visualization.game_trees"]
 
             # This import currently fails if jaxtyping is missing
-            from nhra_gt.visualization import game_trees
+            from nhra_gt.visualization import game_trees as imported_game_trees
+
+            assert imported_game_trees is not None
         except ImportError as e:
             pytest.fail(f"Import failed when jaxtyping is missing: {e}")
         except ModuleNotFoundError as e:

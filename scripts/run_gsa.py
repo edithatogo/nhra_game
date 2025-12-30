@@ -34,7 +34,7 @@ def model_wrapper(param_values: np.ndarray, names: list[str], years: list[int]) 
     Returns a single scalar outcome (e.g., pressure_2030).
     """
     # Create Params object
-    p_dict = {name: val for name, val in zip(names, param_values, strict=False)}
+    p_dict = dict(zip(names, param_values, strict=False))
     p = replace(Params(), **p_dict)
 
     # Run simulation

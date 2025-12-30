@@ -9,29 +9,6 @@ import pandas as pd
 from nhra_gt.engine import Params
 
 
-def generate_full_registry(output_path: Path):
-    """Generates the comprehensive parameter registry."""
-    # (Simplified logic from v20 script, or just reusing it if I import it)
-    # But for cleaner codebase, I'll reimplement the core logic here.
-
-    p = Params()
-    rows = []
-    for f in fields(Params):
-        name = f.name
-        val = getattr(p, name)
-
-        # Determine source type based on name (heuristic for now)
-        source = "Model Assumption"
-        if "growth" in name or "nep" in name:
-            source = "IHACPA/ABS"
-        elif "share" in name:
-            source = "NHRA"
-
-        rows.append({"parameter": name, "default_value": str(val), "evidence_source": source})
-
-    pd.DataFrame(rows).to_csv(output_path, index=False)
-
-
 def generate_manuscript_table(output_path: Path):
     """Generates a simplified table for the manuscript."""
     p = Params()
@@ -132,10 +109,10 @@ def generate_full_registry(output_path: Path):
             source_type = "calibrated"
             citation = "https://www.ihacpa.gov.au/"
             locator = "Multiple determinations 2011-2025"
-            just = "Ingested from official sources via scripts/data/ingest_economic_spine.py"
+        just = "Ingested from official sources via scripts/data/ingest_economic_spine.py"
 
         # Range defaults (if numeric)
-        if isinstance(val, (int, float)):
+        if isinstance(val, int | float):
             r_low = str(val * 0.8)
             r_high = str(val * 1.2)
 

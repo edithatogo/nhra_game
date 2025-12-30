@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 from unittest.mock import MagicMock
 
 # Simulate jaxtyping not being installed
@@ -13,16 +14,16 @@ sys.modules["beartype"].beartype = lambda x: x
 print("Starting repro script with mocks...")
 
 try:
-    print("Attempting to import src.nhra_gt.visualization.game_trees...")
-    import src.nhra_gt.visualization.game_trees
+    sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+
+    print("Attempting to import nhra_gt.visualization.game_trees...")
+    import nhra_gt.visualization.game_trees as game_trees
 
     print("SUCCESS: Import of game_trees succeeded.")
 
     # Check if Array and Float are defined correctly as _DummySubscriptable
-    print(f"Array type: {src.nhra_gt.visualization.game_trees.Array}")
-    print(
-        f"Testing subscription: {src.nhra_gt.visualization.game_trees.Float[src.nhra_gt.visualization.game_trees.Array, 'm n']}"
-    )
+    print(f"Array type: {game_trees.Array}")
+    print(f"Testing subscription: {game_trees.Float[game_trees.Array, 'm n']}")
     print("SUCCESS: Subscription test passed.")
 
 except ImportError as e:

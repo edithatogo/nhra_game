@@ -494,11 +494,11 @@ def step(
         )
 
     # Global Aggregation
-    all_lhns = [l for j in new_jurisdictions for l in j.lhns]
-    avg_pidx = np.mean([l.pressure for l in all_lhns])
-    avg_occ = np.mean([l.occupancy for l in all_lhns])
-    avg_w4 = np.mean([l.within4 for l in all_lhns])
-    total_nwau = sum([l.nwau_actual for l in all_lhns])
+    all_lhns = [lhn for jur in new_jurisdictions for lhn in jur.lhns]
+    avg_pidx = np.mean([lhn.pressure for lhn in all_lhns])
+    avg_occ = np.mean([lhn.occupancy for lhn in all_lhns])
+    avg_w4 = np.mean([lhn.within4 for lhn in all_lhns])
+    total_nwau = sum([lhn.nwau_actual for lhn in all_lhns])
 
     # Auditor move
     coding_signal = max(0.0, 1.0 - 1.0)  # Placeholder
@@ -525,7 +525,7 @@ def step(
         month=(1 if s.month == 12 else s.month + 1),
         pressure=avg_pidx,
         occupancy=avg_occ,
-        offload_min=np.mean([l.offload_min for l in all_lhns]),
+        offload_min=np.mean([lhn.offload_min for lhn in all_lhns]),
         within4=avg_w4,
         system_mode=update_system_mode(s, p),
         workforce_pool=new_wf_pool,

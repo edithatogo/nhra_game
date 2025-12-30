@@ -35,7 +35,7 @@ class IHACPAClient:
                         for i, val in enumerate(row_vals):
                             if val == "NEP" and i + 1 < len(row_vals):
                                 nep_val = row_vals[i + 1]
-                                if isinstance(nep_val, (int, float)):
+                                if isinstance(nep_val, int | float):
                                     return float(nep_val)
         except Exception as e:
             logger.error(f"Error parsing {file_path}: {e}")

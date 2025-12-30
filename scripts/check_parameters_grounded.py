@@ -120,11 +120,10 @@ def main() -> None:
                     f"L{idx}: {r['parameter']}: source_type={st} requires non-empty locator"
                 )
 
-        if st in EVIDENCE_TYPES_NEED_JUSTIFICATION:
-            if len(just) < 150:
-                failures.append(
-                    f"L{idx}: {r['parameter']}: source_type={st} requires detailed justification (>=150 chars)"
-                )
+        if st in EVIDENCE_TYPES_NEED_JUSTIFICATION and len(just) < 150:
+            failures.append(
+                f"L{idx}: {r['parameter']}: source_type={st} requires detailed justification (>=150 chars)"
+            )
 
         if cite.startswith("internal://"):
             failures.append(f"L{idx}: {r['parameter']}: citation_or_file cannot be internal://")

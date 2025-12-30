@@ -6,7 +6,7 @@ headers = {"Accept": "application/vnd.sdmx.structure+json;version=1.0"}
 url = "https://data.api.abs.gov.au/rest/dataflow/ABS/WPI/1.2.0?references=descendants"
 
 try:
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, timeout=30)
     print(f"Status: {response.status_code}")
     if response.status_code == 200:
         data = response.json()

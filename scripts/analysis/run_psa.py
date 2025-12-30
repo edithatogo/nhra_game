@@ -24,7 +24,7 @@ PSA_YEARS = list(range(2025, 2031))
 
 def model_wrapper(param_values: np.ndarray) -> float:
     """Wrapper for PSA execution."""
-    p_dict = {name: val for name, val in zip(PSA_PARAMS, param_values, strict=False)}
+    p_dict = dict(zip(PSA_PARAMS, param_values, strict=False))
     p = replace(Params(), **p_dict)
     # Use fewer MC runs for speed in PSA loop (we rely on many parameter samples)
     traj, _ = run_hybrid(PSA_YEARS, p, seed=None, n_mc=20)
