@@ -3,7 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-import polars as pl
+try:
+    import polars as pl
+except ImportError:  # pragma: no cover
+    pl = None  # type: ignore[assignment]
+
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
@@ -84,6 +88,25 @@ class EvidenceRegistry(BaseModel):
 
     def sync_to_targets(self, targets_path: Path | str) -> None:
         """Updates the calibration targets CSV with promoted evidence."""
+        if pl is None:
+            import pandas as pd
+
+            df = pd.read_csv(targets_path)
+
+            best_entries: list[dict[str, Any]] = []
+            for param in self.entries:
+                entry = self.get_entry(param)
+                if entry:
+                    best_entries.append({"metric": param, "target_new": entry.mean})
+
+            if best_entries:
+                updates = pd.DataFrame(best_entries)
+                df = df.merge(updates, on="metric", how="left")
+                df["target"] = df["target_new"].combine_first(df["target"])
+                df = df.drop(columns=["target_new"])
+                df.to_csv(targets_path, index=False)
+            return
+
         df = pl.read_csv(targets_path)
 
         # Update targets by joining with a temporary dataframe of best entries
@@ -154,14 +177,44 @@ class EvidenceRegistry(BaseModel):
         for p_entries in self.entries.values():
             for e in p_entries:
                 flat_data.append(e.model_dump())
-        df = pl.DataFrame(flat_data)
-        df.write_csv(path)
+        if pl is None:
+            import pandas as pd
+
+            pd.DataFrame(flat_data).to_csv(path, index=False)
+            return
+
+        pl.DataFrame(flat_data).write_csv(path)
 
     @classmethod
     def load_from_csv(cls, path: Path | str) -> EvidenceRegistry:
-        df = pl.read_csv(path)
         registry = cls()
-        # Polars handles nulls better than Pandas .where(pd.notnull(df), None)
+        if pl is None:
+            import math
+
+            import pandas as pd
+
+            df_pd = pd.read_csv(path)
+            for row in df_pd.to_dict(orient="records"):
+                lower_ci = row.get("lower_ci")
+                upper_ci = row.get("upper_ci")
+                entry = EvidenceEntry(
+                    parameter=str(row["parameter"]),
+                    mean=float(row["mean"]),
+                    lower_ci=None
+                    if lower_ci is None or (isinstance(lower_ci, float) and math.isnan(lower_ci))
+                    else float(lower_ci),
+                    upper_ci=None
+                    if upper_ci is None or (isinstance(upper_ci, float) and math.isnan(upper_ci))
+                    else float(upper_ci),
+                    source_url=str(row.get("source_url") or ""),
+                    nhmrc_level=str(row["nhmrc_level"]),
+                    unit=str(row["unit"]),
+                    access_date=str(row.get("access_date") or ""),
+                )
+                registry.add_entry(entry)
+            return registry
+
+        df = pl.read_csv(path)
         for row in df.to_dicts():
             entry = EvidenceEntry(
                 parameter=str(row["parameter"]),

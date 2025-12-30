@@ -2,8 +2,12 @@ from __future__ import annotations
 
 from typing import Any, cast
 
-import polars as pl
 import requests  # type: ignore
+
+try:
+    import polars as pl
+except ImportError:  # pragma: no cover
+    pl = None  # type: ignore[assignment]
 
 
 class AIHWClient:
@@ -33,10 +37,14 @@ class AIHWClient:
         """Fetch all available measures."""
         return cast(list[dict[str, Any]], self._get("/measures"))
 
-    def get_measure_data(self, measure_code: str) -> pl.DataFrame:
+    def get_measure_data(self, measure_code: str) -> Any:
         """Fetch data items for a specific measure code."""
         endpoint = f"/measures/{measure_code}/data-items"
         data = self._get(endpoint)
+        if pl is None:
+            import pandas as pd
+
+            return pd.DataFrame(data)
         return pl.DataFrame(data)
 
     def get_reporting_units(self) -> list[dict[str, Any]]:

@@ -5,8 +5,12 @@ from pathlib import Path
 from typing import Any
 
 import jax.numpy as jnp
-import polars as pl
 from flax import struct
+
+try:
+    import polars as pl
+except ImportError:  # pragma: no cover
+    pl = None  # type: ignore[assignment]
 
 
 class SystemModeJax(IntEnum):
@@ -158,6 +162,18 @@ class BaselineProvider:
     def load_spine(
         path: Path | str = "data/calibration/historical_normalized.csv",
     ) -> EconomicSpineJax:
+        if pl is None:
+            import pandas as pd
+
+            df_pd = pd.read_csv(path)
+            return EconomicSpineJax(
+                years=df_pd["year"].to_numpy().astype(jnp.int32),
+                nep_per_nwau=df_pd[
+                    "within4"
+                ].to_numpy(),  # Placeholder for actual NEP if not in spine
+                wpi_health_index=df_pd["occupancy"].to_numpy(),  # Placeholder
+            )
+
         df = pl.read_csv(path)
         return EconomicSpineJax(
             years=df["year"].to_numpy().astype(jnp.int32),
