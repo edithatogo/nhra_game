@@ -175,6 +175,17 @@ class State:
     occupancy: float
     offload_min: float
     within4: float
+    effective_cth_share: float = 0.38
+    efficiency_gap: float = 0.10
+    discharge_delay: float = 1.0
+    political_capital: float = 1.0
+    target_capacity: float = 1.0
+    current_capacity: float = 1.0
+    equity_index: float = 1.0
+    reconciliation_balance: float = 0.0
+    bailout_expectation: float = 0.0
+    coding_intensity: float = 1.0
+    reputation_score: float = 1.0
     system_mode: SystemMode = SystemMode.NORMAL
     workforce_pool: float = 1.0
     agreement_clock: int = 5
@@ -243,10 +254,18 @@ def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
         + p.remote_weight * rem_ratio
     )
     efficiency_gap = 1.0 / max(1e-9, ratio) - 1.0
+    nominal_share = p.effective_cth_share_base * (1.0 + efficiency_gap)
 
     # Initialize Hierarchical Entities
     lhns = [LhnStateLegacy(id=i) for i in range(5)]
-    jurisdictions = [JurisdictionStateLegacy(id=0, lhns=lhns)]
+    jurisdictions = [
+        JurisdictionStateLegacy(
+            id=0,
+            effective_cth_share=nominal_share,
+            efficiency_gap=efficiency_gap,
+            lhns=lhns,
+        )
+    ]
 
     return State(
         year=start_year,
@@ -255,6 +274,17 @@ def baseline_state(start_year: int = 2025, p: Params | None = None) -> State:
         occupancy=p.occupancy_base,
         offload_min=p.offload_base_min,
         within4=p.within4_base,
+        effective_cth_share=nominal_share,
+        efficiency_gap=efficiency_gap,
+        discharge_delay=1.0,
+        political_capital=jurisdictions[0].political_capital if jurisdictions else 1.0,
+        target_capacity=1.0,
+        current_capacity=1.0,
+        equity_index=jurisdictions[0].equity_index if jurisdictions else 1.0,
+        reconciliation_balance=jurisdictions[0].reconciliation_balance if jurisdictions else 0.0,
+        bailout_expectation=jurisdictions[0].bailout_expectation if jurisdictions else 0.0,
+        coding_intensity=1.0,
+        reputation_score=1.0,
         system_mode=SystemMode.NORMAL,
         workforce_pool=1.0,
         agreement_clock=5,
@@ -489,14 +519,24 @@ def step(
 
         new_lhns = []
         for lhn in jur.lhns:
+            lhn = replace(
+                lhn,
+                target_capacity=s.target_capacity,
+                current_capacity=s.current_capacity,
+                discharge_delay=s.discharge_delay,
+                coding_intensity=s.coding_intensity,
+            )
             new_lhns.append(
                 lhn_step(lhn, p, strategies, demand, mgf, rng, discharge_target, s.workforce_pool)
             )
 
+        adjustment_costs = float(sum(lhn.adjustment_costs for lhn in new_lhns))
+        reconciliation_balance = jur.reconciliation_balance - adjustment_costs
+
         new_jurisdictions.append(
             JurisdictionStateLegacy(
                 id=jur.id,
-                reconciliation_balance=jur.reconciliation_balance,
+                reconciliation_balance=reconciliation_balance,
                 bailout_expectation=bailout,
                 political_capital=jur.political_capital,
                 effective_cth_share=eff_share,
@@ -510,6 +550,10 @@ def step(
     avg_pidx = np.mean([lhn.pressure for lhn in all_lhns])
     avg_occ = np.mean([lhn.occupancy for lhn in all_lhns])
     avg_w4 = np.mean([lhn.within4 for lhn in all_lhns])
+    avg_discharge = float(np.mean([lhn.discharge_delay for lhn in all_lhns]))
+    avg_target_capacity = float(np.mean([lhn.target_capacity for lhn in all_lhns]))
+    avg_current_capacity = float(np.mean([lhn.current_capacity for lhn in all_lhns]))
+    total_adjustment_costs = float(sum(lhn.adjustment_costs for lhn in all_lhns))
     total_nwau = sum([lhn.nwau_actual for lhn in all_lhns])
 
     # Auditor move
@@ -539,12 +583,38 @@ def step(
         occupancy=avg_occ,
         offload_min=np.mean([lhn.offload_min for lhn in all_lhns]),
         within4=avg_w4,
+        effective_cth_share=final_eff_share,
+        efficiency_gap=eff_gap,
+        discharge_delay=avg_discharge,
+        political_capital=float(
+            np.mean([jur.political_capital for jur in new_jurisdictions])
+            if new_jurisdictions
+            else 1.0
+        ),
+        target_capacity=avg_target_capacity,
+        current_capacity=avg_current_capacity,
+        equity_index=float(
+            np.mean([jur.equity_index for jur in new_jurisdictions]) if new_jurisdictions else 1.0
+        ),
+        reconciliation_balance=float(
+            np.mean([jur.reconciliation_balance for jur in new_jurisdictions])
+            if new_jurisdictions
+            else 0.0
+        ),
+        bailout_expectation=float(
+            np.mean([jur.bailout_expectation for jur in new_jurisdictions])
+            if new_jurisdictions
+            else 0.0
+        ),
+        coding_intensity=s.coding_intensity,
+        reputation_score=s.reputation_score,
         system_mode=update_system_mode(s, p),
         workforce_pool=new_wf_pool,
         agreement_clock=next_clock,
         jurisdictions=new_jurisdictions,
         auditor_suspicion=new_suspicion,
         audit_pressure_active=new_pressure,
+        adjustment_costs=total_adjustment_costs,
         reported_pressure=rep_p,
         reported_occupancy=avg_occ,  # Simplified
         reported_within4=avg_w4,
@@ -737,6 +807,7 @@ def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
         "offload_2030": float(last.get("offload_mean", 18.0)),
         "rr_2030": float(last["rr_mean"]),
         "effshare_nominal_2030": float(last["cth_nominal_mean"]),
+        "effshare_effective_2030": float(last["cth_nominal_mean"]),
         "effgap_2030": float(last["effgap_mean"]),
     }
 

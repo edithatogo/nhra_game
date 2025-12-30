@@ -26,7 +26,7 @@ def test_dashboard_loadable():
 
 def test_parameter_mapping_logic():
     """Verify that parameters can be correctly mapped to expected slider ranges."""
-    from nhra_gt.legacy_engine import Params
+    from nhra_gt.engine import Params
 
     defaults = Params()
     # Test a few key mappings we expect in the dashboard
@@ -36,7 +36,7 @@ def test_parameter_mapping_logic():
 
 def test_model_rollout_interface():
     """Verify that the model can be called with dashboard-provided parameters."""
-    from nhra_gt.legacy_engine import Params, run_hybrid
+    from nhra_gt.engine import Params, run_hybrid
 
     # Simulate a dashboard update
     p = Params(rurality_weight=0.5)
@@ -103,3 +103,25 @@ def test_scenario_serialization():
 
     assert deserialized["nominal_cth_share_target"] == 0.50
     assert deserialized["scenario_name"] == "Test Scenario"
+
+
+def test_summarise_outcome_keys():
+    """Verify that summarise_outcome returns all keys expected by the dashboard."""
+    from nhra_gt.engine import summarise_outcome
+
+    # Create a dummy DataFrame simulating the output of run_hybrid
+    data = {
+        "year": [2025, 2030],
+        "pressure_mean": [1.0, 1.2],
+        "within4_mean": [0.5, 0.4],
+        "offload_mean": [18.0, 20.0],
+        "rr_mean": [1.0, 1.5],
+        "cth_nominal_mean": [0.4, 0.42],
+        "effgap_mean": [0.1, 0.15],
+    }
+    agg = pd.DataFrame(data)
+
+    summary = summarise_outcome(agg)
+
+    assert "effshare_effective_2030" in summary
+    assert summary["effshare_effective_2030"] == 0.42
