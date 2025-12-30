@@ -41,18 +41,18 @@
 ## Phase 4: Documentation & Reproducibility
 *Goal: Create a rigorous academic documentation suite and a reliable "Zero-to-Hero" build path.*
 
-- [ ] Task: Model Theory Overhaul.
-    - [ ] Sub-task: Create MkDocs pages for each core model with LaTeX formulae and notation.
-    - [ ] Sub-task: Implement evidence-linking (citations to `data/bibliography`).
-- [ ] Task: Automated Glossary Integration.
-    - [ ] Sub-task: Implement a glossary script or MkDocs plugin to auto-link key terms (LHN, ABF, etc.) to definitions.
-    - [ ] Sub-task: Populate the glossary with all identified acronyms and technical terms.
-- [ ] Task: System Visualization.
-    - [ ] Sub-task: Implement Mermaid.js architecture and data-flow diagrams in MkDocs.
-- [ ] Task: Reproducibility Guide.
-    - [ ] Sub-task: Write a "Zero-to-Hero" guide for external researchers.
-    - [ ] Sub-task: Verify the guide by executing a clean build from a fresh environment.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Documentation & Reproducibility' (Protocol in workflow.md)
+- [x] Task: Model Theory Overhaul. [commit: c719a24]
+    - [x] Sub-task: Create MkDocs pages for each core model with LaTeX formulae and notation.
+    - [x] Sub-task: Implement evidence-linking (citations to `data/bibliography`).
+- [x] Task: Automated Glossary Integration. [commit: c719a24]
+    - [x] Sub-task: Implement a glossary script or MkDocs plugin to auto-link key terms (LHN, ABF, etc.) to definitions.
+    - [x] Sub-task: Populate the glossary with all identified acronyms and technical terms.
+- [x] Task: System Visualization. [commit: c719a24]
+    - [x] Sub-task: Implement Mermaid.js architecture and data-flow diagrams in MkDocs.
+- [x] Task: Reproducibility Guide. [commit: c719a24]
+    - [x] Sub-task: Write a "Zero-to-Hero" guide for external researchers.
+    - [x] Sub-task: Verify the guide by executing a clean build from a fresh environment.
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Documentation & Reproducibility' (Protocol in workflow.md) [checkpoint: c719a24]
 
 ## Phase 5: Validation & Final Polish
 *Goal: Ensure the model matches basic reality and the codebase is clean.*

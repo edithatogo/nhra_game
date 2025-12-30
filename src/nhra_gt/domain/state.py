@@ -72,7 +72,7 @@ class ParamsJax:
     representative_nwau: float = 1.0
 
     # System dynamics
-    demand_base: float = 1.00
+    demand_base: float = 0.85
     avoidable_ed_share: float = 0.18
     discharge_delay_base: float = 1.00
     bed_capacity_index: float = 1.00

@@ -15,7 +15,7 @@ pricing:
   input_cost_per_nwau_start: 1.0
   representative_nwau: 1.0
 dynamics:
-  demand_base: 1.0
+  demand_base: 0.85
   avoidable_ed_share: 0.18
   discharge_delay_base: 1.0
   bed_capacity_index: 1.0

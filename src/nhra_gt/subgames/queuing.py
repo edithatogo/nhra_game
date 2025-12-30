@@ -62,7 +62,7 @@ def solve_queuing_equilibrium_jax(
         raise ImportError("`solve_queuing_equilibrium_jax` requires `jax` to be installed.")
     from jax import lax
 
-    from nhra_gt.engine_jax import mm_s_queue_wait_jax
+    from nhra_gt.engine import mm_s_queue_wait_jax
 
     def body_fun(i, state):
         d_curr, _ = state
