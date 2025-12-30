@@ -14,17 +14,17 @@ flowchart TB
         ut["Unit Tests"]
         pt["Property Tests"]
     end
-    
+
     subgraph mech["Mechanism Level"]
         nash["Nash Equilibrium Checks"]
         payoff["Payoff Consistency"]
     end
-    
+
     subgraph system["System Level"]
         sens["Sensitivity Analysis"]
         back["Backtesting"]
     end
-    
+
     unit --> mech --> system
 ```
 
@@ -86,7 +86,7 @@ For each game, we verify:
 def test_nash_existence():
     """Every game should have at least one Nash equilibrium."""
     gp = GameParams(pressure=1.0, efficiency_gap=0.3, ...)
-    
+
     for game_fn in [definition_game, bargaining_game, cost_shifting_game]:
         game = game_fn(gp)
         equilibria = solve_all_equilibria(game)
@@ -108,10 +108,10 @@ def test_pressure_monotonicity():
     """Higher pressure should increase coordination payoffs."""
     gp_low = GameParams(pressure=0.8, ...)
     gp_high = GameParams(pressure=1.5, ...)
-    
+
     game_low = discharge_coordination_game(gp_low)
     game_high = discharge_coordination_game(gp_high)
-    
+
     # Coordination payoff should be higher under pressure
     assert game_high.u_row[0, 0] > game_low.u_row[0, 0]
 ```

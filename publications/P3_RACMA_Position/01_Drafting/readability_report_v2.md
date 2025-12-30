@@ -18,4 +18,3 @@
 
 ## Executive Summary / Key Position
 The Royal Australasian College of Medical Administrators (RACMA) believes the current National Health Reform Agreement (NHRA) must be fixed..."
-

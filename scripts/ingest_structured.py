@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import polars as pl
+try:
+    import polars as pl
+except ImportError:  # pragma: no cover
+    pl = None  # type: ignore[assignment]
 
 from nhra_gt.domain.registry import EvidenceEntry
 
@@ -12,13 +15,21 @@ class AIHWIngestor:
         self.source_path = source_path
 
     def extract_entries(self) -> list[EvidenceEntry]:
-        df = pl.read_csv(self.source_path)
-        # Filter for latest year
-        latest_year = df["Year"].max()
-        latest_df = df.filter(pl.col("Year") == latest_year)
+        if pl is None:
+            import pandas as pd
+
+            df = pd.read_csv(self.source_path)
+            latest_year = df["Year"].max()
+            latest_df = df[df["Year"] == latest_year]
+            rows = latest_df.to_dict("records")
+        else:
+            df = pl.read_csv(self.source_path)
+            latest_year = df["Year"].max()
+            latest_df = df.filter(pl.col("Year") == latest_year)
+            rows = latest_df.to_dicts()
 
         entries = []
-        for row in latest_df.to_dicts():
+        for row in rows:
             if row["Metric"] == "Within 4 Hours":
                 entries.append(
                     EvidenceEntry(
@@ -40,12 +51,23 @@ class ABSIngestor:
         self.source_path = source_path
 
     def extract_entries(self) -> list[EvidenceEntry]:
-        df = pl.read_csv(self.source_path)
-        latest_year = df["Year"].max()
-        latest_df = df.filter((pl.col("Year") == latest_year) & (pl.col("State") == "Australia"))
+        if pl is None:
+            import pandas as pd
+
+            df = pd.read_csv(self.source_path)
+            latest_year = df["Year"].max()
+            latest_df = df[(df["Year"] == latest_year) & (df["State"] == "Australia")]
+            rows = latest_df.to_dict("records")
+        else:
+            df = pl.read_csv(self.source_path)
+            latest_year = df["Year"].max()
+            latest_df = df.filter(
+                (pl.col("Year") == latest_year) & (pl.col("State") == "Australia")
+            )
+            rows = latest_df.to_dicts()
 
         entries = []
-        for row in latest_df.to_dicts():
+        for row in rows:
             entries.append(
                 EvidenceEntry(
                     parameter="demand_base_growth",

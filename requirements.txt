@@ -1,0 +1,14 @@
+# Streamlit Cloud dependencies (minimal runtime set)
+streamlit
+numpy
+pandas
+plotly
+scipy
+SALib
+matplotlib
+seaborn
+requests
+PyYAML
+pydantic>=2
+pydantic-settings
+pandera

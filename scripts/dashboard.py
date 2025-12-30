@@ -4,12 +4,19 @@ import json
 import sys
 from pathlib import Path
 
-import jax.numpy as jnp
 import numpy as np
 import pandas as pd
 import streamlit as st
 
-from nhra_gt.visualization.game_trees import create_extensive_game_from_matrix, render_tree_static
+try:
+    from nhra_gt.visualization.game_trees import (
+        create_extensive_game_from_matrix,
+        render_tree_static,
+    )
+except ImportError:  # pragma: no cover
+    create_extensive_game_from_matrix = None  # type: ignore[assignment]
+    render_tree_static = None  # type: ignore[assignment]
+
 from nhra_gt.visualization.interactive import (
     plot_agreement_cycle,
     plot_ghost_overlay,
@@ -762,12 +769,20 @@ def main() -> None:
         sel_subgame_name = st.selectbox("Select Subgame:", list(subgame_options.keys()))
 
         # Evidence Grounding
-        from nhra_gt.visualization.game_trees import get_game_evidence
+        try:
+            from nhra_gt.visualization.game_trees import get_game_evidence
+        except ImportError:
+            get_game_evidence = None  # type: ignore[assignment]
 
-        evidence = get_game_evidence(sel_subgame_name)
-        st.info(
-            f"📚 **Evidence Source:** {evidence['source']}  \n**Context:** {evidence['context']}"
-        )
+        if get_game_evidence is None:
+            st.warning(
+                "Game-tree evidence is unavailable (optional deps missing). Install `pygambit` to enable."
+            )
+        else:
+            evidence = get_game_evidence(sel_subgame_name)
+            st.info(
+                f"📚 **Evidence Source:** {evidence['source']}  \n**Context:** {evidence['context']}"
+            )
 
         # Use current parameter state for the tree
         gp = GameParams(
@@ -785,26 +800,33 @@ def main() -> None:
 
         # Convert matrix game to extensive form tree
         # Extract matrices from TwoPlayerGame object
-        u_row = jnp.array(g.u_row)
-        u_col = jnp.array(g.u_col)
+        u_row = np.array(g.u_row)
+        u_col = np.array(g.u_col)
 
-        extensive_g = create_extensive_game_from_matrix(
-            u_row,
-            u_col,
-            title=sel_subgame_name,
-            row_action_labels=g.row_actions,
-            col_action_labels=g.col_actions,
-        )
+        if create_extensive_game_from_matrix is None or render_tree_static is None:
+            st.warning(
+                "Game tree rendering is unavailable (optional deps missing). Install `pygambit` and `graphviz` to enable."
+            )
+        else:
+            extensive_g = create_extensive_game_from_matrix(
+                u_row,
+                u_col,
+                title=sel_subgame_name,
+                row_action_labels=g.row_actions,
+                col_action_labels=g.col_actions,
+            )
 
-        # Render
-        tree_path = Path("outputs/diagrams") / f"tree_{sel_subgame_name.lower().replace(' ', '_')}"
-        render_tree_static(extensive_g, tree_path)
+            # Render
+            tree_path = (
+                Path("outputs/diagrams") / f"tree_{sel_subgame_name.lower().replace(' ', '_')}"
+            )
+            render_tree_static(extensive_g, tree_path)
 
-        svg_path = tree_path.with_suffix(".svg")
-        if svg_path.exists():
-            st.image(str(svg_path), width="stretch")
+            svg_path = tree_path.with_suffix(".svg")
+            if svg_path.exists():
+                st.image(str(svg_path), width="stretch")
 
-        st.caption("Circles = Decision Nodes | Squares = Outcomes (Cth Payoff, State Payoff)")
+            st.caption("Circles = Decision Nodes | Squares = Outcomes (Cth Payoff, State Payoff)")
 
     with tab2_6:
         st.markdown("### 🏥 Intra-State LHN Variance")

@@ -1,7 +1,7 @@
 [run]
 branch = True
 source = src, scripts
-omit = 
+omit =
     tests/*
     scripts/*
     .nox/*

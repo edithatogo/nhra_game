@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 try:
     import polars as pl
@@ -107,7 +107,7 @@ class EvidenceRegistry(BaseModel):
                 df.to_csv(targets_path, index=False)
             return
 
-        df = pl.read_csv(targets_path)
+        df_pl: Any = pl.read_csv(targets_path)
 
         # Update targets by joining with a temporary dataframe of best entries
         best_entries = []
@@ -118,15 +118,19 @@ class EvidenceRegistry(BaseModel):
 
         if best_entries:
             updates = pl.DataFrame(best_entries)
-            df = df.join(updates, on="metric", how="left")
-            df = df.with_columns(
-                pl.when(pl.col("target_new").is_not_null())
-                .then(pl.col("target_new"))
-                .otherwise(pl.col("target"))
-                .alias("target")
-            ).drop("target_new")
+            df_pl = df_pl.join(updates, on="metric", how="left")
+            df_pl = (
+                cast(Any, df_pl)
+                .with_columns(
+                    pl.when(pl.col("target_new").is_not_null())
+                    .then(pl.col("target_new"))
+                    .otherwise(pl.col("target"))
+                    .alias("target")
+                )
+                .drop("target_new")
+            )
 
-            df.write_csv(targets_path)
+            cast(Any, df_pl).write_csv(targets_path)
 
     def promote_to_params(self, base_params: Any) -> Any:
         """Returns a new Params object with all promoted registry values applied."""

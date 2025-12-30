@@ -1,12 +1,30 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any
 
-import jax
-import jax.numpy as jnp
 import numpy as np
-from beartype import beartype
-from jaxtyping import Array, Float
+
+try:
+    import jax
+    import jax.numpy as jnp
+except ImportError:  # pragma: no cover
+    jax = None  # type: ignore[assignment]
+    jnp = np  # type: ignore[assignment]
+
+try:
+    from beartype import beartype as _beartype
+    from jaxtyping import Array, Float  # noqa: F401
+except ImportError:  # pragma: no cover
+    Array = Any  # type: ignore[assignment]
+    Float = Any  # type: ignore[assignment]
+    _beartype = None
+
+
+def beartype(fn):  # type: ignore[no-untyped-def]
+    if _beartype is None:
+        return fn
+    return _beartype(fn)
 
 
 @dataclass(frozen=True)
@@ -21,9 +39,7 @@ class PatientUtilityParams:
 
 
 @beartype
-def calculate_patient_utilities(
-    ed_wait_min: Float[Array, ""], p: PatientUtilityParams
-) -> tuple[Float[Array, ""], Float[Array, ""]]:
+def calculate_patient_utilities(ed_wait_min: Any, p: PatientUtilityParams) -> tuple[Any, Any]:
     """Calculates utilities for choosing ED vs GP."""
     u_ed = p.ed_base_utility - (ed_wait_min / 60.0 * p.patient_time_value_hour)
     u_gp = jnp.array(-(p.gp_wait_time_min / 60.0 * p.patient_time_value_hour) - p.gp_out_of_pocket)
@@ -32,16 +48,18 @@ def calculate_patient_utilities(
 
 @beartype
 def solve_queuing_equilibrium_jax(
-    total_base_demand: Float[Array, ""],
-    capacity: Float[Array, ""],
-    discharge_delay: Float[Array, ""],
+    total_base_demand: Any,
+    capacity: Any,
+    discharge_delay: Any,
     params: PatientUtilityParams,
     max_iter: int = 5,
-) -> tuple[Float[Array, ""], Float[Array, ""]]:
+) -> tuple[Any, Any]:
     """
     Finds the Wardrop Equilibrium for patient demand using fixed-point iteration.
     Returns (demand_ed, prob_ed).
     """
+    if jax is None:  # pragma: no cover
+        raise ImportError("`solve_queuing_equilibrium_jax` requires `jax` to be installed.")
     from jax import lax
 
     from nhra_gt.engine_jax import mm_s_queue_wait_jax

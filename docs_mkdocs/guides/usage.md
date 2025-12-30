@@ -108,7 +108,7 @@ baseline = run_simulation(years=10, params=Params())
 
 # Pooled funding scenario
 pooled = run_simulation(
-    years=10, 
+    years=10,
     params=Params(cost_shifting_intensity=0.2)
 )
 ```
@@ -135,8 +135,8 @@ from nhra_gt.visualization.base import save_figure
 
 # plot mean + quantile ribbon
 fig = plot_trajectory(
-    df, 
-    y_col="pressure_mean", 
+    df,
+    y_col="pressure_mean",
     ylabel="Pressure Index",
     q_low_col="pressure_p10",
     q_high_col="pressure_p90"
@@ -151,8 +151,8 @@ from nhra_gt.visualization.trajectories import plot_comparison_trajectory
 
 # combined_df should have a 'Scenario' column
 fig = plot_comparison_trajectory(
-    combined_df, 
-    y_col="within4_mean", 
+    combined_df,
+    y_col="within4_mean",
     ylabel="ED Within 4h"
 )
 ```
@@ -172,8 +172,8 @@ fig = plot_strategy_heatmap(strat_df)
 from nhra_gt.visualization.sensitivity import plot_rank_tornado
 
 fig = plot_rank_tornado(
-    df, 
-    outcome_col="pressure_2030", 
+    df,
+    outcome_col="pressure_2030",
     params=["rurality_weight", "cost_shifting_intensity"]
 )
 ```

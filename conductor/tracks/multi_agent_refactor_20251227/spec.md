@@ -1,7 +1,7 @@
 # Specification: Multi-Agent Logic Refactor (Constitutional Spec)
 
 ## 1. Overview
-This track refactors the monolithic JAX simulation into a hierarchical Multi-Agent System (MAS). It formally models the NHRA as a nested game: 
+This track refactors the monolithic JAX simulation into a hierarchical Multi-Agent System (MAS). It formally models the NHRA as a nested game:
 1. **Macro-Fiscal Game:** Commonwealth vs. States (Funding shares, caps).
 2. **Internal Contracting Game:** State vs. LHNs (KPIs, budget allocation, performance management).
 3. **Operational Game:** LHNs vs. Reality (Ramping, coding, throughput).

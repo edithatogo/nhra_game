@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 from dataclasses import field as dataclass_field
+from dataclasses import replace
 from enum import Enum
 from typing import Any
 
@@ -671,3 +672,58 @@ def within4_from_pressure(pidx: float) -> float:
 
 def clamp(val: float, low: float, high: float) -> float:
     return max(low, min(high, val))
+
+
+def apply_intervention(p: Params, name: str) -> Params:
+    key = name.lower().strip().replace(" ", "_")
+
+    if key in {"pooled_funding", "pooled"}:
+        return replace(
+            p, cost_shifting_intensity=clamp(p.cost_shifting_intensity * 0.75, 0.05, 0.60)
+        )
+
+    if key in {"ucc_integration", "integration"}:
+        return replace(p, fragmentation_index=clamp(p.fragmentation_index * 0.80, 0.60, 1.50))
+
+    if key in {"nep_realism", "indexation"}:
+        return replace(
+            p,
+            nep_to_cost_ratio_metro=clamp(p.nep_to_cost_ratio_metro + 0.03, 0.6, 1.0),
+            nep_to_cost_ratio_regional=clamp(p.nep_to_cost_ratio_regional + 0.04, 0.6, 1.0),
+            nep_to_cost_ratio_remote=clamp(p.nep_to_cost_ratio_remote + 0.05, 0.6, 1.0),
+        )
+
+    if key in {"aged_ndis_capacity", "discharge"}:
+        return replace(p, discharge_delay_base=clamp(p.discharge_delay_base * 0.90, 0.6, 1.4))
+
+    if key in {"middle_tier", "workforce"}:
+        return replace(
+            p,
+            nep_to_cost_ratio_regional=clamp(p.nep_to_cost_ratio_regional + 0.03, 0.6, 1.0),
+            nep_to_cost_ratio_remote=clamp(p.nep_to_cost_ratio_remote + 0.04, 0.6, 1.0),
+        )
+
+    if key in {"cumulative_cap", "cap"}:
+        return replace(p, has_cumulative_cap=True, cap_growth=0.070)
+
+    if key in {"audit_relief"}:
+        return replace(
+            p,
+            audit_pressure=clamp(p.audit_pressure * 0.70, 0.05, 1.0),
+            admin_burden_weight=clamp(p.admin_burden_weight * 0.8, 0.05, 0.6),
+        )
+
+    return p
+
+
+def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
+    last = agg.sort_values("year").iloc[-1]
+    return {
+        "pressure_2030": float(last["pressure_mean"]),
+        "within4_2030": float(last["within4_mean"]),
+        "offload_2030": float(last["offload_mean"]),
+        "rr_2030": float(last["rr_mean"]),
+        "effshare_nominal_2030": float(last["cth_nominal_mean"]),
+        "effshare_effective_2030": float(last["cth_effective_mean"]),
+        "effgap_2030": float(last["effgap_mean"]),
+    }

@@ -4,35 +4,46 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-import pygambit as gambit
-from beartype import beartype
+try:
+    import pygambit as gambit
+except ImportError:  # pragma: no cover
+    gambit = None  # type: ignore[assignment]
 
 try:
-    from jaxtyping import Array, Float
-except ImportError:
-    # Fallback for environments without JAX/jaxtyping (e.g. Streamlit Cloud)
-    class _DummySubscriptable:
-        def __class_getitem__(cls, item):
-            return Any
+    from beartype import beartype as _beartype
+except ImportError:  # pragma: no cover
+    _beartype = None
 
-    Array = _DummySubscriptable
-    Float = _DummySubscriptable
+
+def beartype(func):  # type: ignore[no-untyped-def]
+    if gambit is None or _beartype is None:
+        return func
+    return _beartype(func)
+
+
+def _require_pygambit() -> None:
+    if gambit is None:  # pragma: no cover
+        raise ImportError(
+            "Optional dependency `pygambit` is required for game tree utilities. "
+            "Install it to enable this feature."
+        )
 
 
 @beartype
 def create_extensive_game_from_matrix(
-    u_row: Float[Array, "m n"],
-    u_col: Float[Array, "m n"],
+    u_row: Any,
+    u_col: Any,
     title: str = "NHRA Subgame",
     row_player_label: str = "Commonwealth",
     col_player_label: str = "State",
     row_action_labels: Sequence[str] | None = None,
     col_action_labels: Sequence[str] | None = None,
-) -> gambit.Game:
+) -> Any:
     """
     Constructs a 2-player extensive form game from payoff matrices.
     Sequence: Player 1 moves, then Player 2 moves (perfect information).
     """
+    _require_pygambit()
     m, n = u_row.shape
     g = gambit.Game.new_tree(title=title)
 
@@ -58,15 +69,16 @@ def create_extensive_game_from_matrix(
 
 @beartype
 def create_hybrid_game_tree(
-    u_cth: Float[Array, "m n"],
-    u_state_macro: Float[Array, "m n"],
-    micro_matrices: Sequence[tuple[Array, Array]],
+    u_cth: Any,
+    u_state_macro: Any,
+    micro_matrices: Sequence[tuple[Any, Any]],
     title: str = "Hybrid NHRA Game",
-) -> gambit.Game:
+) -> Any:
     """
     Constructs a 3-player hierarchical/hybrid game tree.
     Sequence: Cth -> State -> LHN.
     """
+    _require_pygambit()
     m, n = u_cth.shape
     g = gambit.Game.new_tree(title=title)
 
@@ -99,9 +111,15 @@ def create_hybrid_game_tree(
     return g
 
 
-def render_tree_static(game: gambit.Game, output_path: Path | str) -> None:
+def render_tree_static(game: Any, output_path: Path | str) -> None:
     """Renders the game tree to an SVG/PNG using Graphviz."""
-    import graphviz
+    try:
+        import graphviz
+    except ImportError as e:  # pragma: no cover
+        raise ImportError(
+            "Optional dependency `graphviz` is required for rendering game trees. "
+            "Install it to enable this feature."
+        ) from e
 
     dot = graphviz.Digraph(comment=game.title)
     dot.attr(rankdir="LR")  # Left to right for trees
@@ -130,7 +148,7 @@ def render_tree_static(game: gambit.Game, output_path: Path | str) -> None:
     dot.render(output_path, format="svg", cleanup=True)
 
 
-def export_gte_html(game: gambit.Game, output_path: Path | str) -> None:
+def export_gte_html(game: Any, output_path: Path | str) -> None:
     """Exports the game in .efg format."""
     path = Path(output_path).with_suffix(".efg")
     path.write_text(game.serialize(), encoding="utf-8")

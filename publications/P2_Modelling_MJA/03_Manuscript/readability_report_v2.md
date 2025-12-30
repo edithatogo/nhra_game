@@ -22,4 +22,3 @@
 | Scenario | System Pressure (Index) | ED Performance (within 4h) | Effective Cth Share (%) |
 | :--- | :--- | :--- | :--- |
 | Baseline | 1..."
-

@@ -50,7 +50,7 @@ The simulation toolkit is designed to explore:
 ## Limitations
 
 !!! warning "Model Limitations"
-    
+
     This is a **stylised mechanism model** for policy reasoning, **not a forecast**. It should be used to understand strategic incentives and compare policy directions, not to predict specific outcomes.
 
 ### Key limitations:

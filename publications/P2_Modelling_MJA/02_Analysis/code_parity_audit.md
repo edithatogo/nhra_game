@@ -16,4 +16,3 @@
 
 ## 3. Final Status (v2.0)
 All core equations now map 1:1 between the modelling specification and the Python implementation.
-

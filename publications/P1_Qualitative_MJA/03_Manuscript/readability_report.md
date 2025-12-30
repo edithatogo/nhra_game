@@ -45,4 +45,3 @@ Mathematical analysis of the formalized game tree indicates that Strategic Gamin
 The findings of this study suggest that the National Health Reform Agreement, while structurally robust in its financial mechanics, contains significant "grammar" gaps that favor **Strategic Gaming** over genuine system performance..."
 17. "By mapping the Agreement to Ostrom’s IAD framework, we have demonstrated that the "Rules-on-Paper" are frequently decoupled from the "Rules-in-Use" due to constructive ambiguity and imperfect information {Ostrom, 2005 @Ostrom_2005 #121}..."
 18. "This aligns with the sociological construct of **Institutional Isomorphism**, where LHNs are forced to adopt isomorphic masks of high performance to maintain legitimacy in a competitive funding pool {DiMaggio & Powell, 1983 @DiMaggio_1983 #110}..."
-

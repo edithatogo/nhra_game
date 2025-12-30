@@ -47,6 +47,16 @@ cd nhra_gt
 poetry install
 ```
 
+### OneDrive / Cloud-Sync Folders (Important)
+
+Git repositories are often unreliable inside cloud-synced folders (e.g. OneDrive) due to file-locking and partial sync.
+If you see lock/reset/status issues, clone/move the repo to a normal local folder (e.g. `~/dev/...`) and work there.
+
+### Streamlit Cloud
+
+Streamlit Cloud installs dependencies from `requirements.txt` by default. This repo includes a minimal `requirements.txt`
+for the dashboard runtime; optional features (e.g. some game-tree rendering) may require extra dependencies.
+
 ### Running the System
 
 **1. Strategic Dashboard**

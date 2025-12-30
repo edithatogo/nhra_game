@@ -6,7 +6,7 @@
 ## STRESS (Simulation Study Reporting)
 - **Objectives:** Align stylised model with empirical Australian health system benchmarks to ensure predictive fidelity.
 - **Model Logic:** Hybrid Game-Theory + System Dynamics (implemented in `src/nhra_game_theory/v9.py`).
-- **Data Sources:** 
+- **Data Sources:**
     - IHACPA NEP 2024-25 ($6,465/NWAU).
     - AIHW ED performance metrics (53% within 4 hours).
     - Medicare UCC handover data.

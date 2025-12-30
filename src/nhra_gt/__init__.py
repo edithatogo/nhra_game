@@ -1,12 +1,15 @@
 from __future__ import annotations
 
-import contextlib
+from typing import Any
 
-__all__ = ["legacy_engine", "engine", "logfire"]
 __version__ = "0.25.0"
 
-with contextlib.suppress(ImportError):
-    import logfire
+logfire: Any | None = None
+try:  # pragma: no cover
+    import logfire as _logfire
+except ImportError:
+    _logfire = None
 
-    # logfire.configure() # Disabled to prevent environment hangs
-    # logfire.instrument_pydantic()
+logfire = _logfire
+
+__all__ = ["__version__", "logfire"]

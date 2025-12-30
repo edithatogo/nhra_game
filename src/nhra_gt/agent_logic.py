@@ -1,9 +1,32 @@
 from __future__ import annotations
 
-import jax.numpy as jnp
-from beartype import beartype
-from flax import struct
-from jaxtyping import Array, Float
+from dataclasses import dataclass
+from typing import Any
+
+try:
+    import jax.numpy as jnp
+except ImportError:  # pragma: no cover
+    import numpy as jnp  # type: ignore[assignment]
+
+try:
+    from flax import struct
+except ImportError:  # pragma: no cover
+
+    class _Struct:
+        dataclass = staticmethod(dataclass)
+
+    struct = _Struct()  # type: ignore[assignment]
+
+try:
+    from beartype import beartype as _beartype
+except ImportError:  # pragma: no cover
+    _beartype = None
+
+
+def beartype(fn):  # type: ignore[no-untyped-def]
+    if _beartype is None:
+        return fn
+    return _beartype(fn)
 
 
 @struct.dataclass
@@ -22,13 +45,13 @@ class AgentWeights:
 
 @beartype
 def lhn_utility(
-    pressure: Float[Array, ""],
-    revenue: Float[Array, ""],
-    cost: Float[Array, ""],
+    pressure: Any,
+    revenue: Any,
+    cost: Any,
     is_shifting: bool,
-    delta_target_capacity: Float[Array, ""],
+    delta_target_capacity: Any,
     weights: AgentWeights,
-) -> Float[Array, ""]:
+) -> Any:
     """
     Utility for the LHN Agent.
     Prioritizes minimizing ramping (pressure) and maximizing net revenue.
@@ -44,10 +67,10 @@ def lhn_utility(
 
 @beartype
 def state_utility(
-    fiscal_gap: Float[Array, ""],
-    lhn_performance: Float[Array, ""],  # Mean LHN utility or KPI satisfaction
+    fiscal_gap: Any,
+    lhn_performance: Any,  # Mean LHN utility or KPI satisfaction
     weights: AgentWeights,
-) -> Float[Array, ""]:
+) -> Any:
     """
     Utility for the State Agent.
     Focuses on minimizing fiscal gaps (VFI) and maintaining LHN performance.

@@ -26,4 +26,3 @@ $F$ represents financial payoffs, $R$ represents reputational payoffs, and $C$ r
 3. "1 Mapping of the NHRA Action Situations
 The analysis identified four core Action Situations (AS):
 *   **AS1: Price Determination:** A cooperative game where IHACPA sets the NEP based on historic cost data..."
-

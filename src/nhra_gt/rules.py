@@ -1,10 +1,21 @@
 from __future__ import annotations
 
-from dataclasses import replace
+from dataclasses import dataclass, replace
 from typing import TYPE_CHECKING, Any
 
-import jax.numpy as jnp
-from flax import struct
+try:
+    import jax.numpy as jnp
+    from flax import struct
+    from jax import lax
+except ImportError:  # pragma: no cover
+    import numpy as jnp  # type: ignore[assignment]
+
+    lax = None  # type: ignore[assignment]
+
+    class _Struct:  # minimal replacement for `flax.struct`
+        dataclass = staticmethod(dataclass)
+
+    struct = _Struct()  # type: ignore[assignment]
 
 if TYPE_CHECKING:
     # Use Any or a Protocol if needed to avoid circular imports during JIT
@@ -38,8 +49,8 @@ class CapRule:
                 1.0,
             )
 
-        # Dispatch based on rule_type (JAX compatible)
-        from jax import lax
+        if lax is None:
+            return hard_cap() if self.rule_type == 0 else soft_cap()
 
         return lax.cond(self.rule_type == 0, hard_cap, soft_cap)
 
@@ -66,7 +77,8 @@ class AuditRule:
                 coding_intensity > self.threshold, active_pressure * 3.0, active_pressure * 0.1
             )
 
-        from jax import lax
+        if lax is None:
+            return proportional() if self.rule_type == 0 else threshold_rule()
 
         return lax.cond(self.rule_type == 0, proportional, threshold_rule)
 

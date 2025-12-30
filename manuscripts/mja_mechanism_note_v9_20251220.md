@@ -70,4 +70,3 @@ The model and diagrams provide:
 - Stylised model; not a budget model; not a clinical risk model.  
 - Parameters are stochastically calibrated against historical Australian benchmarks to ensure predictive fidelity, while remaining suitable for broad sensitivity exploration.  
 - Results are sensitive to structural assumptions; the value is in making these explicit.
-

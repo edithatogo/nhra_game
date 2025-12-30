@@ -25,4 +25,3 @@ Since the inception of the NHRA in 2011, the Australian public hospital system h
 5. "## Recommendations / Call to Action
 RACMA recommends the following structural reforms to the NHRA negotiation framework:
 *   **Prioritize Transparency Surges:** Transition from retrospective audits to the contemporaneous publication of granular, validated performance data to narrow the information gap..."
-

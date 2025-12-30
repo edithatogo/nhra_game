@@ -3,17 +3,49 @@ from __future__ import annotations
 from pathlib import Path
 
 import pandas as pd
-import polars as pl
+
+try:
+    import polars as pl
+except ImportError:  # pragma: no cover
+    pl = None  # type: ignore[assignment]
 
 # Note: We'll skip runtime schema validation via Pandera here as we are moving to Polars.
 # Future enhancement: use patito or similar for Polars validation.
 
-def normalize_nhra_data(df: pl.DataFrame | pd.DataFrame) -> pl.DataFrame:
+def normalize_nhra_data(df):  # type: ignore[no-untyped-def]
     """Normalizes raw NHRA metrics and interpolates missing years.
 
     Expected columns: Year, Metric, Value
     Returns: DataFrame with columns [year, within4, occupancy, effective_share]
     """
+    if pl is None:
+        if not isinstance(df, pd.DataFrame):
+            df = pd.DataFrame(df)
+
+        pivot_df = (
+            df.pivot_table(index="Year", columns="Metric", values="Value", aggfunc="first")
+            .reset_index()
+            .rename(columns={"Year": "year"})
+        )
+
+        column_map = {
+            "Within 4 Hours": "within4",
+            "Occupancy": "occupancy",
+            "Effective Share": "effective_share",
+        }
+        pivot_df = pivot_df.rename(columns={k: v for k, v in column_map.items() if k in pivot_df.columns})
+
+        min_year = int(pivot_df["year"].min())
+        max_year = int(pivot_df["year"].max())
+        full_years = pd.DataFrame({"year": range(min_year, max_year + 1)})
+        pivot_df = full_years.merge(pivot_df, on="year", how="left")
+
+        for col in ["within4", "occupancy", "effective_share"]:
+            if col in pivot_df.columns:
+                pivot_df[col] = pivot_df[col].interpolate()
+
+        return pivot_df
+
     if isinstance(df, pd.DataFrame):
         df = pl.from_pandas(df)
 
@@ -69,9 +101,14 @@ if __name__ == "__main__":
 
     if raw_path.exists():
         print(f"Processing {raw_path}...")
-        df_raw = pl.read_csv(raw_path)
-        df_norm = normalize_nhra_data(df_raw)
-        df_norm.write_csv(OUT_PATH)
+        if pl is None:
+            df_raw = pd.read_csv(raw_path)
+            df_norm = normalize_nhra_data(df_raw)
+            df_norm.to_csv(OUT_PATH, index=False)
+        else:
+            df_raw = pl.read_csv(raw_path)
+            df_norm = normalize_nhra_data(df_raw)
+            df_norm.write_csv(OUT_PATH)
         print(f"Saved normalized data to {OUT_PATH}")
     else:
         print(f"Error: No raw data found at {API_RAW_PATH} or {LEGACY_RAW_PATH}")

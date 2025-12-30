@@ -30,4 +30,3 @@ The model's economic spine is calibrated using historical series (2011–2024) f
 | :--- | :--- | :--- | :--- |
 | Baseline | 1..."
 8. "Our findings demonstrate that while the ABF model is intended to drive efficiency, the multi-layered information asymmetry between LHNs and the Commonwealth creates a "Moral Hazard" environment {Ostrom, 2005 @Ostrom_2005 #121}..."
-

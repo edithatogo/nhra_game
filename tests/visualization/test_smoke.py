@@ -23,10 +23,7 @@ from nhra_gt.visualization.sensitivity import (
     plot_sobol_heatmap,
     plot_sobol_indices,
 )
-from nhra_gt.visualization.trajectories import (
-    plot_comparison_trajectory,
-    plot_trajectory,
-)
+from nhra_gt.visualization.trajectories import plot_comparison_trajectory, plot_trajectory
 
 
 @pytest.fixture

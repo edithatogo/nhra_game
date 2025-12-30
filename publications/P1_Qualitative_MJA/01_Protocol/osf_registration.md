@@ -17,7 +17,7 @@
 *   **Data Collection Procedures:** Coding is performed using the Institutional Analysis and Development (IAD) framework. Source documents include the NHRA 2011, the National Health Reform Act 2011 (Cth), the 2017 and 2020-2025 Addendums, and IHACPA Pricing Frameworks.
 
 ## 4. Variables
-*   **Measured Variables:** 
+*   **Measured Variables:**
     *   *Players:* Identifying decision-making entities and their utility functions.
     *   *Moves:* Mapping the set of legally available actions (e.g., funding determination, data submission, audit initiation).
     *   *Information Sets:* Defining what players know at each node (e.g., contemporaneous performance vs. lagged audited reports).

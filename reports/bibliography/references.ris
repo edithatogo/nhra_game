@@ -4,7 +4,7 @@ AU  - Australian Institute of Health and Welfare
 PY  - 2024
 TI  - MyHospitals API: Accessing national hospital data
 UR  - https://www.aihw.gov.au/hospitals/other-resources/myhospitals-api
-ER  - 
+ER  -
 
 TY  - JOUR
 ID  - BedBlock_Seasonality
@@ -18,7 +18,7 @@ SP  - 348
 EP  - 350
 DO  - 10.5694/mja2.51007
 UR  - https://www.mja.com.au/journal/2021/214/8/vicious-cycles-hospital-bed-block-and-national-health-reform-agreement
-ER  - 
+ER  -
 
 TY  - JOUR
 ID  - STRESS_Guidelines
@@ -32,4 +32,4 @@ SP  - 55
 EP  - 67
 DO  - 10.1080/17477778.2018.1442155
 UR  - https://www.tandfonline.com/doi/full/10.1080/17477778.2018.1442155
-ER  - 
+ER  -

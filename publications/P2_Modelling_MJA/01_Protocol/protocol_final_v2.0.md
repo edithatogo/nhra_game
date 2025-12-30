@@ -37,7 +37,7 @@ The model operates on a monthly time-step. The sequence is:
 System pressure ($P$) is mapped to clinical risk using a logistic transfer function calibrated to historical within-4-hour ED performance.
 
 ### 5.2 The Gaming Payoff Matrix
-The payoff for gaming ($U_{game}$) is weighted by $\alpha$ (Revenue) and $\beta$ (Reputation) minus the risk-adjusted expected penalty ($\delta$). 
+The payoff for gaming ($U_{game}$) is weighted by $\alpha$ (Revenue) and $\beta$ (Reputation) minus the risk-adjusted expected penalty ($\delta$).
 
 ## 6. Implementation
 The model is implemented in Python. Parameters are tracked in `context/04_parameter_registry.csv`.
