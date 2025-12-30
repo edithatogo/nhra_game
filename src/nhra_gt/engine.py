@@ -343,9 +343,14 @@ def policy_step(
     current_bailout = s.jurisdictions[0].bailout_expectation if s.jurisdictions else 0.0
     if strategies.get("BARG") == "A":
         eff_share += 0.25 * (target - eff_share) * month_growth_factor
-        bailout = current_bailout + p.reconciliation_rule.calculate_bailout(
-            s.pressure, month_growth_factor
-        )
+        # Guard for uninitialized reconciliation_rule
+        if p.reconciliation_rule is not None:
+            bailout = current_bailout + p.reconciliation_rule.calculate_bailout(
+                s.pressure, month_growth_factor
+            )
+        else:
+            # Fallback bailout calculation when rule not initialized
+            bailout = current_bailout + (0.05 * month_growth_factor if s.pressure > 1.2 else 0.0)
     else:
         eff_share += 0.10 * (target - eff_share) * month_growth_factor
         bailout = max(0.0, current_bailout - 0.02 * month_growth_factor)
