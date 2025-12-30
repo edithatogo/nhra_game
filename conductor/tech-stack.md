@@ -5,7 +5,7 @@
 - **Containerization:** Docker (Mandatory for MJA reproducibility and deployment)
 
 ## Core Modeling & Simulation
-- **Numerical Computing:** JAX/XLA (Functional Core), Polars (Data Spine), NumPy, SciPy
+- **Numerical Computing:** JAX/XLA (Consolidated Core), Polars (Data Spine), NumPy, SciPy
 - **Data Validation:** Pydantic V2 (Models), Pandera (DataFrame Schemas)
 - **Network Analysis:** NetworkX
 - **Optimization & Calibration:** Optuna (Tree-structured Parzen Estimator)

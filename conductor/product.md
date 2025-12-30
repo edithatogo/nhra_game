@@ -1,7 +1,7 @@
 # Initial Concept
 
 This is a project which was developed in chatgpt, and has over a dozen versions. It's supposed to be incremental development, but there might have been variations throughout. What I'm thinking is that I'll need you to setup the most recent version as a repo, initiatlising git etc. but also archiving the old copies. I'd also want you to then review all of the older versions, and ascertain whether any features have unintentionally been dropped, then develop a plan to add them back in. From there I'm keen for you to develop a roadmap to get this to be a SOTA model for the stated purpose. **Update (Dec 2025):** The repository has undergone a comprehensive structural audit, standardizing the package name to `nhra_gt` and optimizing core Nash Equilibrium solvers for 2x performance.
-**Publication Update (Dec 2025):** A comprehensive publication series has been drafted, including a qualitative mapping of the NHRA statutory text, a quantitative simulation study of strategic gaming equilibria, and a RACMA position statement for the 2025-2030 negotiations.
+**Publication Update (Dec 2025):** A comprehensive publication series has been drafted, including a qualitative mapping of the NHRA statutory text, a quantitative simulation study of strategic gaming equilibria, and a RACMA position statement for the 2025-2030 negotiations. The codebase has been consolidated into a single high-performance JAX engine, with all legacy features recovered and documented.
 
 ---
 
@@ -32,3 +32,4 @@ To develop a State-of-the-Art (SOTA) predictive game-theory model of the Nationa
 7.  **Real-time Simulation Visualization:** JAX-accelerated live feedback of state transitions and vectorized jurisdictional outcomes.
 8.  **Performance Modernization Reporting:** Automated benchmarking comparing NumPy vs. JAX cores to maintain 10-100x speedup targets.
 9.  **Automated Quality & Security Audits:** Formalized mutation testing (mutmut) and security scanning (bandit/safety) integrated into the CI pipeline.
+10. **Scenario Library & Interactive Interpretation:** Pre-defined policy scenarios and built-in "How to Read" guides for all visualizations.
