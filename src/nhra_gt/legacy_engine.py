@@ -208,7 +208,7 @@ def decide_strategies(s: State, p: Params, rng: np.random.Generator) -> dict[str
 
         def _pick(game: TwoPlayerGame) -> str:
             eqs = all_nash(game)
-            sel = select_equilibrium(
+            sel, _ = select_equilibrium(
                 eqs, rule=p.equilibrium_selection_rule, u_row=game.u_row, u_col=game.u_col
             )
             a = game.row_actions[int(np.argmax(sel.row))]

@@ -36,6 +36,7 @@ from nhra_gt.visualization.sensitivity import plot_sobol_indices as viz_plot_sob
 # Add src to path if needed for relative imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
+from nhra_gt import __version__
 from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_gt.domain.stability import analyze_cost_shifting_stability
 from nhra_gt.domain.validation import RecursiveResult, aggregate_metrics
@@ -216,7 +217,7 @@ def main() -> None:
     )
     apply_custom_theme()
 
-    st.title("🏥 NHRA Strategic Scenario Analysis (v26)")
+    st.title(f"🏥 NHRA Strategic Scenario Analysis (v{__version__})")
     st.markdown("""
     ### Strategic Negotiation & System Risk Simulator (Cognitive Twin)
     This simulator models the interaction between policy levers (funding, capacity, integration)

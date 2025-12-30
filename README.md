@@ -15,7 +15,7 @@ This project implements a "Cognitive Digital Twin" of the Australian health fund
 
 ## 🎯 Key Features
 
-### 1. Cognitive Simulation (v26 Upgrade)
+### 1. Cognitive Simulation
 - **Strategic Agents:** Modular `LLMAgent` and `HeuristicAgent` frameworks.
 - **Negotiation Loops:** Structured "Debate Loops" between Commonwealth and State agents.
 - **Explainable AI:** "Cognitive Trace" logging providing natural language rationales for agent moves.

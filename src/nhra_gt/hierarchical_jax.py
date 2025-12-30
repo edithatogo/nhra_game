@@ -41,6 +41,19 @@ def hierarchical_step_jax(
     num_jurisdictions = jurisdiction_states.year.shape[0]
     keys = jax.random.split(prng_key, num_jurisdictions)
 
+    def _in_axes_for_batch(tree: Any) -> Any:
+        def axis_for(x: Any) -> int | None:
+            try:
+                if hasattr(x, "ndim") and x.ndim > 0 and x.shape[0] == num_jurisdictions:
+                    return 0
+            except Exception:
+                return None
+            return None
+
+        return jax.tree_util.tree_map(axis_for, tree)
+
+    in_axes_state = _in_axes_for_batch(jurisdiction_states)
+
     # Each jurisdiction picks its own micro-strategies (Heuristic or QRE)
     # For now, we'll assume micro-strategies are determined inside a vectorized step
 
@@ -60,7 +73,9 @@ def hierarchical_step_jax(
 
         return step_jax(s, params, micro_strats, k)
 
-    new_jurisdiction_states = jax.vmap(single_jurisdiction_step)(jurisdiction_states, keys)
+    new_jurisdiction_states = jax.vmap(single_jurisdiction_step, in_axes=(in_axes_state, 0))(
+        jurisdiction_states, keys
+    )
 
     # 3. Update Commonwealth State (Average of jurisdictions or specific logic)
     # For now, just sync year/month
@@ -91,7 +106,7 @@ def solve_constitutional_game_jax(
 
     def get_micro_equilibria(i, j):
         u_state_micro, u_lhn = micro_game_factory(i, j)
-        p_micro, q_micro = qre_solver_jax(u_state_micro, u_lhn, lam=lam)
+        p_micro, q_micro, _ = qre_solver_jax(u_state_micro, u_lhn, lam=lam)
         # Return State and LHN utilities from micro game
         return p_micro @ u_state_micro @ q_micro, p_micro @ u_lhn @ q_micro
 
@@ -105,6 +120,6 @@ def solve_constitutional_game_jax(
     effective_u_state = u_state_macro + state_micro_utils.reshape(m, n)
 
     # Solve Macro Game
-    p_cth, q_state = qre_solver_jax(u_cth, effective_u_state, lam=lam)
+    p_cth, q_state, _ = qre_solver_jax(u_cth, effective_u_state, lam=lam)
 
     return p_cth, q_state, state_micro_utils.reshape(m, n), lhn_micro_utils.reshape(m, n)

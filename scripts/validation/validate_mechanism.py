@@ -35,7 +35,7 @@ def model_wrapper(param_values: np.ndarray) -> float:
 
 
 def main():
-    results_path = Path("data/gsa_v21/morris_results.csv")
+    results_path = Path("data/gsa/morris_results.csv")
 
     if results_path.exists():
         print(f"Loading existing GSA results from {results_path}...")

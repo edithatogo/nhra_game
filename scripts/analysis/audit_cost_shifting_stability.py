@@ -75,7 +75,7 @@ def main():
             )
 
     df = pd.DataFrame(results)
-    out_path = "data/gsa_v21/stability_audit_cost_shifting.csv"
+    out_path = "data/gsa/stability_audit_cost_shifting.csv"
     df.to_csv(out_path, index=False)
     print(f"Stability audit saved to {out_path}")
 

@@ -1,11 +1,11 @@
 from nhra_gt.engine import Params, run_hybrid
 
 
-def test_v26_engine_smoke():
+def test_engine_smoke():
     p = Params()  # n_mc is passed to run_hybrid
     years = [2025, 2026]
 
-    print("Running v26 smoke test...")
+    print("Running engine smoke test...")
     agg, freq = run_hybrid(years, p, n_mc=5)
 
     print("Aggregation columns:", agg.columns.tolist())
@@ -20,4 +20,4 @@ def test_v26_engine_smoke():
 
 
 if __name__ == "__main__":
-    test_v26_engine_smoke()
+    test_engine_smoke()

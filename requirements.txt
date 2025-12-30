@@ -12,3 +12,4 @@ PyYAML
 pydantic>=2
 pydantic-settings
 pandera
+polars

@@ -6,15 +6,15 @@ from nhra_gt.engine import Params, baseline_state, run_hybrid
 
 
 def test_effective_share_v2_structural_parity():
-    """Verify that v21 effective share logic matches the v2 mathematical form."""
-    # v2: alpha_eff = (alpha_nom * E) / (E + g)
-    # v21: alpha_eff = alpha_nom / (1 + efficiency_gap)
+    """Verify that current effective share logic matches the legacy mathematical form."""
+    # Legacy: alpha_eff = (alpha_nom * E) / (E + g)
+    # Current: alpha_eff = alpha_nom / (1 + efficiency_gap)
     # These are identical if efficiency_gap = g / E
 
     p = Params(effective_cth_share_base=0.38)
     s = baseline_state(p=p)
 
-    # In v21 baseline_state:
+    # In baseline_state:
     # s.effective_cth_share (stored) is actually the NOMINAL share derived from base and gap
     # s.effective_cth_share = p.effective_cth_share_base * (1.0 + efficiency_gap)
 
@@ -26,8 +26,8 @@ def test_effective_share_v2_structural_parity():
 
 
 def test_model_stability_at_v2_bounds():
-    """Ensure the model runs at the extreme bounds used in v2 calibration."""
-    # v2 Linspace bounds: g up to 20000 (eff_gap ~ 0.75), O up to 0.20
+    """Ensure the model runs at the extreme bounds used in legacy calibration."""
+    # Legacy Linspace bounds: g up to 20000 (eff_gap ~ 0.75), O up to 0.20
     p = Params(
         nep_to_cost_ratio_remote=0.5,  # High gap
         political_salience=0.9,  # High salience

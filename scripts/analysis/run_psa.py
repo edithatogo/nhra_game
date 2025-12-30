@@ -46,7 +46,7 @@ def main():
     df = run_psa(dists, model_wrapper, n_samples=500, n_procs=4)
 
     # Save Results
-    out_dir = Path("data/gsa_v21")
+    out_dir = Path("data/gsa")
     out_dir.mkdir(parents=True, exist_ok=True)
     df.to_csv(out_dir / "psa_results.csv", index=False)
     print(f"PSA results saved to {out_dir / 'psa_results.csv'}")

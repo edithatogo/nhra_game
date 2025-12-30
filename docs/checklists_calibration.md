@@ -15,5 +15,5 @@
 
 ## CHEERS 2022 (Health Economic Evaluation)
 - **Analytical Methods:** Model-based policy analysis using Nash Equilibrium solving for stage games.
-- **Uncertainty:** Probabilistic Sensitivity Analysis (PSA) supported by posterior parameter distributions saved in `data/calibration_v21/calibration_trials_posterior.csv`.
+- **Uncertainty:** Probabilistic Sensitivity Analysis (PSA) supported by posterior parameter distributions saved in `data/calibration/calibration_trials_posterior.csv`.
 - **Calibration:** Formalised against a multi-metric target suite (ED, Occupancy, NEP).

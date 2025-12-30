@@ -1,7 +1,7 @@
 # Technical Audit: Version Comparison & Feature Gaps
 
 **Audit Date:** 2025-12-22  
-**Versions Sampled:** v1, v5, v9, v15, v19, v21 (current)
+**Versions Sampled:** v1, v5, v9, v15, v19, v21
 
 ## 1. Overview of Model Evolution
 The project has transitioned from isolated "stage game" scripts (v1-v5) to a unified Hybrid Simulation Framework (v8+). The core logic relies on Monte Carlo rollouts to simulate NHRA negotiation dynamics and downstream system pressures (ED crowding, access block).

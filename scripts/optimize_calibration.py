@@ -29,7 +29,7 @@ def stochastic_objective(
 
 
 def objective(trial: optuna.Trial, targets: dict[str, float], n_mc: int, seed: int) -> float:
-    # Granular parameter set based on v26
+    # Granular parameter set
     p = Params(
         cost_shifting_intensity=trial.suggest_float("cost_shifting_intensity", 0.05, 0.8),
         discharge_delay_base=trial.suggest_float("discharge_delay_base", 0.6, 1.4),
@@ -86,7 +86,7 @@ def main() -> None:
 
     study = optuna.create_study(direction="minimize", sampler=optuna.samplers.TPESampler(seed=42))
 
-    print("Starting Multi-Target Stochastic Calibration (v26)...")
+    print("Starting Multi-Target Stochastic Calibration...")
     study.optimize(lambda t: objective(t, targets, n_mc=50, seed=42), n_trials=30)
 
     # Save best

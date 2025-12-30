@@ -29,6 +29,6 @@ def test_posterior_sampling_logic():
 
 def test_posterior_file_exists_after_run():
     """Check if the posterior file exists in the expected location (integration-style check)."""
-    post_path = Path("data/calibration_v21/calibration_trials_posterior.csv")
+    post_path = Path("data/calibration/calibration_trials_posterior.csv")
     # This might not exist yet if script hasn't run, but we check the path logic
     assert post_path.parent.exists()

@@ -62,7 +62,7 @@ The model and diagrams provide:
 - Diagrams pipeline: `scripts/diagrams/render_all.py`  
 - Interactive D3 build: `scripts/interactive/make_d3_network_v9.py`  
 - Additional plots: `scripts/make_additional_plots_v9.py`  
-- Stochastic calibration: `scripts/optimize_calibration_v21.py`  
+- Stochastic calibration: `scripts/optimize_calibration.py`  
 - Optional optimisation: `scripts/optimize_optuna_v9.py` (install extra: `.[opt]`)
 
 ## Disclosures / limitations (to include)

@@ -46,7 +46,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="SOTA Profiling Runner")
     parser.add_argument(
         "target",
-        help="Module name (e.g. nhra_gt.engine) or mod:func (e.g. scripts.run_baseline_v21:main)",
+        help="Module name (e.g. nhra_gt.engine) or mod:func (e.g. scripts.run_baseline:main)",
     )
     parser.add_argument("--profiler", choices=["scalene", "pyinstrument"], default="pyinstrument")
     parser.add_argument("--outdir", default="profiles", help="Output directory")

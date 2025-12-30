@@ -367,7 +367,7 @@ def policy_step(
         eff_gap *= 1.03**month_growth_factor
 
     # Nominal share drift
-    eff_share = s.reported_efficiency_gap  # Proxy for current share drift base
+    eff_share = s.effective_cth_share
     target = p.nominal_cth_share_target
     # Get bailout expectation from first jurisdiction (fallback to 0.0)
     current_bailout = s.jurisdictions[0].bailout_expectation if s.jurisdictions else 0.0
@@ -530,7 +530,9 @@ def step(
                 lhn_step(lhn, p, strategies, demand, mgf, rng, discharge_target, s.workforce_pool)
             )
 
-        adjustment_costs = float(sum(lhn.adjustment_costs for lhn in new_lhns))
+        adjustment_costs = float(
+            np.mean([lhn.adjustment_costs for lhn in new_lhns]) if new_lhns else 0.0
+        )
         reconciliation_balance = jur.reconciliation_balance - adjustment_costs
 
         new_jurisdictions.append(
@@ -553,7 +555,9 @@ def step(
     avg_discharge = float(np.mean([lhn.discharge_delay for lhn in all_lhns]))
     avg_target_capacity = float(np.mean([lhn.target_capacity for lhn in all_lhns]))
     avg_current_capacity = float(np.mean([lhn.current_capacity for lhn in all_lhns]))
-    total_adjustment_costs = float(sum(lhn.adjustment_costs for lhn in all_lhns))
+    total_adjustment_costs = float(
+        np.mean([lhn.adjustment_costs for lhn in all_lhns]) if all_lhns else 0.0
+    )
     total_nwau = sum([lhn.nwau_actual for lhn in all_lhns])
 
     # Auditor move
@@ -679,6 +683,8 @@ def run_hybrid(
                     "workforce": s.workforce_pool,
                     "prob_ed": s.prob_ed,
                     "agreement_clock": s.agreement_clock,
+                    "polcap": s.political_capital,
+                    "equity": s.equity_index,
                 }
             )
 
@@ -724,12 +730,16 @@ def run_hybrid(
             agreement_clock_mean=("agreement_clock", "mean"),
             cth_nominal_mean=("cth_share_nominal", "mean"),
             effgap_mean=("efficiency_gap", "mean"),
+            polcap_mean=("polcap", "mean"),
+            polcap_std=("polcap", "std"),
+            equity_mean=("equity", "mean"),
+            equity_std=("equity", "std"),
         )
         .reset_index()
     )
 
     # Calculate SEM
-    for m in ["pressure", "occupancy", "within4", "rr"]:
+    for m in ["pressure", "occupancy", "within4", "rr", "polcap", "equity"]:
         agg[f"{m}_sem"] = agg[f"{m}_std"] / math.sqrt(n_mc)
 
     if not strat.empty:
@@ -800,16 +810,37 @@ def apply_intervention(p: Params, name: str) -> Params:
 
 
 def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
+    from nhra_gt.domain.stability import calculate_hysteresis_area, calculate_recovery_metrics
+
     last = agg.sort_values("year").iloc[-1]
-    return {
+    summary: dict[str, float] = {
         "pressure_2030": float(last["pressure_mean"]),
         "within4_2030": float(last["within4_mean"]),
         "offload_2030": float(last.get("offload_mean", 18.0)),
         "rr_2030": float(last["rr_mean"]),
         "effshare_nominal_2030": float(last["cth_nominal_mean"]),
-        "effshare_effective_2030": float(last["cth_nominal_mean"]),
-        "effgap_2030": float(last["effgap_mean"]),
+        "effshare_effective_2030": float(last.get("cth_effective_mean", last["cth_nominal_mean"])),
+        "effgap_2030": float(last.get("effgap_mean", last.get("index_gap_mean", 0.0))),
     }
+
+    if {"pressure_mean", "occupancy_mean"}.issubset(agg.columns):
+        summary["hysteresis_area"] = float(
+            calculate_hysteresis_area(
+                agg["pressure_mean"].to_numpy(), agg["occupancy_mean"].to_numpy()
+            )
+        )
+    else:
+        summary["hysteresis_area"] = 0.0
+
+    if "system_mode" in agg.columns:
+        metrics = calculate_recovery_metrics([str(m) for m in agg["system_mode"].tolist()])
+        summary["recovery_time"] = float(metrics["recovery_time"])
+        summary["resilience_index"] = float(metrics["resilience_index"])
+    else:
+        summary["recovery_time"] = 0.0
+        summary["resilience_index"] = 1.0
+
+    return summary
 
 
 def nep_series(years: list[int], p: Params) -> pd.DataFrame:

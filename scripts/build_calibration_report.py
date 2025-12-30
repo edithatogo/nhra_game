@@ -7,8 +7,8 @@ import pandas as pd
 
 
 def main() -> None:
-    post_path = Path("data/calibration_v21/calibration_trials_posterior.csv")
-    out_dir = Path("data/calibration_v21/reports")
+    post_path = Path("data/calibration/calibration_trials_posterior.csv")
+    out_dir = Path("data/calibration/reports")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     if not post_path.exists():

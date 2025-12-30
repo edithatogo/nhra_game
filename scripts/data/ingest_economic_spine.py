@@ -30,12 +30,19 @@ WPI_SERIES_FALLBACK = {
 
 def process_economic_data(nep_df: pd.DataFrame, wpi_df: pd.DataFrame) -> pd.DataFrame:
     """Merges and validates NEP and WPI data."""
+    nep_df = nep_df.rename(columns={
+        "Year": "year",
+        "NEP": "nep_per_nwau",
+        "nep": "nep_per_nwau",
+    })
+    wpi_df = wpi_df.rename(columns={
+        "Year": "year",
+        "WPI": "wpi_health_index",
+        "wpi": "wpi_health_index",
+    })
+
     merged = pd.merge(nep_df, wpi_df, on="year")
-    # Ensure column names match schema
-    if "NEP" in merged.columns:
-        merged = merged.rename(columns={"NEP": "nep_per_nwau"})
-    if "WPI" in merged.columns:
-        merged = merged.rename(columns={"WPI": "wpi_health_index"})
+    merged["year"] = merged["year"].astype(int)
 
     # Sort and validate
     merged = merged.sort_values("year")
@@ -71,8 +78,8 @@ def main():
     print("Processing Economic Spine data...")
     spine_df = process_economic_data(nep_df, wpi_df)
 
-    # Save to data/calibration_v21/economic_spine.csv
-    out_path = Path("data/calibration_v21/economic_spine.csv")
+    # Save to data/calibration/economic_spine.csv
+    out_path = Path("data/calibration/economic_spine.csv")
     out_path.parent.mkdir(parents=True, exist_ok=True)
     spine_df.to_csv(out_path, index=False)
 

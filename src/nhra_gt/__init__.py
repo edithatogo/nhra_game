@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+from importlib.metadata import PackageNotFoundError, version
 from typing import Any
 
-__version__ = "0.25.0"
+try:
+    __version__ = version("nhra_gt")
+except PackageNotFoundError:
+    __version__ = "unknown"
 
 logfire: Any | None = None
 try:  # pragma: no cover

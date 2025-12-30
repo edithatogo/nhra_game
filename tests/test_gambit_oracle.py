@@ -54,7 +54,7 @@ def test_gambit_oracle_qre():
     lam = 2.0
 
     # 1. Solve with JAX QRE
-    p_jax, q_jax = qre_solver_jax(u_row, u_col, lam=lam)
+    p_jax, q_jax, _ = qre_solver_jax(u_row, u_col, lam=lam)
 
     # 2. Solve with Gambit QRE
     # Note: Gambit's Logit solver find the entire branch.

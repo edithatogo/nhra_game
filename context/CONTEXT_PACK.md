@@ -5,7 +5,7 @@
 
 ## requirements.md
 
-# requirements.md — NHRA game-theory + system-dynamics modelling for RACMA (v21)
+# requirements.md — NHRA game-theory + system-dynamics modelling for RACMA
 
 **Version:** v21  
 **Date:** 2025-12-21  
@@ -83,7 +83,7 @@ NHRA negotiations (2025–2030) require decision‑relevant insight into how **v
 
 ## design.md
 
-# design.md — Architecture, modelling approach, and evidence system (v21)
+# design.md — Architecture, modelling approach, and evidence system
 
 **Version:** v21
 **Date:** 2025-12-21

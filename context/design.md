@@ -1,4 +1,4 @@
-# design.md — Architecture, modelling approach, and evidence system (v21)
+# design.md — Architecture, modelling approach, and evidence system
 
 **Version:** v21
 **Date:** 2025-12-21

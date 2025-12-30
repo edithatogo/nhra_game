@@ -10,7 +10,7 @@ from nhra_gt.domain.validation import calculate_theil_decomposition
 
 
 def main():
-    results_path = Path("data/calibration_v21/recursive_results.json")
+    results_path = Path("data/calibration/recursive_results.json")
     if not results_path.exists():
         print("Error: Backtest results not found.")
         return

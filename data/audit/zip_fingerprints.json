@@ -13423,8 +13423,8 @@
       "classes": {}
     }
   },
-  "archive/legacy_versions/nhra_game_theory_repo_v21_20251221.zip": {
-    "nhra_game_theory_repo_v21_20251221/scripts/nhra_games_v1.py": {
+  "archive/legacy_versions/nhra_game_theory_repo_20251221.zip": {
+    "nhra_game_theory_repo_20251221/scripts/nhra_games_v1.py": {
       "constants": {
         "OUTDIR": ".",
         "theta": 20.0,
@@ -13513,7 +13513,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/nhra_games_v2_calibrated.py": {
+    "nhra_game_theory_repo_20251221/scripts/nhra_games_v2_calibrated.py": {
       "constants": {
         "OUTDIR": ".",
         "NEP_PER_NWAU_2024_25": 6465.0,
@@ -13562,7 +13562,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/nhra_hybrid_v3.py": {
+    "nhra_game_theory_repo_20251221/scripts/nhra_hybrid_v3.py": {
       "constants": {
         "OUTDIR": ".",
         "K": 100,
@@ -13598,7 +13598,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/nhra_hybrid_v4.py": {
+    "nhra_game_theory_repo_20251221/scripts/nhra_hybrid_v4.py": {
       "constants": {
         "OUTDIR": ".",
         "NEP_PER_NWAU_2024_25": 6465.0,
@@ -13663,7 +13663,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/nhra_hybrid_v5.py": {
+    "nhra_game_theory_repo_20251221/scripts/nhra_hybrid_v5.py": {
       "constants": {
         "OUTDIR": ".",
         "NEP_PER_NWAU_2024_25": 6465.0,
@@ -13757,7 +13757,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/run_v8_all.py": {
+    "nhra_game_theory_repo_20251221/scripts/run_v8_all.py": {
       "constants": {},
       "functions": {
         "ensure_dirs": [],
@@ -13772,7 +13772,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/optimize_optuna_v9.py": {
+    "nhra_game_theory_repo_20251221/scripts/optimize_optuna_v9.py": {
       "constants": {},
       "functions": {
         "objective_from_summary": [
@@ -13782,7 +13782,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/make_additional_plots_v9.py": {
+    "nhra_game_theory_repo_20251221/scripts/make_additional_plots_v9.py": {
       "constants": {},
       "functions": {
         "_save": [
@@ -13802,21 +13802,21 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/run_v11_all.py": {
+    "nhra_game_theory_repo_20251221/scripts/run_v11_all.py": {
       "constants": {},
       "functions": {
         "main": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/run_v12_all.py": {
+    "nhra_game_theory_repo_20251221/scripts/run_v12_all.py": {
       "constants": {},
       "functions": {
         "main": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/diagrams_sync.py": {
+    "nhra_game_theory_repo_20251221/scripts/diagrams_sync.py": {
       "constants": {},
       "functions": {
         "_parse_node": [
@@ -13834,7 +13834,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/build_report_v13.py": {
+    "nhra_game_theory_repo_20251221/scripts/build_report_v13.py": {
       "constants": {},
       "functions": {
         "_img": [
@@ -13845,7 +13845,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/make_d3_v13.py": {
+    "nhra_game_theory_repo_20251221/scripts/make_d3_v13.py": {
       "constants": {
         "HTML": "<!doctype html>\n<html>\n<head>\n<meta charset=\"utf-8\"/>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>\n<title>Network externality (interactive)</title>\n<style>\n  body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; color: #111; }\n  .wrap { max-width: 980px; margin: 0 auto; }\n  .note { background:#f7f7fb; padding:12px 14px; border-radius:12px; border:1px solid #eee; margin-bottom:16px;}\n  svg { width: 100%; height: 420px; border: 1px solid #eee; border-radius: 12px; background: white; }\n  .axis path, .axis line { stroke: #bbb; }\n</style>\n</head>\n<body>\n<div class=\"wrap\">\n  <h1>Network externality proxy</h1>\n  <div class=\"note\">Reads <code>../../v12/tables/trajectory_derived.csv</code>. Hover for values.</div>\n  <svg id=\"chart\" viewBox=\"0 0 980 420\" preserveAspectRatio=\"xMidYMid meet\"></svg>\n</div>\n\n<script src=\"https://d3js.org/d3.v7.min.js\"></script>\n<script>\n(async function () {\n  const url = \"../../v12/tables/trajectory_derived.csv\";\n  const data = await d3.csv(url, d => ({\n    year: +d.year,\n    y: +d.network_externality\n  }));\n\n  const svg = d3.select(\"#chart\");\n  const W = 980, H = 420;\n  const margin = {top: 30, right: 20, bottom: 45, left: 70};\n  const w = W - margin.left - margin.right;\n  const h = H - margin.top - margin.bottom;\n\n  const g = svg.append(\"g\").attr(\"transform\", `translate(${margin.left},${margin.top})`);\n\n  const x = d3.scaleLinear().domain(d3.extent(data, d => d.year)).range([0, w]);\n  const y = d3.scaleLinear().domain(d3.extent(data, d => d.y)).nice().range([h, 0]);\n\n  g.append(\"g\").attr(\"class\",\"axis\").attr(\"transform\", `translate(0,${h})`).call(d3.axisBottom(x).ticks(6).tickFormat(d3.format(\"d\")));\n  g.append(\"g\").attr(\"class\",\"axis\").call(d3.axisLeft(y).ticks(6));\n\n  const line = d3.line().x(d => x(d.year)).y(d => y(d.y));\n\n  g.append(\"path\")\n    .datum(data)\n    .attr(\"fill\",\"none\")\n    .attr(\"stroke\",\"#111\")\n    .attr(\"stroke-width\",2.5)\n    .attr(\"d\", line);\n\n  const tip = g.append(\"g\").style(\"display\",\"none\");\n  tip.append(\"circle\").attr(\"r\",5).attr(\"fill\",\"#111\");\n  const label = tip.append(\"text\").attr(\"x\",10).attr(\"y\",-10).style(\"font-size\",\"14px\");\n\n  svg.on(\"mousemove\", function(event) {\n    const [mx,my] = d3.pointer(event, g.node());\n    const year = Math.round(x.invert(mx));\n    const i = d3.bisector(d => d.year).left(data, year);\n    const d0 = data[Math.min(Math.max(i,0), data.length-1)];\n    tip.style(\"display\", null).attr(\"transform\", `translate(${x(d0.year)},${y(d0.y)})`);\n    label.text(`${d0.year}: ${d0.y.toFixed(3)}`);\n  }).on(\"mouseleave\", function() {\n    tip.style(\"display\",\"none\");\n  });\n})();\n</script>\n</body>\n</html>\n"
       },
@@ -13854,7 +13854,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/run_v15_all.py": {
+    "nhra_game_theory_repo_20251221/scripts/run_v15_all.py": {
       "constants": {},
       "functions": {
         "equilibria_snapshot": [
@@ -13868,19 +13868,19 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/make_plots_v15.py": {
+    "nhra_game_theory_repo_20251221/scripts/make_plots_v15.py": {
       "constants": {},
       "functions": {
         "main": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/check_per_file_coverage.py": {
+    "nhra_game_theory_repo_20251221/scripts/check_per_file_coverage.py": {
       "constants": {},
       "functions": {},
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/run_v16_all.py": {
+    "nhra_game_theory_repo_20251221/scripts/run_v16_all.py": {
       "constants": {},
       "functions": {
         "equilibria_snapshot": [
@@ -13894,14 +13894,14 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/make_plots_v16.py": {
+    "nhra_game_theory_repo_20251221/scripts/make_plots_v16.py": {
       "constants": {},
       "functions": {
         "main": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/build_report_v16.py": {
+    "nhra_game_theory_repo_20251221/scripts/build_report_v16.py": {
       "constants": {
         "DATE": "20251221"
       },
@@ -13914,7 +13914,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/run_v17_all.py": {
+    "nhra_game_theory_repo_20251221/scripts/run_v17_all.py": {
       "constants": {},
       "functions": {
         "equilibria_snapshot": [
@@ -13933,14 +13933,14 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/make_plots_v17.py": {
+    "nhra_game_theory_repo_20251221/scripts/make_plots_v17.py": {
       "constants": {},
       "functions": {
         "main": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/build_report_v17.py": {
+    "nhra_game_theory_repo_20251221/scripts/build_report_v17.py": {
       "constants": {},
       "functions": {
         "md_table": [
@@ -13951,7 +13951,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/run_v18_all.py": {
+    "nhra_game_theory_repo_20251221/scripts/run_v18_all.py": {
       "constants": {},
       "functions": {
         "equilibria_snapshot": [
@@ -13970,14 +13970,14 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/make_plots_v18.py": {
+    "nhra_game_theory_repo_20251221/scripts/make_plots_v18.py": {
       "constants": {},
       "functions": {
         "main": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/build_report_v18.py": {
+    "nhra_game_theory_repo_20251221/scripts/build_report_v18.py": {
       "constants": {},
       "functions": {
         "md_table": [
@@ -13988,7 +13988,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/run_v19_all.py": {
+    "nhra_game_theory_repo_20251221/scripts/run_v19_all.py": {
       "constants": {},
       "functions": {
         "equilibria_snapshot": [
@@ -14007,14 +14007,14 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/make_plots_v19.py": {
+    "nhra_game_theory_repo_20251221/scripts/make_plots_v19.py": {
       "constants": {},
       "functions": {
         "main": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/build_report_v19.py": {
+    "nhra_game_theory_repo_20251221/scripts/build_report_v19.py": {
       "constants": {},
       "functions": {
         "md_table": [
@@ -14025,7 +14025,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/solve_fixed_point_v19.py": {
+    "nhra_game_theory_repo_20251221/scripts/solve_fixed_point_v19.py": {
       "constants": {},
       "functions": {
         "deterministic_strategies": [
@@ -14050,14 +14050,14 @@
         }
       }
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/network_effects_v19.py": {
+    "nhra_game_theory_repo_20251221/scripts/network_effects_v19.py": {
       "constants": {},
       "functions": {
         "main": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/build_context_pack.py": {
+    "nhra_game_theory_repo_20251221/scripts/build_context_pack.py": {
       "constants": {},
       "functions": {
         "read_any": [
@@ -14067,7 +14067,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/check_parameters_grounded.py": {
+    "nhra_game_theory_repo_20251221/scripts/check_parameters_grounded.py": {
       "constants": {},
       "functions": {
         "die": [
@@ -14086,14 +14086,14 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/make_parameter_registry_v20.py": {
+    "nhra_game_theory_repo_20251221/scripts/make_parameter_registry_v20.py": {
       "constants": {},
       "functions": {
         "main": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/diagrams/convert_mermaid_to_dot.py": {
+    "nhra_game_theory_repo_20251221/scripts/diagrams/convert_mermaid_to_dot.py": {
       "constants": {},
       "functions": {
         "_clean_label": [
@@ -14110,7 +14110,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/diagrams/convert_dot_to_mermaid.py": {
+    "nhra_game_theory_repo_20251221/scripts/diagrams/convert_dot_to_mermaid.py": {
       "constants": {},
       "functions": {
         "dot_to_mermaid": [
@@ -14121,7 +14121,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/diagrams/render_all.py": {
+    "nhra_game_theory_repo_20251221/scripts/diagrams/render_all.py": {
       "constants": {},
       "functions": {
         "render_dot": [
@@ -14132,7 +14132,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/diagrams/improve_mermaid_v9.py": {
+    "nhra_game_theory_repo_20251221/scripts/diagrams/improve_mermaid_v9.py": {
       "constants": {
         "INIT_BLOCK": "%%{init: {\n  \"theme\": \"base\",\n  \"flowchart\": { \"curve\": \"basis\", \"nodeSpacing\": 60, \"rankSpacing\": 85, \"padding\": 10 },\n  \"themeVariables\": {\n    \"fontFamily\": \"Inter, Arial, sans-serif\",\n    \"fontSize\": \"14px\",\n    \"lineColor\": \"#333333\",\n    \"textColor\": \"#111111\"\n  }\n}}%%"
       },
@@ -14144,7 +14144,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/scripts/interactive/make_d3_network_v9.py": {
+    "nhra_game_theory_repo_20251221/scripts/interactive/make_d3_network_v9.py": {
       "constants": {},
       "functions": {
         "compute_centrality": [
@@ -14155,7 +14155,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/src/nhra_game_theory/v8.py": {
+    "nhra_game_theory_repo_20251221/src/nhra_game_theory/v8.py": {
       "constants": {},
       "functions": {
         "clamp": [
@@ -14263,7 +14263,7 @@
         }
       }
     },
-    "nhra_game_theory_repo_v21_20251221/src/nhra_game_theory/plotting.py": {
+    "nhra_game_theory_repo_20251221/src/nhra_game_theory/plotting.py": {
       "constants": {},
       "functions": {
         "savefig": [
@@ -14296,7 +14296,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/src/nhra_game_theory/equilibrium.py": {
+    "nhra_game_theory_repo_20251221/src/nhra_game_theory/equilibrium.py": {
       "constants": {},
       "functions": {
         "logistic": [
@@ -14320,7 +14320,7 @@
         }
       }
     },
-    "nhra_game_theory_repo_v21_20251221/src/nhra_game_theory/v9.py": {
+    "nhra_game_theory_repo_20251221/src/nhra_game_theory/v9.py": {
       "constants": {},
       "functions": {
         "clamp": [
@@ -14436,19 +14436,19 @@
         }
       }
     },
-    "nhra_game_theory_repo_v21_20251221/src/nhra_game_theory/__init__.py": {
+    "nhra_game_theory_repo_20251221/src/nhra_game_theory/__init__.py": {
       "constants": {
         "__version__": "0.20.0"
       },
       "functions": {},
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/src/nhra_game_theory/subgames/__init__.py": {
+    "nhra_game_theory_repo_20251221/src/nhra_game_theory/subgames/__init__.py": {
       "constants": {},
       "functions": {},
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/src/nhra_game_theory/subgames/nash.py": {
+    "nhra_game_theory_repo_20251221/src/nhra_game_theory/subgames/nash.py": {
       "constants": {},
       "functions": {
         "_best_responses_row": [
@@ -14484,7 +14484,7 @@
         }
       }
     },
-    "nhra_game_theory_repo_v21_20251221/src/nhra_game_theory/subgames/games.py": {
+    "nhra_game_theory_repo_20251221/src/nhra_game_theory/subgames/games.py": {
       "constants": {},
       "functions": {
         "definition_game": [
@@ -14513,7 +14513,7 @@
         }
       }
     },
-    "nhra_game_theory_repo_v21_20251221/tests/test_smoke.py": {
+    "nhra_game_theory_repo_20251221/tests/test_smoke.py": {
       "constants": {},
       "functions": {
         "test_run_hybrid_smoke": [],
@@ -14523,7 +14523,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/tests/test_properties.py": {
+    "nhra_game_theory_repo_20251221/tests/test_properties.py": {
       "constants": {},
       "functions": {
         "test_relative_risk_monotone_pressure": [],
@@ -14532,7 +14532,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/tests/test_coverage_v11.py": {
+    "nhra_game_theory_repo_20251221/tests/test_coverage_v11.py": {
       "constants": {},
       "functions": {
         "test_nep_series_increases": [],
@@ -14545,7 +14545,7 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/tests/test_equilibrium.py": {
+    "nhra_game_theory_repo_20251221/tests/test_equilibrium.py": {
       "constants": {},
       "functions": {
         "test_mixed_strategy_logit_bounds": [],
@@ -14554,14 +14554,14 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/tests/test_v8_equilibrium_branch.py": {
+    "nhra_game_theory_repo_20251221/tests/test_v8_equilibrium_branch.py": {
       "constants": {},
       "functions": {
         "test_decide_strategies_equilibrium_branch_runs": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/tests/test_subgames_nash.py": {
+    "nhra_game_theory_repo_20251221/tests/test_subgames_nash.py": {
       "constants": {},
       "functions": {
         "test_all_nash_pure_exists": [],
@@ -14572,28 +14572,28 @@
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/tests/test_v15_runs.py": {
+    "nhra_game_theory_repo_20251221/tests/test_v15_runs.py": {
       "constants": {},
       "functions": {
         "test_run_hybrid_with_equilibria": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/tests/test_subgames_games.py": {
+    "nhra_game_theory_repo_20251221/tests/test_subgames_games.py": {
       "constants": {},
       "functions": {
         "test_each_game_has_equilibrium": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/tests/test_v8_step_branches.py": {
+    "nhra_game_theory_repo_20251221/tests/test_v8_step_branches.py": {
       "constants": {},
       "functions": {
         "test_step_covers_else_branches": []
       },
       "classes": {}
     },
-    "nhra_game_theory_repo_v21_20251221/tests/test_v8_heuristic_branch.py": {
+    "nhra_game_theory_repo_20251221/tests/test_v8_heuristic_branch.py": {
       "constants": {},
       "functions": {
         "test_decide_strategies_heuristic_branch_runs": []

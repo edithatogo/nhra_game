@@ -1,5 +1,15 @@
 # Changelog
 
+## v27 (in progress) — 2025-12-30
+- **Project Maturity:** Systematically removing hard-coded version strings and cleaning up data paths.
+- **Dynamic Versioning:** Dashboard and package now surface version from `pyproject.toml` automatically.
+- **SOTA Architecture:** Consolidating on JAX engine and deprecating legacy NumPy paths.
+
+## v26.0.1 — 2025-12-27
+- **Codebase Maturity:** Prepared dependencies for JAX acceleration.
+- **Community Standards:** Added CONTRIBUTING/CODE_OF_CONDUCT and automated docs deployment.
+- **CI Hardening:** Expanded testing matrix to Ubuntu/macOS/Windows.
+
 ## v23 — 2025-12-24
 - **Dashboard Enhancements:** Added Effective Share Drift analysis and Ranked Intervention Table (with uncertainty).
 - **Reporting:** Automated generation of Methods Appendix and Manuscript Parameter Table (STRESS compliant).

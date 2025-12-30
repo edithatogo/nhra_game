@@ -17,7 +17,7 @@ from nhra_gt.legacy_engine import Params
 
 def generate_sensitivity_summary(morris_path: Path, sobol_path: Path, output_path: Path) -> None:
     """Synthesizes Morris and Sobol results into a Markdown report."""
-    summary = "# Global Sensitivity Analysis Summary (v21)\n\n"
+    summary = "# Global Sensitivity Analysis Summary\n\n"
     summary += "This report summarizes the findings from the Morris screening and Sobol variance decomposition.\n\n"
 
     # Morris Section

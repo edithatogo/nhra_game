@@ -8,7 +8,7 @@ from nhra_gt.domain.validation import BlindReveal, aggregate_metrics
 
 
 def main():
-    historical_path = Path("data/calibration_v21/historical_normalized.csv")
+    historical_path = Path("data/calibration/historical_normalized.csv")
     if not historical_path.exists():
         print(f"Error: {historical_path} not found.")
         return

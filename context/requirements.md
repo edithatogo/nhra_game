@@ -1,4 +1,4 @@
-# requirements.md — NHRA game-theory + system-dynamics modelling for RACMA (v21)
+# requirements.md — NHRA game-theory + system-dynamics modelling for RACMA
 
 **Version:** v21  
 **Date:** 2025-12-21  

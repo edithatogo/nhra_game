@@ -6,8 +6,8 @@ import pandas as pd
 
 
 def verify_alignment():
-    spine_path = Path("data/calibration_v21/economic_spine.csv")
-    activity_path = Path("data/calibration_v21/historical_normalized.csv")
+    spine_path = Path("data/calibration/economic_spine.csv")
+    activity_path = Path("data/calibration/historical_normalized.csv")
 
     if not spine_path.exists() or not activity_path.exists():
         print(f"Error: Missing files. Spine: {spine_path.exists()}, Activity: {activity_path.exists()}")

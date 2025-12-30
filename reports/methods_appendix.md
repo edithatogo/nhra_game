@@ -1,4 +1,4 @@
-# Methods Appendix: NHRA Game Theory Model (v24)
+# Methods Appendix: NHRA Game Theory Model
 **Author:** Dylan A Mordaunt
 
 ## 1. Model Structure

@@ -7,10 +7,10 @@
     - [x] Sub-task: Create a failing test case in `tests/` that mocks engine output missing the required key.
     - [x] Sub-task: Identify where the key is generated in the engine vs where it is consumed in `dashboard.py`.
     - [x] Sub-task: Implement fix (ensure engine produces the key or dashboard handles its absence) and pass tests.
-- [ ] Task: Implement Dynamic Versioning.
-    - [ ] Sub-task: Modify `dashboard.py` and `src/nhra_gt/__init__.py` to read version from `pyproject.toml`.
-    - [ ] Sub-task: Remove all hard-coded version strings (e.g., "v21") from the UI and filenames.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Stabilization & Foundation' (Protocol in workflow.md)
+- [x] Task: Implement Dynamic Versioning. [commit: 17228]
+    - [x] Sub-task: Modify `dashboard.py` and `src/nhra_gt/__init__.py` to read version from `pyproject.toml`.
+    - [x] Sub-task: Remove all hard-coded version strings (e.g., "v21") from the UI and filenames.
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Stabilization & Foundation' (Protocol in workflow.md) [checkpoint: 17228]
 
 ## Phase 2: Architectural Consolidation (JAX)
 *Goal: Eliminate technical debt by deprecating the legacy engine in favor of the high-performance JAX engine.*

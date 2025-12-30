@@ -235,22 +235,44 @@ class JurisdictionState:
 class StateJax:
     """JAX-compatible simulation state (Global Orchestrator)."""
 
-    year: int
-    month: int
-    pressure: float
-    occupancy: float
-    offload_min: float
-    within4: float
-    system_mode: int  # Mapped from SystemModeJax
-    workforce_pool: float = 1.0
-    agreement_clock: int = 5
+    year: Any
+    month: Any
+    pressure: Any
+    occupancy: Any
+    offload_min: Any
+    within4: Any
 
-    # Hierarchical Entities (Vectorized PyTrees)
-    jurisdictions: JurisdictionState = struct.field(default_factory=lambda: JurisdictionState(0))
+    # Fiscal / bargaining state
+    effective_cth_share: Any = 0.38
+    efficiency_gap: Any = 0.10
+    discharge_delay: Any = 1.0
+    political_capital: Any = 1.0
+    equity_index: Any = 1.0
+    reconciliation_balance: Any = 0.0
+    bailout_expectation: Any = 0.0
+    total_block_revenue: Any = 0.0
+
+    # Orchestrator state
+    system_mode: Any = 0  # Mapped from SystemModeJax
+    agreement_clock: Any = 5
+    workforce_pool: Any = 1.0
+    target_capacity: Any = 1.0
+    current_capacity: Any = 1.0
+    coding_intensity: Any = 1.0
+    reputation_score: Any = 1.0
+    jurisdiction_id: Any = 0
+
+    # Per-LHN (flat) state used by tests + simple vmaps
+    lhn_pressure: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(5))
+    lhn_nwau: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(5))
+
+    # Hierarchical Entities (optional richer representation)
+    jurisdictions: JurisdictionState | None = None
 
     # Auditor Agent state
     auditor_suspicion: float = 0.0
     audit_pressure_active: float = 0.0
+    adjustment_costs: float = 0.0
 
     # Lags & Measurement
     # Buffers store up to 12 months of history
