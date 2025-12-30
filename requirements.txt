@@ -13,3 +13,9 @@ pydantic>=2
 pydantic-settings
 pandera
 polars
+# JAX stack (required for core engine)
+jax>=0.4
+jaxlib>=0.4
+flax>=0.8
+jaxtyping>=0.2
+beartype
