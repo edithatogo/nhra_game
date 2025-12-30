@@ -1,0 +1,48 @@
+scenarios:
+  steady_state:
+    name: "Steady State"
+    description: "Maintains current policy settings with moderate growth and stable efficiency targets."
+    params:
+      nominal_cth_share_target: 0.45
+      nep_annual_growth: 0.03
+      bed_capacity_index: 1.00
+      discharge_delay_base: 1.00
+      political_salience: 0.30
+      audit_pressure: 0.50
+      cost_shifting_intensity: 0.35
+
+  fiscal_cliff:
+    name: "Fiscal Cliff 2026"
+    description: "Simulates a sharp reduction in Commonwealth funding targets and increased audit pressure."
+    params:
+      nominal_cth_share_target: 0.38
+      nep_annual_growth: 0.015
+      bed_capacity_index: 0.90
+      discharge_delay_base: 1.20
+      political_salience: 0.60
+      audit_pressure: 0.90
+      cost_shifting_intensity: 0.60
+
+  pandemic_shock:
+    name: "Systemic Shock"
+    description: "Extreme demand surge combined with workforce drain and significant discharge delays."
+    params:
+      nominal_cth_share_target: 0.50
+      nep_annual_growth: 0.05
+      bed_capacity_index: 0.80
+      discharge_delay_base: 1.50
+      political_salience: 0.80
+      audit_pressure: 0.30
+      cost_shifting_intensity: 0.70
+
+  reform_package:
+    name: "Integrated Reform"
+    description: "Optimal policy mix including pooled funding, UCC integration, and realistic pricing."
+    params:
+      nominal_cth_share_target: 0.48
+      nep_annual_growth: 0.04
+      bed_capacity_index: 1.10
+      discharge_delay_base: 0.80
+      political_salience: 0.20
+      audit_pressure: 0.40
+      cost_shifting_intensity: 0.15

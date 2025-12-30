@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import streamlit as st
+import yaml
 
 try:
     from nhra_gt.visualization.game_trees import (
@@ -51,6 +52,54 @@ from nhra_gt.subgames.games import (
     discharge_coordination_game,
     governance_integration_game,
 )
+
+
+def load_scenario_library() -> dict:
+    path = Path("configs/scenarios.yaml")
+    if path.exists():
+        with open(path) as f:
+            return yaml.safe_load(f).get("scenarios", {})
+    return {}
+
+
+def initialize_slider_state(scenarios: dict):
+    """Initializes session state for sliders if not already present."""
+    default_scenario = scenarios.get("steady_state", {})
+    default_params = default_scenario.get("params", {})
+
+    slider_keys = [
+        "nominal_cth_share_target",
+        "nep_annual_growth",
+        "bed_capacity_index",
+        "discharge_delay_base",
+        "political_salience",
+        "audit_pressure",
+        "rurality_weight",
+        "cost_shifting_intensity",
+        "signal_lag_months",
+        "claims_lag_months",
+    ]
+
+    for key in slider_keys:
+        if key not in st.session_state:
+            # Use value from steady_state if available, otherwise hardcoded defaults
+            val = default_params.get(key)
+            if val is None:
+                # Fallback defaults
+                defaults = {
+                    "nominal_cth_share_target": 0.45,
+                    "nep_annual_growth": 0.03,
+                    "bed_capacity_index": 1.0,
+                    "discharge_delay_base": 1.0,
+                    "political_salience": 0.30,
+                    "audit_pressure": 0.50,
+                    "rurality_weight": 0.35,
+                    "cost_shifting_intensity": 0.35,
+                    "signal_lag_months": 1,
+                    "claims_lag_months": 3,
+                }
+                val = defaults.get(key, 0.0)
+            st.session_state[key] = val
 
 
 def prepare_ghost_overlay_data(
@@ -217,6 +266,10 @@ def main() -> None:
     )
     apply_custom_theme()
 
+    # Load Scenarios
+    scenarios = load_scenario_library()
+    initialize_slider_state(scenarios)
+
     st.title(f"🏥 NHRA Strategic Scenario Analysis (v{__version__})")
     st.markdown("""
     ### Strategic Negotiation & System Risk Simulator (Cognitive Twin)
@@ -225,18 +278,25 @@ def main() -> None:
     to adjust parameters and observe the projected impact on clinical risk and system pressure.
     """)
 
-    with st.expander("ℹ️ How to read these results"):
-        st.write("""
-        - **Baseline (Grey):** Represents the system state with default configuration.
-        - **Scenario (Teal):** Reflects the impact of your current lever selections.
-        - **Relative Risk:** A composite proxy for patient safety risk based on access block and offload delays.
-        - **System Pressure:** An index of hospital operational strain (occupancy and throughput constraints).
-        """)
-
     # ----------------------------
     # Sidebar: Strategic Levers
     # ----------------------------
     st.sidebar.title("🎮 Strategic Levers")
+
+    # Scenario Selector
+    st.sidebar.subheader("📂 Scenario Library")
+    scenario_options = ["Manual / Custom"] + [scenarios[k]["name"] for k in scenarios]
+    selected_scenario_name = st.sidebar.selectbox("Select standard scenario:", scenario_options)
+
+    if selected_scenario_name != "Manual / Custom":
+        # Find the scenario key
+        sk = [k for k in scenarios if scenarios[k]["name"] == selected_scenario_name][0]
+        s_data = scenarios[sk]
+        st.sidebar.info(s_data["description"])
+        # Update session state
+        for pk, pv in s_data["params"].items():
+            st.session_state[pk] = pv
+
     st.sidebar.info("Adjust the sliders below to simulate different NHRA negotiation outcomes.")
 
     # Funding Levers
@@ -245,18 +305,23 @@ def main() -> None:
         "Nominal Cth Share Target",
         0.30,
         0.60,
-        0.45,
+        st.session_state.nominal_cth_share_target,
         0.01,
+        key="slider_nominal_share",
         help="The headline funding percentage agreed in the NHRA (e.g. 45% or 50%).",
     )
+    st.session_state.nominal_cth_share_target = nominal_share
+
     nep_growth = st.sidebar.slider(
         "NEP Annual Growth",
         0.01,
         0.08,
-        0.03,
+        st.session_state.nep_annual_growth,
         0.005,
+        key="slider_nep_growth",
         help="The policy-defined growth rate of the National Efficient Price.",
     )
+    st.session_state.nep_annual_growth = nep_growth
 
     # Operational Levers
     st.sidebar.subheader("🚑 Operational Capacity")
@@ -264,18 +329,23 @@ def main() -> None:
         "Bed Capacity Index",
         0.70,
         1.30,
-        1.00,
+        st.session_state.bed_capacity_index,
         0.05,
+        key="slider_bed_capacity",
         help="Relative index of available public hospital beds. Values > 1.0 indicate expanded capacity.",
     )
+    st.session_state.bed_capacity_index = bed_capacity
+
     discharge_delay = st.sidebar.slider(
         "Discharge Delay Base",
         0.50,
         2.00,
-        1.00,
+        st.session_state.discharge_delay_base,
         0.05,
+        key="slider_discharge_delay",
         help="Impact of Aged Care and NDIS placement delays. Values < 1.0 indicate improved integration.",
     )
+    st.session_state.discharge_delay_base = discharge_delay
 
     # Policy & Behavioural
     st.sidebar.subheader("⚖️ Policy & Behaviour")
@@ -283,18 +353,23 @@ def main() -> None:
         "Political Salience",
         0.05,
         0.80,
-        0.30,
+        st.session_state.political_salience,
         0.05,
+        key="slider_political_salience",
         help="The intensity of political pressure on negotiation outcomes.",
     )
+    st.session_state.political_salience = political_salience
+
     audit_pressure = st.sidebar.slider(
         "Audit Pressure",
         0.05,
         1.00,
-        0.50,
+        st.session_state.audit_pressure,
         0.05,
+        key="slider_audit_pressure",
         help="The degree of compliance scrutiny and administrative burden applied to funding.",
     )
+    st.session_state.audit_pressure = audit_pressure
 
     # Clinical & Workforce
     st.sidebar.subheader("🩺 Clinical & Workforce")
@@ -302,18 +377,23 @@ def main() -> None:
         "Rurality Weight",
         0.05,
         0.70,
-        0.35,
+        st.session_state.rurality_weight,
         0.05,
+        key="slider_rurality_weight",
         help="The fraction of healthcare activity occurring in regional and remote areas.",
     )
+    st.session_state.rurality_weight = rurality_weight
+
     cost_shifting = st.sidebar.slider(
         "Cost-Shifting Intensity",
         0.05,
         0.80,
-        0.35,
+        st.session_state.cost_shifting_intensity,
         0.05,
+        key="slider_cost_shifting",
         help="The strength of incentives to shift pressures across Commonwealth/State interfaces.",
     )
+    st.session_state.cost_shifting_intensity = cost_shifting
 
     # Lags & Measurement
     st.sidebar.subheader("⏱️ Lags & Measurement")
@@ -321,18 +401,23 @@ def main() -> None:
         "Signal Lag (Months)",
         0,
         6,
+        st.session_state.signal_lag_months,
         1,
-        1,
+        key="slider_signal_lag",
         help="Delay before public indicators (pressure, occupancy) are reported.",
     )
+    st.session_state.signal_lag_months = signal_lag
+
     claims_lag = st.sidebar.slider(
         "Claims Lag (Months)",
         0,
         12,
-        3,
+        st.session_state.claims_lag_months,
         1,
+        key="slider_claims_lag",
         help="Delay before financial activity (NWAU, coding) is reconciled.",
     )
+    st.session_state.claims_lag_months = claims_lag
 
     # Scenario Management
     st.sidebar.markdown("---")
@@ -471,8 +556,9 @@ def main() -> None:
     # ----------------------------
     # Main Content Area: Tabs
     # ----------------------------
-    tab1, tab2, tab2_5, tab2_6, tab3, tab4, tab5, tab6, tab7 = st.tabs(
+    tab0, tab1, tab2, tab2_5, tab2_6, tab3, tab4, tab5, tab6, tab7 = st.tabs(
         [
+            "📖 Theory & Background",
             "📈 Scenario Analysis",
             "🕸️ Strategic Map",
             "🌲 Game Tree Explorer",
@@ -484,6 +570,42 @@ def main() -> None:
             "🔍 Forensic Audit",
         ]
     )
+
+    with tab0:
+        st.markdown("## 📖 Strategic Foundations of the NHRA Game")
+
+        col_bg1, col_bg2 = st.columns(2)
+        with col_bg1:
+            st.markdown("### 🏛️ The Problem: Vertical Fiscal Imbalance")
+            st.write("""
+            The Australian National Health Reform Agreement (NHRA) operates in a state of
+            **Vertical Fiscal Imbalance (VFI)**. The Commonwealth controls the majority of
+            revenue, while States carry the majority of operational risk.
+
+            This creates specific strategic frictions:
+            - **Cost Shifting:** Incentives to move patients into 'someone else's budget' (e.g. ED vs GP).
+            - **Hold-Up Games:** High-stakes negotiations every 5 years where system failure is used as leverage.
+            - **Boundary Shifting:** Moving activity between ABF and Block funding to bypass growth caps.
+            """)
+
+        with col_bg2:
+            st.markdown("### 🎮 The Solution: Game Theoretic Modelling")
+            st.write("""
+            We model these frictions as a series of **non-cooperative games**.
+            - **Players:** Commonwealth (Principal), States (Agents), and LHNs (Operators).
+            - **Equilibrium:** The simulation finds the 'Nash Equilibrium' where no player can improve their outcome by changing strategy alone.
+            - **Mechanics:** By modeling the *incentives* directly, we can predict how policy changes (like a 6.5% cap) drive unintended behaviors (like ramping).
+            """)
+
+        st.markdown("---")
+        st.markdown("### 🏗️ Technical Transparency")
+        st.write("""
+        This simulator is built on **JAX/XLA**, providing high-performance, differentiable simulation.
+        We use **PyGambit** for rigorous Nash equilibrium enumeration and **Quantal Response Equilibrium (QRE)**
+        to model boundedly-rational agents.
+        """)
+        st.link_button("View Gambit Documentation", "https://gambitproject.github.io/")
+        st.link_button("View JAX Repository", "https://github.com/google/jax")
 
     with tab1:
         st.markdown("#### System Trajectories")
@@ -509,9 +631,12 @@ def main() -> None:
                     combined, "rr_mean", "Relative Risk Proxy (Trajectories)", "Relative Risk"
                 )
                 st.plotly_chart(fig_risk, width="stretch")
-                st.caption(
-                    "Lower is better. Reflects the estimated impact of system delays on clinical outcomes."
-                )
+                with st.expander("🔍 How to interpret Risk Proxy"):
+                    st.write("""
+                    This plot shows the estimated impact of system constraints on patient safety.
+                    - **Y-Axis:** A relative index (1.0 = Baseline). Higher values indicate increased risk of adverse events due to ambulance ramping and access block.
+                    - **Markers:** Discrete states where safety thresholds are breached.
+                    """)
 
                 # Pressure Plot
                 st.markdown("**Hospital System Pressure**")
@@ -519,9 +644,12 @@ def main() -> None:
                     combined, "pressure_mean", "System Pressure Index", "Pressure Index"
                 )
                 st.plotly_chart(fig_pres, width="stretch")
-                st.caption(
-                    "Index of operational strain. Values > 1.0 indicate severe capacity constraints."
-                )
+                with st.expander("🔍 How to interpret System Pressure"):
+                    st.write("""
+                    Measures the total operational strain on the hospital network.
+                    - **Value > 1.0:** Indicates the system is operating beyond its efficient capacity.
+                    - **Divergence:** The gap between Baseline and Scenario shows the net effect of your policy lever selections.
+                    """)
             with col2:
                 st.markdown("#### Executive Summary")
 
@@ -618,17 +746,24 @@ def main() -> None:
                     effective_share=summary_game["effshare_effective_2030"],
                 )
                 st.plotly_chart(fig_wf, width="stretch")
-                st.caption(
-                    "Visualises the 'leakage' from nominal commitments to effective realized funding."
-                )
+                with st.expander("🔍 How to interpret Funding Leakage"):
+                    st.write("""
+                    This 'Waterfall' chart decomposes the gap between the headline Agreement target and the actual money received.
+                    - **Nominal Target:** The starting policy commitment (e.g. 45%).
+                    - **Leakage Blocks:** Reductions due to caps, indexation mismatches, and audit penalties.
+                    - **Effective Share:** The true realized Commonwealth contribution.
+                    """)
 
             with col_f2:
                 st.markdown("**System Phase-Space (Hysteresis)**")
                 fig_ps = plot_phase_space(traj_game)
                 st.plotly_chart(fig_ps, width="stretch")
-                st.caption(
-                    "Traces the path of system pressure vs occupancy. Loops indicate hysteresis."
-                )
+                with st.expander("🔍 How to interpret Phase-Space"):
+                    st.write("""
+                    Visualizes the 'inertia' of the system.
+                    - **Loops:** If the path does not return on itself, the system has 'hysteresis' (path dependency).
+                    - **Area:** The size of the loop indicates how long the system remains 'stuck' in high-pressure modes even after the cause is removed.
+                    """)
 
             st.markdown("---")
             st.subheader("Patient Choice & Queuing Dynamics")
