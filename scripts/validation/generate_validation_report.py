@@ -39,7 +39,7 @@ def main():
     report.append("| :--- | :--- | :--- | :--- | :--- |")
     for m, vals in metrics.items():
         report.append(
-            f"| {m} | {vals['rmse']:.3f} | {vals['mape']*100:.1f}% | {vals['theil_u']:.3f} | {vals['hit_rate']:.3f} |"
+            f"| {m} | {vals['rmse']:.3f} | {vals['mape'] * 100:.1f}% | {vals['theil_u']:.3f} | {vals['hit_rate']:.3f} |"
         )
 
     report.append("\n## 3. Error Decomposition (Theil)")

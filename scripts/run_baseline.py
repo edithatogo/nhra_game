@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-import json
 from dataclasses import replace
 from pathlib import Path
 
 import polars as pl
-import numpy as np
 
 from nhra_gt.engine import Params, nep_series, nep_vs_cost_series, run_hybrid
 from nhra_gt.subgames.games import (
@@ -137,7 +135,7 @@ def main() -> None:
     # Baseline
     traj_pd, strat_pd = run_hybrid(years=years, p=base, seed=123, n_mc=250)
     traj = pl.from_pandas(traj_pd)
-    
+
     # Ensure types are correct for Polars ingestion
     if not strat_pd.empty:
         strat_pd["year"] = strat_pd["year"].astype(int)
@@ -145,9 +143,9 @@ def main() -> None:
         strat_pd["strategy"] = strat_pd["strategy"].astype(str)
         strat_pd["n"] = strat_pd["n"].astype(int)
         strat_pd["share"] = strat_pd["share"].astype(float)
-    
+
     strat = pl.from_pandas(strat_pd)
-    
+
     traj.write_csv(tables / "trajectory.csv")
     strat.write_csv(tables / "strategy_frequency.csv")
 
@@ -211,17 +209,21 @@ def main() -> None:
 
     # Intervention deltas vs baseline
     baseline_metrics = core.filter(pl.col("scenario") == "baseline_equilibria").drop("scenario")
-    
+
     deltas = []
     for row in interv.to_dicts():
         deltas.append(
             {
                 "scenario": row["scenario"],
                 "delta_rr_2030": row["rr_mean_2030"] - baseline_metrics[0, "rr_mean_2030"],
-                "delta_offload_2030": row["offload_mean_2030"] - baseline_metrics[0, "offload_mean_2030"],
-                "delta_within4_2030": row["within4_mean_2030"] - baseline_metrics[0, "within4_mean_2030"],
-                "delta_pressure_2030": row["pressure_mean_2030"] - baseline_metrics[0, "pressure_mean_2030"],
-                "delta_effgap_2030": row["effgap_mean_2030"] - baseline_metrics[0, "effgap_mean_2030"],
+                "delta_offload_2030": row["offload_mean_2030"]
+                - baseline_metrics[0, "offload_mean_2030"],
+                "delta_within4_2030": row["within4_mean_2030"]
+                - baseline_metrics[0, "within4_mean_2030"],
+                "delta_pressure_2030": row["pressure_mean_2030"]
+                - baseline_metrics[0, "pressure_mean_2030"],
+                "delta_effgap_2030": row["effgap_mean_2030"]
+                - baseline_metrics[0, "effgap_mean_2030"],
             }
         )
     pl.DataFrame(deltas).write_csv(tables / "intervention_deltas.csv")

@@ -1,22 +1,24 @@
-import yaml
-import sys
 import logging
-from typing import Dict, Any, List
+import sys
 from datetime import datetime
+
+import yaml
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-def load_references(file_path: str) -> List[Dict[str, Any]]:
+
+def load_references(file_path: str) -> list[dict[str, object]]:
     try:
-        with open(file_path, "r") as f:
+        with open(file_path) as f:
             data = yaml.safe_load(f)
             return data if isinstance(data, list) else []
     except Exception as e:
         logging.error(f"Error loading {file_path}: {e}")
         return []
 
-def validate_references(refs: List[Dict[str, Any]]) -> bool:
+
+def validate_references(refs: list[dict[str, object]]) -> bool:
     all_valid = True
     for ref in refs:
         rid = ref.get("id", "Unknown")
@@ -25,7 +27,8 @@ def validate_references(refs: List[Dict[str, Any]]) -> bool:
             all_valid = False
     return all_valid
 
-def validate_recency(references: List[Dict[str, Any]], max_age_years: int = 10) -> bool:
+
+def validate_recency(references: list[dict[str, object]], max_age_years: int = 10) -> bool:
     current_year = datetime.now().year
     all_recent = True
     for ref in references:
@@ -41,12 +44,17 @@ def validate_recency(references: List[Dict[str, Any]], max_age_years: int = 10) 
                 pass
     return all_recent
 
-def validate_quality(references: List[Dict[str, Any]], high_impact_list: List[str] = None) -> bool:
+
+def validate_quality(
+    references: list[dict[str, object]],
+    high_impact_list: list[str] | None = None,
+) -> bool:
     if high_impact_list is None:
         high_impact_list = ["nature", "science", "lancet", "nejm", "bmj", "jama"]
     return True
 
-def generate_bibliography(refs: List[Dict[str, Any]]) -> str:
+
+def generate_bibliography(refs: list[dict[str, object]]) -> str:
     """Generates a numbered Vancouver-style bibliography."""
     bib = ""
     for i, ref in enumerate(refs, 1):
@@ -56,24 +64,27 @@ def generate_bibliography(refs: List[Dict[str, Any]]) -> str:
         journal = ref.get("journal", ref.get("publisher", ""))
         doi = ref.get("doi", "")
         url = ref.get("url", "")
-        
+
         bib += f"{i}. {author}. ({year}). {title}. *{journal}*."
-        if doi: bib += f" DOI: {doi}"
-        elif url: bib += f" Available at: {url}"
+        if doi:
+            bib += f" DOI: {doi}"
+        elif url:
+            bib += f" Available at: {url}"
         bib += "\n"
     return bib
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python manage_refs.py <library.yaml>")
         sys.exit(1)
-    
+
     library = load_references(sys.argv[1])
     if validate_references(library):
         logging.info("Metadata validation passed.")
-    
+
     validate_recency(library)
     validate_quality(library)
-    
+
     print("\n--- GENERATED BIBLIOGRAPHY ---\n")
     print(generate_bibliography(library))

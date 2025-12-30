@@ -28,7 +28,7 @@ def main():
     results = revealer.run_prediction()
 
     print("\nBlind Reveal Results:")
-    print(f"{ 'Year':<6} | { 'Metric':<10} | { 'Pred':<6} | { 'Actual':<6} | { 'Error':<6}")
+    print(f"{'Year':<6} | {'Metric':<10} | {'Pred':<6} | {'Actual':<6} | {'Error':<6}")
     print("-" * 45)
 
     for res in results:
@@ -42,7 +42,7 @@ def main():
     # Summary
     summary = aggregate_metrics(results)
     print("\nPerformance Summary:")
-    print(f"{ 'Metric':<10} | { 'RMSE':<6} | { 'MAPE':<6} | { 'Theil U':<8} | { 'HitRate':<8}")
+    print(f"{'Metric':<10} | {'RMSE':<6} | {'MAPE':<6} | {'Theil U':<8} | {'HitRate':<8}")
     print("-" * 55)
     for m, vals in summary.items():
         print(

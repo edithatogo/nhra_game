@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import sys
 from pathlib import Path
+
 from playwright.sync_api import sync_playwright
 
 
@@ -23,14 +23,14 @@ def main():
         # Simple capture of the main chat area
         # ChatGPT uses different selectors, we'll try to get the text from the main thread
         print("Capturing content...")
-        
+
         # This is a naive capture of all text in the main element
         # It may need refinement based on exact ChatGPT DOM structure
         content = page.evaluate("() => document.body.innerText")
-        
+
         output_path = Path("context/origin_chatgpt_context.md")
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         with open(output_path, "w", encoding="utf-8") as f:
             f.write("# ChatGPT Origin Context Capture\n\n")
             f.write(f"Captured on: {Path('.').absolute()}\n\n")

@@ -60,7 +60,7 @@ def main():
     print("\n--- Calibration Results ---")
     for i, name in enumerate(PARAM_NAMES):
         print(
-            f"{name:25}: True={true_values[i]:.3f}, Recovered={recovered_values[i]:.3f}, Error={abs(recovered_values[i]-true_values[i]):.4f}"
+            f"{name:25}: True={true_values[i]:.3f}, Recovered={recovered_values[i]:.3f}, Error={abs(recovered_values[i] - true_values[i]):.4f}"
         )
 
     # 4. Visualization

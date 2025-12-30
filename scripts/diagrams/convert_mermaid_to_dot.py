@@ -23,13 +23,20 @@ import re
 from pathlib import Path
 
 INLINE_NODE = re.compile(r'(?P<id>[A-Za-z0-9_]+)\s*\[\s*"(?P<label>[^"]+)"\s*\]')
-INLINE_NODE2 = re.compile(r'(?P<id>[A-Za-z0-9_]+)\s*\[\s*(?P<label>[^\]]+)\s*\]')
+INLINE_NODE2 = re.compile(r"(?P<id>[A-Za-z0-9_]+)\s*\[\s*(?P<label>[^\]]+)\s*\]")
 INLINE_NODEP = re.compile(r'(?P<id>[A-Za-z0-9_]+)\s*\(\s*"(?P<label>[^"]+)"\s*\)')
-INLINE_NODEB = re.compile(r'(?P<id>[A-Za-z0-9_]+)\s*\{\s*(?P<label>[^\}]+)\s*\}')
+INLINE_NODEB = re.compile(r"(?P<id>[A-Za-z0-9_]+)\s*\{\s*(?P<label>[^\}]+)\s*\}")
 
-EDGE_LBL_PIPE = re.compile(r'^(?P<src>[A-Za-z0-9_]+)\s*(?P<op>-->|-\.->|---|==>)\s*\|(?P<label>[^|]+)\|\s*(?P<dst>[A-Za-z0-9_]+)\s*$')
-EDGE_LBL_MID = re.compile(r'^(?P<src>[A-Za-z0-9_]+)\s*--\s*(?P<label>[^-]+?)\s*-->(?P<dst>[A-Za-z0-9_]+)\s*$')
-EDGE_SIMPLE = re.compile(r'^(?P<src>[A-Za-z0-9_]+)\s*(?P<op>-->|-\.->|---|==>)\s*(?P<dst>[A-Za-z0-9_]+)\s*$')
+EDGE_LBL_PIPE = re.compile(
+    r"^(?P<src>[A-Za-z0-9_]+)\s*(?P<op>-->|-\.->|---|==>)\s*\|(?P<label>[^|]+)\|\s*(?P<dst>[A-Za-z0-9_]+)\s*$"
+)
+EDGE_LBL_MID = re.compile(
+    r"^(?P<src>[A-Za-z0-9_]+)\s*--\s*(?P<label>[^-]+?)\s*-->(?P<dst>[A-Za-z0-9_]+)\s*$"
+)
+EDGE_SIMPLE = re.compile(
+    r"^(?P<src>[A-Za-z0-9_]+)\s*(?P<op>-->|-\.->|---|==>)\s*(?P<dst>[A-Za-z0-9_]+)\s*$"
+)
+
 
 def _clean_label(s: str) -> str:
     s = s.strip()
@@ -37,6 +44,7 @@ def _clean_label(s: str) -> str:
         s = s[1:-1]
     s = s.replace("<br/>", "\n").replace("<br>", "\n")
     return s
+
 
 def _safe_id(nid: str) -> str:
     # DOT identifiers: use alnum + underscore; prefix if needed
@@ -47,13 +55,20 @@ def _safe_id(nid: str) -> str:
         nid2 = "N_" + nid2
     return nid2
 
+
 def mermaid_to_dot(mmd_text: str, title: str = "Mermaid converted") -> str:
     labels: dict[str, str] = {}
     edges: list[tuple[str, str, str | None, str]] = []
 
     for raw in mmd_text.splitlines():
         line = raw.strip()
-        if not line or line.startswith("%%") or line.startswith("classDef") or line.startswith("class ") or line.startswith("style "):
+        if (
+            not line
+            or line.startswith("%%")
+            or line.startswith("classDef")
+            or line.startswith("class ")
+            or line.startswith("style ")
+        ):
             continue
         if line.lower().startswith(("flowchart", "graph", "subgraph", "end")):
             continue
@@ -80,7 +95,9 @@ def mermaid_to_dot(mmd_text: str, title: str = "Mermaid converted") -> str:
         # parse edges
         m = EDGE_LBL_PIPE.match(line)
         if m:
-            edges.append((m.group("src"), m.group("dst"), _clean_label(m.group("label")), m.group("op")))
+            edges.append(
+                (m.group("src"), m.group("dst"), _clean_label(m.group("label")), m.group("op"))
+            )
             continue
         m = EDGE_LBL_MID.match(line)
         if m:
@@ -103,7 +120,9 @@ def mermaid_to_dot(mmd_text: str, title: str = "Mermaid converted") -> str:
     dot.append("digraph MermaidConverted {")
     dot.append("  rankdir=LR;")
     dot.append(f'  graph [labelloc="t", label="{title}", fontsize=12];')
-    dot.append('  node [shape=box, style="rounded,filled", fillcolor="#F7F7F7", color="#555555", fontname="Inter", fontsize=11];')
+    dot.append(
+        '  node [shape=box, style="rounded,filled", fillcolor="#F7F7F7", color="#555555", fontname="Inter", fontsize=11];'
+    )
     dot.append('  edge [color="#444444", fontname="Inter", fontsize=10];')
 
     for nid, lab in sorted(labels.items()):
@@ -124,8 +143,10 @@ def mermaid_to_dot(mmd_text: str, title: str = "Mermaid converted") -> str:
     dot.append("}")
     return "\n".join(dot)
 
+
 def main() -> None:
     import argparse
+
     ap = argparse.ArgumentParser()
     ap.add_argument("mmd", type=Path)
     ap.add_argument("--out", type=Path, required=True)
@@ -136,6 +157,7 @@ def main() -> None:
     title = args.title or args.mmd.stem
     dot = mermaid_to_dot(text, title=title)
     args.out.write_text(dot, encoding="utf-8")
+
 
 if __name__ == "__main__":
     main()

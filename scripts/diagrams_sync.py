@@ -9,6 +9,7 @@ It writes:
   - diagrams/graphviz/<name>.dot for every .mmd in diagrams/mermaid and diagrams/mermaid_user
   - diagrams/mermaid_from_graphviz/<name>.mmd for every .dot in diagrams/graphviz
 """
+
 from __future__ import annotations
 
 import re
@@ -20,7 +21,9 @@ GV_DIR = ROOT / "diagrams" / "graphviz"
 MM_FROM_GV_DIR = ROOT / "diagrams" / "mermaid_from_graphviz"
 
 
-EDGE_PAT = re.compile(r"^\s*([A-Za-z0-9_]+)(\[[^\]]+\]|\([^\)]+\)|\{[^\}]+\}|\[\"[^\"]+\"\])?\s*([-.=]+>)\s*([A-Za-z0-9_]+)(\[[^\]]+\]|\([^\)]+\)|\{[^\}]+\}|\[\"[^\"]+\"\])?\s*$")
+EDGE_PAT = re.compile(
+    r"^\s*([A-Za-z0-9_]+)(\[[^\]]+\]|\([^\)]+\)|\{[^\}]+\}|\[\"[^\"]+\"\])?\s*([-.=]+>)\s*([A-Za-z0-9_]+)(\[[^\]]+\]|\([^\)]+\)|\{[^\}]+\}|\[\"[^\"]+\"\])?\s*$"
+)
 NODE_LABEL_PAT = re.compile(r"^([A-Za-z0-9_]+)\s*(?:\[\"?(.*?)\"?\]|\((.*?)\)|\{(.*?)\})$")
 
 
@@ -40,7 +43,14 @@ def mermaid_to_dot(mmd_text: str, name: str) -> str:
 
     for raw in mmd_text.splitlines():
         line = raw.strip()
-        if not line or line.startswith("%%") or line.startswith("flowchart") or line.startswith("graph") or line.startswith("subgraph") or line == "end":
+        if (
+            not line
+            or line.startswith("%%")
+            or line.startswith("flowchart")
+            or line.startswith("graph")
+            or line.startswith("subgraph")
+            or line == "end"
+        ):
             continue
         if ":::" in line:
             line = line.split(":::")[0].strip()
@@ -84,7 +94,7 @@ def mermaid_to_dot(mmd_text: str, name: str) -> str:
     out.append("  rankdir=LR;")
     out.append('  node [shape=box, style="rounded"];')
     for nid, lab in sorted(nodes.items()):
-        safe = lab.replace('"', '\"')
+        safe = lab.replace('"', '"')
         out.append(f'  {nid} [label="{safe}"];')
     for u, v, a in edges:
         style = edge_style(a)
@@ -108,7 +118,7 @@ def dot_to_mermaid(dot_text: str, name: str) -> str:
             nid = line.split()[0]
             m2 = re.search(r'label="(.*?)"', line)
             if m2:
-                labels[nid] = m2.group(1).replace('\"', '"')
+                labels[nid] = m2.group(1).replace('"', '"')
     out = []
     out.append("flowchart LR")
     for nid, lab in labels.items():

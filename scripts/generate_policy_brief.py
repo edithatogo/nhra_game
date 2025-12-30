@@ -61,8 +61,8 @@ def generate_brief(scenario_name: str, output_path: Path):
     story.append(Paragraph("Executive Summary", styles["Heading2"]))
     summary_text = (
         f"This simulation forecasts hospital system performance and funding dynamics for the 2025-2030 period. "
-        f"By 2030, the effective Commonwealth funding share is projected to reach **{summary['effshare_effective_2030']*100:.1f}%**, "
-        f"representing a significant departure from the nominal target of **{summary['effshare_nominal_2030']*100:.1f}%** due to indexation and cap leakage."
+        f"By 2030, the effective Commonwealth funding share is projected to reach **{summary['effshare_effective_2030'] * 100:.1f}%**, "
+        f"representing a significant departure from the nominal target of **{summary['effshare_nominal_2030'] * 100:.1f}%** due to indexation and cap leakage."
     )
     story.append(Paragraph(summary_text, styles["Normal"]))
     story.append(Spacer(1, 12))
@@ -93,9 +93,9 @@ def generate_brief(scenario_name: str, output_path: Path):
     story.append(Paragraph("3. Summary Metrics (2030 Forecast)", styles["Heading3"]))
     data = [
         ["Metric", "Value"],
-        ["Effective Share (%)", f"{summary['effshare_effective_2030']*100:.1f}%"],
+        ["Effective Share (%)", f"{summary['effshare_effective_2030'] * 100:.1f}%"],
         ["Relative Risk Proxy", f"{summary['rr_2030']:.2f}"],
-        ["Within 4 Hours (%)", f"{summary['within4_2030']*100:.1f}%"],
+        ["Within 4 Hours (%)", f"{summary['within4_2030'] * 100:.1f}%"],
         ["Cumulative Pressure", f"{summary['cumulative_pressure_2030']:.2f}"],
     ]
 

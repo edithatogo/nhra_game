@@ -49,7 +49,7 @@ def analyze_file(file_path):
 ### Long Sentences (>30 words)
 """
     for i, s in enumerate(long_sentences):
-        report += f'{i+1}. "{s}..."\n'
+        report += f'{i + 1}. "{s}..."\n'
 
     return report
 

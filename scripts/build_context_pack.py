@@ -33,12 +33,14 @@ ORDER = [
     "08_glossary_abbreviations.md",
 ]
 
+
 def read_any(path: Path) -> str:
     if path.suffix.lower() == ".csv":
         # render small CSV as markdown table-ish
         text = path.read_text(encoding="utf-8").strip()
         return "```csv\n" + text + "\n```\n"
     return path.read_text(encoding="utf-8").strip() + "\n"
+
 
 def main() -> None:
     out = CTX / "CONTEXT_PACK.md"
@@ -48,7 +50,7 @@ def main() -> None:
 
     for name in ORDER:
         # Prefer root-level docs; fall back to context/ copies
-        p = (ROOT / name)
+        p = ROOT / name
         if not p.exists():
             p = CTX / name
         if not p.exists():
@@ -64,6 +66,7 @@ def main() -> None:
 
     out.write_text("\n".join(parts), encoding="utf-8")
     print(f"Wrote: {out}")
+
 
 if __name__ == "__main__":
     main()

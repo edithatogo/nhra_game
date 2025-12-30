@@ -142,15 +142,15 @@ def generate_prose_summary(summary_base, summary_game) -> str:
     # 2. Institutional Analysis
     narrative += "#### 💸 Financial & Constitutional Layer\n"
     if share_change > 0.03:
-        narrative += f"- **Hold-Up Success:** State agents successfully leveraged system pressure to extract a {share_change*100:.1f}% increase in realized Commonwealth contribution.\n"
+        narrative += f"- **Hold-Up Success:** State agents successfully leveraged system pressure to extract a {share_change * 100:.1f}% increase in realized Commonwealth contribution.\n"
     elif share_change < -0.03:
-        narrative += f"- **Fiscal Leakage:** Despite nominal targets, effective realized funding has drifted downwards by {abs(share_change)*100:.1f}%, primarily driven by cap-breaches and efficiency gap drift.\n"
+        narrative += f"- **Fiscal Leakage:** Despite nominal targets, effective realized funding has drifted downwards by {abs(share_change) * 100:.1f}%, primarily driven by cap-breaches and efficiency gap drift.\n"
     else:
         narrative += "- **Funding Stability:** Realized contribution shares remain aligned with the 2025-2030 Agreement targets.\n"
 
     # 3. Operational Analysis
     narrative += "\n#### 🏥 Operational & Clinical Layer\n"
-    narrative += f"- **Resilience:** The system spends **{resilience*100:.0f}%** of the forecast period in 'Normal' mode. "
+    narrative += f"- **Resilience:** The system spends **{resilience * 100:.0f}%** of the forecast period in 'Normal' mode. "
     if pressure_final > 1.3:
         narrative += "Chronic overcrowding persists, with ED performance likely to remain below the 80% target due to upstream bottlenecks.\n"
     else:
@@ -522,8 +522,8 @@ def main() -> None:
                 share_base = summary_base["effshare_effective_2030"]
                 st.metric(
                     "Effective Cth Share (2030)",
-                    f"{share_val*100:.1f}%",
-                    delta=f"{(share_val - share_base)*100:.1f}%",
+                    f"{share_val * 100:.1f}%",
+                    delta=f"{(share_val - share_base) * 100:.1f}%",
                 )
 
                 # Relative Risk
@@ -541,8 +541,8 @@ def main() -> None:
                 w4_base = summary_base["within4_2030"]
                 st.metric(
                     "Within 4 Hours (2030)",
-                    f"{w4_val*100:.1f}%",
-                    delta=f"{(w4_val - w4_base)*100:.1f}%",
+                    f"{w4_val * 100:.1f}%",
+                    delta=f"{(w4_val - w4_base) * 100:.1f}%",
                 )
 
                 # System Resilience
@@ -550,8 +550,8 @@ def main() -> None:
                 res_base = summary_base["resilience_index"]
                 st.metric(
                     "Resilience Index",
-                    f"{res_val*100:.0f}%",
-                    delta=f"{(res_val - res_base)*100:.0f}%",
+                    f"{res_val * 100:.0f}%",
+                    delta=f"{(res_val - res_base) * 100:.0f}%",
                     help="Percentage of time spent in 'Normal' mode. Higher is better.",
                 )
 
@@ -823,7 +823,7 @@ def main() -> None:
             st.subheader("🎯 Pressure vs. Revenue Trade-off")
             # Simulated data for now based on engine_jax logic
             n_lhn = 5
-            lhn_ids = [f"LHN {i+1}" for i in range(n_lhn)]
+            lhn_ids = [f"LHN {i + 1}" for i in range(n_lhn)]
             # We pull from a mock or real vectorized state if available
             # For this MVP, we generate a scatter plot of sub-agent states
             lhn_df = pd.DataFrame(
@@ -931,7 +931,7 @@ def main() -> None:
                     st.markdown(f"**{metric.upper()}**")
                     cv1, cv2, cv3 = st.columns(3)
                     cv1.metric("RMSE", f"{vals['rmse']:.3f}")
-                    cv2.metric("MAPE", f"{vals['mape']*100:.1f}%")
+                    cv2.metric("MAPE", f"{vals['mape'] * 100:.1f}%")
                     cv3.metric("Theil U", f"{vals['theil_u']:.3f}")
 
             with col_v2:
@@ -1043,7 +1043,7 @@ def main() -> None:
 
             with col_h2:
                 st.markdown("#### Resilience Metrics")
-                st.metric("Resilience Index", f"{summary_game['resilience_index']*100:.0f}%")
+                st.metric("Resilience Index", f"{summary_game['resilience_index'] * 100:.0f}%")
                 st.metric("Recovery Time (months)", f"{summary_game['recovery_time']:.0f}")
                 st.metric("Loop Area (Lag Proxy)", f"{summary_game['hysteresis_area']:.3f}")
 
@@ -1109,11 +1109,11 @@ def main() -> None:
                 col_a, col_b = st.columns([3, 1])
                 with col_a:
                     st.write(
-                        f"Source {i+1}: {e.source_url} (Grade: {e.nhmrc_level}) - Mean: {e.mean}"
+                        f"Source {i + 1}: {e.source_url} (Grade: {e.nhmrc_level}) - Mean: {e.mean}"
                     )
                 with col_b:
-                    if st.button(f"Promote Source {i+1}", key=f"prom_{i}"):
-                        st.success(f"Source {i+1} promoted to active model configuration.")
+                    if st.button(f"Promote Source {i + 1}", key=f"prom_{i}"):
+                        st.success(f"Source {i + 1} promoted to active model configuration.")
         else:
             st.info("No parameter conflicts detected.")
 
@@ -1182,7 +1182,7 @@ def main() -> None:
                     "Metric": k,
                     "Baseline": summary_base[k],
                     "Strategic Scenario Analysis": summary_game[k],
-                    "Delta (%)": f"{(summary_game[k]/summary_base[k] - 1)*100:+.2f}%"
+                    "Delta (%)": f"{(summary_game[k] / summary_base[k] - 1) * 100:+.2f}%"
                     if summary_base[k] != 0
                     else "N/A",
                 }
