@@ -13,10 +13,15 @@ nav:
   - Home: index.md
   - Guides:
     - guides/index.md
+    - Researcher Quickstart: guides/researcher_quickstart.md
     - Usage: guides/usage.md
     - Dashboard: dashboard.md
-    - Game Theory Models: guides/models.md
-    - Policy Scenarios: scenarios.md
+    - Glossary: guides/glossary.md
+  - Model Theory:
+    - Patient Choice & Queuing: models/queuing.md
+    - Strategic Subgames: models/subgames.md
+    - System Dynamics: models/dynamics.md
+    - Fiscal Rules: models/fiscal.md
   - Project:
     - project/index.md
     - Requirements & Scope: project/requirements.md

@@ -11,6 +11,27 @@ The repository is designed as a **model-based policy analysis** toolchain with t
 2. **Modelling layer** (stage games + system dynamics; optional stochasticity; deterministic checks)
 3. **Outputs layer** (reports, plots, tables, diagrams; reproducible pipelines)
 
+```mermaid
+graph TD
+    subgraph Evidence Layer
+        PR[Parameter Registry] --> CP[Context Pack]
+        BIB[Bibliography] --> CP
+    end
+
+    subgraph Modelling Layer
+        CP --> PARAMS[Params JAX]
+        PARAMS --> ENGINE[Consolidated JAX Engine]
+        ENGINE --> SG[Stage Games Nash]
+        ENGINE --> SD[System Dynamics]
+    end
+
+    subgraph Outputs Layer
+        ENGINE --> DASH[Streamlit Dashboard]
+        ENGINE --> REP[Academic Reports]
+        ENGINE --> VIZ[Plotly/Matplotlib]
+    end
+```
+
 ## Repo structure
 
 - `src/nhra_gt/` — core model library

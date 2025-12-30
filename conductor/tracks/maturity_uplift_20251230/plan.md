@@ -27,16 +27,16 @@
 ## Phase 3: Context, Scenarios & Interpretation
 *Goal: Bridge the gap between abstract game mechanics and NHRA policy reality for a global audience.*
 
-- [ ] Task: Implementation of "Scenario Library".
-    - [ ] Sub-task: Define 3-5 standard policy scenarios (e.g., "Fiscal Cliff", "Pandemic Shock") in a YAML configuration.
-    - [ ] Sub-task: Add a Scenario Selector to the Streamlit sidebar that auto-updates slider values.
-- [ ] Task: Interpretation Layer.
-    - [ ] Sub-task: Add "How to Interpret" expander components to every major visualization in the dashboard.
-    - [ ] Sub-task: Add descriptive tooltips to all input sliders/parameters.
-- [ ] Task: Background & Theory Content.
-    - [ ] Sub-task: Draft and implement a "Background" page in the dashboard explaining NHRA issues and Game Theory mechanics (Players, Moves, Payoffs).
-    - [ ] Sub-task: Add a "Technical Stack" page justifying the use of Gambit/JAX with links to documentation.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Context, Scenarios & Interpretation' (Protocol in workflow.md)
+- [x] Task: Implementation of "Scenario Library". [commit: 7145273]
+    - [x] Sub-task: Define 3-5 standard policy scenarios (e.g., "Fiscal Cliff", "Pandemic Shock") in a YAML configuration.
+    - [x] Sub-task: Add a Scenario Selector to the Streamlit sidebar that auto-updates slider values.
+- [x] Task: Interpretation Layer. [commit: 7145273]
+    - [x] Sub-task: Add "How to Interpret" expander components to every major visualization in the dashboard.
+    - [x] Sub-task: Add descriptive tooltips to all input sliders/parameters.
+- [x] Task: Background & Theory Content. [commit: 7145273]
+    - [x] Sub-task: Draft and implement a "Background" page in the dashboard explaining NHRA issues and Game Theory mechanics (Players, Moves, Payoffs).
+    - [x] Sub-task: Add a "Technical Stack" page justifying the use of Gambit/JAX with links to documentation.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Context, Scenarios & Interpretation' (Protocol in workflow.md) [checkpoint: 7145273]
 
 ## Phase 4: Documentation & Reproducibility
 *Goal: Create a rigorous academic documentation suite and a reliable "Zero-to-Hero" build path.*
