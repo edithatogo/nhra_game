@@ -600,6 +600,7 @@ def run_hybrid(
                     "pressure": s.pressure,
                     "occupancy": s.occupancy,
                     "within4": s.within4,
+                    "offload_min": s.offload_min,
                     "cth_share_nominal": s.effective_cth_share
                     if hasattr(s, "effective_cth_share")
                     else 0.38,
@@ -645,6 +646,7 @@ def run_hybrid(
             occupancy_std=("occupancy", "std"),
             within4_mean=("within4", "mean"),
             within4_std=("within4", "std"),
+            offload_mean=("offload_min", "mean"),
             rr_mean=("rr_proxy", "mean"),
             rr_std=("rr_proxy", "std"),
             workforce_mean=("workforce", "mean"),
@@ -732,9 +734,8 @@ def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
     return {
         "pressure_2030": float(last["pressure_mean"]),
         "within4_2030": float(last["within4_mean"]),
-        "offload_2030": float(last["offload_mean"]),
+        "offload_2030": float(last.get("offload_mean", 18.0)),
         "rr_2030": float(last["rr_mean"]),
         "effshare_nominal_2030": float(last["cth_nominal_mean"]),
-        "effshare_effective_2030": float(last["cth_effective_mean"]),
         "effgap_2030": float(last["effgap_mean"]),
     }
