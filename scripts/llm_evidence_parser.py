@@ -58,11 +58,11 @@ class LLMEvidenceExtractor:
 
     def _call_llm(self, raw_text: str) -> dict[str, Any]:
         """Backward-compatible hook for tests/mocking."""
-        return self._call_llm_structured(raw_text)
+        return {}
 
     def parse_evidence(self, raw_text: str) -> EvidenceEntry:
         """Parses raw text into an EvidenceEntry using structured extraction."""
-        response = self._call_llm(raw_text)
+        response = self._call_llm(raw_text) or self._call_llm_structured(raw_text)
 
         # Schema enforcement
         return EvidenceEntry(

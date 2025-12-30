@@ -155,6 +155,10 @@ class ParamsJax:
         return cls(**{k: v for k, v in flat_data.items() if k in cls.__dataclass_fields__})
 
 
+# Backwards-compatible alias (many callers/tests still import `Params` from this module).
+Params = ParamsJax
+
+
 class BaselineProvider:
     """Manages loading of the automated data spine and baseline parameters."""
 

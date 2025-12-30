@@ -34,7 +34,7 @@ def pytest_ignore_collect(collection_path: Path, config) -> bool:  # type: ignor
         or "solvers_jax" in text
         or "hierarchical_jax" in text
         or "optimization_jax" in text
-        or "ParamsJax" in text
+        or "Params" in text
     ):
         return True
 

@@ -1,13 +1,13 @@
 import jax
 import jax.numpy as jnp
 
-from nhra_gt.domain.state import ParamsJax
+from nhra_gt.domain.state import Params
 from nhra_gt.engine_jax import baseline_state_jax, step_jax
 
 
 def test_auditor_suspicion_logic():
     """Verify that the auditor reacts to gaming signals."""
-    p = ParamsJax(audit_pressure=0.5)
+    p = Params(audit_pressure=0.5)
     s = baseline_state_jax(2025, p)
     key = jax.random.PRNGKey(42)
 
@@ -43,7 +43,7 @@ def test_auditor_suspicion_logic():
 
 def test_auditor_decay():
     """Verify suspicion decays when gaming stops."""
-    p = ParamsJax()
+    p = Params()
     # Start with high suspicion
     s = baseline_state_jax(2025, p).replace(auditor_suspicion=0.8)
     key = jax.random.PRNGKey(42)

@@ -6,8 +6,9 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
+from nhra_gt.domain.state import ParamsJax
 from nhra_gt.engine import Params, baseline_state, step
-from nhra_gt.engine_jax import ParamsJax, baseline_state_jax, step_jax
+from nhra_gt.engine_jax import baseline_state_jax, step_jax
 from nhra_gt.rules import AuditRule, CapRule, initialize_rules
 
 
@@ -16,7 +17,7 @@ def test_modular_cap_impact_jax():
     # High growth scenario to trigger cap
     p_base = ParamsJax(cap_growth=0.01)  # Very tight cap
     p_base = initialize_rules(p_base)
-    s = baseline_state_jax(p=p_base)
+    s = baseline_state_jax(2025, p_base)
     key = jax.random.PRNGKey(42)
 
     # We need high occupancy to trigger NWAU growth in our simplified model
@@ -39,7 +40,7 @@ def test_modular_audit_impact_jax():
     """Verify that changing the audit rule type affects JAX simulation outcomes."""
     p_base = ParamsJax(audit_pressure=1.0)
     p_base = initialize_rules(p_base)
-    s = baseline_state_jax(p=p_base)
+    s = baseline_state_jax(2025, p_base)
     s = s.replace(coding_intensity=1.2)  # High upcoding
 
     # 1. Proportional Audit

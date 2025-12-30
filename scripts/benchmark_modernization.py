@@ -10,9 +10,11 @@ import jax.numpy as jnp
 # Add src
 sys.path.append("src")
 
+from nhra_gt.engine import Params
 from nhra_gt.engine import Params as ParamsNp
+from nhra_gt.engine import baseline_state
 from nhra_gt.engine import run_hybrid as run_hybrid_np
-from nhra_gt.engine_jax import ParamsJax, baseline_state_jax, run_simulation_jax
+from nhra_gt.engine import run_simulation_jax
 
 
 def benchmark():
@@ -31,8 +33,8 @@ def benchmark():
     print(f"NumPy (Baseline): {duration_np:.4f}s")
 
     # 2. JAX CPU (Single Rollout)
-    pj = ParamsJax()
-    sj = baseline_state_jax(start_year=2025, p=pj)
+    pj = Params()
+    sj = baseline_state(start_year=2025, p=pj)
     strat = jnp.zeros((num_months, 10))
     key = jax.random.PRNGKey(42)
 

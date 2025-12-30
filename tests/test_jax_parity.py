@@ -1,21 +1,28 @@
-from __future__ import annotations
-
+import sys
+from pathlib import Path
 from typing import Any
 
 import jax
 import jax.numpy as jnp
 import numpy as np
 
-from nhra_gt.domain.state import ParamsJax, StateJax
-from nhra_gt.engine import Params, State, baseline_state, step
-from nhra_gt.engine_jax import run_simulation_jax, step_jax
+# Add archive to path to load legacy engines
+sys.path.append(str(Path(__file__).parent.parent / "archive"))
+
+from intermediate_engine import Params as ParamsLegacy
+from intermediate_engine import State as StateLegacy
+from intermediate_engine import baseline_state as baseline_state_legacy
+from intermediate_engine import step as step_legacy
+
+from nhra_gt.domain.state import StateJax
+from nhra_gt.engine import Params, run_simulation_jax, step_jax
 from nhra_gt.rules import initialize_rules
 
 
-def params_to_jax(p: Params) -> ParamsJax:
+def params_to_jax(p: ParamsLegacy) -> Params:
     from nhra_gt.domain.state import EconomicSpineJax
 
-    p = initialize_rules(p)
+    p = initialize_rules(p)  # type: ignore
     spine_jax = None
     if p.economic_spine is not None:
         spine_jax = EconomicSpineJax(
@@ -26,7 +33,7 @@ def params_to_jax(p: Params) -> ParamsJax:
             ),
         )
 
-    return ParamsJax(
+    return Params(
         nep_to_cost_ratio_metro=p.nep_to_cost_ratio_metro,
         nep_to_cost_ratio_regional=p.nep_to_cost_ratio_regional,
         nep_to_cost_ratio_remote=p.nep_to_cost_ratio_remote,
@@ -75,32 +82,45 @@ def params_to_jax(p: Params) -> ParamsJax:
     )
 
 
-def state_to_jax(s: State) -> StateJax:
+def state_to_jax(s: StateLegacy) -> StateJax:
+    from nhra_gt.domain.state import JurisdictionState, LhnState
+
+    n_lhns = 5
+
+    def init_lhn(i):
+        return LhnState(id=i)
+
+    lhns = jax.vmap(init_lhn)(jnp.arange(n_lhns))
+    jurisdiction = JurisdictionState(id=0, lhn_states=lhns)
+    # Vectorize jurisdiction
+    jurisdictions = jax.tree_util.tree_map(lambda x: jnp.expand_dims(x, 0), jurisdiction)
+
     return StateJax(
-        year=s.year,
-        month=s.month,
-        pressure=s.pressure,
-        occupancy=s.occupancy,
-        offload_min=s.offload_min,
-        within4=s.within4,
-        effective_cth_share=s.effective_cth_share,
-        efficiency_gap=s.efficiency_gap,
-        discharge_delay=s.discharge_delay,
-        political_capital=s.political_capital,
-        system_mode=int(s.system_mode.value) if isinstance(s.system_mode.value, int | float) else 0,
-        lhn_pressure=jnp.zeros(5),
-        lhn_nwau=jnp.full(5, 100.0),
-        agreement_clock=5,
-        workforce_pool=1.0,
-        target_capacity=s.target_capacity,
-        current_capacity=s.current_capacity,
-        equity_index=s.equity_index,
-        reconciliation_balance=s.reconciliation_balance,
-        bailout_expectation=s.bailout_expectation,
-        coding_intensity=s.coding_intensity,
-        reputation_score=s.reputation_score,
-        auditor_suspicion=s.auditor_suspicion,
-        audit_pressure_active=s.audit_pressure_active,
+        year=jnp.array(s.year, dtype=jnp.int32),
+        month=jnp.array(s.month, dtype=jnp.int32),
+        pressure=jnp.array(s.pressure),
+        occupancy=jnp.array(s.occupancy),
+        offload_min=jnp.array(s.offload_min),
+        within4=jnp.array(s.within4),
+        effective_cth_share=jnp.array(s.effective_cth_share),
+        efficiency_gap=jnp.array(s.efficiency_gap),
+        discharge_delay=jnp.array(s.discharge_delay),
+        political_capital=jnp.array(s.political_capital),
+        system_mode=jnp.array(0, dtype=jnp.int32),
+        lhn_pressure=jnp.full(n_lhns, s.pressure),
+        lhn_nwau=jnp.full(n_lhns, 100.0),
+        agreement_clock=jnp.array(5, dtype=jnp.int32),
+        workforce_pool=jnp.array(1.0),
+        target_capacity=jnp.array(s.target_capacity),
+        current_capacity=jnp.array(s.current_capacity),
+        equity_index=jnp.array(s.equity_index),
+        reconciliation_balance=jnp.array(s.reconciliation_balance),
+        bailout_expectation=jnp.array(s.bailout_expectation),
+        coding_intensity=jnp.array(s.coding_intensity),
+        reputation_score=jnp.array(s.reputation_score),
+        auditor_suspicion=jnp.array(s.auditor_suspicion),
+        audit_pressure_active=jnp.array(s.audit_pressure_active),
+        jurisdictions=jurisdictions,
         # Lags
         lag_buffer_pressure=jnp.array(s.lag_buffer_pressure),
         lag_buffer_occupancy=jnp.array(s.lag_buffer_occupancy),
@@ -137,9 +157,9 @@ def strategies_to_jax(strat: dict[str, Any]) -> jnp.ndarray:
 
 
 def test_step_parity():
-    p = Params()
-    p = initialize_rules(p)
-    s = baseline_state(start_year=2025, p=p)
+    p = ParamsLegacy()
+    p = initialize_rules(p)  # type: ignore
+    s = baseline_state_legacy(start_year=2025, p=p)
 
     strategies = {
         "SIGNAL": "L",
@@ -164,7 +184,7 @@ def test_step_parity():
 
     # Legacy step
     rng = np.random.default_rng(42)
-    next_s = step(s, p, strategies, rng)
+    next_s = step_legacy(s, p, strategies, rng)
 
     assert next_sj.year == next_s.year
     assert next_sj.month == next_s.month
@@ -173,9 +193,9 @@ def test_step_parity():
 
 
 def test_run_simulation_jax():
-    p = Params()
-    p = initialize_rules(p)
-    s = baseline_state(start_year=2025, p=p)
+    p = ParamsLegacy()
+    p = initialize_rules(p)  # type: ignore
+    s = baseline_state_legacy(start_year=2025, p=p)
 
     strategies = {
         "SIGNAL": "L",
@@ -213,8 +233,8 @@ def test_run_simulation_jax():
 
 def test_full_trajectory_mirror():
     """Rigorous check: Run 5 years of simulation and compare average results."""
-    p = Params()
-    p = initialize_rules(p)
+    p = ParamsLegacy()
+    p = initialize_rules(p)  # type: ignore
     pj = params_to_jax(p)
 
     years = list(range(2025, 2031))
@@ -241,14 +261,14 @@ def test_full_trajectory_mirror():
         def random(self, size=None):
             return 0.5
 
-    s_legacy = baseline_state(start_year=2025, p=p)
+    s_legacy = baseline_state_legacy(start_year=2025, p=p)
     legacy_pressure = []
     for _ in range(num_months):
-        s_legacy = step(s_legacy, p, strat_dict, ConstRNG())
+        s_legacy = step_legacy(s_legacy, p, strat_dict, ConstRNG())
         legacy_pressure.append(s_legacy.pressure)
 
     pj_no_noise = pj.replace(noise_sd=0.0)
-    sj = state_to_jax(baseline_state(start_year=2025, p=p))
+    sj = state_to_jax(baseline_state_legacy(start_year=2025, p=p))
 
     key = jax.random.PRNGKey(0)
     str_jax_seq = jnp.tile(strat_jax, (num_months, 1))

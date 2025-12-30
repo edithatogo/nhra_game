@@ -7,8 +7,9 @@ import jax.numpy as jnp
 import numpy as np
 import pytest
 
+from nhra_gt.domain.state import ParamsJax
 from nhra_gt.engine import Params, baseline_state, step
-from nhra_gt.engine_jax import ParamsJax, baseline_state_jax, step_jax
+from nhra_gt.engine_jax import baseline_state_jax, step_jax
 from nhra_gt.rules import initialize_rules
 
 
@@ -59,7 +60,7 @@ def test_jax_asymmetric_lag():
     key = jax.random.PRNGKey(42)
 
     # 1. Test Expansion
-    s_exp = baseline_state_jax(p=p)
+    s_exp = baseline_state_jax(2025, p)
     s_exp = s_exp.replace(target_capacity=1.5, current_capacity=1.0)
 
     strategies = jnp.zeros(12)
@@ -80,7 +81,7 @@ def test_jax_adjustment_costs():
     p = initialize_rules(p)
     key = jax.random.PRNGKey(42)
 
-    s = baseline_state_jax(p=p)
+    s = baseline_state_jax(2025, p)
     s = s.replace(target_capacity=1.1, current_capacity=1.0, reconciliation_balance=0.0)
 
     strategies = jnp.zeros(12)

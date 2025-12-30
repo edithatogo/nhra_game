@@ -1,9 +1,9 @@
 from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
-from nhra_gt.domain.state import BaselineProvider, ParamsJax
+from nhra_gt.domain.state import BaselineProvider, Params
 
 
 def test_yaml_param_loading(tmp_path):
-    """Verify that ParamsJax can load from a custom YAML."""
+    """Verify that Params can load from a custom YAML."""
     config_content = """
 funding:
   nominal_cth_share_target: 0.55
@@ -13,7 +13,7 @@ pricing:
     config_path = tmp_path / "test_config.yaml"
     config_path.write_text(config_content)
 
-    p = ParamsJax.from_yaml(config_path)
+    p = Params.from_yaml(config_path)
     assert p.nominal_cth_share_target == 0.55
     assert p.nep_annual_growth == 0.05
 
@@ -35,7 +35,7 @@ def test_registry_to_yaml_promotion(tmp_path):
     registry.promote_all_to_yaml(config_path)
 
     # 4. Verify
-    p_updated = ParamsJax.from_yaml(config_path)
+    p_updated = Params.from_yaml(config_path)
     assert p_updated.nominal_cth_share_target == 0.50
 
 
@@ -43,7 +43,7 @@ def test_baseline_provider_integration():
     """Verify high-level BaselineProvider integration."""
     params, state = BaselineProvider.get_baseline()
 
-    assert isinstance(params, ParamsJax)
+    assert isinstance(params, Params)
     assert state.year == 2025
     # Should have loaded from defaults.yaml
     assert params.nominal_cth_share_target == 0.45

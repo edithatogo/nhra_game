@@ -5,8 +5,9 @@ import jax.numpy as jnp
 import numpy as np
 import pytest
 
+from nhra_gt.domain.state import ParamsJax
 from nhra_gt.engine import Params, baseline_state, step
-from nhra_gt.engine_jax import ParamsJax, baseline_state_jax, step_jax
+from nhra_gt.engine_jax import baseline_state_jax, step_jax
 
 
 def test_legacy_signal_lag():
@@ -37,7 +38,7 @@ def test_legacy_signal_lag():
 def test_jax_signal_lag():
     """Verify that signal lag correctly delays reported metrics in JAX engine."""
     p = ParamsJax(signal_lag_months=2)
-    s = baseline_state_jax(p=p)
+    s = baseline_state_jax(2025, p)
     key = jax.random.PRNGKey(42)
 
     strategies = jnp.zeros(12)
@@ -51,7 +52,7 @@ def test_jax_signal_lag():
 def test_jax_claims_lag():
     """Verify that claims lag (NWAU) is separate from signal lag."""
     p = ParamsJax(signal_lag_months=1, claims_lag_months=3)
-    s = baseline_state_jax(p=p)
+    s = baseline_state_jax(2025, p)
     key = jax.random.PRNGKey(42)
 
     strategies = jnp.zeros(12)

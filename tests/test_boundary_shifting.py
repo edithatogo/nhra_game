@@ -1,13 +1,13 @@
 import jax
 import jax.numpy as jnp
 
-from nhra_gt.domain.state import ParamsJax
+from nhra_gt.domain.state import Params
 from nhra_gt.engine_jax import baseline_state_jax, step_jax
 
 
 def test_boundary_shifting_logic():
     """Verify that LHNs shift venue based on strategies."""
-    p = ParamsJax(block_funding_base=0.15)
+    p = Params(block_funding_base=0.15)
     s = baseline_state_jax(2025, p)
     key = jax.random.PRNGKey(42)
 

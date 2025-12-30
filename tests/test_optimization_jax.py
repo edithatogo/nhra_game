@@ -3,7 +3,7 @@ from __future__ import annotations
 import jax
 import jax.numpy as jnp
 
-from nhra_gt.domain.state import ParamsJax, StateJax
+from nhra_gt.domain.state import Params, StateJax
 from nhra_gt.optimization_jax import optimize_policy_jax
 
 
@@ -11,7 +11,7 @@ def test_policy_optimization():
     # Setup a simple optimization task
     # Minimize cumulative pressure by varying nominal_cth_share_target
 
-    p = ParamsJax()
+    p = Params()
 
     num_months = 12
     sj = StateJax(

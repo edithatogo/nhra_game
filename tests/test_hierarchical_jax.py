@@ -4,12 +4,12 @@ import jax
 import jax.numpy as jnp
 import pytest
 
-from nhra_gt.domain.state import MetricsJax, ParamsJax, StateJax
+from nhra_gt.domain.state import MetricsJax, Params, StateJax
 from nhra_gt.hierarchical_jax import hierarchical_step_jax
 
 
 def test_multi_jurisdiction_vmap():
-    p = ParamsJax()
+    p = Params()
 
     # Initialize 8 jurisdictions (NSW, VIC, QLD, WA, SA, TAS, ACT, NT)
     num_j = 8

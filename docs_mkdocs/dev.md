@@ -91,7 +91,7 @@ The project uses a high-performance JAX/XLA functional core for the simulation e
 
 ### Functional Programming Rules
 
-To maintain JIT-compatibility, all code in `src/nhra_gt/engine_jax.py` must be **purely functional**:
+To maintain JIT-compatibility, all code in `src/nhra_gt/engine.py` must be **purely functional**:
 1.  **No Side Effects:** No `print()`, no global variable mutations, no in-place array updates.
 2.  **No Python Control Flow:** Use `jax.lax.cond`, `jax.lax.switch`, and `jax.lax.scan` instead of `if`, `elif`, and `for`.
 3.  **Statelessness:** Use `StateJax` Pytrees instead of objects with `self`.

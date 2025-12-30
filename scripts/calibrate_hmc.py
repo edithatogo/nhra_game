@@ -16,8 +16,8 @@ from numpyro.infer import MCMC, NUTS
 # Add src
 sys.path.append("src")
 
-from nhra_gt.domain.state import ParamsJax, StateJax
-from nhra_gt.engine_jax import run_simulation_jax
+from nhra_gt.domain.state import Params, StateJax
+from nhra_gt.engine import run_simulation_jax
 
 
 def model(historical_years, observed_within4, observed_occupancy):
@@ -26,8 +26,8 @@ def model(historical_years, observed_within4, observed_occupancy):
     discharge_delay_base = numpyro.sample("discharge_delay_base", dist.Normal(1.0, 0.1))
     capacity_lag = numpyro.sample("capacity_lag", dist.Uniform(0.05, 0.3))
 
-    # Pack into ParamsJax
-    p = ParamsJax(
+    # Pack into Params
+    p = Params(
         demand_base=demand_base,
         discharge_delay_base=discharge_delay_base,
         capacity_lag=capacity_lag,

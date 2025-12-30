@@ -5,8 +5,8 @@ import jax.numpy as jnp
 import matplotlib.pyplot as plt
 
 from nhra_gt.calibration.differentiable import PARAM_NAMES, calibrate_jax, map_to_params
-from nhra_gt.domain.state import ParamsJax
-from nhra_gt.engine_jax import baseline_state_jax, run_simulation_jax
+from nhra_gt.domain.state import Params
+from nhra_gt.engine import baseline_state, run_simulation_jax
 
 
 def main():
@@ -15,8 +15,8 @@ def main():
     # 1. Setup Ground Truth
     from nhra_gt.rules import initialize_rules
 
-    p_base = initialize_rules(ParamsJax())
-    s_init = baseline_state_jax(p=p_base)
+    p_base = initialize_rules(Params())
+    s_init = baseline_state(p=p_base)
 
     # True parameters we want to recover
     # Use more distinct values to ensure detectable signal

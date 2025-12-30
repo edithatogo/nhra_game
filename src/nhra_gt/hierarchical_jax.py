@@ -7,8 +7,8 @@ import jax.numpy as jnp
 from beartype import beartype
 from jaxtyping import Array, Float
 
-from nhra_gt.domain.state import ParamsJax, StateJax
-from nhra_gt.engine_jax import step_jax
+from nhra_gt.domain.state import Params, StateJax
+from nhra_gt.engine import step_jax
 from nhra_gt.solvers_jax import qre_solver_jax
 
 
@@ -16,7 +16,7 @@ from nhra_gt.solvers_jax import qre_solver_jax
 def hierarchical_step_jax(
     commonwealth_state: StateJax,
     jurisdiction_states: StateJax,  # Batch of 8 states
-    params: ParamsJax,
+    params: Params,
     macro_strategies: Float[Array, "2"],  # e.g. DEF and BARG
     prng_key: Any,
 ) -> tuple[StateJax, StateJax]:

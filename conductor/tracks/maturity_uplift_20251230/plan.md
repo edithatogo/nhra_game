@@ -15,13 +15,13 @@
 ## Phase 2: Architectural Consolidation (JAX)
 *Goal: Eliminate technical debt by deprecating the legacy engine in favor of the high-performance JAX engine.*
 
-- [ ] Task: Feature Parity Audit.
-    - [ ] Sub-task: Use `codebase_investigator` to map all functions in the "Legacy Engine" vs "New Engine".
-    - [ ] Sub-task: Document any unique logic in Legacy that is missing from New.
-- [ ] Task: Migration & Deprecation.
-    - [ ] Sub-task: Port identified unique logic from Legacy to the JAX-based New engine.
-    - [ ] Sub-task: Refactor `dashboard.py` to use only the consolidated New engine.
-    - [ ] Sub-task: Remove/Archive the legacy engine source files.
+- [x] Task: Feature Parity Audit. [commit: ab65315]
+    - [x] Sub-task: Use `codebase_investigator` to map all functions in the "Legacy Engine" vs "New Engine".
+    - [x] Sub-task: Document any unique logic in Legacy that is missing from New.
+- [x] Task: Migration & Deprecation. [commit: ab65315]
+    - [x] Sub-task: Port identified unique logic from Legacy to the JAX-based New engine.
+    - [x] Sub-task: Refactor `dashboard.py` to use only the consolidated New engine.
+    - [x] Sub-task: Remove/Archive the legacy engine source files.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Architectural Consolidation (JAX)' (Protocol in workflow.md)
 
 ## Phase 3: Context, Scenarios & Interpretation

@@ -122,7 +122,7 @@ class ReconciliationRule:
 
 def initialize_rules(p: Any) -> Any:
     """Ensures all rule objects are initialized in a Params object."""
-    # This works for both Params and ParamsJax
+    # This works for both Params and Params
     updates = {}
     if getattr(p, "cap_rule", None) is None:
         rule_type = getattr(p, "cap_rule_type", 0)

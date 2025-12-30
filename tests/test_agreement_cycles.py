@@ -1,7 +1,8 @@
 import jax
 import jax.numpy as jnp
 
-from nhra_gt.engine_jax import ParamsJax, baseline_state_jax, run_simulation_jax
+from nhra_gt.domain.state import ParamsJax
+from nhra_gt.engine_jax import baseline_state_jax, run_simulation_jax
 
 
 def test_agreement_clock_reset():

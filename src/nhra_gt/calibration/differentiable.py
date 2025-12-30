@@ -8,8 +8,8 @@ from beartype import beartype
 from jax import lax
 from jaxtyping import Array, Float
 
-from nhra_gt.domain.state import ParamsJax, StateJax
-from nhra_gt.engine_jax import step_jax
+from nhra_gt.domain.state import Params, StateJax
+from nhra_gt.engine import step_jax
 
 # Define which parameters we want to calibrate and their typical bounds
 PARAM_NAMES = [
@@ -20,8 +20,8 @@ PARAM_NAMES = [
 ]
 
 
-def map_to_params(values: Float[Array, "n"], base_params: ParamsJax) -> ParamsJax:
-    """Maps a flat array of values to a ParamsJax object."""
+def map_to_params(values: Float[Array, "n"], base_params: Params) -> Params:
+    """Maps a flat array of values to a Params object."""
     return base_params.replace(
         cost_shifting_intensity=values[0],
         fragmentation_index=values[1],
@@ -33,7 +33,7 @@ def map_to_params(values: Float[Array, "n"], base_params: ParamsJax) -> ParamsJa
 @beartype
 def run_simulation_with_agent_jax(
     init_state: StateJax,
-    params: ParamsJax,
+    params: Params,
     prng_key: Any,
     num_steps: int,
 ) -> tuple[StateJax, Any]:
@@ -74,7 +74,7 @@ def loss_fn(
     values: Float[Array, "n"],
     target_within4: Float[Array, "num_steps"],
     init_state: StateJax,
-    base_params: ParamsJax,
+    base_params: Params,
     prng_key: Any,
 ) -> Float[Array, ""]:
     """Calculates MSE between simulated and target within4 trajectories."""
@@ -91,7 +91,7 @@ def loss_fn(
 def calibrate_jax(
     target_data: dict[str, jnp.ndarray],
     init_state: StateJax,
-    base_params: ParamsJax,
+    base_params: Params,
     learning_rate: float = 0.01,
     max_iter: int = 100,
 ) -> Float[Array, "n"]:

@@ -1,13 +1,13 @@
 import jax
 import jax.numpy as jnp
 
-from nhra_gt.engine_jax import ParamsJax, baseline_state_jax, run_simulation_jax
+from nhra_gt.engine import Params, baseline_state, run_simulation_jax
 
 
 def test_workforce_depletion():
     """Verify that high recruitment intensity depletes the shared workforce pool."""
-    p = ParamsJax()
-    s = baseline_state_jax(2025, p).replace(workforce_pool=1.0)
+    p = Params()
+    s = baseline_state(2025, p).replace(workforce_pool=1.0)
 
     # 1. High Intensity Scenario
     num_months = 24
@@ -26,11 +26,11 @@ def test_workforce_depletion():
 
 def test_cannibalization_impact():
     """Verify that lower workforce pool increases discharge delay (Access Block)."""
-    p = ParamsJax()
+    p = Params()
     # Scenario 1: Abundant workforce
-    s_full = baseline_state_jax(2025, p).replace(workforce_pool=1.5)
+    s_full = baseline_state(2025, p).replace(workforce_pool=1.5)
     # Scenario 2: Depleted workforce
-    s_empty = baseline_state_jax(2025, p).replace(workforce_pool=0.5)
+    s_empty = baseline_state(2025, p).replace(workforce_pool=0.5)
 
     num_months = 12
     strat = jnp.zeros((num_months, 11))

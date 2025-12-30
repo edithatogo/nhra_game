@@ -7,13 +7,13 @@ import jax.numpy as jnp
 from jaxopt import ScipyBoundedMinimize
 from jaxtyping import PyTree
 
-from nhra_gt.domain.state import ParamsJax, StateJax
-from nhra_gt.engine_jax import run_simulation_jax
+from nhra_gt.domain.state import Params, StateJax
+from nhra_gt.engine import run_simulation_jax
 
 
 def optimize_policy_jax(
     init_state: StateJax,
-    base_params: ParamsJax,
+    base_params: Params,
     strategies: jnp.ndarray,  # [num_steps, 10]
     prng_key: Any,
     num_steps: int,
@@ -30,7 +30,7 @@ def optimize_policy_jax(
         strategies: Pre-defined strategies for the simulation.
         prng_key: Random key.
         num_steps: Simulation length.
-        param_to_optimize: Name of field in ParamsJax to vary.
+        param_to_optimize: Name of field in Params to vary.
         bounds: (min, max) for the parameter.
         objective_fn: Function to minimize.
 
