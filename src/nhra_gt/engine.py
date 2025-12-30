@@ -339,14 +339,16 @@ def policy_step(
     # Nominal share drift
     eff_share = s.reported_efficiency_gap  # Proxy for current share drift base
     target = p.nominal_cth_share_target
+    # Get bailout expectation from first jurisdiction (fallback to 0.0)
+    current_bailout = s.jurisdictions[0].bailout_expectation if s.jurisdictions else 0.0
     if strategies.get("BARG") == "A":
         eff_share += 0.25 * (target - eff_share) * month_growth_factor
-        bailout = s.bailout_expectation + p.reconciliation_rule.calculate_bailout(
+        bailout = current_bailout + p.reconciliation_rule.calculate_bailout(
             s.pressure, month_growth_factor
         )
     else:
         eff_share += 0.10 * (target - eff_share) * month_growth_factor
-        bailout = max(0.0, s.bailout_expectation - 0.02 * month_growth_factor)
+        bailout = max(0.0, current_bailout - 0.02 * month_growth_factor)
 
     if s.system_mode == SystemMode.CRISIS:
         eff_share = clamp(eff_share + 0.01, 0.30, 0.55)
@@ -427,8 +429,12 @@ def renegotiation_step(s: State, p: Params) -> tuple[float, int]:
 
     gp = GameParams(
         pressure=s.pressure,
-        efficiency_gap=s.efficiency_gap,
-        discharge_delay=s.discharge_delay,
+        efficiency_gap=s.reported_efficiency_gap,
+        discharge_delay=(
+            s.jurisdictions[0].lhns[0].discharge_delay
+            if s.jurisdictions and s.jurisdictions[0].lhns
+            else 1.0
+        ),
         political_salience=p.political_salience,
         audit_pressure=p.audit_pressure,
         cost_shifting_intensity=p.cost_shifting_intensity,
@@ -592,7 +598,7 @@ def run_hybrid(
                     "cth_share_nominal": s.effective_cth_share
                     if hasattr(s, "effective_cth_share")
                     else 0.38,
-                    "efficiency_gap": s.efficiency_gap,
+                    "efficiency_gap": s.reported_efficiency_gap,
                     "rr_proxy": rr,
                     "workforce": s.workforce_pool,
                     "prob_ed": s.prob_ed,
