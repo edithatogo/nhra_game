@@ -1,18 +1,26 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
-try:
+if sys.version_info >= (3, 11):
     import tomllib
-except ModuleNotFoundError:  # Python 3.10
-    import toml as tomllib
+
+
+def _load_pyproject(path: Path) -> dict:
+    if sys.version_info >= (3, 11):
+        with open(path, "rb") as f:
+            return tomllib.load(f)  # type: ignore[name-defined]
+
+    import toml
+
+    return toml.loads(path.read_text(encoding="utf-8"))
 
 
 def test_quality_configuration_completeness() -> None:
     """Verify pyproject.toml has comprehensive quality tool configurations."""
     pyproject_path = Path("pyproject.toml")
-    with open(pyproject_path, "rb") as f:
-        config = tomllib.load(f)  # type: ignore[attr-defined]
+    config = _load_pyproject(pyproject_path)
 
     # Check for Bandit config
     assert "bandit" in config["tool"], "pyproject.toml missing [tool.bandit] section"
