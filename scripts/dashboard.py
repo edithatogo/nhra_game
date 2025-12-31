@@ -270,7 +270,8 @@ def main() -> None:
     scenarios = load_scenario_library()
     initialize_slider_state(scenarios)
 
-    st.title(f"🏥 NHRA Strategic Scenario Analysis (v{__version__})")
+    version_display = __version__ if __version__ != "unknown" else "dev"
+    st.title(f"🏥 NHRA Strategic Scenario Analysis (v{version_display})")
     st.markdown("""
     ### Strategic Negotiation & System Risk Simulator (Cognitive Twin)
     This simulator models the interaction between policy levers (funding, capacity, integration)

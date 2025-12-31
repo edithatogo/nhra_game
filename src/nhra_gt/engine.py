@@ -868,6 +868,9 @@ def run_hybrid(
     results["offload_mean"] = results["offload_min_mean"]
     results["discharge_mean"] = results["discharge_delay_mean"]
 
+    # Add alias for workforce_mean (expected by plot_workforce_dynamics)
+    results["workforce_mean"] = results["workforce_pool_mean"]
+
     results["polcap_mean"] = np.ones_like(years_arr)
     results["polcap_std"] = np.zeros_like(years_arr)
     results["polcap_sem"] = np.zeros_like(years_arr)
