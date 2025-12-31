@@ -4,6 +4,8 @@
 
 This documentation provides details on the simulation models, game theory mechanisms, and analysis tools used in the project.
 
+![NHRA mechanism models and game-theory maps](assets/images/nhra_hero.svg){ width="1200" }
+
 <div class="grid cards" markdown>
 
 -   :material-book-open-page-variant: **Guides**
@@ -31,6 +33,18 @@ This documentation provides details on the simulation models, game theory mechan
     [:arrow_right: API Reference](reference/index.md)
 
 </div>
+
+## At a glance
+
+<figure markdown>
+  ![Mechanism map](assets/images/nhra_mechanism_map.svg){ width="1200" }
+  <figcaption>How negotiation stages connect to strategies, equilibria, and outputs.</figcaption>
+</figure>
+
+<figure markdown>
+  ![Simulation pipeline](assets/images/nhra_pipeline.svg){ width="1200" }
+  <figcaption>From parameter registry → baseline runs → validation → reports and documentation.</figcaption>
+</figure>
 
 ## Key Features
 
