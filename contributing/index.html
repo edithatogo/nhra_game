@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://edithatogo.github.io/nhra_gt/design/">
+        <link rel="canonical" href="https://edithatogo.github.io/nhra_gt/contributing/">
       
       
-        <link rel="prev" href="../project/requirements/">
+        <link rel="prev" href="../dev/">
       
       
-        <link rel="next" href="../diagrams/">
+        <link rel="next" href="../validation/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Design - NHRA mechanism models and game-theory maps</title>
+        <title>Contributing - NHRA mechanism models and game-theory maps</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#designmd-architecture-modelling-approach-and-evidence-system" class="md-skip">
+        <a href="#contributing" class="md-skip">
           Skip to content
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Design
+              Contributing
             
           </span>
         </div>
@@ -283,10 +283,8 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
+    <li class="md-tabs__item">
       <a href="../project/" class="md-tabs__link">
         
   
@@ -304,10 +302,12 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../dev/" class="md-tabs__link">
           
   
@@ -830,10 +830,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -849,19 +847,16 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -883,13 +878,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -932,37 +927,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Design
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../design/" class="md-nav__link">
         
   
   
@@ -978,176 +946,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Overview
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#repo-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Repo structure
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#evidence-and-public-only-constraint" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Evidence and “public-only” constraint
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Evidence and “public-only” constraint">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#parameter-registry" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Parameter registry
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enforcement
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#modelling-approach" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Modelling approach
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Modelling approach">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-stage-games" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1) Stage games
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-system-dynamics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2) System dynamics
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#outputs-and-reporting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Outputs and reporting
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Outputs and reporting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#reports" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reports
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#diagrams" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Diagrams
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reproducibility-and-ci" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reproducibility and CI
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1220,8 +1018,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -1235,19 +1035,22 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   
@@ -1265,7 +1068,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1308,10 +1111,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../contributing/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1327,6 +1157,198 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#development-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development Setup
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initial-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initial Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code Quality
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code Quality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linting-formatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linting &amp; Formatting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-checking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Type Checking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pull-request-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pull Request Process
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code Style
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code Style">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Python
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docstrings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docstrings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-new-games" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding New Games
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1475,44 +1497,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#development-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        Development Setup
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#repo-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Repo structure
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#evidence-and-public-only-constraint" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Evidence and “public-only” constraint
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Evidence and “public-only” constraint">
+    <nav class="md-nav" aria-label="Development Setup">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#parameter-registry" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Parameter registry
+        Prerequisites
       
     </span>
   </a>
@@ -1520,10 +1520,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#enforcement" class="md-nav__link">
+  <a href="#initial-setup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enforcement
+        Initial Setup
       
     </span>
   </a>
@@ -1536,22 +1536,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#modelling-approach" class="md-nav__link">
+  <a href="#code-quality" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Modelling approach
+        Code Quality
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Modelling approach">
+    <nav class="md-nav" aria-label="Code Quality">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-stage-games" class="md-nav__link">
+  <a href="#linting-formatting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1) Stage games
+        Linting &amp; Formatting
       
     </span>
   </a>
@@ -1559,10 +1559,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-system-dynamics" class="md-nav__link">
+  <a href="#type-checking" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2) System dynamics
+        Type Checking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pre-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-commit
       
     </span>
   </a>
@@ -1575,22 +1597,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#outputs-and-reporting" class="md-nav__link">
+  <a href="#pull-request-process" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Outputs and reporting
+        Pull Request Process
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Outputs and reporting">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-style" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code Style
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code Style">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#reports" class="md-nav__link">
+  <a href="#python" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reports
+        Python
       
     </span>
   </a>
@@ -1598,10 +1631,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#diagrams" class="md-nav__link">
+  <a href="#docstrings" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Diagrams
+        Docstrings
       
     </span>
   </a>
@@ -1614,10 +1647,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reproducibility-and-ci" class="md-nav__link">
+  <a href="#adding-new-games" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reproducibility and CI
+        Adding New Games
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Questions?
       
     </span>
   </a>
@@ -1641,7 +1685,7 @@
 
 
   
-    <a href="https://github.com/edithatogo/nhra_gt/edit/main/docs_mkdocs/design.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/edithatogo/nhra_gt/edit/main/docs_mkdocs/contributing.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1649,99 +1693,137 @@
   
 
 
-<h1 id="designmd-architecture-modelling-approach-and-evidence-system">design.md — Architecture, modelling approach, and evidence system<a class="headerlink" href="#designmd-architecture-modelling-approach-and-evidence-system" title="Permanent link">&para;</a></h1>
-<p><strong>Version:</strong> Current
-<strong>Date:</strong> 2025-12-30</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>The repository is designed as a <strong>model-based policy analysis</strong> toolchain with three pillars:</p>
+<h1 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">&para;</a></h1>
+<p>Thank you for your interest in contributing to the NHRA Game Theory toolkit! This guide will help you get started.</p>
+<hr />
+<h2 id="development-setup">Development Setup<a class="headerlink" href="#development-setup" title="Permanent link">&para;</a></h2>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Python 3.10, 3.11, 3.12, or 3.13</li>
+<li><a href="https://python-poetry.org/">Poetry</a> for dependency management</li>
+<li>Git</li>
+</ul>
+<h3 id="initial-setup">Initial Setup<a class="headerlink" href="#initial-setup" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Clone the repository</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/edithatogo/nhra_game.git
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">cd</span><span class="w"> </span>nhra_game
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># Install dependencies (including dev tools)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>poetry<span class="w"> </span>install<span class="w"> </span>--with<span class="w"> </span>dev
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Activate the virtual environment</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>poetry<span class="w"> </span>shell
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># Install pre-commit hooks</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>pre-commit<span class="w"> </span>install
+</span></code></pre></div>
+<hr />
+<h2 id="code-quality">Code Quality<a class="headerlink" href="#code-quality" title="Permanent link">&para;</a></h2>
+<p>We enforce strict code quality standards. All contributions must pass:</p>
+<h3 id="linting-formatting">Linting &amp; Formatting<a class="headerlink" href="#linting-formatting" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Run ruff linter</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>src<span class="w"> </span>tests
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Run ruff formatter</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>poetry<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>src<span class="w"> </span>tests
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Auto-fix issues</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>poetry<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>src<span class="w"> </span>tests<span class="w"> </span>--fix
+</span></code></pre></div>
+<h3 id="type-checking">Type Checking<a class="headerlink" href="#type-checking" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Run mypy in strict mode</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>mypy<span class="w"> </span>--strict<span class="w"> </span>src/nhra_gt
+</span></code></pre></div>
+<h3 id="testing">Testing<a class="headerlink" href="#testing" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Run all tests</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Run with coverage</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>src/nhra_gt<span class="w"> </span>--cov-report<span class="o">=</span>html
+</span></code></pre></div>
+<h3 id="pre-commit">Pre-commit<a class="headerlink" href="#pre-commit" title="Permanent link">&para;</a></h3>
+<p>All checks run automatically on commit:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Run all pre-commit hooks manually</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+</span></code></pre></div>
+<hr />
+<h2 id="pull-request-process">Pull Request Process<a class="headerlink" href="#pull-request-process" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>Evidence / Context layer</strong> (public-only parameter grounding, provenance, checklists)</li>
-<li><strong>Modelling layer</strong> (stage games + system dynamics; optional stochasticity; deterministic checks)</li>
-<li><strong>Outputs layer</strong> (reports, plots, tables, diagrams; reproducible pipelines)</li>
+<li><strong>Fork</strong> the repository</li>
+<li><strong>Create a feature branch</strong>: <code>git checkout -b feature/your-feature-name</code></li>
+<li><strong>Make changes</strong> following code quality standards</li>
+<li><strong>Add tests</strong> for new functionality</li>
+<li><strong>Update documentation</strong> if needed</li>
+<li><strong>Commit</strong> with <a href="https://www.conventionalcommits.org/">Conventional Commits</a>:</li>
+<li><code>feat:</code> for new features</li>
+<li><code>fix:</code> for bug fixes</li>
+<li><code>docs:</code> for documentation</li>
+<li><code>refactor:</code> for code refactoring</li>
+<li><code>test:</code> for test additions/changes</li>
+<li><code>ci:</code> for CI/CD changes</li>
+<li><strong>Push</strong> and create a Pull Request</li>
 </ol>
-<pre class="mermaid"><code>graph TD
-    subgraph Evidence Layer
-        PR[Parameter Registry] --&gt; CP[Context Pack]
-        BIB[Bibliography] --&gt; CP
-    end
-
-    subgraph Modelling Layer
-        CP --&gt; PARAMS[Params JAX]
-        PARAMS --&gt; ENGINE[Consolidated JAX Engine]
-        ENGINE --&gt; SG[Stage Games Nash]
-        ENGINE --&gt; SD[System Dynamics]
-    end
-
-    subgraph Outputs Layer
-        ENGINE --&gt; DASH[Streamlit Dashboard]
-        ENGINE --&gt; REP[Academic Reports]
-        ENGINE --&gt; VIZ[Plotly/Matplotlib]
-    end</code></pre>
-<h2 id="repo-structure">Repo structure<a class="headerlink" href="#repo-structure" title="Permanent link">&para;</a></h2>
+<hr />
+<h2 id="code-style">Code Style<a class="headerlink" href="#code-style" title="Permanent link">&para;</a></h2>
+<h3 id="python">Python<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>src/nhra_gt/</code> — core model library</li>
-<li><code>tests/</code> — unit + property-like tests; coverage enforced</li>
-<li><code>context/</code> — project intent, policy questions, parameter registry, provenance, glossaries</li>
-<li><code>scripts/</code> — runnable pipelines (versioned; avoid “magic” by keeping scripts thin)</li>
-<li><code>outputs/</code> — generated tables/plots</li>
-<li><code>reports/</code> — rendered narrative reports (MD + HTML)</li>
-<li><code>diagrams/</code> — mermaid + graphviz sources and rendered figures</li>
+<li>Follow <a href="https://peps.python.org/pep-0008/">PEP 8</a></li>
+<li>Use type hints everywhere</li>
+<li>Maximum line length: 100 characters</li>
+<li>Use docstrings for all public functions/classes</li>
 </ul>
-<h2 id="evidence-and-public-only-constraint">Evidence and “public-only” constraint<a class="headerlink" href="#evidence-and-public-only-constraint" title="Permanent link">&para;</a></h2>
-<h3 id="parameter-registry">Parameter registry<a class="headerlink" href="#parameter-registry" title="Permanent link">&para;</a></h3>
-<p><code>context/04_parameter_registry.csv</code> is the single source of truth for parameters.</p>
-<p>Each parameter record includes:
-- value and units,
-- source type (<code>primary</code>, <code>secondary</code>, <code>calibrated</code>, <code>assumed</code>, <code>normalisation</code>),
-- a <strong>public URL</strong> and locator (page/table/section),
-- plausible range (low/high) and distribution (optional),
-- justification (required for assumptions).</p>
-<h3 id="enforcement">Enforcement<a class="headerlink" href="#enforcement" title="Permanent link">&para;</a></h3>
-<p><code>scripts/check_parameters_grounded.py</code> fails CI if:
-- a parameter is labelled <code>primary</code> or <code>secondary</code> and lacks a public URL,
-- an URL is not http/https,
-- a parameter is <code>assumed</code> but justification is insufficiently detailed,
-- range bounds are missing.</p>
-<p>This ensures the model can be audited by external reviewers.</p>
-<h2 id="modelling-approach">Modelling approach<a class="headerlink" href="#modelling-approach" title="Permanent link">&para;</a></h2>
-<h3 id="1-stage-games">1) Stage games<a class="headerlink" href="#1-stage-games" title="Permanent link">&para;</a></h3>
-<p>A small set of two-player stage games represent strategic tensions, e.g.:
-- definition (what counts as “efficient”),
-- bargaining (cap/glide path),
-- cost shifting,
-- discharge coordination,
-- governance integration (UCCs etc),
-- compliance/audit incentives.</p>
-<p>For each game, the code:
-- constructs payoff matrices from state variables (pressure, efficiency gap, discharge delay),
-- solves <strong>all Nash equilibria</strong> (pure + mixed) using enumeration / support methods,
-- selects equilibria for simulation using a configurable rule (e.g., welfare, risk-dominant).</p>
-<h3 id="2-system-dynamics">2) System dynamics<a class="headerlink" href="#2-system-dynamics" title="Permanent link">&para;</a></h3>
-<p>A compact set of state variables evolve annually (or finer if needed), including:
-- NEP index and input-cost index (publicly sourced where available),
-- efficiency gap as cost-per-NWAU relative to NEP,
-- pressure, discharge delay, and flow proxies.</p>
-<p>The dynamics support:
-- stochastic Monte Carlo runs (for robustness),
-- deterministic mean-field and fixed-point checks (equation solving for stability).</p>
-<h2 id="outputs-and-reporting">Outputs and reporting<a class="headerlink" href="#outputs-and-reporting" title="Permanent link">&para;</a></h2>
-<h3 id="reports">Reports<a class="headerlink" href="#reports" title="Permanent link">&para;</a></h3>
-<p>Reports are built from templates that:
-- introduce each results section in full sentences,
-- provide figure/table titles, captions, and abbreviations,
-- include a synthesis paragraph per section and an overall conclusion.</p>
-<h3 id="diagrams">Diagrams<a class="headerlink" href="#diagrams" title="Permanent link">&para;</a></h3>
-<p>Diagrams are maintained in source form:
-- <code>diagrams/*.mmd</code> (Mermaid)
-- <code>diagrams/*.dot</code> (Graphviz)</p>
-<p>Render scripts generate publication-ready PNG/SVG.</p>
-<h2 id="reproducibility-and-ci">Reproducibility and CI<a class="headerlink" href="#reproducibility-and-ci" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>Justfile</code> provides a consistent local interface.</li>
-<li><code>Snakefile</code> provides a DAG for pipelines.</li>
-<li><code>.github/workflows/ci.yml</code> runs:</li>
-<li>lint/format, tests, coverage gates, grounding checks, context pack build.</li>
-</ul>
+<h3 id="docstrings">Docstrings<a class="headerlink" href="#docstrings" title="Permanent link">&para;</a></h3>
+<p>Use Google-style docstrings:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">example_function</span><span class="p">(</span><span class="n">param1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">param2</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Short description of the function.</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="sd">    Longer description if needed, explaining the purpose</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="sd">    and any important details.</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="sd">    Args:</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="sd">        param1: Description of param1.</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="sd">        param2: Description of param2.</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="sd">    Returns:</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="sd">        Description of return value.</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="sd">    Raises:</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="sd">        ValueError: When param2 is negative.</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    <span class="k">pass</span>
+</span></code></pre></div>
+<hr />
+<h2 id="adding-new-games">Adding New Games<a class="headerlink" href="#adding-new-games" title="Permanent link">&para;</a></h2>
+<p>To add a new stage game:</p>
+<ol>
+<li><strong>Define the game</strong> in <code>src/nhra_gt/subgames/games.py</code>:</li>
+</ol>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">new_game</span><span class="p">(</span><span class="n">gp</span><span class="p">:</span> <span class="n">GameParams</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TwoPlayerGame</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Description of the new game.&quot;&quot;&quot;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="c1"># Build payoff matrices</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">u_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">...</span><span class="p">],</span> <span class="p">[</span><span class="o">...</span><span class="p">]])</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">u_col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">...</span><span class="p">],</span> <span class="p">[</span><span class="o">...</span><span class="p">]])</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="k">return</span> <span class="n">TwoPlayerGame</span><span class="p">(</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        <span class="n">u_row</span><span class="o">=</span><span class="n">u_row</span><span class="p">,</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        <span class="n">u_col</span><span class="o">=</span><span class="n">u_col</span><span class="p">,</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>        <span class="n">row_actions</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">),</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>        <span class="n">col_actions</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li>
+<p><strong>Add to agents</strong> in <code>src/nhra_gt/agents/base.py</code> if the game should be played in simulation</p>
+</li>
+<li>
+<p><strong>Document</strong> the game in <code>docs_mkdocs/guides/models.md</code></p>
+</li>
+<li>
+<p><strong>Add tests</strong> in <code>tests/</code></p>
+</li>
+</ol>
+<hr />
+<h2 id="questions">Questions?<a class="headerlink" href="#questions" title="Permanent link">&para;</a></h2>
+<p>Open an issue on GitHub or check the <a href="https://edithatogo.github.io/nhra_game/">documentation</a>.</p>
 
 
 
@@ -1764,7 +1846,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 30, 2025 12:32:29 UTC"><span class="timeago" datetime="2025-12-30T12:32:29+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 30, 2025 12:32:29 UTC">2025-12-30</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 27, 2025 00:26:35 UTC"><span class="timeago" datetime="2025-12-27T00:26:35+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 27, 2025 00:26:35 UTC">2025-12-27</span>
   </span>
 
     
@@ -1774,7 +1856,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 22, 2025 11:33:36 UTC"><span class="timeago" datetime="2025-12-22T11:33:36+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 22, 2025 11:33:36 UTC">2025-12-22</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 27, 2025 00:26:27 UTC"><span class="timeago" datetime="2025-12-27T00:26:27+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 27, 2025 00:26:27 UTC">2025-12-27</span>
   </span>
 
     

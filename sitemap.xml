@@ -1,27 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://edithatogo.github.io/nhra_game/</loc>
-         <lastmod>2025-12-26</lastmod>
+         <loc>https://edithatogo.github.io/nhra_gt/</loc>
+         <lastmod>2025-12-31</lastmod>
     </url>
     <url>
-         <loc>https://edithatogo.github.io/nhra_game/api/</loc>
-         <lastmod>2025-12-26</lastmod>
+         <loc>https://edithatogo.github.io/nhra_gt/changelog/</loc>
+         <lastmod>2025-12-31</lastmod>
     </url>
     <url>
-         <loc>https://edithatogo.github.io/nhra_game/context/</loc>
-         <lastmod>2025-12-26</lastmod>
+         <loc>https://edithatogo.github.io/nhra_gt/context/</loc>
+         <lastmod>2025-12-31</lastmod>
     </url>
     <url>
-         <loc>https://edithatogo.github.io/nhra_game/design/</loc>
-         <lastmod>2025-12-26</lastmod>
+         <loc>https://edithatogo.github.io/nhra_gt/contributing/</loc>
+         <lastmod>2025-12-31</lastmod>
     </url>
     <url>
-         <loc>https://edithatogo.github.io/nhra_game/dev/</loc>
-         <lastmod>2025-12-26</lastmod>
+         <loc>https://edithatogo.github.io/nhra_gt/dashboard/</loc>
+         <lastmod>2025-12-31</lastmod>
     </url>
     <url>
-         <loc>https://edithatogo.github.io/nhra_game/diagrams/</loc>
-         <lastmod>2025-12-26</lastmod>
+         <loc>https://edithatogo.github.io/nhra_gt/design/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/dev/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/diagrams/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/faq/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/scenarios/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/validation/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/guides/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/guides/glossary/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/guides/models/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/guides/researcher_quickstart/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/guides/usage/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/models/dynamics/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/models/fiscal/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/models/queuing/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/models/subgames/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/project/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/project/requirements/</loc>
+         <lastmod>2025-12-31</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_gt/reference/</loc>
+         <lastmod>2025-12-31</lastmod>
     </url>
 </urlset>

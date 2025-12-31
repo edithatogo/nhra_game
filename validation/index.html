@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://edithatogo.github.io/nhra_gt/dev/">
+        <link rel="canonical" href="https://edithatogo.github.io/nhra_gt/validation/">
       
       
-        <link rel="prev" href="../context/">
+        <link rel="prev" href="../contributing/">
       
       
-        <link rel="next" href="../contributing/">
+        <link rel="next" href="../reference/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Development Guide - NHRA mechanism models and game-theory maps</title>
+        <title>Validation & Testing - NHRA mechanism models and game-theory maps</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#development-guide" class="md-skip">
+        <a href="#validation-testing" class="md-skip">
           Skip to content
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Development Guide
+              Validation & Testing
             
           </span>
         </div>
@@ -308,7 +308,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+        <a href="../dev/" class="md-tabs__link">
           
   
   
@@ -1083,37 +1083,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Development Guide
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../dev/" class="md-nav__link">
         
   
   
@@ -1129,337 +1102,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#quality-tooling-stack" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quality Tooling Stack
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#running-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Running Tests
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Running Tests">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#basic-test-run" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Basic Test Run
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#with-coverage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        With Coverage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#specific-test-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Specific Test Files
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#property-based-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Property-Based Tests
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#performance-profiling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Performance Profiling
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Performance Profiling">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#scalene-recommended" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Scalene (Recommended)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#py-spy-sampling-profiler" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        py-spy (Sampling Profiler)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#memray-memory-profiling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        memray (Memory Profiling)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#jax-acceleration-functional-core" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        JAX Acceleration &amp; Functional Core
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="JAX Acceleration &amp; Functional Core">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#functional-programming-rules" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Functional Programming Rules
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pytree-state-management" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pytree State Management
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vectorization-vmap" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vectorization (vmap)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#performance-caching" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Performance &amp; Caching
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#snakemake-pipelines" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Snakemake Pipelines
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Snakemake Pipelines">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#available-targets" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Available Targets
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#visualize-dag" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Visualize DAG
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cicd-pipeline" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI/CD Pipeline
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="CI/CD Pipeline">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#matrix" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Matrix
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#observability-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Observability (Optional)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#debugging-tips" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Debugging Tips
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Debugging Tips">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#common-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Issues
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#debug-logging" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Debug Logging
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#see-also" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        See Also
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1497,10 +1139,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../validation/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validation & Testing
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1516,6 +1185,282 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#validation-philosophy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Philosophy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unit-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unit Testing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unit Testing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Suite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coverage-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coverage Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#property-based-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Property-Based Testing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mechanism-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mechanism Validation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mechanism Validation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nash-equilibrium-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nash Equilibrium Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payoff-monotonicity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payoff Monotonicity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sensitivity-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sensitivity Analysis
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sensitivity Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sobol-global-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sobol Global Sensitivity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Findings
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recursive-backtesting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recursive Backtesting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recursive Backtesting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Approach
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cicd-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD Validation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI/CD Validation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#validation-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Gates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-validation-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Validation Locally
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running Validation Locally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#full-validation-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Validation Suite
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quick-smoke-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Smoke Test
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See Also
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1636,10 +1581,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quality-tooling-stack" class="md-nav__link">
+  <a href="#validation-philosophy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quality Tooling Stack
+        Validation Philosophy
       
     </span>
   </a>
@@ -1647,22 +1592,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#running-tests" class="md-nav__link">
+  <a href="#unit-testing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Running Tests
+        Unit Testing
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Running Tests">
+    <nav class="md-nav" aria-label="Unit Testing">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#basic-test-run" class="md-nav__link">
+  <a href="#test-suite" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Basic Test Run
+        Test Suite
       
     </span>
   </a>
@@ -1670,10 +1615,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#with-coverage" class="md-nav__link">
+  <a href="#coverage-requirements" class="md-nav__link">
     <span class="md-ellipsis">
       
-        With Coverage
+        Coverage Requirements
       
     </span>
   </a>
@@ -1681,21 +1626,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#specific-test-files" class="md-nav__link">
+  <a href="#property-based-testing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Specific Test Files
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#property-based-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Property-Based Tests
+        Property-Based Testing
       
     </span>
   </a>
@@ -1708,22 +1642,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#performance-profiling" class="md-nav__link">
+  <a href="#mechanism-validation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Performance Profiling
+        Mechanism Validation
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Performance Profiling">
+    <nav class="md-nav" aria-label="Mechanism Validation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#scalene-recommended" class="md-nav__link">
+  <a href="#nash-equilibrium-verification" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Scalene (Recommended)
+        Nash Equilibrium Verification
       
     </span>
   </a>
@@ -1731,21 +1665,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#py-spy-sampling-profiler" class="md-nav__link">
+  <a href="#payoff-monotonicity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        py-spy (Sampling Profiler)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#memray-memory-profiling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        memray (Memory Profiling)
+        Payoff Monotonicity
       
     </span>
   </a>
@@ -1758,22 +1681,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#jax-acceleration-functional-core" class="md-nav__link">
+  <a href="#sensitivity-analysis" class="md-nav__link">
     <span class="md-ellipsis">
       
-        JAX Acceleration &amp; Functional Core
+        Sensitivity Analysis
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="JAX Acceleration &amp; Functional Core">
+    <nav class="md-nav" aria-label="Sensitivity Analysis">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#functional-programming-rules" class="md-nav__link">
+  <a href="#sobol-global-sensitivity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Functional Programming Rules
+        Sobol Global Sensitivity
       
     </span>
   </a>
@@ -1781,32 +1704,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pytree-state-management" class="md-nav__link">
+  <a href="#key-findings" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pytree State Management
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#vectorization-vmap" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Vectorization (vmap)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#performance-caching" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Performance &amp; Caching
+        Key Findings
       
     </span>
   </a>
@@ -1819,22 +1720,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#snakemake-pipelines" class="md-nav__link">
+  <a href="#recursive-backtesting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Snakemake Pipelines
+        Recursive Backtesting
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Snakemake Pipelines">
+    <nav class="md-nav" aria-label="Recursive Backtesting">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#available-targets" class="md-nav__link">
+  <a href="#approach" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Available Targets
+        Approach
       
     </span>
   </a>
@@ -1842,10 +1743,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#visualize-dag" class="md-nav__link">
+  <a href="#metrics" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Visualize DAG
+        Metrics
       
     </span>
   </a>
@@ -1858,22 +1759,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cicd-pipeline" class="md-nav__link">
+  <a href="#cicd-validation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CI/CD Pipeline
+        CI/CD Validation
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="CI/CD Pipeline">
+    <nav class="md-nav" aria-label="CI/CD Validation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#matrix" class="md-nav__link">
+  <a href="#validation-gates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Matrix
+        Validation Gates
       
     </span>
   </a>
@@ -1886,33 +1787,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#observability-optional" class="md-nav__link">
+  <a href="#running-validation-locally" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Observability (Optional)
+        Running Validation Locally
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#debugging-tips" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Debugging Tips
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Debugging Tips">
+    <nav class="md-nav" aria-label="Running Validation Locally">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#common-issues" class="md-nav__link">
+  <a href="#full-validation-suite" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common Issues
+        Full Validation Suite
       
     </span>
   </a>
@@ -1920,10 +1810,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#debug-logging" class="md-nav__link">
+  <a href="#quick-smoke-test" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Debug Logging
+        Quick Smoke Test
       
     </span>
   </a>
@@ -1963,7 +1853,7 @@
 
 
   
-    <a href="https://github.com/edithatogo/nhra_gt/edit/main/docs_mkdocs/dev.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/edithatogo/nhra_gt/edit/main/docs_mkdocs/validation.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1971,211 +1861,234 @@
   
 
 
-<h1 id="development-guide">Development Guide<a class="headerlink" href="#development-guide" title="Permanent link">&para;</a></h1>
-<p>This guide covers development workflows, tooling, and advanced features for contributors.</p>
+<h1 id="validation-testing">Validation &amp; Testing<a class="headerlink" href="#validation-testing" title="Permanent link">&para;</a></h1>
+<p>This page documents the validation framework and testing approach for the NHRA Game Theory toolkit.</p>
 <hr />
-<h2 id="quality-tooling-stack">Quality Tooling Stack<a class="headerlink" href="#quality-tooling-stack" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Tool</th>
-<th>Purpose</th>
-<th>Command</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://docs.astral.sh/ruff/">Ruff</a></td>
-<td>Linting + formatting</td>
-<td><code>poetry run ruff check src tests</code></td>
-</tr>
-<tr>
-<td><a href="https://mypy.readthedocs.io/">Mypy</a></td>
-<td>Static type checking</td>
-<td><code>poetry run mypy --strict src/nhra_gt</code></td>
-</tr>
-<tr>
-<td><a href="https://docs.pytest.org/">Pytest</a></td>
-<td>Testing framework</td>
-<td><code>poetry run pytest</code></td>
-</tr>
-<tr>
-<td><a href="https://hypothesis.readthedocs.io/">Hypothesis</a></td>
-<td>Property-based testing</td>
-<td>Integrated with pytest</td>
-</tr>
-<tr>
-<td><a href="https://pre-commit.com/">Pre-commit</a></td>
-<td>Git hooks</td>
-<td><code>pre-commit run --all-files</code></td>
-</tr>
-<tr>
-<td><a href="https://bandit.readthedocs.io/">Bandit</a></td>
-<td>Security scanning</td>
-<td><code>poetry run bandit -r src</code></td>
-</tr>
-<tr>
-<td><a href="https://deptry.com/">Deptry</a></td>
-<td>Dependency hygiene</td>
-<td><code>poetry run deptry .</code></td>
-</tr>
-</tbody>
-</table>
+<h2 id="validation-philosophy">Validation Philosophy<a class="headerlink" href="#validation-philosophy" title="Permanent link">&para;</a></h2>
+<p>The model follows a <strong>multi-layer validation</strong> approach:</p>
+<pre class="mermaid"><code>flowchart TB
+    subgraph unit["Unit Level"]
+        ut["Unit Tests"]
+        pt["Property Tests"]
+    end
+
+    subgraph mech["Mechanism Level"]
+        nash["Nash Equilibrium Checks"]
+        payoff["Payoff Consistency"]
+    end
+
+    subgraph system["System Level"]
+        sens["Sensitivity Analysis"]
+        back["Backtesting"]
+    end
+
+    unit --&gt; mech --&gt; system</code></pre>
 <hr />
-<h2 id="running-tests">Running Tests<a class="headerlink" href="#running-tests" title="Permanent link">&para;</a></h2>
-<h3 id="basic-test-run">Basic Test Run<a class="headerlink" href="#basic-test-run" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest
+<h2 id="unit-testing">Unit Testing<a class="headerlink" href="#unit-testing" title="Permanent link">&para;</a></h2>
+<h3 id="test-suite">Test Suite<a class="headerlink" href="#test-suite" title="Permanent link">&para;</a></h3>
+<p>Tests are located in <code>tests/</code> and run with pytest:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Run all tests</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Run with verbose output</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-v
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Run specific test file</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_games.py
 </span></code></pre></div>
-<h3 id="with-coverage">With Coverage<a class="headerlink" href="#with-coverage" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>src/nhra_gt<span class="w"> </span>--cov-report<span class="o">=</span>html
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>open<span class="w"> </span>htmlcov/index.html
+<h3 id="coverage-requirements">Coverage Requirements<a class="headerlink" href="#coverage-requirements" title="Permanent link">&para;</a></h3>
+<p>Coverage is enforced at <strong>95%</strong> minimum:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>src/nhra_gt<span class="w"> </span>--cov-report<span class="o">=</span>html<span class="w"> </span>--cov-fail-under<span class="o">=</span><span class="m">95</span>
 </span></code></pre></div>
-<h3 id="specific-test-files">Specific Test Files<a class="headerlink" href="#specific-test-files" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Run only game tests</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_games.py
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Run with verbose output</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-v
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Stop on first failure</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-x
-</span></code></pre></div>
-<h3 id="property-based-tests">Property-Based Tests<a class="headerlink" href="#property-based-tests" title="Permanent link">&para;</a></h3>
-<p>We use Hypothesis for property-based testing:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_properties.py
+<h3 id="property-based-testing">Property-Based Testing<a class="headerlink" href="#property-based-testing" title="Permanent link">&para;</a></h3>
+<p>We use <a href="https://hypothesis.readthedocs.io/">Hypothesis</a> for property-based testing:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">hypothesis</span><span class="w"> </span><span class="kn">import</span> <span class="n">given</span><span class="p">,</span> <span class="n">strategies</span> <span class="k">as</span> <span class="n">st</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nd">@given</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">floats</span><span class="p">(</span><span class="n">min_value</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mf">2.0</span><span class="p">))</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_pressure_bounds</span><span class="p">(</span><span class="n">pressure</span><span class="p">):</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Payoffs should be finite for valid pressure range.&quot;&quot;&quot;</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">gp</span> <span class="o">=</span> <span class="n">GameParams</span><span class="p">(</span><span class="n">pressure</span><span class="o">=</span><span class="n">pressure</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">game</span> <span class="o">=</span> <span class="n">definition_game</span><span class="p">(</span><span class="n">gp</span><span class="p">)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">game</span><span class="o">.</span><span class="n">u_row</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 </span></code></pre></div>
 <hr />
-<h2 id="performance-profiling">Performance Profiling<a class="headerlink" href="#performance-profiling" title="Permanent link">&para;</a></h2>
-<h3 id="scalene-recommended">Scalene (Recommended)<a class="headerlink" href="#scalene-recommended" title="Permanent link">&para;</a></h3>
-<p>We use <a href="https://github.com/plasma-umass/scalene">Scalene</a> for high-performance CPU, GPU, and memory profiling:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Profile the backtest loop</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nv">LOGFIRE_SEND_TO_LOGFIRE</span><span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>scalene<span class="w"> </span>--cli<span class="w"> </span>--profile-all<span class="w"> </span>scripts/validation/recursive_backtest.py
-</span></code></pre></div>
-<h3 id="py-spy-sampling-profiler">py-spy (Sampling Profiler)<a class="headerlink" href="#py-spy-sampling-profiler" title="Permanent link">&para;</a></h3>
-<p>For low-overhead production profiling:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>py-spy<span class="w"> </span>record<span class="w"> </span>-o<span class="w"> </span>profile.svg<span class="w"> </span>--<span class="w"> </span>python<span class="w"> </span>scripts/run_baseline.py
-</span></code></pre></div>
-<h3 id="memray-memory-profiling">memray (Memory Profiling)<a class="headerlink" href="#memray-memory-profiling" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>memray<span class="w"> </span>run<span class="w"> </span>-o<span class="w"> </span>output.bin<span class="w"> </span>scripts/run_baseline.py
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>memray<span class="w"> </span>flamegraph<span class="w"> </span>output.bin
-</span></code></pre></div>
-<hr />
-<h2 id="jax-acceleration-functional-core">JAX Acceleration &amp; Functional Core<a class="headerlink" href="#jax-acceleration-functional-core" title="Permanent link">&para;</a></h2>
-<p>The project uses a high-performance JAX/XLA functional core for the simulation engine. This allows for 10-100x speedups via vectorization and hardware acceleration.</p>
-<h3 id="functional-programming-rules">Functional Programming Rules<a class="headerlink" href="#functional-programming-rules" title="Permanent link">&para;</a></h3>
-<p>To maintain JIT-compatibility, all code in <code>src/nhra_gt/engine.py</code> must be <strong>purely functional</strong>:
-1.  <strong>No Side Effects:</strong> No <code>print()</code>, no global variable mutations, no in-place array updates.
-2.  <strong>No Python Control Flow:</strong> Use <code>jax.lax.cond</code>, <code>jax.lax.switch</code>, and <code>jax.lax.scan</code> instead of <code>if</code>, <code>elif</code>, and <code>for</code>.
-3.  <strong>Statelessness:</strong> Use <code>StateJax</code> Pytrees instead of objects with <code>self</code>.</p>
-<h3 id="pytree-state-management">Pytree State Management<a class="headerlink" href="#pytree-state-management" title="Permanent link">&para;</a></h3>
-<p>System state is managed using <code>flax.struct.dataclass</code>. This allows JAX to treat complex objects as unified blocks of memory:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">nhra_gt.domain.state</span><span class="w"> </span><span class="kn">import</span> <span class="n">StateJax</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># Transformation (returns a new state)</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">new_state</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pressure</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
-</span></code></pre></div>
-<h3 id="vectorization-vmap">Vectorization (vmap)<a class="headerlink" href="#vectorization-vmap" title="Permanent link">&para;</a></h3>
-<p>Use <code>jax.vmap</code> to run thousands of Monte Carlo samples or all 8 Australian jurisdictions in parallel at near-zero extra cost:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Run 1000 rollouts in parallel</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">keys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">parallel_results</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">run_simulation</span><span class="p">)(</span><span class="n">keys</span><span class="p">)</span>
-</span></code></pre></div>
-<h3 id="performance-caching">Performance &amp; Caching<a class="headerlink" href="#performance-caching" title="Permanent link">&para;</a></h3>
-<p>The engine automatically uses a persistent disk cache for compiled XLA kernels located at <code>~/.cache/jax_cache</code>. This minimizes "Time-to-First-Plot" in the dashboard.</p>
-<p>To run performance benchmarks:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/benchmark_modernization.py
-</span></code></pre></div></p>
-<hr />
-<h2 id="snakemake-pipelines">Snakemake Pipelines<a class="headerlink" href="#snakemake-pipelines" title="Permanent link">&para;</a></h2>
-<p>The project uses <a href="https://snakemake.github.io/">Snakemake</a> for reproducible pipelines.</p>
-<h3 id="available-targets">Available Targets<a class="headerlink" href="#available-targets" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Run baseline simulation</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--cores<span class="w"> </span><span class="m">4</span><span class="w"> </span>run_baseline
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Build context pack</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>poetry<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--cores<span class="w"> </span><span class="m">4</span><span class="w"> </span>context_pack
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># Run all experiments</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>poetry<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--cores<span class="w"> </span><span class="m">4</span><span class="w"> </span>all
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1"># Dry run (show what would execute)</span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>poetry<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>-n<span class="w"> </span>all
-</span></code></pre></div>
-<h3 id="visualize-dag">Visualize DAG<a class="headerlink" href="#visualize-dag" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--dag<span class="w"> </span>all<span class="w"> </span><span class="p">|</span><span class="w"> </span>dot<span class="w"> </span>-Tpng<span class="w"> </span>&gt;<span class="w"> </span>dag.png
-</span></code></pre></div>
-<hr />
-<h2 id="cicd-pipeline">CI/CD Pipeline<a class="headerlink" href="#cicd-pipeline" title="Permanent link">&para;</a></h2>
-<p>The GitHub Actions CI runs on every push and PR:</p>
+<h2 id="mechanism-validation">Mechanism Validation<a class="headerlink" href="#mechanism-validation" title="Permanent link">&para;</a></h2>
+<h3 id="nash-equilibrium-verification">Nash Equilibrium Verification<a class="headerlink" href="#nash-equilibrium-verification" title="Permanent link">&para;</a></h3>
+<p>For each game, we verify:</p>
 <ol>
-<li><strong>Lint</strong> — Ruff check and format</li>
-<li><strong>Type Check</strong> — Mypy strict mode</li>
-<li><strong>Security</strong> — Bandit scan (Ubuntu/3.12 only)</li>
-<li><strong>Dependency Hygiene</strong> — Deptry (Ubuntu/3.12 only)</li>
-<li><strong>Input Traceability</strong> — Parameter grounding check</li>
-<li><strong>Context Pack</strong> — Build and verify</li>
-<li><strong>Tests</strong> — Full pytest suite</li>
-<li><strong>Pipeline</strong> — Snakemake verification</li>
-<li><strong>Docs</strong> — MkDocs build</li>
-<li><strong>Link Check</strong> — Lychee markdown link validation</li>
+<li><strong>Existence</strong>: At least one equilibrium exists</li>
+<li><strong>Best Response</strong>: Each strategy is a best response</li>
+<li><strong>Stability</strong>: Small perturbations don't break equilibrium</li>
 </ol>
-<h3 id="matrix">Matrix<a class="headerlink" href="#matrix" title="Permanent link">&para;</a></h3>
-<p>Tests run across:
-- <strong>OS</strong>: Ubuntu, macOS, Windows
-- <strong>Python</strong>: 3.10, 3.11, 3.12, 3.13</p>
-<hr />
-<h2 id="observability-optional">Observability (Optional)<a class="headerlink" href="#observability-optional" title="Permanent link">&para;</a></h2>
-<p>For production observability, we support <a href="https://logfire.pydantic.dev/">Logfire</a>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Install observability extras</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>poetry<span class="w"> </span>install<span class="w"> </span>--extras<span class="w"> </span>observability
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Enable Logfire</span>
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">LOGFIRE_SEND_TO_LOGFIRE</span><span class="o">=</span><span class="nb">true</span>
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>python<span class="w"> </span>scripts/run_baseline.py
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_nash_existence</span><span class="p">():</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Every game should have at least one Nash equilibrium.&quot;&quot;&quot;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">gp</span> <span class="o">=</span> <span class="n">GameParams</span><span class="p">(</span><span class="n">pressure</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">efficiency_gap</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="k">for</span> <span class="n">game_fn</span> <span class="ow">in</span> <span class="p">[</span><span class="n">definition_game</span><span class="p">,</span> <span class="n">bargaining_game</span><span class="p">,</span> <span class="n">cost_shifting_game</span><span class="p">]:</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        <span class="n">game</span> <span class="o">=</span> <span class="n">game_fn</span><span class="p">(</span><span class="n">gp</span><span class="p">)</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="n">equilibria</span> <span class="o">=</span> <span class="n">solve_all_equilibria</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">equilibria</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span>
 </span></code></pre></div>
-<hr />
-<h2 id="debugging-tips">Debugging Tips<a class="headerlink" href="#debugging-tips" title="Permanent link">&para;</a></h2>
-<h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">&para;</a></h3>
+<h3 id="payoff-monotonicity">Payoff Monotonicity<a class="headerlink" href="#payoff-monotonicity" title="Permanent link">&para;</a></h3>
+<p>Key payoff relationships are verified:</p>
 <table>
 <thead>
 <tr>
-<th>Issue</th>
-<th>Solution</th>
+<th>Condition</th>
+<th>Expected Outcome</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Import errors</td>
-<td>Ensure <code>PYTHONPATH=src</code> is set</td>
+<td>↑ Pressure</td>
+<td>↑ Coordination incentive</td>
 </tr>
 <tr>
-<td>Type errors</td>
-<td>Run <code>poetry run mypy --strict src/nhra_gt</code></td>
+<td>↑ Efficiency gap</td>
+<td>↑ Cost shifting temptation</td>
 </tr>
 <tr>
-<td>Test failures</td>
-<td>Check <code>poetry run pytest -v</code> for details</td>
-</tr>
-<tr>
-<td>Slow builds</td>
-<td>Use <code>poetry run mkdocs serve</code> for live reload</td>
+<td>↑ Audit pressure</td>
+<td>↓ Upcoding incentive</td>
 </tr>
 </tbody>
 </table>
-<h3 id="debug-logging">Debug Logging<a class="headerlink" href="#debug-logging" title="Permanent link">&para;</a></h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_pressure_monotonicity</span><span class="p">():</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Higher pressure should increase coordination payoffs.&quot;&quot;&quot;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">gp_low</span> <span class="o">=</span> <span class="n">GameParams</span><span class="p">(</span><span class="n">pressure</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">gp_high</span> <span class="o">=</span> <span class="n">GameParams</span><span class="p">(</span><span class="n">pressure</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">game_low</span> <span class="o">=</span> <span class="n">discharge_coordination_game</span><span class="p">(</span><span class="n">gp_low</span><span class="p">)</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">game_high</span> <span class="o">=</span> <span class="n">discharge_coordination_game</span><span class="p">(</span><span class="n">gp_high</span><span class="p">)</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="c1"># Coordination payoff should be higher under pressure</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="k">assert</span> <span class="n">game_high</span><span class="o">.</span><span class="n">u_row</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">game_low</span><span class="o">.</span><span class="n">u_row</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 </span></code></pre></div>
-<p>Or via environment:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nv">NHRA_DEBUG</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>python<span class="w"> </span>scripts/run_baseline.py
+<hr />
+<h2 id="sensitivity-analysis">Sensitivity Analysis<a class="headerlink" href="#sensitivity-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="sobol-global-sensitivity">Sobol Global Sensitivity<a class="headerlink" href="#sobol-global-sensitivity" title="Permanent link">&para;</a></h3>
+<p>We use <a href="https://salib.readthedocs.io/">SALib</a> for Sobol sensitivity analysis:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Run sensitivity analysis</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/run_sobol_analysis.py<span class="w"> </span>--samples<span class="w"> </span><span class="m">1024</span>
+</span></code></pre></div>
+<p>This produces:
+- First-order indices (S1): Direct effect of each parameter
+- Total-order indices (ST): Total effect including interactions</p>
+<h3 id="key-findings">Key Findings<a class="headerlink" href="#key-findings" title="Permanent link">&para;</a></h3>
+<p>Typical sensitivity rankings (parameter importance for system pressure):</p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Parameter</th>
+<th>ST Index</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>cost_shifting_intensity</code></td>
+<td>~0.65</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>efficiency_gap</code></td>
+<td>~0.20</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>pressure</code> (initial)</td>
+<td>~0.10</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Other parameters</td>
+<td>&lt;0.05</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="recursive-backtesting">Recursive Backtesting<a class="headerlink" href="#recursive-backtesting" title="Permanent link">&para;</a></h2>
+<h3 id="approach">Approach<a class="headerlink" href="#approach" title="Permanent link">&para;</a></h3>
+<p>The recursive backtest validates model dynamics against historical patterns:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/validation/recursive_backtest.py
+</span></code></pre></div>
+<p>The backtest:
+1. Initialises from historical state (2017)
+2. Runs simulation forward
+3. Compares predicted vs actual trajectories
+4. Uses rolling window validation</p>
+<h3 id="metrics">Metrics<a class="headerlink" href="#metrics" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Target</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RMSE</td>
+<td>&lt;0.15</td>
+<td>Root mean squared error</td>
+</tr>
+<tr>
+<td>MAPE</td>
+<td>&lt;20%</td>
+<td>Mean absolute percentage error</td>
+</tr>
+<tr>
+<td>Direction</td>
+<td>&gt;70%</td>
+<td>Correct direction of change</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cicd-validation">CI/CD Validation<a class="headerlink" href="#cicd-validation" title="Permanent link">&para;</a></h2>
+<p>All validation runs automatically in GitHub Actions:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Extract from .github/workflows/ci.yml</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Tests</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">poetry run pytest -q</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Input traceability</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">poetry run python scripts/check_parameters_grounded.py</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Verify Pipeline</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">poetry run snakemake --cores 1 run_baseline context_pack --forceall</span>
+</span></code></pre></div>
+<h3 id="validation-gates">Validation Gates<a class="headerlink" href="#validation-gates" title="Permanent link">&para;</a></h3>
+<p>PRs must pass:
+- [x] All unit tests
+- [x] Type checking (mypy strict)
+- [x] Lint/format (ruff)
+- [x] Security scan (bandit)
+- [x] Parameter grounding check
+- [x] Pipeline verification
+- [x] Documentation build</p>
+<hr />
+<h2 id="running-validation-locally">Running Validation Locally<a class="headerlink" href="#running-validation-locally" title="Permanent link">&para;</a></h2>
+<h3 id="full-validation-suite">Full Validation Suite<a class="headerlink" href="#full-validation-suite" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Run complete validation</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--cores<span class="w"> </span><span class="m">4</span><span class="w"> </span>all
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Or individually:</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w">                           </span><span class="c1"># Unit tests</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>poetry<span class="w"> </span>run<span class="w"> </span>mypy<span class="w"> </span>--strict<span class="w"> </span>src/nhra_gt<span class="w">        </span><span class="c1"># Type check</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/run_sobol_analysis.py<span class="w">  </span><span class="c1"># Sensitivity</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/validation/recursive_backtest.py<span class="w">  </span><span class="c1"># Backtest</span>
+</span></code></pre></div>
+<h3 id="quick-smoke-test">Quick Smoke Test<a class="headerlink" href="#quick-smoke-test" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Fast validation (&lt; 1 minute)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_smoke.py<span class="w"> </span>-v
 </span></code></pre></div>
 <hr />
 <h2 id="see-also">See Also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../contributing/">Contributing Guide</a> — How to contribute</li>
-<li><a href="../guides/usage/">Usage Guide</a> — Getting started</li>
-<li><a href="../reference/">API Reference</a> — Module documentation</li>
+<li><a href="../dev/">Development Guide</a> — Tooling and CI/CD details</li>
+<li><a href="../guides/models/">Game Theory Models</a> — Game specifications</li>
+<li><a href="../design/">Design Documentation</a> — Architecture overview</li>
 </ul>
 
 
@@ -2199,7 +2112,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 30, 2025 12:19:35 UTC"><span class="timeago" datetime="2025-12-30T12:19:35+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 30, 2025 12:19:35 UTC">2025-12-30</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 30, 2025 05:32:10 UTC"><span class="timeago" datetime="2025-12-30T05:32:10+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 30, 2025 05:32:10 UTC">2025-12-30</span>
   </span>
 
     
@@ -2209,7 +2122,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 22, 2025 11:33:36 UTC"><span class="timeago" datetime="2025-12-22T11:33:36+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 22, 2025 11:33:36 UTC">2025-12-22</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 27, 2025 00:42:39 UTC"><span class="timeago" datetime="2025-12-27T00:42:39+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 27, 2025 00:42:39 UTC">2025-12-27</span>
   </span>
 
     

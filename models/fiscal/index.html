@@ -10,31 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://edithatogo.github.io/nhra_gt/design/">
+        <link rel="canonical" href="https://edithatogo.github.io/nhra_gt/models/fiscal/">
       
       
-        <link rel="prev" href="../project/requirements/">
+        <link rel="prev" href="../dynamics/">
       
       
-        <link rel="next" href="../diagrams/">
+        <link rel="next" href="../../project/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
-        <title>Design - NHRA mechanism models and game-theory maps</title>
+        <title>Fiscal Rules - NHRA mechanism models and game-theory maps</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,11 +53,11 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../css/timeago.css">
+      <link rel="stylesheet" href="../../css/timeago.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#designmd-architecture-modelling-approach-and-evidence-system" class="md-skip">
+        <a href="#fiscal-rules-funding-leakage" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="NHRA mechanism models and game-theory maps" class="md-header__button md-logo" aria-label="NHRA mechanism models and game-theory maps" data-md-component="logo">
+    <a href="../.." title="NHRA mechanism models and game-theory maps" class="md-header__button md-logo" aria-label="NHRA mechanism models and game-theory maps" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Design
+              Fiscal Rules
             
           </span>
         </div>
@@ -225,7 +225,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -244,7 +244,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../guides/" class="md-tabs__link">
+      <a href="../../guides/" class="md-tabs__link">
         
   
   
@@ -261,11 +261,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../models/queuing/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../queuing/" class="md-tabs__link">
           
   
   
@@ -283,11 +285,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="../project/" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../../project/" class="md-tabs__link">
         
   
   
@@ -308,7 +308,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../dev/" class="md-tabs__link">
+        <a href="../../dev/" class="md-tabs__link">
           
   
   
@@ -328,7 +328,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../reference/" class="md-tabs__link">
+      <a href="../../reference/" class="md-tabs__link">
         
   
   
@@ -347,7 +347,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../faq/" class="md-tabs__link">
+      <a href="../../faq/" class="md-tabs__link">
         
   
   
@@ -366,7 +366,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../changelog/" class="md-tabs__link">
+      <a href="../../changelog/" class="md-tabs__link">
         
   
   
@@ -407,7 +407,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="NHRA mechanism models and game-theory maps" class="md-nav__button md-logo" aria-label="NHRA mechanism models and game-theory maps" data-md-component="logo">
+    <a href="../.." title="NHRA mechanism models and game-theory maps" class="md-nav__button md-logo" aria-label="NHRA mechanism models and game-theory maps" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -437,7 +437,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -491,7 +491,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../guides/" class="md-nav__link ">
+            <a href="../../guides/" class="md-nav__link ">
               
   
   
@@ -533,7 +533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/researcher_quickstart/" class="md-nav__link">
+      <a href="../../guides/researcher_quickstart/" class="md-nav__link">
         
   
   
@@ -561,7 +561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/usage/" class="md-nav__link">
+      <a href="../../guides/usage/" class="md-nav__link">
         
   
   
@@ -589,7 +589,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dashboard/" class="md-nav__link">
+      <a href="../../dashboard/" class="md-nav__link">
         
   
   
@@ -617,7 +617,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guides/glossary/" class="md-nav__link">
+      <a href="../../guides/glossary/" class="md-nav__link">
         
   
   
@@ -625,187 +625,6 @@
     
   
     Glossary
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Model Theory
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Model Theory
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../models/queuing/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Patient Choice & Queuing
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../models/subgames/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Strategic Subgames
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../models/dynamics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    System Dynamics
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../models/fiscal/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Fiscal Rules
   
 
     
@@ -861,18 +680,17 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <div class="md-nav__link md-nav__container">
-            <a href="../project/" class="md-nav__link ">
-              
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
   
   
   <span class="md-ellipsis">
     
   
-    Project
+    Model Theory
   
 
     
@@ -880,21 +698,15 @@
   
   
 
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
+            <span class="md-nav__icon md-icon"></span>
+          </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Project
+    Model Theory
   
 
           </label>
@@ -907,14 +719,70 @@
   
   
     <li class="md-nav__item">
-      <a href="../project/requirements/" class="md-nav__link">
+      <a href="../queuing/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Requirements & Scope
+    Patient Choice & Queuing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../subgames/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Strategic Subgames
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Dynamics
   
 
     
@@ -951,7 +819,7 @@
   <span class="md-ellipsis">
     
   
-    Design
+    Fiscal Rules
   
 
     
@@ -969,7 +837,7 @@
   <span class="md-ellipsis">
     
   
-    Design
+    Fiscal Rules
   
 
     
@@ -995,10 +863,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#1-effective-funding-share" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        1. Effective Funding Share
       
     </span>
   </a>
@@ -1006,10 +874,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#repo-structure" class="md-nav__link">
+  <a href="#2-the-65-cap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Repo structure
+        2. The 6.5% Cap
       
     </span>
   </a>
@@ -1017,127 +885,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#evidence-and-public-only-constraint" class="md-nav__link">
+  <a href="#3-boundary-shifting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Evidence and “public-only” constraint
+        3. Boundary Shifting
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Evidence and “public-only” constraint">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#parameter-registry" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Parameter registry
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enforcement
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#modelling-approach" class="md-nav__link">
+  <a href="#4-evidence-grounding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Modelling approach
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Modelling approach">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-stage-games" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1) Stage games
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-system-dynamics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2) System dynamics
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#outputs-and-reporting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Outputs and reporting
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Outputs and reporting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#reports" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reports
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#diagrams" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Diagrams
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reproducibility-and-ci" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reproducibility and CI
+        4. Evidence Grounding
       
     </span>
   </a>
@@ -1153,6 +915,82 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../project/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
                 
   
@@ -1160,7 +998,63 @@
   
   
     <li class="md-nav__item">
-      <a href="../diagrams/" class="md-nav__link">
+      <a href="../../project/requirements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requirements & Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagrams/" class="md-nav__link">
         
   
   
@@ -1188,7 +1082,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../context/" class="md-nav__link">
+      <a href="../../context/" class="md-nav__link">
         
   
   
@@ -1283,7 +1177,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dev/" class="md-nav__link">
+      <a href="../../dev/" class="md-nav__link">
         
   
   
@@ -1311,7 +1205,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/" class="md-nav__link">
+      <a href="../../contributing/" class="md-nav__link">
         
   
   
@@ -1339,7 +1233,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../validation/" class="md-nav__link">
+      <a href="../../validation/" class="md-nav__link">
         
   
   
@@ -1374,7 +1268,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reference/" class="md-nav__link">
+      <a href="../../reference/" class="md-nav__link">
         
   
   
@@ -1401,7 +1295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../faq/" class="md-nav__link">
+      <a href="../../faq/" class="md-nav__link">
         
   
   
@@ -1428,7 +1322,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../changelog/" class="md-nav__link">
+      <a href="../../changelog/" class="md-nav__link">
         
   
   
@@ -1475,10 +1369,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#1-effective-funding-share" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overview
+        1. Effective Funding Share
       
     </span>
   </a>
@@ -1486,10 +1380,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#repo-structure" class="md-nav__link">
+  <a href="#2-the-65-cap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Repo structure
+        2. The 6.5% Cap
       
     </span>
   </a>
@@ -1497,127 +1391,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#evidence-and-public-only-constraint" class="md-nav__link">
+  <a href="#3-boundary-shifting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Evidence and “public-only” constraint
+        3. Boundary Shifting
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Evidence and “public-only” constraint">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#parameter-registry" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Parameter registry
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enforcement
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#modelling-approach" class="md-nav__link">
+  <a href="#4-evidence-grounding" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Modelling approach
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Modelling approach">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-stage-games" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1) Stage games
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-system-dynamics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2) System dynamics
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#outputs-and-reporting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Outputs and reporting
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Outputs and reporting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#reports" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reports
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#diagrams" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Diagrams
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reproducibility-and-ci" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Reproducibility and CI
+        4. Evidence Grounding
       
     </span>
   </a>
@@ -1641,7 +1429,7 @@
 
 
   
-    <a href="https://github.com/edithatogo/nhra_gt/edit/main/docs_mkdocs/design.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/edithatogo/nhra_gt/edit/main/docs_mkdocs/models/fiscal.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1649,98 +1437,26 @@
   
 
 
-<h1 id="designmd-architecture-modelling-approach-and-evidence-system">design.md — Architecture, modelling approach, and evidence system<a class="headerlink" href="#designmd-architecture-modelling-approach-and-evidence-system" title="Permanent link">&para;</a></h1>
-<p><strong>Version:</strong> Current
-<strong>Date:</strong> 2025-12-30</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>The repository is designed as a <strong>model-based policy analysis</strong> toolchain with three pillars:</p>
-<ol>
-<li><strong>Evidence / Context layer</strong> (public-only parameter grounding, provenance, checklists)</li>
-<li><strong>Modelling layer</strong> (stage games + system dynamics; optional stochasticity; deterministic checks)</li>
-<li><strong>Outputs layer</strong> (reports, plots, tables, diagrams; reproducible pipelines)</li>
-</ol>
-<pre class="mermaid"><code>graph TD
-    subgraph Evidence Layer
-        PR[Parameter Registry] --&gt; CP[Context Pack]
-        BIB[Bibliography] --&gt; CP
-    end
-
-    subgraph Modelling Layer
-        CP --&gt; PARAMS[Params JAX]
-        PARAMS --&gt; ENGINE[Consolidated JAX Engine]
-        ENGINE --&gt; SG[Stage Games Nash]
-        ENGINE --&gt; SD[System Dynamics]
-    end
-
-    subgraph Outputs Layer
-        ENGINE --&gt; DASH[Streamlit Dashboard]
-        ENGINE --&gt; REP[Academic Reports]
-        ENGINE --&gt; VIZ[Plotly/Matplotlib]
-    end</code></pre>
-<h2 id="repo-structure">Repo structure<a class="headerlink" href="#repo-structure" title="Permanent link">&para;</a></h2>
+<h1 id="fiscal-rules-funding-leakage">Fiscal Rules &amp; Funding Leakage<a class="headerlink" href="#fiscal-rules-funding-leakage" title="Permanent link">&para;</a></h1>
+<p>The NHRA funding mechanism is defined by the interaction between the National Efficient Price (NEP), Weighted Activity Units (NWAU), and the 6.5% growth cap.</p>
+<h2 id="1-effective-funding-share">1. Effective Funding Share<a class="headerlink" href="#1-effective-funding-share" title="Permanent link">&para;</a></h2>
+<p>While the nominal target (<span class="arithmatex">\(\alpha_{nom}\)</span>) might be 45%, the effective share (<span class="arithmatex">\(\alpha_{eff}\)</span>) often drifts lower due to efficiency gaps:</p>
+<div class="arithmatex">\[
+\alpha_{eff} = \frac{\alpha_{nom}}{1 + \text{Efficiency Gap}}
+\]</div>
+<p>Where:
+- <strong>Efficiency Gap:</strong> The divergence between hospital input costs and the indexation of the NEP.</p>
+<h2 id="2-the-65-cap">2. The 6.5% Cap<a class="headerlink" href="#2-the-65-cap" title="Permanent link">&para;</a></h2>
+<p>The Commonwealth's contribution is capped at a 6.5% annual increase. This is modeled as:</p>
+<div class="arithmatex">\[
+Payment_{Cth} = \min(Payment_{ABF}, Payment_{last} \times 1.065)
+\]</div>
+<h2 id="3-boundary-shifting">3. Boundary Shifting<a class="headerlink" href="#3-boundary-shifting" title="Permanent link">&para;</a></h2>
+<p>To bypass caps, agents may shift activity to 'Block' funding streams. This is modeled as a choice between ABF and Block revenue based on relative shadow prices.</p>
+<h2 id="4-evidence-grounding">4. Evidence Grounding<a class="headerlink" href="#4-evidence-grounding" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>src/nhra_gt/</code> — core model library</li>
-<li><code>tests/</code> — unit + property-like tests; coverage enforced</li>
-<li><code>context/</code> — project intent, policy questions, parameter registry, provenance, glossaries</li>
-<li><code>scripts/</code> — runnable pipelines (versioned; avoid “magic” by keeping scripts thin)</li>
-<li><code>outputs/</code> — generated tables/plots</li>
-<li><code>reports/</code> — rendered narrative reports (MD + HTML)</li>
-<li><code>diagrams/</code> — mermaid + graphviz sources and rendered figures</li>
-</ul>
-<h2 id="evidence-and-public-only-constraint">Evidence and “public-only” constraint<a class="headerlink" href="#evidence-and-public-only-constraint" title="Permanent link">&para;</a></h2>
-<h3 id="parameter-registry">Parameter registry<a class="headerlink" href="#parameter-registry" title="Permanent link">&para;</a></h3>
-<p><code>context/04_parameter_registry.csv</code> is the single source of truth for parameters.</p>
-<p>Each parameter record includes:
-- value and units,
-- source type (<code>primary</code>, <code>secondary</code>, <code>calibrated</code>, <code>assumed</code>, <code>normalisation</code>),
-- a <strong>public URL</strong> and locator (page/table/section),
-- plausible range (low/high) and distribution (optional),
-- justification (required for assumptions).</p>
-<h3 id="enforcement">Enforcement<a class="headerlink" href="#enforcement" title="Permanent link">&para;</a></h3>
-<p><code>scripts/check_parameters_grounded.py</code> fails CI if:
-- a parameter is labelled <code>primary</code> or <code>secondary</code> and lacks a public URL,
-- an URL is not http/https,
-- a parameter is <code>assumed</code> but justification is insufficiently detailed,
-- range bounds are missing.</p>
-<p>This ensures the model can be audited by external reviewers.</p>
-<h2 id="modelling-approach">Modelling approach<a class="headerlink" href="#modelling-approach" title="Permanent link">&para;</a></h2>
-<h3 id="1-stage-games">1) Stage games<a class="headerlink" href="#1-stage-games" title="Permanent link">&para;</a></h3>
-<p>A small set of two-player stage games represent strategic tensions, e.g.:
-- definition (what counts as “efficient”),
-- bargaining (cap/glide path),
-- cost shifting,
-- discharge coordination,
-- governance integration (UCCs etc),
-- compliance/audit incentives.</p>
-<p>For each game, the code:
-- constructs payoff matrices from state variables (pressure, efficiency gap, discharge delay),
-- solves <strong>all Nash equilibria</strong> (pure + mixed) using enumeration / support methods,
-- selects equilibria for simulation using a configurable rule (e.g., welfare, risk-dominant).</p>
-<h3 id="2-system-dynamics">2) System dynamics<a class="headerlink" href="#2-system-dynamics" title="Permanent link">&para;</a></h3>
-<p>A compact set of state variables evolve annually (or finer if needed), including:
-- NEP index and input-cost index (publicly sourced where available),
-- efficiency gap as cost-per-NWAU relative to NEP,
-- pressure, discharge delay, and flow proxies.</p>
-<p>The dynamics support:
-- stochastic Monte Carlo runs (for robustness),
-- deterministic mean-field and fixed-point checks (equation solving for stability).</p>
-<h2 id="outputs-and-reporting">Outputs and reporting<a class="headerlink" href="#outputs-and-reporting" title="Permanent link">&para;</a></h2>
-<h3 id="reports">Reports<a class="headerlink" href="#reports" title="Permanent link">&para;</a></h3>
-<p>Reports are built from templates that:
-- introduce each results section in full sentences,
-- provide figure/table titles, captions, and abbreviations,
-- include a synthesis paragraph per section and an overall conclusion.</p>
-<h3 id="diagrams">Diagrams<a class="headerlink" href="#diagrams" title="Permanent link">&para;</a></h3>
-<p>Diagrams are maintained in source form:
-- <code>diagrams/*.mmd</code> (Mermaid)
-- <code>diagrams/*.dot</code> (Graphviz)</p>
-<p>Render scripts generate publication-ready PNG/SVG.</p>
-<h2 id="reproducibility-and-ci">Reproducibility and CI<a class="headerlink" href="#reproducibility-and-ci" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>Justfile</code> provides a consistent local interface.</li>
-<li><code>Snakefile</code> provides a DAG for pipelines.</li>
-<li><code>.github/workflows/ci.yml</code> runs:</li>
-<li>lint/format, tests, coverage gates, grounding checks, context pack build.</li>
+<li><strong>NEP:</strong> IHACPA Annual Determinations (2011-2025).</li>
+<li><strong>Cap:</strong> NHRA Addendum 2020-25, Clause 42.</li>
 </ul>
 
 
@@ -1774,7 +1490,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 22, 2025 11:33:36 UTC"><span class="timeago" datetime="2025-12-22T11:33:36+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 22, 2025 11:33:36 UTC">2025-12-22</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 30, 2025 12:32:29 UTC"><span class="timeago" datetime="2025-12-30T12:32:29+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 30, 2025 12:32:29 UTC">2025-12-30</span>
   </span>
 
     
@@ -1833,16 +1549,16 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
-        <script src="../js/timeago.min.js"></script>
+        <script src="../../js/timeago.min.js"></script>
       
-        <script src="../js/timeago_mkdocs_material.js"></script>
+        <script src="../../js/timeago_mkdocs_material.js"></script>
       
-        <script src="../javascripts/mathjax.js"></script>
+        <script src="../../javascripts/mathjax.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
