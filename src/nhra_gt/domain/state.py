@@ -129,6 +129,10 @@ class ParamsJax:
     cap_rule_type: int = 0
     # audit_rule_type: 0 for proportional, 1 for threshold
     audit_rule_type: int = 0
+    orchestration_mode: int = 0
+    equilibrium_selection_rule: str = "nash"
+    isolated_game: str | None = None
+    use_stage_game_equilibria: bool = True
 
     # Modular Rules (JAX-compatible PyTrees)
     cap_rule: Any = struct.field(default_factory=lambda: None)
@@ -138,6 +142,7 @@ class ParamsJax:
 
     # Economic Spine (optional JAX arrays)
     spine: EconomicSpineJax | None = None
+    economic_spine: str | None = None  # Registry alias/path placeholder
 
     def replace(self, **kwargs: Any) -> ParamsJax:
         return self.replace(**kwargs)
