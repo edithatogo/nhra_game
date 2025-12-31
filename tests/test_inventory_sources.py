@@ -23,12 +23,12 @@ def test_discover_sources_finds_zips_and_diagrams(tmp_path: Path) -> None:
         sources = discover_sources()
 
         # Verify zips
-        zips = [str(p) for p in sources["zips"]]
+        zips = [p.as_posix() for p in sources["zips"]]
         assert "archive/test1.zip" in zips
         assert "test2.zip" in zips
 
         # Verify diagrams
-        diagrams = [str(p) for p in sources["diagrams"]]
+        diagrams = [p.as_posix() for p in sources["diagrams"]]
         assert "diagrams/flow.mmd" in diagrams
         assert "diagrams/structure.dot" in diagrams
 
