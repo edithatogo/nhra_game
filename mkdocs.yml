@@ -15,6 +15,7 @@ nav:
     - guides/index.md
     - Researcher Quickstart: guides/researcher_quickstart.md
     - Usage: guides/usage.md
+    - Tooling & Pipeline: guides/tooling.md
     - Dashboard: dashboard.md
     - Glossary: guides/glossary.md
   - Model Theory:
@@ -32,7 +33,9 @@ nav:
     - Development Guide: dev.md
     - Contributing: contributing.md
     - Validation & Testing: validation.md
-  - API Reference: reference/index.md
+  - API Reference:
+    - Overview: reference/index.md
+    - Full API Index: reference/api/index.md
   - FAQ: faq.md
   - Changelog: changelog.md
 
@@ -70,6 +73,9 @@ theme:
 
 plugins:
   - search
+  - gen-files:
+      scripts:
+        - docs_mkdocs/gen_api_reference.py
   - git-revision-date-localized:
       enable_creation_date: true
       type: timeago
@@ -84,8 +90,6 @@ plugins:
             show_source: true
             show_root_heading: true
             show_category_heading: true
-  - literate-nav:
-      nav_file: SUMMARY.md
   - section-index
   - mike:
       version_selector: true

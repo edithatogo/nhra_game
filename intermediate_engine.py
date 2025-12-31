@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 
@@ -9,6 +10,7 @@ if _SPEC is None or _SPEC.loader is None:
     raise ImportError(f"Unable to load legacy module at {_ARCHIVE_ENGINE_PATH}")
 
 _MOD = module_from_spec(_SPEC)
+sys.modules[_SPEC.name] = _MOD
 _SPEC.loader.exec_module(_MOD)  # type: ignore[union-attr]
 
 Params = _MOD.Params
