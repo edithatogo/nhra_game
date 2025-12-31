@@ -5,7 +5,11 @@ import re
 from pathlib import Path
 
 import pandas as pd
-from pyxlsb import open_workbook
+
+try:
+    from pyxlsb import open_workbook
+except ImportError:  # pragma: no cover
+    open_workbook = None
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +25,9 @@ class IHACPAClient:
 
     def extract_nep_from_file(self, file_path: Path) -> float | None:
         """Parses a single .xlsb file to find the NEP value."""
+        if open_workbook is None:
+            logger.warning("pyxlsb is not installed; cannot parse %s", file_path)
+            return None
         try:
             with open_workbook(str(file_path)) as wb:
                 if "Formula breakdown" not in wb.sheets:

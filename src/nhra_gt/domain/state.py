@@ -130,8 +130,8 @@ class ParamsJax:
     # audit_rule_type: 0 for proportional, 1 for threshold
     audit_rule_type: int = 0
     orchestration_mode: int = 0
-    equilibrium_selection_rule: str = "nash"
-    isolated_game: str | None = None
+    equilibrium_selection_rule: str = struct.field(default="nash", pytree_node=False)
+    isolated_game: str | None = struct.field(default=None, pytree_node=False)
     use_stage_game_equilibria: bool = True
 
     # Modular Rules (JAX-compatible PyTrees)
@@ -142,7 +142,7 @@ class ParamsJax:
 
     # Economic Spine (optional JAX arrays)
     spine: EconomicSpineJax | None = None
-    economic_spine: str | None = None  # Registry alias/path placeholder
+    economic_spine: str | None = struct.field(default=None, pytree_node=False)  # alias/placeholder
 
     def replace(self, **kwargs: Any) -> ParamsJax:
         return self.replace(**kwargs)

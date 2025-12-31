@@ -35,6 +35,8 @@ build/
 # Workflow/build artifacts
 .snakemake/
 outputs/
+site/
+.cache/
 
 # OpenMemory - IDE/Assistant specific rules
 .qoder/rules/openmemory.md

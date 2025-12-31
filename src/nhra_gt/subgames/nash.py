@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import Any
 
@@ -19,6 +20,32 @@ class NashEquilibrium:
     kind: str
     row: np.ndarray[Any, Any]
     col: np.ndarray[Any, Any]
+
+
+@dataclass(frozen=True)
+class EquilibriumSelection:
+    """Return type for `select_equilibrium` with backwards-compatible unpacking.
+
+    Behaves like a `NashEquilibrium` for attribute access (e.g. `.row`, `.col`)
+    and can also be unpacked as `(equilibrium, n_equilibria)`.
+    """
+
+    equilibrium: NashEquilibrium
+    n_equilibria: int
+
+    def __iter__(self) -> Iterator[object]:
+        yield self.equilibrium
+        yield self.n_equilibria
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self.equilibrium, name)
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, NashEquilibrium):
+            return self.equilibrium == other
+        if isinstance(other, EquilibriumSelection):
+            return (self.equilibrium, self.n_equilibria) == (other.equilibrium, other.n_equilibria)
+        return False
 
 
 @dataclass(frozen=True)
@@ -103,13 +130,18 @@ def all_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
     return eqs
 
 
+def solve_all_equilibria(game: TwoPlayerGame) -> list[NashEquilibrium]:
+    """Backwards-compatible alias for `all_nash`."""
+    return all_nash(game)
+
+
 def select_equilibrium(
     eqs: list[NashEquilibrium],
     rule: str = "payoff_dominant",
     u_row: np.ndarray[Any, Any] | None = None,
     u_col: np.ndarray[Any, Any] | None = None,
-) -> tuple[NashEquilibrium, int]:
-    """Select one equilibrium from a set and return the total count found.
+) -> EquilibriumSelection:
+    """Select one equilibrium from a set.
 
     Rules:
         - 'payoff_dominant': maximise sum of expected payoffs
@@ -118,11 +150,11 @@ def select_equilibrium(
 
     For mixed equilibria, expected payoffs use row@U@col.
     """
-    n_eqs = len(eqs)
     if not eqs:
         raise ValueError("No equilibria to select from")
+    n_eqs = len(eqs)
     if rule == "random" or u_row is None or u_col is None:
-        return eqs[0], n_eqs
+        return EquilibriumSelection(eqs[0], n_eqs)
 
     def exp_pay(eq: NashEquilibrium) -> tuple[float, float]:
         r = float(eq.row @ u_row @ eq.col)
@@ -135,7 +167,7 @@ def select_equilibrium(
         s = r if rule == "row_favourable" else r + c
         scores.append(s)
     idx = int(np.argmax(np.array(scores)))
-    return eqs[idx], n_eqs
+    return EquilibriumSelection(eqs[idx], n_eqs)
 
 
 def get_best_response_path(game: TwoPlayerGame, max_iter: int = 10) -> list[tuple[int, int]]:

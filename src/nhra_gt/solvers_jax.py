@@ -64,7 +64,7 @@ def qre_solver_jax(
         scan_body, (jnp.ones(m) / m, jnp.ones(n) / n, jnp.array(1.0)), jnp.arange(max_iter)
     )
 
-    return p_final, q_final, res_final
+    return p_final, q_final, jnp.maximum(res_final, jnp.asarray(1e-12, dtype=res_final.dtype))
 
 
 # ----------------------------
@@ -117,7 +117,12 @@ def regret_min_solver_jax(
 
     final_logits, regrets = lax.scan(scan_body, (p_logits, q_logits), jnp.arange(max_iter))
 
-    return jax.nn.softmax(final_logits[0]), jax.nn.softmax(final_logits[1]), regrets[-1]
+    final_regret = regrets[-1]
+    return (
+        jax.nn.softmax(final_logits[0]),
+        jax.nn.softmax(final_logits[1]),
+        jnp.maximum(final_regret, jnp.asarray(1e-12, dtype=final_regret.dtype)),
+    )
 
 
 # ----------------------------

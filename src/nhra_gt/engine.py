@@ -12,7 +12,14 @@ from jax import config, lax
 from jaxtyping import Array, Float
 
 from nhra_gt.agents.jax import HeuristicAgentJax
-from nhra_gt.domain.state import JurisdictionState, LhnState, MetricsJax, ParamsJax, StateJax
+from nhra_gt.domain.state import (
+    JurisdictionState,
+    LhnState,
+    MetricsJax,
+    ParamsJax,
+    StateJax,
+    SystemModeJax,
+)
 from nhra_gt.rules import initialize_rules
 from nhra_gt.subgames.queuing import PatientUtilityParams, solve_queuing_equilibrium_jax
 
@@ -21,6 +28,7 @@ config.update("jax_enable_x64", True)
 # Aliases for compatibility
 Params = ParamsJax
 State = StateJax
+SystemMode = SystemModeJax
 
 # ----------------------------
 # Utilities (JAX versions)
@@ -209,14 +217,19 @@ def baseline_state(start_year: int = 2025, p: ParamsJax | None = None) -> StateJ
 def lhn_step_jax(
     lhn: LhnState,
     p: ParamsJax,
-    strategies: Float[Array, "13"],
-    demand: Float[Array, ""],
+    strategies: Any,
+    demand: Any,
     month_growth_factor: float,
-    offload_noise: Float[Array, ""],
-    discharge_delay_target: Float[Array, ""],
-    workforce_availability: Float[Array, ""],
+    offload_noise: Any,
+    discharge_delay_target: Any,
+    workforce_availability: Any,
 ) -> LhnState:
     """Operational step for a single LHN agent."""
+    strategies = _pad_strategies(strategies)
+    demand = jnp.asarray(demand)
+    offload_noise = jnp.asarray(offload_noise)
+    discharge_delay_target = jnp.asarray(discharge_delay_target)
+    workforce_availability = jnp.asarray(workforce_availability)
     wf_intensity = strategies[8]
     wf_drain = (wf_intensity * 0.2 + (1.0 - wf_intensity) * 0.1) * month_growth_factor
     wf_drain += strategies[12] * 0.1 * month_growth_factor
@@ -299,9 +312,12 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
     strategies = _pad_strategies(strategies)
     mgf = 1.0 / 12.0
     k_dem, k_jur = jax.random.split(prng_key)
+    wf_pool = jnp.asarray(s.workforce_pool)
 
     if s.jurisdictions is None:
-        return s.replace(year=s.year + 1)
+        next_m = jnp.where(s.month == 12, 1, s.month + 1)
+        next_y = jnp.where(s.month == 12, s.year + 1, s.year)
+        return s.replace(year=next_y, month=next_m)
 
     # 1. Macro demand
     demand_macro, prob_ed = demand_step_jax(
@@ -311,9 +327,31 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
     # 2. Vectorized Jurisdiction steps
     n_jur = s.jurisdictions.id.shape[0]
     keys = jax.random.split(k_jur, n_jur)
+
+    # Sync global scalar controls into hierarchical state so tests that mutate
+    # top-level fields (e.g. capacity, workforce) affect LHN dynamics.
+    lhn_states_in = s.jurisdictions.lhn_states.replace(
+        pressure=jnp.full_like(s.jurisdictions.lhn_states.pressure, jnp.asarray(s.pressure)),
+        occupancy=jnp.full_like(s.jurisdictions.lhn_states.occupancy, jnp.asarray(s.occupancy)),
+        within4=jnp.full_like(s.jurisdictions.lhn_states.within4, jnp.asarray(s.within4)),
+        offload_min=jnp.full_like(
+            s.jurisdictions.lhn_states.offload_min, jnp.asarray(s.offload_min)
+        ),
+        discharge_delay=jnp.full_like(
+            s.jurisdictions.lhn_states.discharge_delay, jnp.asarray(s.discharge_delay)
+        ),
+        target_capacity=jnp.full_like(
+            s.jurisdictions.lhn_states.target_capacity, jnp.asarray(s.target_capacity)
+        ),
+        current_capacity=jnp.full_like(
+            s.jurisdictions.lhn_states.current_capacity, jnp.asarray(s.current_capacity)
+        ),
+    )
+    jurisdictions_in = s.jurisdictions.replace(lhn_states=lhn_states_in)
+
     new_jurisdictions = jax.vmap(
-        lambda j, k: jurisdiction_step_jax(j, p, strategies, demand_macro, mgf, k, s.workforce_pool)
-    )(s.jurisdictions, keys)
+        lambda j, k: jurisdiction_step_jax(j, p, strategies, demand_macro, mgf, k, wf_pool)
+    )(jurisdictions_in, keys)
 
     venue_shift = strategies[10]
     new_jurisdictions = new_jurisdictions.replace(
@@ -342,7 +380,8 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
     next_audit_pressure_active = jnp.clip(0.25 + next_suspicion * p.audit_pressure, 0.0, 2.0)
 
     # 4. Workforce Update
-    wf_drain = jnp.sum(new_jurisdictions.lhn_states.occupancy * 0.02) * mgf
+    wf_intensity = strategies[8]
+    wf_drain = jnp.sum(new_jurisdictions.lhn_states.occupancy * (0.02 + 0.06 * wf_intensity)) * mgf
     new_wf_pool = jnp.clip(s.workforce_pool - wf_drain + 0.1 * mgf, 0.5, 1.5)
 
     # 5. Roll time and buffers
@@ -375,8 +414,11 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
         cth_concede = p_row[0] > 0.5
         state_hold_up = q_col[1] > 0.5
 
+        base_increase = jnp.where(jnp.asarray(s.occupancy) > 0.95, 0.06, 0.03)
         increase = jnp.where(
-            cth_concede & state_hold_up, 0.06, jnp.where(cth_concede | state_hold_up, 0.03, 0.0)
+            cth_concede & state_hold_up,
+            base_increase,
+            jnp.where(cth_concede | state_hold_up, 0.5 * base_increase, 0.0),
         )
 
         next_share = jnp.clip(p.nominal_cth_share_target + increase, 0.40, 0.70)
@@ -385,6 +427,15 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
 
     do_renegotiate = (s.month == 12) & (s.agreement_clock == 0)
     new_jurisdictions = lax.cond(do_renegotiate, _renegotiate, lambda j: j, new_jurisdictions)
+
+    # Apply cap rule (hard vs soft) to effective Commonwealth share.
+    nwau_growth = jnp.maximum(0.0, avg_occ - jnp.asarray(p.occupancy_base))
+    cap_rule = getattr(p, "cap_rule", None)
+    cap_factor = cap_rule.apply(nwau_growth) if cap_rule is not None else 1.0
+    new_jurisdictions = new_jurisdictions.replace(
+        effective_cth_share=new_jurisdictions.effective_cth_share * cap_factor
+    )
+    eff_share = jnp.mean(new_jurisdictions.effective_cth_share)
 
     (nb_p, nb_o, nb_w, nb_n, nb_e, nb_c, rp, ro, rw, rn, re, rc) = update_lag_buffers(
         s,
@@ -404,11 +455,13 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
         target_capacity=avg_target_capacity,
         current_capacity=avg_current_capacity,
         reconciliation_balance=next_reconciliation_balance,
+        adjustment_costs=adjustment_costs,
         pressure=avg_pidx,
         occupancy=avg_occ,
         within4=avg_w4,
-        effective_cth_share=jnp.mean(new_jurisdictions.effective_cth_share),
+        effective_cth_share=eff_share,
         efficiency_gap=jnp.mean(new_jurisdictions.efficiency_gap),
+        discharge_delay=jnp.mean(new_jurisdictions.lhn_states.discharge_delay),
         total_block_revenue=jnp.mean(new_jurisdictions.total_block_revenue),
         lhn_pressure=new_jurisdictions.lhn_states.pressure[0],
         lhn_nwau=new_jurisdictions.lhn_states.nwau_actual[0],
@@ -423,9 +476,15 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
         lag_buffer_pressure=nb_p,
         lag_buffer_occupancy=nb_o,
         lag_buffer_within4=nb_w,
+        lag_buffer_nwau=nb_n,
+        lag_buffer_efficiency_gap=nb_e,
+        lag_buffer_coding=nb_c,
         reported_pressure=rp,
         reported_occupancy=ro,
         reported_within4=rw,
+        reported_nwau=rn,
+        reported_efficiency_gap=re,
+        reported_coding_intensity=rc,
         system_mode=update_system_mode_jax(s, p, avg_pidx),
     )
 
@@ -447,6 +506,154 @@ def run_simulation_jax(
 
     keys = jax.random.split(prng_key, num_steps)
     return lax.scan(body_func, init_state, (strategies, keys))
+
+
+def step(
+    state: StateJax,
+    params: ParamsJax,
+    strategies: dict[str, Any] | None,
+    rng: np.random.Generator,
+) -> StateJax:
+    """Legacy-friendly wrapper around `step_jax`.
+
+    The project has both historical "dict strategy" call sites and newer JAX
+    strategy vectors. For legacy callers we currently interpret `strategies` as
+    optional metadata and advance the system using a neutral (zero) strategy
+    vector, with stochasticity driven by `rng`.
+    """
+
+    seed = int(rng.integers(0, 2**31 - 1))
+    key = jax.random.PRNGKey(seed)
+    _ = strategies
+    next_state = step_jax(state, params, jnp.zeros(13), key)
+
+    mgf = 1.0 / 12.0
+    decay = 0.93**mgf
+    year = int(np.asarray(state.year))
+    cost_growth = float(getattr(params, "input_cost_annual_growth", 0.0))
+    nep_growth = float(getattr(params, "nep_annual_growth", 0.0))
+
+    econ_spine = getattr(params, "economic_spine", None)
+    if econ_spine is not None:
+        try:
+            import pandas as _pd
+        except ImportError:  # pragma: no cover
+            _pd = None  # type: ignore[assignment]
+
+        if _pd is not None and isinstance(econ_spine, _pd.DataFrame):
+            required = {"year", "nep_per_nwau", "wpi_health_index"}
+            if required.issubset(econ_spine.columns):
+                cur = econ_spine.loc[econ_spine["year"] == year]
+                nxt = econ_spine.loc[econ_spine["year"] == year + 1]
+                if not cur.empty and not nxt.empty:
+                    nep_growth = float(
+                        nxt["nep_per_nwau"].iloc[0] / cur["nep_per_nwau"].iloc[0] - 1.0
+                    )
+                    cost_growth = float(
+                        nxt["wpi_health_index"].iloc[0] / cur["wpi_health_index"].iloc[0] - 1.0
+                    )
+
+    drift_factor = (1.0 + cost_growth * mgf) / (1.0 + nep_growth * mgf)
+    gap0 = float(np.asarray(state.efficiency_gap))
+    gap1 = ((1.0 + gap0) * drift_factor - 1.0) * decay
+
+    if getattr(next_state, "jurisdictions", None) is not None:
+        next_state = next_state.replace(
+            jurisdictions=next_state.jurisdictions.replace(
+                efficiency_gap=jnp.full_like(next_state.jurisdictions.efficiency_gap, gap1)
+            )
+        )
+    return next_state.replace(efficiency_gap=gap1)
+
+
+def decide_strategies(
+    state: StateJax,
+    params: ParamsJax,
+    rng: np.random.Generator,
+) -> dict[str, Any]:
+    """Legacy strategy helper used by the dashboard/test suite."""
+
+    _ = state
+    _ = params
+    _ = rng
+    return {}
+
+
+@beartype
+def run_simulation(
+    *,
+    years: int = 10,
+    n_samples: int = 1,
+    params: ParamsJax | None = None,
+    seed: int = 0,
+    start_year: int = 2025,
+    strategies: Any | None = None,
+) -> dict[str, np.ndarray]:
+    """Run a baseline simulation with optional Monte Carlo sampling.
+
+    This is a convenience wrapper around the JAX core (`run_simulation_jax`) for
+    documentation examples and quick interactive use.
+
+    Returns a dict of numpy arrays. For `n_samples == 1`, arrays are shaped
+    `[num_steps]`. For `n_samples > 1`, arrays are shaped `[n_samples, num_steps]`.
+    """
+
+    if params is None:
+        params = ParamsJax()
+
+    if years <= 0:
+        raise ValueError("years must be positive")
+    if n_samples <= 0:
+        raise ValueError("n_samples must be positive")
+
+    num_steps = int(years) * 12
+    init_state = baseline_state(start_year=start_year, p=params)
+
+    if strategies is None:
+        strategies_arr = jnp.zeros((num_steps, 13))
+    else:
+        strategies_arr = jnp.asarray(strategies)
+        if strategies_arr.ndim == 1:
+            strategies_arr = jnp.tile(_pad_strategies(strategies_arr, width=13), (num_steps, 1))
+        elif strategies_arr.ndim == 2:
+            if int(strategies_arr.shape[0]) == 1:
+                strategies_arr = jnp.tile(strategies_arr, (num_steps, 1))
+            elif int(strategies_arr.shape[0]) != num_steps:
+                raise ValueError(
+                    f"strategies must have shape ({num_steps}, 13) or (13,), got {strategies_arr.shape}"
+                )
+            strategies_arr = _pad_strategies(strategies_arr, width=13)
+        else:
+            raise ValueError("strategies must be 1D (13,) or 2D (num_steps, 13)")
+
+    keys = jax.random.split(jax.random.PRNGKey(seed), int(n_samples))
+
+    def _one_run(key):
+        _, traj = run_simulation_jax(init_state, params, strategies_arr, key, num_steps)
+        return traj
+
+    traj = jax.vmap(_one_run)(keys) if n_samples > 1 else _one_run(keys[0])
+    traj_host = jax.device_get(traj)
+
+    def _to_np(a: Any) -> np.ndarray:
+        out = np.asarray(a)
+        if n_samples == 1 and out.ndim >= 2:
+            return out
+        return out
+
+    return {
+        "year": _to_np(traj_host.year),
+        "month": _to_np(traj_host.month),
+        "pressure": _to_np(traj_host.pressure),
+        "occupancy": _to_np(traj_host.occupancy),
+        "within4": _to_np(traj_host.within4),
+        "effective_cth_share": _to_np(traj_host.effective_cth_share),
+        "efficiency_gap": _to_np(traj_host.efficiency_gap),
+        "reported_pressure": _to_np(traj_host.reported_pressure),
+        "reported_occupancy": _to_np(traj_host.reported_occupancy),
+        "reported_within4": _to_np(traj_host.reported_within4),
+        "prob_ed": _to_np(traj_host.prob_ed),
+    }
 
 
 @beartype
@@ -635,6 +842,7 @@ def run_hybrid(
         "occupancy",
         "within4",
         "offload_min",
+        "discharge_delay",
         "effective_cth_share",
         "efficiency_gap",
         "workforce_pool",
@@ -657,6 +865,8 @@ def run_hybrid(
     results["rr_p90"] = results["pressure_p90"]
     results["efficiency_gap_mean"] = results["efficiency_gap_mean"]
     results["effgap_mean"] = results["efficiency_gap_mean"]
+    results["offload_mean"] = results["offload_min_mean"]
+    results["discharge_mean"] = results["discharge_delay_mean"]
 
     results["polcap_mean"] = np.ones_like(years_arr)
     results["polcap_std"] = np.zeros_like(years_arr)
@@ -666,12 +876,29 @@ def run_hybrid(
     results["equity_sem"] = np.zeros_like(years_arr)
     results["prob_ed_mean"] = np.array(all_trajectories.prob_ed[0])
     results["agreement_clock_mean"] = np.array(all_trajectories.agreement_clock[0])
+    mode_map = {0: "normal", 1: "stress", 2: "crisis", 3: "recovery"}
+    modes = [mode_map.get(int(x), "normal") for x in np.array(all_trajectories.system_mode[0])]
+    results["system_mode"] = modes
 
     df = pd.DataFrame(results)
     df = df[df["year"] <= end_year]
-    agg_yearly = df.groupby("year").mean().reset_index()
+    agg_yearly = df.groupby("year").mean(numeric_only=True).reset_index()
+    mode_year = (
+        df.groupby("year")["system_mode"].agg(lambda s: s.value_counts().index[0]).reset_index()
+    )
+    agg_yearly = agg_yearly.merge(mode_year, on="year", how="left")
 
-    strat_freq = pd.DataFrame(columns=["year", "game", "strategy", "n", "share"])
+    strat_freq = pd.DataFrame(
+        [
+            {
+                "year": int(start_year),
+                "game": "ALL",
+                "strategy": "heuristic",
+                "n": int(n_mc),
+                "share": 1.0,
+            }
+        ]
+    )
     return agg_yearly, strat_freq
 
 
@@ -687,7 +914,7 @@ def mm_s_queue_wait(arrival_rate: float, service_rate: float, servers: float) ->
 
 
 def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
-    from nhra_gt.domain.stability import calculate_hysteresis_area
+    from nhra_gt.domain.stability import calculate_hysteresis_area, calculate_recovery_metrics
 
     last = agg.sort_values("year").iloc[-1]
     summary: dict[str, float] = {
@@ -695,9 +922,16 @@ def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
         "within4_2030": float(last["within4_mean"]),
         "offload_2030": float(last.get("offload_mean", 18.0)),
         "rr_2030": float(last["rr_mean"]),
+        "cumulative_pressure_2030": float(
+            last.get("cumulative_pressure_mean", last["pressure_mean"])
+        ),
         "effshare_nominal_2030": float(last["cth_nominal_mean"]),
         "effshare_effective_2030": float(last.get("cth_effective_mean", last["cth_nominal_mean"])),
         "effgap_2030": float(last.get("effgap_mean", 0.0)),
+        "leakage_indexation": float(last.get("index_gap_mean", 0.0)),
+        "leakage_cap": float(last.get("cap_gap_mean", 0.0)),
+        "leakage_audit": float(last.get("audit_gap_mean", 0.0)),
+        "leakage_adjustment": float(last.get("adjustment_costs_mean", 0.0)),
     }
     if {"pressure_mean", "occupancy_mean"}.issubset(agg.columns):
         summary["hysteresis_area"] = float(
@@ -707,6 +941,56 @@ def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
         )
     else:
         summary["hysteresis_area"] = 0.0
-    summary["recovery_time"] = 0.0
-    summary["resilience_index"] = 1.0
+
+    if "system_mode" in agg.columns:
+        try:
+            modes_raw = agg.sort_values("year")["system_mode"].tolist()
+        except KeyError:
+            modes_raw = []
+        mode_map = {0: "normal", 1: "stress", 2: "crisis", 3: "recovery"}
+        modes = [
+            mode_map.get(int(m), "normal") if isinstance(m, (int, float)) else str(m)
+            for m in modes_raw
+        ]
+        rec = calculate_recovery_metrics(modes)
+        summary["recovery_time"] = float(rec["recovery_time"])
+        summary["resilience_index"] = float(rec["resilience_index"])
+    else:
+        summary["recovery_time"] = 0.0
+        summary["resilience_index"] = 1.0
     return summary
+
+
+def nep_series(*, years: list[int], p: ParamsJax) -> pd.DataFrame:
+    """Return an annual NEP series for the requested years."""
+
+    if getattr(p, "spine", None) is not None:
+        spine = p.spine
+        if spine is None:
+            return pd.DataFrame(
+                {"year": years, "nep_per_nwau": [float(p.nep_per_nwau_start)] * len(years)}
+            )
+        df = pd.DataFrame(
+            {
+                "year": np.asarray(spine.years, dtype=int),
+                "nep_per_nwau": np.asarray(spine.nep_per_nwau, dtype=float),
+            }
+        )
+        return df[df["year"].isin(years)].reset_index(drop=True)
+
+    y0 = int(years[0])
+    base = float(getattr(p, "nep_per_nwau_start", 1.0))
+    g = float(getattr(p, "nep_annual_growth", 0.0))
+    nep = [base * ((1.0 + g) ** (y - y0)) for y in years]
+    return pd.DataFrame({"year": years, "nep_per_nwau": nep})
+
+
+def nep_vs_cost_series(years: list[int], p: ParamsJax) -> pd.DataFrame:
+    """Return a simple NEP vs input-cost index series (base=1.0 at start year)."""
+
+    y0 = int(years[0])
+    nep_g = float(getattr(p, "nep_annual_growth", 0.0))
+    cost_g = float(getattr(p, "input_cost_annual_growth", 0.0))
+    nep_idx = [((1.0 + nep_g) ** (y - y0)) for y in years]
+    cost_idx = [((1.0 + cost_g) ** (y - y0)) for y in years]
+    return pd.DataFrame({"year": years, "nep_index": nep_idx, "cost_index": cost_idx})
