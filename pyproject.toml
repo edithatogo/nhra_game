@@ -194,7 +194,7 @@ known_first_party = ["nhra_gt", "scripts"]
 
 [tool.deptry]
 ignore_notebooks = true
-extend_exclude = ["tests", "scripts", "archive", "docs_mkdocs", ".nox", ".gemini"]
+extend_exclude = ["tests", "scripts", "archive", "docs_mkdocs", "sitecustomize.py", ".nox", ".gemini"]
 known_first_party = ["nhra_gt", "scripts"]
 
 [tool.deptry.per_rule_ignores]
