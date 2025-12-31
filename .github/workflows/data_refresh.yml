@@ -36,7 +36,7 @@ jobs:
           poetry run python scripts/data/ingest_economic_spine.py
 
       - name: Commit and Push changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore: automated data refresh (AIHW & WPI) [skip ci]"
           file_pattern: "data/raw/*.csv data/calibration_v21/*.csv"
