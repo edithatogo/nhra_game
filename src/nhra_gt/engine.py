@@ -27,7 +27,7 @@ State = StateJax
 # ----------------------------
 
 
-def _pad_strategies(strategies: Any, width: int = 13) -> Any:
+def _pad_strategies(strategies: Float[Array, "..."], width: int = 13) -> Float[Array, "..."]:
     arr = jnp.asarray(strategies)
 
     if arr.ndim == 1:
@@ -70,10 +70,10 @@ def mm_s_queue_wait_jax(
     utilization = arrival_rate / jnp.maximum(1e-9, (service_rate * servers))
 
     # Approximation for M/M/s wait time
-    def at_capacity(_):
+    def at_capacity(_) -> float:
         return 1440.0
 
-    def below_capacity(_):
+    def below_capacity(_) -> float:
         wait = (utilization ** (jnp.sqrt(2 * (servers + 1)) - 1)) / (servers * (1 - utilization))
         return jnp.clip(wait * 60.0, 5.0, 1440.0)
 
@@ -153,10 +153,10 @@ def baseline_state(start_year: int = 2025, p: ParamsJax | None = None) -> StateJ
     n_jurisdictions = 1
     n_lhns = 5
 
-    def init_lhn(i):
+    def init_lhn(i: int) -> LhnState:
         return LhnState(id=i)
 
-    def init_jurisdiction(i):
+    def init_jurisdiction(i: int) -> JurisdictionState:
         lhns = jax.vmap(init_lhn)(jnp.arange(n_lhns))
         return JurisdictionState(id=i, lhn_states=lhns)
 
@@ -354,7 +354,7 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
         s.agreement_clock,
     )
 
-    def _renegotiate(jurs):
+    def _renegotiate(jurs: JurisdictionState) -> JurisdictionState:
         from nhra_gt.solvers_jax import discrete_nash_jax
         from nhra_gt.subgames.games_jax import GameParamsJax, renegotiation_game_jax
 

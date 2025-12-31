@@ -110,5 +110,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Troubleshoot Performance & Fix Deployment
+## [x] Track: Troubleshoot Performance & Fix Deployment
 *Link: [./conductor/tracks/performance_fix_20251229/](./conductor/tracks/performance_fix_20251229/)*
+
+## [~] Track: Pipeline Refactoring & Robustness
+*Link: [./conductor/tracks/pipeline_refactoring_20251230/](./conductor/tracks/pipeline_refactoring_20251230/)*

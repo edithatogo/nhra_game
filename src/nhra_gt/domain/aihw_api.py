@@ -7,7 +7,7 @@ import requests  # type: ignore
 try:
     import polars as pl
 except ImportError:  # pragma: no cover
-    pl = None  # type: ignore[assignment]
+    pl = None
 
 
 class AIHWClient:

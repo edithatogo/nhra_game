@@ -8,14 +8,14 @@ try:
     from flax import struct
     from jax import lax
 except ImportError:  # pragma: no cover
-    import numpy as jnp  # type: ignore[assignment]
+    import numpy as jnp  # type: ignore[no-redef]
 
-    lax = None  # type: ignore[assignment]
+    lax = None
 
     class _Struct:  # minimal replacement for `flax.struct`
         dataclass = staticmethod(dataclass)
 
-    struct = _Struct()  # type: ignore[assignment]
+    struct = _Struct()
 
 if TYPE_CHECKING:
     # Use Any or a Protocol if needed to avoid circular imports during JIT

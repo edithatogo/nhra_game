@@ -1,0 +1,7 @@
+.gemini
+.nox
+.mypy_cache
+archive
+data/raw
+outputs
+docs

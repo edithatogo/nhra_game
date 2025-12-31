@@ -37,13 +37,15 @@ def qre_solver_jax(
     """
     m, n = u_row.shape
 
-    def logit_choice(utilities: Array) -> Array:
+    def logit_choice(utilities: Float[Array, "..."]) -> Float[Array, "..."]:
         # Stable logit/softmax
         u = utilities - jnp.max(utilities)
         z = jnp.exp(lam * u)
         return z / jnp.sum(z)
 
-    def scan_body(val, _):
+    def scan_body(
+        val: tuple[Array, Array, Array], _: Any
+    ) -> tuple[tuple[Array, Array, Array], None]:
         p, q, _ = val
         # Calculate expected utilities
         exp_u_row = u_row @ q
@@ -74,17 +76,15 @@ def qre_solver_jax(
 def regret_min_solver_jax(
     u_row: Float[Array, "m n"],
     u_col: Float[Array, "m n"],
-    learning_rate: float = 0.1,
     max_iter: int = 500,
-    tol: float = 1e-5,
+    learning_rate: float = 0.05,
 ) -> tuple[Float[Array, "m"], Float[Array, "n"], Float[Array, ""]]:
     """
-    Finds approximate equilibrium by minimizing total regret using gradient descent.
-    Differentiable through the optimization process.
+    Finds approximate Nash equilibrium by minimizing total regret using gradient descent.
     """
     m, n = u_row.shape
 
-    def total_regret(params):
+    def total_regret(params: tuple[Array, Array]) -> Float[Array, ""]:
         p_logit, q_logit = params
         p = jax.nn.softmax(p_logit)
         q = jax.nn.softmax(q_logit)
@@ -105,9 +105,12 @@ def regret_min_solver_jax(
     q_logits = jnp.zeros(n)
 
     # Simple gradient descent loop
-    def scan_body(logits, _):
+    def scan_body(logits: tuple[Array, Array], _: Any) -> tuple[tuple[Array, Array], Array]:
         grads = jax.grad(total_regret)(logits)
-        next_logits = (logits[0] - learning_rate * grads[0], logits[1] - learning_rate * grads[1])
+        next_logits = (
+            logits[0] - learning_rate * grads[0],
+            logits[1] - learning_rate * grads[1],
+        )
         # Calculate current regret
         curr_regret = total_regret(next_logits)
         return next_logits, curr_regret
@@ -175,7 +178,8 @@ def solve_hierarchical_game_jax(
     """
     m, n = macro_row_matrix.shape
 
-    def get_micro_utility(i, j):
+    def get_micro_utility(i: int, j: int) -> float:
+        # Resolve micro game for cell (i, j)
         u_micro_row, u_micro_col = micro_game_factory(i, j)
         p_micro, q_micro, _ = qre_solver_jax(u_micro_row, u_micro_col, lam=lam)
         return p_micro @ u_micro_row @ q_micro, p_micro @ u_micro_col @ q_micro

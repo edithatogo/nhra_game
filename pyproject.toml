@@ -66,7 +66,8 @@ dev = [
     "pytest-cov", "scalene", "pyinstrument", "py-spy", "memray",
     "pytest-benchmark", "asv", "deptry", "vulture", "bandit", "pyright",
     "beartype", "typeguard", "mkdocstrings-python", "mkdocs-literate-nav",
-    "mkdocs-section-index", "mkdocs-jupyter", "mike",
+    "mkdocs-section-index", "mypy", "types-requests", "types-PyYAML", "types-setuptools", "pandas-stubs",
+    "mkdocs-jupyter", "mike",
     "mkdocs-git-revision-date-localized-plugin"
 ]
 
@@ -79,6 +80,10 @@ locust = "*"
 atheris = {version = "*", markers = "sys_platform == 'linux'"}
 ruff = ">=0.8"
 mypy = ">=1.10"
+types-requests = "*"
+types-PyYAML = "*"
+types-setuptools = "*"
+pandas-stubs = "*"
 pre-commit = ">=3.7"
 nox = ">=2024.0"
 isort = ">=5.13"
@@ -167,7 +172,7 @@ ignore = ["E501", "N806", "F722"]
 "scripts/*" = ["E402"]
 "tests/*" = ["S101", "S105", "PT011", "B017", "E402", "S607", "S603"]
 "src/nhra_gt/agent_logic.py" = ["F821"]
-"src/nhra_gt/engine.py" = ["F821", "UP037"]
+"src/nhra_gt/engine.py" = ["F821", "UP037", "E402"]
 "src/nhra_gt/solvers_jax.py" = ["F821", "UP037"]
 "src/nhra_gt/hierarchical_jax.py" = ["F821", "UP037"]
 "src/nhra_gt/calibration/differentiable.py" = ["F821", "UP037"]

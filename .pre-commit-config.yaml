@@ -31,9 +31,9 @@ repos:
     rev: v1.19.1
     hooks:
       - id: mypy
-        args: ["--config-file", "mypy.ini"]
+        args: ["--config-file", "mypy.ini", "src"]
         pass_filenames: false
-        additional_dependencies: [types-requests, types-setuptools, pandas-stubs, pydantic, pandera, types-PyYAML]
+        additional_dependencies: [types-requests, types-setuptools, pandas-stubs, pydantic, pandera, types-PyYAML, jax, flax, jaxtyping, beartype]
   - repo: https://github.com/PyCQA/bandit
     rev: 1.9.2
     hooks:

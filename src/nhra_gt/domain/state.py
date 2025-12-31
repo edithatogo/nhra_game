@@ -48,6 +48,9 @@ class MetricsJax:
     max_solver_n_equilibria: int = 0
     mean_solver_residual: float = 0.0
 
+    def replace(self, **kwargs: Any) -> MetricsJax:
+        return self.replace(**kwargs)
+
 
 @struct.dataclass
 class ParamsJax:
@@ -136,6 +139,9 @@ class ParamsJax:
     # Economic Spine (optional JAX arrays)
     spine: EconomicSpineJax | None = None
 
+    def replace(self, **kwargs: Any) -> ParamsJax:
+        return self.replace(**kwargs)
+
     @classmethod
     def from_yaml(cls, path: Path | str) -> ParamsJax:
         """Loads parameters from a YAML file."""
@@ -171,18 +177,20 @@ class BaselineProvider:
 
             df_pd = pd.read_csv(path)
             return EconomicSpineJax(
-                years=df_pd["year"].to_numpy().astype(jnp.int32),
-                nep_per_nwau=df_pd[
-                    "within4"
-                ].to_numpy(),  # Placeholder for actual NEP if not in spine
-                wpi_health_index=df_pd["occupancy"].to_numpy(),  # Placeholder
+                years=jnp.array(df_pd["year"].to_numpy().astype(jnp.int32)),
+                nep_per_nwau=jnp.array(
+                    df_pd["within4"].to_numpy()
+                ),  # Placeholder for actual NEP if not in spine
+                wpi_health_index=jnp.array(df_pd["occupancy"].to_numpy()),  # Placeholder
             )
 
         df = pl.read_csv(path)
         return EconomicSpineJax(
-            years=df["year"].to_numpy().astype(jnp.int32),
-            nep_per_nwau=df["within4"].to_numpy(),  # Placeholder for actual NEP if not in spine
-            wpi_health_index=df["occupancy"].to_numpy(),  # Placeholder
+            years=jnp.array(df["year"].to_numpy().astype(jnp.int32)),
+            nep_per_nwau=jnp.array(
+                df["within4"].to_numpy()
+            ),  # Placeholder for actual NEP if not in spine
+            wpi_health_index=jnp.array(df["occupancy"].to_numpy()),  # Placeholder
         )
 
     @classmethod
@@ -217,6 +225,9 @@ class LhnState:
     discharge_delay: float = 1.0
     adjustment_costs: float = 0.0
 
+    def replace(self, **kwargs: Any) -> LhnState:
+        return self.replace(**kwargs)
+
 
 @struct.dataclass
 class JurisdictionState:
@@ -233,6 +244,9 @@ class JurisdictionState:
     lhn_states: LhnState = struct.field(
         default_factory=lambda: LhnState(0)
     )  # Vectorized in practice
+
+    def replace(self, **kwargs: Any) -> JurisdictionState:
+        return self.replace(**kwargs)
 
 
 @struct.dataclass
@@ -303,3 +317,6 @@ class StateJax:
     prob_ed: float = 0.5
 
     metrics: MetricsJax = MetricsJax()
+
+    def replace(self, **kwargs: Any) -> StateJax:
+        return self.replace(**kwargs)

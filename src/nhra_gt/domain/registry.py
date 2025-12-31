@@ -6,7 +6,7 @@ from typing import Any, cast
 try:
     import polars as pl
 except ImportError:  # pragma: no cover
-    pl = None  # type: ignore[assignment]
+    pl = None
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 

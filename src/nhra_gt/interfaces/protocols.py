@@ -1,15 +1,18 @@
 from __future__ import annotations
 
-from typing import Any, Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
+
+if TYPE_CHECKING:
+    from typing import TypeAlias
 
 import numpy as np
 from numpy.typing import NDArray
 
 # --- Numeric Typing Aliases ---
 # Standard numpy-based float array
-FloatArray = NDArray[np.float64]
+FloatArray: Any = NDArray[np.float64]
 # Standard numpy-based int array
-IntArray = NDArray[np.int_]
+IntArray: Any = NDArray[np.int_]
 
 # Optional: jaxtyping support if available
 try:

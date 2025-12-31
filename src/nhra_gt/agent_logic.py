@@ -5,8 +5,11 @@ from typing import Any
 
 try:
     import jax.numpy as jnp
+    from jax import lax
 except ImportError:  # pragma: no cover
-    import numpy as jnp  # type: ignore[assignment]
+    import numpy as jnp  # type: ignore[no-redef]
+
+    lax = None
 
 try:
     from flax import struct

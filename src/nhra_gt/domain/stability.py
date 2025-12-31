@@ -29,7 +29,7 @@ def analyze_cost_shifting_stability(
 
             game = cost_shifting_game(gp)
             eqs = all_nash(game)
-            sel = select_equilibrium(
+            sel, _ = select_equilibrium(
                 eqs, rule="payoff_dominant", u_row=game.u_row, u_col=game.u_col
             )
 
