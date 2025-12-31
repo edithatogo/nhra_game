@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Mechanism map</title>
+  <desc id="desc">A simplified map of negotiation stages connected to outcomes.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1020"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <style>
+      .box{fill:rgba(255,255,255,0.06);stroke:rgba(255,255,255,0.18);stroke-width:2}
+      .edge{stroke:rgba(255,255,255,0.45);stroke-width:2.5;fill:none;marker-end:url(#arrow)}
+      .h{font:700 26px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; fill:#e2e8f0}
+      .t{font:500 16px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; fill:#cbd5e1}
+      .k{fill:#99f6e4}
+      .p{fill:#c4b5fd}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(255,255,255,0.55)"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="520" rx="26" fill="url(#bg)"/>
+
+  <text class="h" x="64" y="78">Mechanism map (conceptual)</text>
+  <text class="t" x="64" y="110">How stages connect to outcomes used in the model.</text>
+
+  <path class="edge" d="M260,220 C360,220 400,220 500,220"/>
+  <path class="edge" d="M580,220 C680,220 720,220 820,220"/>
+  <path class="edge" d="M900,220 C980,220 1010,220 1090,220"/>
+
+  <rect class="box" x="120" y="170" width="180" height="100" rx="18"/>
+  <circle class="k" cx="152" cy="220" r="6"/>
+  <text class="t" x="170" y="212">Stage game</text>
+  <text class="t" x="170" y="238">payoffs</text>
+
+  <rect class="box" x="500" y="170" width="180" height="100" rx="18"/>
+  <circle class="p" cx="532" cy="220" r="6"/>
+  <text class="t" x="550" y="212">Strategy</text>
+  <text class="t" x="550" y="238">profiles</text>
+
+  <rect class="box" x="820" y="170" width="180" height="100" rx="18"/>
+  <circle class="k" cx="852" cy="220" r="6"/>
+  <text class="t" x="870" y="212">Equilibrium</text>
+  <text class="t" x="870" y="238">selection</text>
+
+  <rect class="box" x="1090" y="170" width="90" height="100" rx="18" transform="translate(-40,0)"/>
+  <circle class="p" cx="1082" cy="220" r="6"/>
+  <text class="t" x="1098" y="212" text-anchor="start" transform="translate(-40,0)">Outputs</text>
+  <text class="t" x="1098" y="238" text-anchor="start" transform="translate(-40,0)">tables</text>
+</svg>
