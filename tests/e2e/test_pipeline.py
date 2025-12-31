@@ -25,6 +25,8 @@ def test_snakemake_baseline_pipeline():
             "--cores",
             "1",
             "run_baseline",
+            "--printshellcmds",
+            "--show-failed-logs",
         ],
         capture_output=True,
         text=True,
@@ -43,7 +45,16 @@ def test_snakemake_context_pack():
     out_path.unlink(missing_ok=True)
 
     result = subprocess.run(
-        ["snakemake", "--cores", "1", "context_pack"], capture_output=True, text=True
+        [
+            "snakemake",
+            "--cores",
+            "1",
+            "context_pack",
+            "--printshellcmds",
+            "--show-failed-logs",
+        ],
+        capture_output=True,
+        text=True,
     )
 
     assert result.returncode == 0
