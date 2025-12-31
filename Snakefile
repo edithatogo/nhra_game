@@ -85,7 +85,7 @@ rule run_baseline:
     output:
         "data/baseline/tables/trajectory.csv"
     shell:
-        "PYTHONPATH=src python scripts/run_baseline.py"
+        "poetry run python scripts/run_baseline.py"
 
 rule render_diagrams:
     output:
@@ -105,10 +105,10 @@ rule context_pack:
     output:
         "context/CONTEXT_PACK.md"
     shell:
-        "python scripts/build_context_pack.py"
+        "poetry run python scripts/build_context_pack.py"
 
 rule check_grounding:
     output:
         "context/grounding.ok"
     shell:
-        "python scripts/check_parameters_grounded.py && echo OK > context/grounding.ok"
+        "poetry run python scripts/check_parameters_grounded.py && echo OK > context/grounding.ok"
