@@ -1,12 +1,18 @@
-import tomllib
+from __future__ import annotations
+
 from pathlib import Path
+
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10
+    import toml as tomllib
 
 
 def test_quality_configuration_completeness() -> None:
     """Verify pyproject.toml has comprehensive quality tool configurations."""
     pyproject_path = Path("pyproject.toml")
     with open(pyproject_path, "rb") as f:
-        config = tomllib.load(f)
+        config = tomllib.load(f)  # type: ignore[attr-defined]
 
     # Check for Bandit config
     assert "bandit" in config["tool"], "pyproject.toml missing [tool.bandit] section"

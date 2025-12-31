@@ -53,11 +53,11 @@ polars = { version = ">=0.20", optional = true }
 logfire = { version = ">=0.46", optional = true }
 reportlab = "^4.4.7"
 kaleido = "^1.2.0"
-jaxopt = { version = "^0.8.5", optional = true }
+jaxopt = "^0.8.5"
 
 [tool.poetry.extras]
 opt = ["optuna"]
-accel = ["chex", "numpyro", "polars", "jaxopt"]
+accel = ["chex", "numpyro", "polars"]
 observability = ["logfire"]
 dev = [
     "pytest", "hypothesis", "hypothesis-auto", "icontract-hypothesis",
