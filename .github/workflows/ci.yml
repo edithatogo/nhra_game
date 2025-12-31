@@ -52,5 +52,6 @@ jobs:
         run: poetry run mkdocs build -q
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1.8.0
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
         with:
           args: --no-progress './**/*.md'
