@@ -127,8 +127,8 @@ To ensure validation rigor, selected benchmarks must meet the following criteria
 | FIX-002 | ISSUE-002 | Corrected unit conversion in `mm_s_queue_wait_jax` (x1440.0). | test_queuing_logic_erlang | Wait time = 82m. | Verified |
 
 ## Provenance
-- Git SHA: TBD
-- Data version: TBD
-- Run timestamp (UTC): TBD
-- Random seeds: TBD
-- Environment details: TBD
+- Git SHA: 06cb13913db9ce97f5075840e2e625c9b6399518
+- Data version: v4 (Simulated/Calibrated)
+- Run timestamp (UTC): 2026-01-01T21:55:12Z (AEDT 2026-01-02T08:55)
+- Random seeds: Fixed (42, 123)
+- Environment details: JAX/Darwin-arm64 (macOS)
