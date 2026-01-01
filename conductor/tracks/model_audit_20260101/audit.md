@@ -18,7 +18,11 @@
 ## Model Inventory
 | Model | Location | Purpose | Inputs | Outputs | Dependencies | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| TBD | TBD | TBD | TBD | TBD | TBD | TBD |
+| Core simulation engine | src/nhra_gt/engine.py | Orchestrate system dynamics and scenario runs | base_params, initial_state, scenario config | trajectories, summary metrics | domain/*, subgames/*, solvers_jax, agents | Primary Python engine |
+| JAX solver suite | src/nhra_gt/solvers_jax.py | Compute equilibria and solver utilities | payoff matrices, constraints | equilibrium strategies, diagnostics | jax, numpy | Vectorized solver core |
+| Queuing equilibrium | src/nhra_gt/subgames/queuing.py | M/M/s queue solver for ED wait/demand | arrival rate, service rate, capacity, utility params | equilibrium demand, wait times | engine mm_s_queue_wait, jax (optional) | Legacy + JAX paths |
+| Differentiable calibration | src/nhra_gt/calibration/differentiable.py | Calibrate parameters to target metrics | target metrics, base_params, init state | optimized params, loss | jax | Optimization loop |
+| Stability metrics | src/nhra_gt/domain/stability.py | Hysteresis area and recovery metrics | trajectory series | hysteresis area, recovery stats | numpy | Post-simulation metrics |
 
 ## Reference Registry
 | Reference ID | Citation | DOI/URL | Publication Date | Parameter Mapping | Units/Scale | Notes |

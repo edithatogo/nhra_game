@@ -51,3 +51,23 @@ def test_audit_artifacts_section_lists_deliverables() -> None:
     ]
     for item in required_items:
         assert item in content, f"Missing audit artifact item: {item}"
+
+
+def test_model_inventory_has_non_tbd_entries() -> None:
+    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    lines = audit_path.read_text(encoding="utf-8").splitlines()
+    try:
+        start_index = lines.index("## Model Inventory")
+    except ValueError as exc:
+        raise AssertionError("Missing Model Inventory section") from exc
+
+    table_lines = []
+    for line in lines[start_index + 1 :]:
+        if line.startswith("## "):
+            break
+        if line.startswith("|"):
+            table_lines.append(line)
+
+    assert len(table_lines) >= 3, "Model Inventory table should include at least one data row"
+    data_lines = table_lines[2:]
+    assert any("TBD" not in line for line in data_lines), "Model Inventory needs non-TBD entries"
