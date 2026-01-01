@@ -71,7 +71,7 @@ def test_forensic_audit_load(dashboard):
     """
     Test loading the 'Forensic Audit' sub-tab to ensure no crashes due to missing columns.
     """
-    dashboard.navigate_to_tab(dashboard.tab_data)
+    dashboard.navigate_to_tab(dashboard.tab_forensic)
     dashboard.page.wait_for_timeout(500)
 
     # It might be in a sub-section/expander, but assuming based on previous logs it's part of the main data tab or accessible.

@@ -20,6 +20,7 @@ class DashboardPage:
         self.tab_strategic = page.get_by_role("tab", name="🕸️ Strategic Map")
         self.tab_tree = page.get_by_role("tab", name="🌲 Game Tree Explorer")
         self.tab_data = page.get_by_role("tab", name="🧬 Data Lineage")
+        self.tab_forensic = page.get_by_role("tab", name="🔍 Forensic Audit")
 
         # Locators - Actions
         self.boost_button = page.get_by_role("button", name="Boost to SOTA Accuracy")

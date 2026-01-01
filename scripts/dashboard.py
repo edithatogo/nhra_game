@@ -1308,15 +1308,17 @@ def main() -> None:
             )
             mock_reg.save_to_csv(reg_path)
 
-        registry = EvidenceRegistry.load_from_csv(reg_path)
+        evidence_registry = EvidenceRegistry.load_from_csv(reg_path)
 
         # Conflict Resolver Section
         st.subheader("🕵️ Conflict Resolver")
-        params_with_multiple = [p for p, entries in registry.entries.items() if len(entries) > 1]
+        params_with_multiple = [
+            p for p, entries in evidence_registry.entries.items() if len(entries) > 1
+        ]
 
         if params_with_multiple:
             selected_param = st.selectbox("Resolve Conflict for Parameter:", params_with_multiple)
-            entries = registry.get_all_entries(selected_param)
+            entries = evidence_registry.get_all_entries(selected_param)
 
             st.markdown(f"**Sources for {selected_param}:**")
             for i, e in enumerate(entries):
@@ -1335,7 +1337,11 @@ def main() -> None:
         st.subheader("📋 Pending Ingestions")
         st.dataframe(
             pd.DataFrame(
-                [e.model_dump() for p_entries in registry.entries.values() for e in p_entries]
+                [
+                    e.model_dump()
+                    for p_entries in evidence_registry.entries.values()
+                    for e in p_entries
+                ]
             )
         )
 
