@@ -6,7 +6,7 @@
   - [x] Sub-task: Review docs/README for model list
 - [x] Task: Create audit report structure in `audit.md` (methodology, tables, provenance placeholders) 526f425
 - [x] Task: Define audit artifacts/deliverables (inventory table, reference registry, risk register, validation results table) 1e1910e
-- [~] Task: Build initial model inventory table (name, location, purpose, inputs/outputs, dependencies)
+- [x] Task: Build initial model inventory table (name, location, purpose, inputs/outputs, dependencies) 2fa442a
 - [ ] Task: Establish reference registry and citation conventions (manage_refs.py workflow)
 - [ ] Task: Define assumption & risk register template
 - [ ] Task: Check data access/licensing constraints for published sources
