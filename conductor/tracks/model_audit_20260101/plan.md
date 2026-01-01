@@ -14,10 +14,10 @@
 
 ## Phase 2: Input & Assumption Validation
 - [x] Task: For each model, enumerate inputs and parameter sources aafdf8f
-- [ ] Task: Map each input to a published source; record DOI/URL, date, units, scaling
-- [ ] Task: Document and assess assumptions (rationale, risk, impact)
-- [ ] Task: Validate reference correctness vs parameter values (units/scales)
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Input & Assumption Validation' (Protocol in workflow.md)
+- [x] Task: Map each input to a published source; record DOI/URL, date, units, scaling
+- [x] Task: Document and assess assumptions (rationale, risk, impact)
+- [x] Task: Validate reference correctness vs parameter values (units/scales)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Input & Assumption Validation' (Protocol in workflow.md)
 
 ## Phase 3: Output Validation (Benchmarks + Sanity Checks)
 - [ ] Task: Define benchmark selection criteria and rationale
