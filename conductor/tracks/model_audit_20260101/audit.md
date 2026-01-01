@@ -24,6 +24,15 @@
 | Differentiable calibration | src/nhra_gt/calibration/differentiable.py | Calibrate parameters to target metrics | target metrics, base_params, init state | optimized params, loss | jax | Optimization loop |
 | Stability metrics | src/nhra_gt/domain/stability.py | Hysteresis area and recovery metrics | trajectory series | hysteresis area, recovery stats | numpy | Post-simulation metrics |
 
+## Input & Parameter Sources
+| Model | Inputs | Parameter Sources | Notes |
+| --- | --- | --- | --- |
+| Core simulation engine | init_state, params, strategies, prng_key, num_steps, economic_spine (optional) | TBD (Phase 2.2) | Based on run_simulation_jax/step signatures |
+| JAX solver suite | u_row, u_col, lam, max_iter, tol, learning_rate, micro_game_factory | TBD (Phase 2.2) | Covers QRE/regret/discrete/hierarchical solvers |
+| Queuing equilibrium | total_base_demand, capacity, discharge_delay, PatientUtilityParams, max_iter | TBD (Phase 2.2) | See solve_queuing_equilibrium_jax/legacy |
+| Differentiable calibration | target_data (within4), init_state, base_params, learning_rate, max_iter, prng_key | TBD (Phase 2.2) | See calibrate_jax and loss_fn |
+| Stability metrics | intensities, pressures, efficiency_gap, x/y arrays, modes list | TBD (Phase 2.2) | analyze_cost_shifting_stability/calculate_* |
+
 ## Reference Registry
 | Reference ID | Citation | DOI/URL | Publication Date | Parameter Mapping | Units/Scale | Notes |
 | --- | --- | --- | --- | --- | --- | --- |

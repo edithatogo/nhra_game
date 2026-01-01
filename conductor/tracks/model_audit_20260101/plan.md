@@ -13,7 +13,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Audit Setup & Inventory' (Protocol in workflow.md) 9535c5f
 
 ## Phase 2: Input & Assumption Validation
-- [ ] Task: For each model, enumerate inputs and parameter sources
+- [~] Task: For each model, enumerate inputs and parameter sources
 - [ ] Task: Map each input to a published source; record DOI/URL, date, units, scaling
 - [ ] Task: Document and assess assumptions (rationale, risk, impact)
 - [ ] Task: Validate reference correctness vs parameter values (units/scales)
