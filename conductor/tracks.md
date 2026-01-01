@@ -118,3 +118,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ## [ ] Track: Dashboard E2E Testing Suite
 *Link: [./conductor/tracks/dashboard_e2e_20260101/](./conductor/tracks/dashboard_e2e_20260101/)*
+
+---
+
+## [~] Track: Comprehensive Model Audit and Repairs
+*Link: [./conductor/tracks/model_audit_20260101/](./conductor/tracks/model_audit_20260101/)*
