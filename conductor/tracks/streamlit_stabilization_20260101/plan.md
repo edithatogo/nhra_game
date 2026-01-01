@@ -16,5 +16,5 @@ Ensure we know what runs and that it doesn't crash.
 - [x] **Automated Health Check**: Create and run `scripts/verify_remote_health.py` (polls `/_stcore/health` and checks page title).
 
 ## Phase 3: Final Integration
-- [ ] **Final Automated Sweep**: Run `tests/e2e/test_scenarios.py` locally and `scripts/verify_remote_health.py` remotely.
-- [ ] **Cleanup**: Delete `packages.txt.bak` if successful.
+- [x] **Final Automated Sweep**: Run `tests/e2e/test_scenarios.py` locally and `scripts/verify_remote_health.py` remotely.
+- [x] **Cleanup**: Delete `packages.txt.bak` if build succeeds.sful.

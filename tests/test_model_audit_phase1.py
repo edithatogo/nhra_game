@@ -84,3 +84,15 @@ def test_reference_registry_conventions_documented() -> None:
     ]
     for value in required_strings:
         assert value in content, f"Missing reference convention detail: {value}"
+
+
+def test_assumption_risk_register_conventions_documented() -> None:
+    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    content = audit_path.read_text(encoding="utf-8")
+    required_strings = [
+        "### Assumption & Risk Register Conventions",
+        "Required fields: assumption, rationale, risk, impact, mitigation",
+        "Risk levels: low, medium, high",
+    ]
+    for value in required_strings:
+        assert value in content, f"Missing assumption/risk convention detail: {value}"

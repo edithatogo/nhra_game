@@ -1,0 +1,7 @@
+{
+  "track_id": "comprehensive_game_docs_20260101",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-01T18:24:00+11:00",
+  "description": "Explicitly document and explain every single game modeled in the simulation with a hybrid UI."
+}

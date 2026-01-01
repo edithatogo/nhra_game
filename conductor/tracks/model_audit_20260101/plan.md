@@ -8,7 +8,7 @@
 - [x] Task: Define audit artifacts/deliverables (inventory table, reference registry, risk register, validation results table) 1e1910e
 - [x] Task: Build initial model inventory table (name, location, purpose, inputs/outputs, dependencies) 2fa442a
 - [x] Task: Establish reference registry and citation conventions (manage_refs.py workflow) fac4200
-- [ ] Task: Define assumption & risk register template
+- [~] Task: Define assumption & risk register template
 - [ ] Task: Check data access/licensing constraints for published sources
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Audit Setup & Inventory' (Protocol in workflow.md)
 

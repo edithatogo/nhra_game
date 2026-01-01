@@ -37,6 +37,11 @@
 - All entries must include DOI when available; otherwise a stable URL.
 
 ## Assumption & Risk Register
+### Assumption & Risk Register Conventions
+- Required fields: assumption, rationale, risk, impact, mitigation
+- Risk levels: low, medium, high
+- Capture likelihood and evidence notes where available.
+
 | Assumption | Rationale | Risk (low/med/high) | Impact | Mitigation |
 | --- | --- | --- | --- | --- |
 | TBD | TBD | TBD | TBD | TBD |
