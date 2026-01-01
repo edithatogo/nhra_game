@@ -2,7 +2,7 @@
 
 This plan outlines the steps to audit the `nhra_gt` codebase against its specifications, consolidate documentation into a single MkDocs site, and clean up technical debt.
 
-## Phase 1: Exhaustive Feature Audit & Gap Analysis
+## Phase 1: Exhaustive Feature Audit & Gap Analysis [checkpoint: b311846]
 Goal: Identify every planned feature and its true implementation status.
 
 - [x] Task: Catalog all "Planned Features" from `conductor/product.md` and `context/nhra_all_in_spec.md`. (470f357)
@@ -10,7 +10,7 @@ Goal: Identify every planned feature and its true implementation status.
 - [x] Task: Create the "Feature Audit Matrix" mapping features to code files and status. (ca95db9)
 - [x] Task: Document all "Hidden" features (implemented but missing from specs). (ca95db9)
 - [x] Task: Generate the audit report at `docs/reports/feature_audit_2026.md`. (ca95db9)
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Feature Audit' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Feature Audit' (Protocol in workflow.md) (b311846)
 
 ## Phase 2: Documentation Consolidation & Standardization
 Goal: Unify all project knowledge into a centralized, searchable MkDocs site with standardized API docs.
