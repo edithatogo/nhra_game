@@ -29,6 +29,13 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | TBD | TBD | TBD | TBD | TBD | TBD | TBD |
 
+## Reference Registry Conventions
+- Registry file: publications/shared/references/library.yaml
+- Validation command: python scripts/pub_tools/manage_refs.py publications/shared/references/library.yaml
+- Required fields: id, title, author, year, doi/url
+- Optional fields: journal or publisher, type, quality, recency, volume/issue/pages
+- All entries must include DOI when available; otherwise a stable URL.
+
 ## Assumption & Risk Register
 | Assumption | Rationale | Risk (low/med/high) | Impact | Mitigation |
 | --- | --- | --- | --- | --- |

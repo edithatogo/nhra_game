@@ -71,3 +71,16 @@ def test_model_inventory_has_non_tbd_entries() -> None:
     assert len(table_lines) >= 3, "Model Inventory table should include at least one data row"
     data_lines = table_lines[2:]
     assert any("TBD" not in line for line in data_lines), "Model Inventory needs non-TBD entries"
+
+
+def test_reference_registry_conventions_documented() -> None:
+    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    content = audit_path.read_text(encoding="utf-8")
+    required_strings = [
+        "## Reference Registry Conventions",
+        "publications/shared/references/library.yaml",
+        "scripts/pub_tools/manage_refs.py",
+        "Required fields: id, title, author, year, doi/url",
+    ]
+    for value in required_strings:
+        assert value in content, f"Missing reference convention detail: {value}"
