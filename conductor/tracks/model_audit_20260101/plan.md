@@ -1,7 +1,7 @@
 # Plan: Comprehensive Model Audit and Repairs
 
 ## Phase 1: Audit Setup & Inventory
-- [~] Task: Confirm model definition and scan repo for candidate models
+- [x] Task: Confirm model definition and scan repo for candidate models d3875f3
   - [ ] Sub-task: Identify directories/modules containing models
   - [ ] Sub-task: Review docs/README for model list
 - [ ] Task: Create audit report structure in `audit.md` (methodology, tables, provenance placeholders)
