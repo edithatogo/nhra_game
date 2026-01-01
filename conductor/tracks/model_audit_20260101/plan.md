@@ -1,6 +1,6 @@
 # Plan: Comprehensive Model Audit and Repairs
 
-## Phase 1: Audit Setup & Inventory
+## Phase 1: Audit Setup & Inventory [checkpoint: 9535c5f]
 - [x] Task: Confirm model definition and scan repo for candidate models d3875f3
   - [x] Sub-task: Identify directories/modules containing models
   - [x] Sub-task: Review docs/README for model list
@@ -10,7 +10,7 @@
 - [x] Task: Establish reference registry and citation conventions (manage_refs.py workflow) fac4200
 - [x] Task: Define assumption & risk register template fedc255
 - [x] Task: Check data access/licensing constraints for published sources bc0a980
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Audit Setup & Inventory' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Audit Setup & Inventory' (Protocol in workflow.md) 9535c5f
 
 ## Phase 2: Input & Assumption Validation
 - [ ] Task: For each model, enumerate inputs and parameter sources
