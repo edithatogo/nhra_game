@@ -20,7 +20,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Input & Assumption Validation' (Protocol in workflow.md)
 
 ## Phase 3: Output Validation (Benchmarks + Sanity Checks)
-- [ ] Task: Define benchmark selection criteria and rationale
+- [x] Task: Define benchmark selection criteria and rationale 85a7fdf
 - [ ] Task: Identify benchmarks for each model and define acceptance thresholds
 - [ ] Task: Implement/extend validation harness with tests (TDD: write failing tests, implement, refactor)
   - [ ] Sub-task: Add sanity checks (range/unit/monotonicity/edge cases)
