@@ -96,3 +96,16 @@ def test_assumption_risk_register_conventions_documented() -> None:
     ]
     for value in required_strings:
         assert value in content, f"Missing assumption/risk convention detail: {value}"
+
+
+def test_data_access_licensing_constraints_documented() -> None:
+    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    content = audit_path.read_text(encoding="utf-8")
+    required_strings = [
+        "## Data Access & Licensing Constraints",
+        "Identify licensing terms",
+        "Access restrictions",
+        "Reproducibility impact",
+    ]
+    for value in required_strings:
+        assert value in content, f"Missing data access/licensing detail: {value}"

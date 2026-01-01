@@ -36,6 +36,12 @@
 - Optional fields: journal or publisher, type, quality, recency, volume/issue/pages
 - All entries must include DOI when available; otherwise a stable URL.
 
+## Data Access & Licensing Constraints
+- Identify licensing terms for each published source (open access, subscription, or restricted).
+- Access restrictions (paywalls, institutional access, embargoes) must be documented per source.
+- Reproducibility impact: note any constraints that limit replication or redistribution.
+- Capture any usage limitations (e.g., non-commercial clauses) and mitigation steps.
+
 ## Assumption & Risk Register
 ### Assumption & Risk Register Conventions
 - Required fields: assumption, rationale, risk, impact, mitigation
