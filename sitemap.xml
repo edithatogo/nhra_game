@@ -129,6 +129,10 @@
          <lastmod>2026-01-01</lastmod>
     </url>
     <url>
+         <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/game_theory/</loc>
+         <lastmod>2026-01-01</lastmod>
+    </url>
+    <url>
          <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/hierarchical_jax/</loc>
          <lastmod>2026-01-01</lastmod>
     </url>
@@ -234,6 +238,22 @@
     </url>
     <url>
          <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/domain/validation/</loc>
+         <lastmod>2026-01-01</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/game_theory/content/</loc>
+         <lastmod>2026-01-01</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/game_theory/registry/</loc>
+         <lastmod>2026-01-01</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/game_theory/ui/</loc>
+         <lastmod>2026-01-01</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/game_theory/visualization/</loc>
          <lastmod>2026-01-01</lastmod>
     </url>
     <url>
