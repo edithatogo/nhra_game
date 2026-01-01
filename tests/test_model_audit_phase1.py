@@ -18,3 +18,22 @@ def test_model_candidates_list_is_not_empty() -> None:
     content = candidates_path.read_text(encoding="utf-8")
     candidate_lines = [line for line in content.splitlines() if line.startswith("- ")]
     assert candidate_lines, "At least one candidate model entry is required"
+
+
+def test_audit_report_structure_exists() -> None:
+    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    assert audit_path.exists(), "audit.md should exist"
+    content = audit_path.read_text(encoding="utf-8")
+    required_headings = [
+        "# Model Audit Report",
+        "## Audit Methodology",
+        "## Model Inventory",
+        "## Reference Registry",
+        "## Assumption & Risk Register",
+        "## Validation Results",
+        "## Issue Log",
+        "## Fix Log",
+        "## Provenance",
+    ]
+    for heading in required_headings:
+        assert heading in content, f"Missing section: {heading}"
