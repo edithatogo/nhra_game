@@ -26,6 +26,7 @@ def test_audit_report_structure_exists() -> None:
     content = audit_path.read_text(encoding="utf-8")
     required_headings = [
         "# Model Audit Report",
+        "## Audit Artifacts",
         "## Audit Methodology",
         "## Model Inventory",
         "## Reference Registry",
@@ -37,3 +38,16 @@ def test_audit_report_structure_exists() -> None:
     ]
     for heading in required_headings:
         assert heading in content, f"Missing section: {heading}"
+
+
+def test_audit_artifacts_section_lists_deliverables() -> None:
+    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    content = audit_path.read_text(encoding="utf-8")
+    required_items = [
+        "Model inventory table",
+        "Reference registry",
+        "Assumption & risk register",
+        "Validation results tables",
+    ]
+    for item in required_items:
+        assert item in content, f"Missing audit artifact item: {item}"

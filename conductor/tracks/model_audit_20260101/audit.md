@@ -1,5 +1,13 @@
 # Model Audit Report
 
+## Audit Artifacts
+- Model inventory table (Model Inventory section)
+- Reference registry (Reference Registry section)
+- Assumption & risk register (Assumption & Risk Register section)
+- Validation results tables (Benchmark Comparisons and Sanity Checks)
+- Issue log (Issue Log section)
+- Fix log (Fix Log section)
+
 ## Audit Methodology
 1. Inventory all computational models and their inputs/outputs.
 2. Map each input and assumption to a published source or document justified assumptions.
