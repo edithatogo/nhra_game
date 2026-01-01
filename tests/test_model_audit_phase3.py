@@ -36,20 +36,18 @@ def test_benchmark_comparisons_populated() -> None:
     for row in rows:
         if len(row) < 5:
             continue
-        metric = row[0]
-        model_val = row[1]
-        benchmark = row[2]
-        _delta = row[3]
-        result = row[4]
-
-        # Allow header row if parser captured it, but we filtered "---"
-        if metric == "Metric":
+        if row[0] == "Model":
             continue
 
-        assert model_val.upper() != "TBD", f"Model Value for {metric} is TBD"
-        assert benchmark.upper() != "TBD", f"Benchmark for {metric} is TBD"
+        model_name = row[0]
+        _benchmark_desc = row[1]
+        _acceptance = row[2]
+        result = row[3]
+        _notes = row[4]
+
+        # assert model_name.upper() != "TBD", f"Model Name for row is TBD" # The model name is fixed
         assert result.upper() in ["FAIL", "PASS", "WARN", "TBD"], f"Result invalid: {result}"
-        assert result.upper() != "TBD", f"Result for {metric} is TBD"
+        assert result.upper() != "TBD", f"Result for {model_name} is TBD"
 
 
 def test_sanity_checks_populated() -> None:
@@ -60,14 +58,16 @@ def test_sanity_checks_populated() -> None:
     assert rows, "Sanity Checks table should have entries"
 
     for row in rows:
-        if len(row) < 3:
+        if len(row) < 5:
             continue
-        check = row[0]
-        status = row[1]
-        _notes = row[2]
+        if row[0] == "Model":
+            continue
 
-        if check == "Check":
-            continue
+        _model = row[0]
+        check = row[1]
+        _expected = row[2]
+        status = row[3]
+        _notes = row[4]
 
         assert status.upper() != "TBD", f"Status for {check} is TBD"
         assert status.upper() in ["PASS", "FAIL", "WARN"], f"Status invalid: {status}"

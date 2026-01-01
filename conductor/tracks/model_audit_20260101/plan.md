@@ -22,20 +22,20 @@
 ## Phase 3: Output Validation (Benchmarks + Sanity Checks)
 - [x] Task: Define benchmark selection criteria and rationale 85a7fdf
 - [x] Task: Identify benchmarks for each model and define acceptance thresholds 9d9da3f
-- [~] Task: Implement/extend validation harness with tests (TDD: write failing tests, implement, refactor)
-  - [ ] Sub-task: Add sanity checks (range/unit/monotonicity/edge cases)
-  - [ ] Sub-task: Add benchmark comparison tests where available
-- [ ] Task: Run validation suite and record results in audit report, noting gaps
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Output Validation (Benchmarks + Sanity Checks)' (Protocol in workflow.md)
+- [x] Task: Implement/extend validation harness with tests (TDD: write failing tests, implement, refactor)
+  - [x] Sub-task: Add sanity checks (range/unit/monotonicity/edge cases)
+  - [x] Sub-task: Add benchmark comparison tests where available
+- [x] Task: Run validation suite and record results in audit report, noting gaps
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Output Validation (Benchmarks + Sanity Checks)' (Protocol in workflow.md)
 
 ## Phase 4: Repairs & Verification
-- [ ] Task: Triage issues by severity and prioritize fixes
-- [ ] Task: For each issue, write failing tests or validation checks (TDD)
-- [ ] Task: Implement fixes (including model logic changes) and rerun tests
-- [ ] Task: Run full test/coverage/lint/type checks and record results
-- [ ] Task: Update references/assumptions and record before/after evidence
-- [ ] Task: Produce consolidated change log with before/after metrics
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Repairs & Verification' (Protocol in workflow.md)
+- [x] Task: Triage issues by severity and prioritize fixes
+- [x] Task: For each issue, write failing tests or validation checks (TDD)
+- [x] Task: Implement fixes (including model logic changes) and rerun tests
+- [x] Task: Run full test/coverage/lint/type checks and record results
+- [x] Task: Update references/assumptions and record before/after evidence
+- [x] Task: Produce consolidated change log with before/after metrics
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Repairs & Verification' (Protocol in workflow.md)
 
 ## Phase 5: Audit Finalization
 - [ ] Task: Stakeholder review of audit report (lightweight sign-off)

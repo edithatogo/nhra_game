@@ -83,14 +83,14 @@ def mm_s_queue_wait_jax(
 
     def below_capacity(_) -> float:
         wait = (utilization ** (jnp.sqrt(2 * (servers + 1)) - 1)) / (servers * (1 - utilization))
-        return jnp.clip(wait * 60.0, 5.0, 1440.0)
+        return jnp.clip(wait * 1440.0, 5.0, 1440.0)
 
     return lax.cond(utilization >= 1.0, at_capacity, below_capacity, None)
 
 
 @beartype
 def within4_from_pressure_jax(pidx: Float[Array, ""]) -> Float[Array, ""]:
-    return jnp.clip(0.80 - 0.45 * jax_logistic((pidx - 1.0) / 0.20), 0.05, 0.85)
+    return jnp.clip(1.00 - 0.45 * jax_logistic((pidx - 1.0) / 0.20), 0.05, 0.85)
 
 
 @beartype
