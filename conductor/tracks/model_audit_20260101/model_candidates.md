@@ -28,6 +28,13 @@ This initial scan lists candidate model components and will be refined during th
 - src/nhra_gt/rules.py (rules engine)
 - src/nhra_gt/agent_logic.py (agent decision logic)
 
+### README-informed components
+- src/nhra_gt/agents/base.py (LLMAgent/HeuristicAgent frameworks)
+- src/nhra_gt/agents/jax.py (JAX heuristic agents)
+- src/nhra_gt/subgames/queuing.py (M/M/s queuing equilibrium)
+- src/nhra_gt/domain/stability.py (hysteresis and recovery metrics)
+- src/nhra_gt/domain/state.py (state and fiscal variables)
+
 ### Pipelines and scenario execution
 - scripts/run_baseline.py (baseline simulation run)
 - scripts/run_gsa.py (global sensitivity analysis)

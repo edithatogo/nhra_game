@@ -2,8 +2,8 @@
 
 ## Phase 1: Audit Setup & Inventory
 - [x] Task: Confirm model definition and scan repo for candidate models d3875f3
-  - [ ] Sub-task: Identify directories/modules containing models
-  - [ ] Sub-task: Review docs/README for model list
+  - [x] Sub-task: Identify directories/modules containing models
+  - [x] Sub-task: Review docs/README for model list
 - [ ] Task: Create audit report structure in `audit.md` (methodology, tables, provenance placeholders)
 - [ ] Task: Define audit artifacts/deliverables (inventory table, reference registry, risk register, validation results table)
 - [ ] Task: Build initial model inventory table (name, location, purpose, inputs/outputs, dependencies)
