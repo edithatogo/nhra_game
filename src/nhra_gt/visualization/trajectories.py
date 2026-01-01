@@ -15,7 +15,7 @@ def plot_trajectory(
     config: PlotConfig | None = None,
     q_low_col: str | None = None,
     q_high_col: str | None = None,
-    **kwargs,
+    **kwargs: Any,
 ) -> Figure:
     """
     Plots a time-series trajectory with optional quantile ribbons.
@@ -71,7 +71,7 @@ def plot_comparison_trajectory(
     ylabel: str,
     group_col: str = "Scenario",
     config: PlotConfig | None = None,
-    **kwargs,
+    **kwargs: Any,
 ) -> Figure:
     """
     Plots multiple trajectories for comparison across scenarios.
@@ -116,7 +116,7 @@ def plot_swarm(
     ylabel: str,
     run_col: str = "run",
     config: PlotConfig | None = None,
-    **kwargs,
+    **kwargs: Any,
 ) -> Figure:
     """
     Plots a 'swarm' of Monte Carlo trajectories.

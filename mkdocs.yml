@@ -14,8 +14,10 @@ nav:
   - Guides:
     - guides/index.md
     - Researcher Quickstart: guides/researcher_quickstart.md
+    - Model Logic: guides/models.md
     - Usage: guides/usage.md
     - Tooling & Pipeline: guides/tooling.md
+    - NEP & Terminology: guides/nep_terminology.md
     - Dashboard: dashboard.md
     - Glossary: guides/glossary.md
   - Model Theory:
@@ -23,19 +25,34 @@ nav:
     - Strategic Subgames: models/subgames.md
     - System Dynamics: models/dynamics.md
     - Fiscal Rules: models/fiscal.md
+    - Scenarios & Counterfactuals: scenarios.md
   - Project:
     - project/index.md
     - Requirements & Scope: project/requirements.md
+    - Feature Audit (2026): project/feature_audit.md
+    - Build Order: project/build_order.md
+    - Specifications:
+      - All-In Spec: project/spec/all_in_spec.md
+      - Stage Game Spec: project/spec/stage_game_spec.md
     - Design: design.md
     - Diagrams: diagrams.md
     - Context: context.md
   - Development:
-    - Development Guide: dev.md
-    - Contributing: contributing.md
-    - Validation & Testing: validation.md
+    - guides/developer_guide.md
+    - dev.md
+    - contributing.md
+    - validation.md
   - API Reference:
-    - Overview: reference/index.md
+    - reference/index.md
     - Full API Index: reference/api/index.md
+    - nhra_gt:
+      - engine: reference/api/nhra_gt/engine.md
+      - rules: reference/api/nhra_gt/rules.md
+      - solvers_jax: reference/api/nhra_gt/solvers_jax.md
+      - agents: reference/api/nhra_gt/agents.md
+      - subgames: reference/api/nhra_gt/subgames.md
+      - domain: reference/api/nhra_gt/domain.md
+      - visualization: reference/api/nhra_gt/visualization.md
   - FAQ: faq.md
   - Changelog: changelog.md
 
