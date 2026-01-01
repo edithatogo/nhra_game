@@ -10,10 +10,10 @@ The goal is to reduce deployment time by removing heavy system dependencies.
 
 ## Phase 2: Observability & Runtime Stability
 Ensure we know what runs and that it doesn't crash.
-- [ ] **UI Version Badge**: Add sidebar element in `dashboard.py` displaying Git Commit Hash (loaded from `version.txt` or env).
-- [ ] **Comprehensive Fallback Audit**: Scan `scripts/dashboard.py` for all column access and guard unsafe accesses.
-- [ ] **Deploy Fixes**: Push changes.
-- [ ] **Automated Health Check**: Create and run `scripts/verify_remote_health.py` (polls `/_stcore/health` and checks page title).
+- [x] **UI Version Badge**: Add sidebar element in `dashboard.py` displaying Git Commit Hash (loaded from `version.txt` or env).
+- [x] **Comprehensive Fallback Audit**: Scan `scripts/dashboard.py` for all column access and guard unsafe accesses.
+- [x] **Deploy Fixes**: Push changes.
+- [x] **Automated Health Check**: Create and run `scripts/verify_remote_health.py` (polls `/_stcore/health` and checks page title).
 
 ## Phase 3: Final Integration
 - [ ] **Final Automated Sweep**: Run `tests/e2e/test_scenarios.py` locally and `scripts/verify_remote_health.py` remotely.

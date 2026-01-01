@@ -264,6 +264,18 @@ def st_traffic_light(status: str, label: str):
     st.markdown(f"{icon} **{label}** ({status})")
 
 
+def safe_get_col(
+    df: pd.DataFrame, primary_col: str, backup_col: str = "pressure_mean", label: str = "Metric"
+) -> tuple[str, str, bool]:
+    """
+    Safely retrieves a column name, falling back to a proxy if missing.
+    Returns: (actual_col_name, display_label, is_fallback)
+    """
+    if primary_col in df.columns:
+        return primary_col, label, False
+    return backup_col, f"{label} (Proxy)", True
+
+
 def main() -> None:
     st.set_page_config(
         page_title="NHRA Strategic Scenario Dashboard", page_icon="🏥", layout="wide"
@@ -274,8 +286,29 @@ def main() -> None:
     scenarios = load_scenario_library()
     initialize_slider_state(scenarios)
 
-    version_display = __version__ if __version__ != "unknown" else "dev"
-    st.title(f"🏥 NHRA Strategic Scenario Analysis (v{version_display})")
+    # Git Hash Verification
+    git_hash = "Unknown"
+    try:
+        # Try to read from local git
+        import subprocess  # nosec
+
+        git_hash = (
+            subprocess.check_output(  # nosec
+                ["git", "rev-parse", "--short", "HEAD"],  # noqa: S607
+                stderr=subprocess.DEVNULL,
+            )
+            .decode("utf-8")
+            .strip()
+        )
+    except Exception:
+        # Try environment variable (common in CI/CD)
+        import os
+
+        git_hash = os.environ.get("COMMIT_SHA", "dev")[:7]
+
+    st.sidebar.markdown(f"**Version:** `{git_hash}`")
+    version_display = f"{__version__} ({git_hash})"
+    st.title(f"🏥 NHRA Strategic Scenario Analysis Use Case (v{version_display})")
     st.markdown("""
     ### Strategic Negotiation & System Risk Simulator (Cognitive Twin)
     This simulator models the interaction between policy levers (funding, capacity, integration)
@@ -1128,17 +1161,20 @@ def main() -> None:
 
             if st.button("Generate Stability Heatmap"):
                 with st.spinner("Calculating equilibria..."):
-                    intensities = np.linspace(0.0, 1.0, 21)
-                    pressures = np.linspace(0.8, 1.5, 21)
-                    df_stab = analyze_cost_shifting_stability(intensities, pressures)
+                    try:
+                        intensities = np.linspace(0.0, 1.0, 21)
+                        pressures = np.linspace(0.8, 1.5, 21)
+                        df_stab = analyze_cost_shifting_stability(intensities, pressures)
 
-                    # Pivot for heatmap
-                    pivot_table = df_stab.pivot(
-                        index="pressure", columns="cost_shifting_intensity", values="outcome"
-                    )
+                        # Pivot for heatmap
+                        pivot_table = df_stab.pivot(
+                            index="pressure", columns="cost_shifting_intensity", values="outcome"
+                        )
 
-                    fig_stab = plot_stability_heatmap(pivot_table)
-                    st.plotly_chart(fig_stab, width="stretch")
+                        fig_stab = plot_stability_heatmap(pivot_table)
+                        st.plotly_chart(fig_stab, width="stretch")
+                    except Exception as e:
+                        st.error(f"Stability analysis failed: {str(e)}")
 
         with tab5_2:
             st.subheader("🌀 Global Sensitivity Analysis (GSA)")
@@ -1293,6 +1329,8 @@ def main() -> None:
             )
         )
 
+    # ... (existing code) ...
+
     with tab7:
         st.markdown("### 🔍 Forensic Audit & Solver Integrity")
         st.markdown("Monitor the numerical stability and regulator response dynamics.")
@@ -1301,10 +1339,9 @@ def main() -> None:
         col_aud1, col_aud2 = st.columns(2)
         with col_aud1:
             st.markdown("**Regulator Suspicion Index**")
-            # Fallback for missing 'suspicion_mean' column
-            y_col = "suspicion_mean" if "suspicion_mean" in traj_game.columns else "pressure_mean"
-            y_label = (
-                "Suspicion (0-1)" if "suspicion_mean" in traj_game.columns else "Pressure (Proxy)"
+
+            y_col, y_label, is_fallback = safe_get_col(
+                traj_game, "suspicion_mean", "pressure_mean", "Suspicion"
             )
 
             fig_suspicion = px.line(
@@ -1312,30 +1349,23 @@ def main() -> None:
                 x="year",
                 y=y_col,
                 labels={"year": "Year", y_col: y_label},
-                title=f"Auditor {'Suspicion' if y_col == 'suspicion_mean' else 'Pressure'} (Anomaly Triggered)",
+                title=f"Auditor {y_label} (Anomaly Triggered)",
             )
             fig_suspicion.update_traces(line_color="orange", line_dash="dot")
             st.plotly_chart(fig_suspicion, width="stretch")
 
-            if y_col != "suspicion_mean":
+            if is_fallback:
                 st.caption(
-                    "⚠️ 'suspicion_mean' missing from simulation output. Displaying 'pressure_mean' as proxy."
+                    f"⚠️ '{y_col}' missing from simulation output. Displaying 'pressure_mean' as proxy."
                 )
             else:
                 st.caption("Signals detecting upcoding or efficiency gap spikes.")
 
         with col_aud2:
             st.markdown("**Active Inspection Pressure**")
-            # Fallback for missing 'pressure_active_mean' column
-            active_col = (
-                "pressure_active_mean"
-                if "pressure_active_mean" in traj_game.columns
-                else "pressure_mean"
-            )
-            active_label = (
-                "Active Pressure"
-                if "pressure_active_mean" in traj_game.columns
-                else "Pressure (Proxy)"
+
+            active_col, active_label, active_fallback = safe_get_col(
+                traj_game, "pressure_active_mean", "pressure_mean", "Active Pressure"
             )
 
             fig_active_p = px.line(
@@ -1343,11 +1373,12 @@ def main() -> None:
                 x="year",
                 y=active_col,
                 labels={"year": "Year", active_col: active_label},
-                title=f"Dynamic Audit Intensity ({'Active' if active_col == 'pressure_active_mean' else 'Proxy'})",
+                title=f"Dynamic Audit Intensity ({active_label})",
             )
             fig_active_p.update_traces(line_color="red")
             st.plotly_chart(fig_active_p, width="stretch")
-            if active_col != "pressure_active_mean":
+
+            if active_fallback:
                 st.caption("⚠️ 'pressure_active_mean' missing. Displaying 'pressure_mean' as proxy.")
             else:
                 st.caption("The dynamic scrutiny applied based on suspicion levels.")
