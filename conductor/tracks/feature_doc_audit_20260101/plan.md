@@ -6,10 +6,10 @@ This plan outlines the steps to audit the `nhra_gt` codebase against its specifi
 Goal: Identify every planned feature and its true implementation status.
 
 - [x] Task: Catalog all "Planned Features" from `conductor/product.md` and `context/nhra_all_in_spec.md`. (470f357)
-- [ ] Task: Search the codebase for feature implementations, identifying full implementations, stubs, and undocumented features.
-- [ ] Task: Create the "Feature Audit Matrix" mapping features to code files and status.
-- [ ] Task: Document all "Hidden" features (implemented but missing from specs).
-- [ ] Task: Generate the audit report at `docs/reports/feature_audit_2026.md`.
+- [x] Task: Search the codebase for feature implementations, identifying full implementations, stubs, and undocumented features. (ca95db9)
+- [x] Task: Create the "Feature Audit Matrix" mapping features to code files and status. (ca95db9)
+- [x] Task: Document all "Hidden" features (implemented but missing from specs). (ca95db9)
+- [x] Task: Generate the audit report at `docs/reports/feature_audit_2026.md`. (ca95db9)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Feature Audit' (Protocol in workflow.md)
 
 ## Phase 2: Documentation Consolidation & Standardization
