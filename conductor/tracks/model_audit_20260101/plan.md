@@ -4,7 +4,7 @@
 - [x] Task: Confirm model definition and scan repo for candidate models d3875f3
   - [x] Sub-task: Identify directories/modules containing models
   - [x] Sub-task: Review docs/README for model list
-- [~] Task: Create audit report structure in `audit.md` (methodology, tables, provenance placeholders)
+- [x] Task: Create audit report structure in `audit.md` (methodology, tables, provenance placeholders) 526f425
 - [ ] Task: Define audit artifacts/deliverables (inventory table, reference registry, risk register, validation results table)
 - [ ] Task: Build initial model inventory table (name, location, purpose, inputs/outputs, dependencies)
 - [ ] Task: Establish reference registry and citation conventions (manage_refs.py workflow)
