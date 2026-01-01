@@ -65,3 +65,20 @@ def test_download_functionality(dashboard):
     download = download_info.value
     # Filename depends on scenario, but should verify extension
     assert ".json" in download.suggested_filename
+
+
+def test_forensic_audit_load(dashboard):
+    """
+    Test loading the 'Forensic Audit' sub-tab to ensure no crashes due to missing columns.
+    """
+    dashboard.navigate_to_tab(dashboard.tab_data)
+    dashboard.page.wait_for_timeout(500)
+    
+    # It might be in a sub-section/expander, but assuming based on previous logs it's part of the main data tab or accessible.
+    # The browser logs showed "Forensic Audit & Solver Integrity" as a markdown header.
+    # We should ensure we scroll to it or it renders.
+    expect(dashboard.page.get_by_text("Forensic Audit & Solver Integrity")).to_be_visible()
+    
+    # Wait for potential graphing errors
+    dashboard.page.wait_for_timeout(2000)
+    dashboard.check_for_errors()

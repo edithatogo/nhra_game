@@ -1301,16 +1301,24 @@ def main() -> None:
         col_aud1, col_aud2 = st.columns(2)
         with col_aud1:
             st.markdown("**Regulator Suspicion Index**")
+            # Fallback for missing 'suspicion_mean' column
+            y_col = "suspicion_mean" if "suspicion_mean" in traj_game.columns else "pressure_mean"
+            y_label = "Suspicion (0-1)" if "suspicion_mean" in traj_game.columns else "Pressure (Proxy)"
+            
             fig_suspicion = px.line(
                 traj_game,
                 x="year",
-                y="suspicion_mean",
-                labels={"year": "Year", "suspicion_mean": "Suspicion (0-1)"},
-                title="Auditor Suspicion (Anomaly Triggered)",
+                y=y_col,
+                labels={"year": "Year", y_col: y_label},
+                title=f"Auditor {'Suspicion' if y_col == 'suspicion_mean' else 'Pressure'} (Anomaly Triggered)",
             )
             fig_suspicion.update_traces(line_color="orange", line_dash="dot")
             st.plotly_chart(fig_suspicion, width="stretch")
-            st.caption("Signals detecting upcoding or efficiency gap spikes.")
+            
+            if y_col != "suspicion_mean":
+                st.caption("⚠️ 'suspicion_mean' missing from simulation output. Displaying 'pressure_mean' as proxy.")
+            else:
+                st.caption("Signals detecting upcoding or efficiency gap spikes.")
 
         with col_aud2:
             st.markdown("**Active Inspection Pressure**")

@@ -19,3 +19,4 @@ jaxlib>=0.4
 flax>=0.8
 jaxtyping>=0.2
 beartype
+pygambit
