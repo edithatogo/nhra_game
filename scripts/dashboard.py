@@ -1303,8 +1303,10 @@ def main() -> None:
             st.markdown("**Regulator Suspicion Index**")
             # Fallback for missing 'suspicion_mean' column
             y_col = "suspicion_mean" if "suspicion_mean" in traj_game.columns else "pressure_mean"
-            y_label = "Suspicion (0-1)" if "suspicion_mean" in traj_game.columns else "Pressure (Proxy)"
-            
+            y_label = (
+                "Suspicion (0-1)" if "suspicion_mean" in traj_game.columns else "Pressure (Proxy)"
+            )
+
             fig_suspicion = px.line(
                 traj_game,
                 x="year",
@@ -1314,24 +1316,41 @@ def main() -> None:
             )
             fig_suspicion.update_traces(line_color="orange", line_dash="dot")
             st.plotly_chart(fig_suspicion, width="stretch")
-            
+
             if y_col != "suspicion_mean":
-                st.caption("⚠️ 'suspicion_mean' missing from simulation output. Displaying 'pressure_mean' as proxy.")
+                st.caption(
+                    "⚠️ 'suspicion_mean' missing from simulation output. Displaying 'pressure_mean' as proxy."
+                )
             else:
                 st.caption("Signals detecting upcoding or efficiency gap spikes.")
 
         with col_aud2:
             st.markdown("**Active Inspection Pressure**")
+            # Fallback for missing 'pressure_active_mean' column
+            active_col = (
+                "pressure_active_mean"
+                if "pressure_active_mean" in traj_game.columns
+                else "pressure_mean"
+            )
+            active_label = (
+                "Active Pressure"
+                if "pressure_active_mean" in traj_game.columns
+                else "Pressure (Proxy)"
+            )
+
             fig_active_p = px.line(
                 traj_game,
                 x="year",
-                y="pressure_active_mean",
-                labels={"year": "Year", "pressure_active_mean": "Active Pressure"},
-                title="Dynamic Audit Intensity",
+                y=active_col,
+                labels={"year": "Year", active_col: active_label},
+                title=f"Dynamic Audit Intensity ({'Active' if active_col == 'pressure_active_mean' else 'Proxy'})",
             )
             fig_active_p.update_traces(line_color="red")
             st.plotly_chart(fig_active_p, width="stretch")
-            st.caption("The dynamic scrutiny applied based on suspicion levels.")
+            if active_col != "pressure_active_mean":
+                st.caption("⚠️ 'pressure_active_mean' missing. Displaying 'pressure_mean' as proxy.")
+            else:
+                st.caption("The dynamic scrutiny applied based on suspicion levels.")
 
         st.markdown("---")
         st.markdown("#### Nash Solver Stability Monitor")
