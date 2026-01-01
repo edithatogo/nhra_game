@@ -309,6 +309,21 @@ def jurisdiction_step_jax(
 
 @beartype
 def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> StateJax:
+    """Performs a single JAX-accelerated simulation step (one month).
+
+    This function handles the monthly transition of system state, including
+    demand realization, jurisdictional allocation, funding calculation,
+    and performance metric updates.
+
+    Args:
+        s: Current simulation state.
+        p: Global simulation parameters.
+        strategies: Strategy vector for the current step.
+        prng_key: JAX random number generator key.
+
+    Returns:
+        The updated simulation state for the next step.
+    """
     strategies = _pad_strategies(strategies)
     mgf = 1.0 / 12.0
     k_dem, k_jur = jax.random.split(prng_key)
@@ -497,6 +512,19 @@ def run_simulation_jax(
     prng_key: Any,
     num_steps: int,
 ) -> tuple[StateJax, StateJax]:
+    """Runs a multi-step JAX simulation using lax.scan.
+
+    Args:
+        init_state: The starting state of the simulation.
+        params: Simulation parameters.
+        strategies: Either a single strategy vector (applied to all steps)
+            or a sequence of strategy vectors.
+        prng_key: JAX random number generator key.
+        num_steps: Number of months to simulate.
+
+    Returns:
+        A tuple containing (final_state, trajectory_of_states).
+    """
     strategies = _pad_strategies(strategies)
 
     def body_func(carry, input_tuple):

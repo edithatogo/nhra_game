@@ -79,8 +79,16 @@ def regret_min_solver_jax(
     max_iter: int = 500,
     learning_rate: float = 0.05,
 ) -> tuple[Float[Array, "m"], Float[Array, "n"], Float[Array, ""]]:
-    """
-    Finds approximate Nash equilibrium by minimizing total regret using gradient descent.
+    """Finds approximate Nash equilibrium by minimizing total regret using gradient descent.
+
+    Args:
+        u_row: Payoff matrix for the row player.
+        u_col: Payoff matrix for the column player.
+        max_iter: Number of optimization iterations.
+        learning_rate: Step size for gradient descent.
+
+    Returns:
+        A tuple of (row_strategy, col_strategy, final_regret).
     """
     m, n = u_row.shape
 
@@ -134,10 +142,17 @@ def regret_min_solver_jax(
 def discrete_nash_jax(
     u_row: Float[Array, "m n"], u_col: Float[Array, "m n"]
 ) -> tuple[Float[Array, "m"], Float[Array, "n"]]:
-    """
-    JAX-friendly wrapper for finding a pure Nash equilibrium.
+    """JAX-friendly wrapper for finding a pure Nash equilibrium in a discrete game.
+
     Since pure Nash is non-differentiable, this is used as an Oracle or for comparison.
     If multiple exist, it returns the payoff-dominant one.
+
+    Args:
+        u_row: Payoff matrix for the row player.
+        u_col: Payoff matrix for the column player.
+
+    Returns:
+        A tuple of (row_strategy, col_strategy) as one-hot vectors if a pure NE is found.
     """
     # For 2x2 games (most of our stage games), we can do brute force
     m, n = u_row.shape
