@@ -100,7 +100,12 @@ To ensure validation rigor, selected benchmarks must meet the following criteria
 ### Benchmark Comparisons
 | Model | Benchmark | Acceptance Criteria | Result | Notes |
 | --- | --- | --- | --- | --- |
-| TBD | TBD | TBD | TBD | TBD |
+| Core simulation engine | AIHW 2022-23 Median ED Wait Time (National) | Model median within ±10% of 18 minutes (16.2-19.8m) | TBD | Source: AIHW 'Emergency department care 2022–23', Table 4.2 |
+| Core simulation engine | AIHW 2022-23 ED Presentations seen on time (Overall) | Model % within ±5pp of 65% | TBD | Source: AIHW 'Emergency department care 2022–23', Table 4.4 |
+| Core simulation engine | IHACPA 2023 NEP (National Efficient Price) | Model avg cost/NWAU within ±5% of $6,032 | TBD | Source: IHACPA NEP Determination 2023-24 (Back-cast) |
+| JAX solver suite | Prisoner's Dilemma Nash Equilibrium | Defect probability > 0.99 (Convergence < 1e-4) | TBD | Theoretical benchmark: (Defect, Defect) is unique NE |
+| Queuing equilibrium | M/M/s Closed Form Solution | Model E[Wait] matches formula within 1% | TBD | Validates correct implementation of Erlang-C logic |
+| Calibration | Synthetic Ground Truth Recovery | Parameters recovered within ±5% of known truth | TBD | "Twin Experiment" validation |
 
 ### Sanity Checks
 | Model | Check | Expected | Result | Notes |
