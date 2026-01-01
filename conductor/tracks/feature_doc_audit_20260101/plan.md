@@ -23,12 +23,12 @@ Goal: Unify all project knowledge into a centralized, searchable MkDocs site wit
 - [x] Task: Verify the local build of the MkDocs site and ensure full-text search works. (677a6de)
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Documentation' (Protocol in workflow.md) (677a6de)
 
-## Phase 3: Technical Debt Cleanup & Plan Alignment
+## Phase 3: Technical Debt Cleanup & Plan Alignment [checkpoint: 12c372d]
 Goal: Clean up the codebase and ensure the project plan accurately reflects the ground truth.
 
 - [x] Task: Run automated dead code analysis (e.g., using `vulture`) to identify unused functions and variables. (677a6de)
 - [x] Task: Move identified dead, deprecated, or unreachable code to the `archive/` directory. (677a6de)
 - [x] Task: Audit `pyproject.toml` and `requirements.txt` to identify and remove unused dependencies. (677a6de)
 - [x] Task: Update `conductor/product.md` to be the definitive source of truth, incorporating "hidden" features found during audit. (677a6de)
-- [~] Task: Append "Remediation Tasks" to `PLAN.md` for all features identified as "Stubbed" or "Missing".
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Cleanup & Sync' (Protocol in workflow.md)
+- [x] Task: Append "Remediation Tasks" to `PLAN.md` for all features identified as "Stubbed" or "Missing". (12c372d)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Cleanup & Sync' (Protocol in workflow.md) (12c372d)
