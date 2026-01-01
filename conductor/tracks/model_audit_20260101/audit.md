@@ -81,6 +81,21 @@
 | Stylized 2x2 Game Payoffs | Abstracted representation of Federal-State funding conflict (Prisoner's Dilemma). | High | Ignores complex multi-lateral negotiation and political side-payments. | Use primarily for mechanism design logic, not predictive forecasting. |
 | Hardcoded Start Year 2025 | Default start year for simulation initialization. | Low | Verification scripts rely on specific dates. | Ensure override parameters are exposed in all entry points. |
 
+
+## Benchmark Selection Criteria
+To ensure validation rigor, selected benchmarks must meet the following criteria:
+
+1.  **Source Authority:** Data must originate from official government reports (e.g., AIHW, IHACPA) or high-quality peer-reviewed literature.
+2.  **Metric Alignment:** The benchmark metric must share a definition with the model output (e.g., "Median Waiting Time" vs. `wait_time`). Proxies must be explicitly justified.
+3.  **Temporal Relevance:** Benchmark data must align with the simulation's calibration period (primarily 2022-2023) to differentiate structural dynamics from transient shocks (e.g., COVID-19).
+4.  **Granularity Compatibility:** Benchmarks must support meaningful comparison at the model's update frequency (monthly/annual) or aggregation level (System/LHN).
+
+### Rationale
+- **Authority:** Prevents fitting to unverified anecdotes.
+- **Alignment:** Ensures we are measuring the right quantity.
+- **Relevance:** Avoids confounding drift with model error.
+- **Granularity:** Enables precise detection of dynamic instabilities vs. aggregate biases.
+
 ## Validation Results
 ### Benchmark Comparisons
 | Model | Benchmark | Acceptance Criteria | Result | Notes |
