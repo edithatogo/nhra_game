@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>NHRA games network (dynamic)</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 12px; }
+    .wrap { display: grid; grid-template-columns: 360px 1fr; gap: 16px; align-items: start; }
+    .card { border: 1px solid #ddd; border-radius: 14px; padding: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+    .h { font-size: 16px; font-weight: 700; margin: 0 0 8px 0; }
+    .small { font-size: 12px; color: #444; line-height: 1.4; }
+    label { font-size: 12px; display: block; margin-top: 10px; margin-bottom: 4px; }
+    select, input[type="range"] { width: 100%; }
+    svg { width: 100%; height: 720px; border: 1px solid #eee; border-radius: 14px; background: #fff; }
+    .node { stroke: #333; stroke-width: 1.4px; }
+    .link { stroke: #777; stroke-opacity: 0.35; }
+    .linkStrong { stroke-opacity: 0.65; }
+    .tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.8); color: #fff;
+               padding: 6px 8px; border-radius: 8px; font-size: 12px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="h">NHRA games network</div>
+    <div class="small">
+      Nodes are “games” and operational states. Links are influence pathways.
+      Colours/size can be driven by scenario outcomes exported from the simulation.
+    </div>
+
+    <label for="scenario">Scenario</label>
+    <select id="scenario"></select>
+
+    <label for="year">Year</label>
+    <input id="year" type="range" min="2025" max="2030" step="1" value="2030"/>
+    <div class="small">Year: <span id="yearLabel">2030</span></div>
+
+    <label for="metric">Node colouring metric</label>
+    <select id="metric">
+      <option value="pressure">Pressure</option>
+      <option value="risk">Risk proxy</option>
+      <option value="within4">ED≤4h</option>
+      <option value="offload">Offload</option>
+      <option value="effshare">Effective share</option>
+    </select>
+
+    <div class="small" style="margin-top:10px;">
+      Tip: drag nodes; scroll/zoom; hover for details.
+    </div>
+  </div>
+
+  <div class="card">
+    <svg id="viz" viewBox="0 0 1200 720"></svg>
+  </div>
+</div>
+
+<div class="tooltip" id="tip" style="opacity:0"></div>
+
+<script>
+(async function() {
+  const graph = await d3.json("games_network_v9.json");
+  const series = await d3.json("scenario_timeseries_v9.json");
+
+  const scenarios = Object.keys(series);
+  const scenarioSel = d3.select("#scenario");
+  scenarioSel.selectAll("option").data(scenarios).enter().append("option")
+    .attr("value", d => d).text(d => d);
+
+  const yearInput = d3.select("#year");
+  const yearLabel = d3.select("#yearLabel");
+  const metricSel = d3.select("#metric");
+
+  const svg = d3.select("#viz");
+  const width = 1200, height = 720;
+
+  const g = svg.append("g");
+  svg.call(d3.zoom().scaleExtent([0.5, 2.5]).on("zoom", ({transform}) => g.attr("transform", transform)));
+
+  const link = g.selectAll(".link")
+    .data(graph.links)
+    .enter().append("line")
+    .attr("class", d => d.weight >= 0.6 ? "link linkStrong" : "link")
+    .attr("stroke-width", d => 1 + 2.5 * d.weight);
+
+  const node = g.selectAll(".node")
+    .data(graph.nodes)
+    .enter().append("circle")
+    .attr("class", "node")
+    .attr("r", d => 10 + 10 * (d.centrality ?? 0.0))
+    .attr("fill", "#E8F0FE");
+
+  const label = g.selectAll(".label")
+    .data(graph.nodes)
+    .enter().append("text")
+    .attr("font-size", 13)
+    .attr("text-anchor", "middle")
+    .attr("dy", 24)
+    .text(d => d.label);
+
+  const tip = d3.select("#tip");
+
+  node.on("mousemove", (event, d) => {
+    tip.style("opacity", 1)
+      .style("left", (event.clientX + 12) + "px")
+      .style("top", (event.clientY + 12) + "px")
+      .html(`<b>${d.label}</b><br/>type: ${d.type}<br/>centrality: ${(d.centrality ?? 0).toFixed(3)}`);
+  }).on("mouseleave", () => tip.style("opacity", 0));
+
+  const sim = d3.forceSimulation(graph.nodes)
+    .force("link", d3.forceLink(graph.links).id(d => d.id).distance(140).strength(d => 0.8 * d.weight))
+    .force("charge", d3.forceManyBody().strength(-520))
+    .force("center", d3.forceCenter(width / 2, height / 2))
+    .force("collide", d3.forceCollide().radius(d => 18 + 10 * (d.centrality ?? 0)));
+
+  node.call(d3.drag()
+    .on("start", (event, d) => { if (!event.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+    .on("drag", (event, d) => { d.fx = event.x; d.fy = event.y; })
+    .on("end", (event, d) => { if (!event.active) sim.alphaTarget(0); d.fx = null; d.fy = null; })
+  );
+
+  sim.on("tick", () => {
+    link.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+    node.attr("cx", d => d.x).attr("cy", d => d.y);
+    label.attr("x", d => d.x).attr("y", d => d.y);
+  });
+
+  function recolour() {
+    const scenario = scenarioSel.property("value");
+    const year = +yearInput.property("value");
+    const metric = metricSel.property("value");
+    yearLabel.text(year);
+
+    const ts = series[scenario][year] || {};
+    const values = graph.nodes.map(n => ts[n.id]?.[metric] ?? 0);
+    const vmin = d3.min(values), vmax = d3.max(values);
+    const scale = d3.scaleSequential(d3.interpolateYlOrRd).domain([vmin, vmax || (vmin+1e-6)]);
+
+    node.attr("fill", d => scale(ts[d.id]?.[metric] ?? 0));
+  }
+
+  scenarioSel.on("change", recolour);
+  yearInput.on("input", recolour);
+  metricSel.on("change", recolour);
+
+  recolour();
+})();
+</script>
+</body>
+</html>

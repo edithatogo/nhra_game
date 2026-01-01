@@ -35,6 +35,7 @@ build/
 # Workflow/build artifacts
 .snakemake/
 outputs/
+!outputs/interactive/
 site/
 .cache/
 
