@@ -5,7 +5,7 @@ This plan outlines the steps to audit the `nhra_gt` codebase against its specifi
 ## Phase 1: Exhaustive Feature Audit & Gap Analysis
 Goal: Identify every planned feature and its true implementation status.
 
-- [~] Task: Catalog all "Planned Features" from `conductor/product.md` and `context/nhra_all_in_spec.md`.
+- [x] Task: Catalog all "Planned Features" from `conductor/product.md` and `context/nhra_all_in_spec.md`. (470f357)
 - [ ] Task: Search the codebase for feature implementations, identifying full implementations, stubs, and undocumented features.
 - [ ] Task: Create the "Feature Audit Matrix" mapping features to code files and status.
 - [ ] Task: Document all "Hidden" features (implemented but missing from specs).
