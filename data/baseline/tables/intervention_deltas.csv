@@ -1,6 +1,6 @@
 scenario,delta_rr_2030,delta_offload_2030,delta_within4_2030,delta_pressure_2030,delta_effgap_2030
 aged_care_places_increase,0.0,0.0,0.0,0.0,0.0
 audit_blitz,0.0,0.0,0.0,0.0,0.0
-nep_indexation_uplift,-0.00021614895233801334,-0.005501267811794719,0.0,0.0,-0.05084143661050319
-pooled_funding_pilot,0.06693347517108172,1.4890437771567235,-0.00038112938490952875,0.006818280746235361,0.0
-ucc_integrated_governance,-0.0017324825898272778,-0.04339219987737408,0.0,0.0,0.0
+nep_indexation_uplift,0.0,0.0,0.0,0.0,0.0
+pooled_funding_pilot,0.0,0.0,0.0,0.0,0.0
+ucc_integrated_governance,0.0,0.0,0.0,0.0,0.0
