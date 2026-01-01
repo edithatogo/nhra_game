@@ -153,7 +153,9 @@ def plot_strategic_stability(
     fig.add_trace(
         go.Bar(
             x=traj["year"],
-            y=traj["solver_n_equilibria_max"],
+            y=traj["solver_n_equilibria_max"]
+            if "solver_n_equilibria_max" in traj.columns
+            else [0] * len(traj),
             name="Max Equilibria (Ambiguity)",
             marker_color=config.secondary_color,
             opacity=0.6,
@@ -165,7 +167,9 @@ def plot_strategic_stability(
     fig.add_trace(
         go.Scatter(
             x=traj["year"],
-            y=traj["solver_residual_mean"],
+            y=traj["solver_residual_mean"]
+            if "solver_residual_mean" in traj.columns
+            else [0] * len(traj),
             name="Mean Residual (Stability)",
             line=dict(color=config.primary_color, width=3),
         ),
@@ -435,12 +439,21 @@ def plot_workforce_dynamics(
     if config is None:
         config = PlotConfig()
 
+    y_col = "workforce_mean"
+    if y_col not in traj.columns:
+        if "workforce_pool_mean" in traj.columns:
+            y_col = "workforce_pool_mean"
+        else:
+            # Fallback if metric is missing entirely (e.g. old cache)
+            traj = traj.copy()
+            traj[y_col] = 1.0
+
     fig = px.line(
         traj,
         x="year",
-        y="workforce_mean",
+        y=y_col,
         title="Shared Workforce Pool Availability",
-        labels={"workforce_mean": "Workforce Pool (Index)", "year": "Year"},
+        labels={y_col: "Workforce Pool (Index)", "year": "Year"},
     )
     fig.add_hline(y=1.0, line_dash="dash", line_color="grey")
     fig.update_layout(template="simple_white", yaxis_range=[0.4, 1.6])

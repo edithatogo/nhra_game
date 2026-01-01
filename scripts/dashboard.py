@@ -173,7 +173,11 @@ def rank_interventions(base_params: Params, intervention_list: list[str]) -> pd.
 def cached_run_model(
     p: Params, years: list[int], n_mc: int = 50, overrides: dict[str, str] | None = None
 ):
-    """Run the model with caching to ensure responsive UI."""
+    """Run the model with caching to ensure responsive UI.
+
+    This wrapper ensures that expensive simulation runs are only re-executed
+    when parameters change.
+    """
     return run_hybrid(years, p, seed=42, n_mc=n_mc, overrides=overrides)
 
 
@@ -945,23 +949,28 @@ def main() -> None:
                 "Game tree rendering is unavailable (optional deps missing). Install `pygambit` and `graphviz` to enable."
             )
         else:
-            extensive_g = create_extensive_game_from_matrix(
-                u_row,
-                u_col,
-                title=sel_subgame_name,
-                row_action_labels=g.row_actions,
-                col_action_labels=g.col_actions,
-            )
+            try:
+                extensive_g = create_extensive_game_from_matrix(
+                    u_row,
+                    u_col,
+                    title=sel_subgame_name,
+                    row_action_labels=g.row_actions,
+                    col_action_labels=g.col_actions,
+                )
+            except ImportError:
+                st.warning("Game tree rendering is unavailable (pygambit not installed).")
+                extensive_g = None
 
             # Render
             tree_path = (
                 Path("outputs/diagrams") / f"tree_{sel_subgame_name.lower().replace(' ', '_')}"
             )
-            render_tree_static(extensive_g, tree_path)
+            if extensive_g:
+                render_tree_static(extensive_g, tree_path)
 
-            svg_path = tree_path.with_suffix(".svg")
-            if svg_path.exists():
-                st.image(str(svg_path), width="stretch")
+                svg_path = tree_path.with_suffix(".svg")
+                if svg_path.exists():
+                    st.image(str(svg_path), width="stretch")
 
             st.caption("Circles = Decision Nodes | Squares = Outcomes (Cth Payoff, State Payoff)")
 

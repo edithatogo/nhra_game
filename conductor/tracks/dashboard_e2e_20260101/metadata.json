@@ -1,0 +1,8 @@
+{
+  "track_id": "dashboard_e2e_20260101",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-01T12:56:00+11:00",
+  "updated_at": "2026-01-01T12:56:00+11:00",
+  "description": "Implement E2E testing for Streamlit dashboard using Playwright"
+}
