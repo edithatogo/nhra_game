@@ -42,6 +42,8 @@ from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_gt.domain.stability import analyze_cost_shifting_stability
 from nhra_gt.domain.validation import RecursiveResult, aggregate_metrics
 from nhra_gt.engine import Params, apply_intervention, run_hybrid, summarise_outcome
+from nhra_gt.game_theory.content import get_populated_registry
+from nhra_gt.game_theory.ui import render_mechanism_explainer
 from nhra_gt.sensitivity import get_parameter_lineage
 from nhra_gt.subgames.games import (
     GameParams,
@@ -285,6 +287,9 @@ def main() -> None:
     # Load Scenarios
     scenarios = load_scenario_library()
     initialize_slider_state(scenarios)
+
+    # Load Game Registry
+    registry = get_populated_registry()
 
     # Git Hash Verification
     git_hash = "Unknown"
@@ -594,7 +599,7 @@ def main() -> None:
     # ----------------------------
     # Main Content Area: Tabs
     # ----------------------------
-    tab0, tab1, tab2, tab2_5, tab2_6, tab3, tab4, tab5, tab6, tab7 = st.tabs(
+    tab0, tab1, tab2, tab2_5, tab2_6, tab3, tab4, tab5, tab6, tab7, tab9 = st.tabs(
         [
             "📖 Theory & Background",
             "📈 Scenario Analysis",
@@ -606,6 +611,7 @@ def main() -> None:
             "🔬 Technical Analytics",
             "🛡️ Evidence Manager",
             "🔍 Forensic Audit",
+            "📚 Game Theoretic Encyclopedia",
         ]
     )
 
@@ -646,6 +652,7 @@ def main() -> None:
         st.link_button("View JAX Repository", "https://github.com/google/jax")
 
     with tab1:
+        render_mechanism_explainer("bargaining_game", registry, expanded=False)
         st.markdown("#### System Trajectories")
 
         wg_tab1, wg_tab2, wg_tab3 = st.tabs(
@@ -906,6 +913,7 @@ def main() -> None:
                     st.success(f"🏅 Most effective intervention: **{best_iv}**")
 
     with tab2:
+        render_mechanism_explainer("definition_game", registry, expanded=False)
         st.markdown("### 🕸️ Interactive Strategic Map")
         st.markdown("""
         This map visualizes the influence pathways between negotiation 'games' and hospital operational states.
@@ -1008,6 +1016,7 @@ def main() -> None:
             st.caption("Circles = Decision Nodes | Squares = Outcomes (Cth Payoff, State Payoff)")
 
     with tab2_6:
+        render_mechanism_explainer("internal_lhn_competition", registry, expanded=False)
         st.markdown("### 🏥 Intra-State LHN Variance")
         st.markdown("""
         Visualize the strategic divergence across Local Hospital Networks (LHNs) within a single Jurisdiction.
@@ -1148,6 +1157,7 @@ def main() -> None:
             )
 
     with tab5:
+        render_mechanism_explainer("compliance_game", registry, expanded=False)
         st.markdown("### 🔬 Technical Analytics")
         st.markdown("Mechanism sensitivity and structural integrity checks.")
 
@@ -1416,6 +1426,16 @@ def main() -> None:
             ]
         )
         st.table(diff_df)
+
+    # -------------------------------------------------------------------------
+    # Tab 9: Game Theoretic Encyclopedia
+    # -------------------------------------------------------------------------
+    with tab9:
+        from nhra_gt.game_theory.ui import render_game_encyclopedia
+
+        # Load registry and render
+        # registry is already loaded in main scope
+        render_game_encyclopedia(registry)
 
 
 if __name__ == "__main__":

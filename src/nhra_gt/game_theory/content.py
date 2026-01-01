@@ -106,8 +106,12 @@ def get_populated_registry() -> GameRegistry:
         players=["LHN A (Urban)", "LHN B (Regional)"],
         strategies=["Revenue Capture", "Service Pressure"],
         payoffs={
-            "Revenue": {"LHN A": "Surplus", "LHN B": "Deficit"},
-            "Pressure": {"LHN A": "Crowding", "LHN B": "Referral Dump"},
+            "p1_strategies": ["Revenue Capture", "Service Pressure"],
+            "p2_strategies": ["Revenue Capture", "Service Pressure"],
+            "matrix": [
+                [("Surplus (High)", "Surplus (High)"), ("Surplus (High)", "Deficit (Severe)")],
+                [("Deficit (Severe)", "Surplus (High)"), ("Crowding (Low)", "Crowding (Low)")],
+            ],
         },
         nash_equilibrium="Revenue Capture (Urban dominance)",
         strategic_insight="LHNs compete for activity-based funding, often incentivizing profitable services over community need.",
@@ -122,8 +126,18 @@ def get_populated_registry() -> GameRegistry:
         players=["Incumbent", "Opposition"],
         strategies=["Salience (Health)", "Fiscal Responsibility"],
         payoffs={
-            "Salience": {"Incumbent": "Votes (if funded)", "Opposition": "Criticism"},
-            "Fiscal": {"Incumbent": "Budget Surplus", "Opposition": "Service Failure Attack"},
+            "p1_strategies": ["Salience (Health)", "Fiscal Responsibility"],
+            "p2_strategies": ["Salience (Health)", "Fiscal Responsibility"],
+            "matrix": [
+                [
+                    ("Votes + / Budget -", "Criticism (Weak)"),
+                    ("Votes ++ / Budget --", "Attack (Failed)"),
+                ],
+                [
+                    ("Budget + / Votes --", "Criticism (Strong)"),
+                    ("Budget ++ / Votes -", "Attack (Effective)"),
+                ],
+            ],
         },
         nash_equilibrium="Salience Wars",
         strategic_insight="Health is a highly salient political issue, driving cycles of funding boosts followed by efficiency dividends.",

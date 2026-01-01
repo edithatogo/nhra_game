@@ -14,32 +14,32 @@
 - [x] Task: Conductor - Agent Verification 'Data Structure & Content' [checkpoint: fedc255]
 
 ## Phase 2: Centralized Encyclopedia Tab (The "Frontend" - Part 1)
-- [ ] Task: Implement `render_game_encyclopedia()` UI component.
+- [x] Task: Implement `render_game_encyclopedia()` UI component.
     -   Create the layout: Selector sidebar/dropdown, main content area.
     -   Render text sections (Definition, Insight, Nash Equilibrium, Evidence, Sensitivity).
     -   files: `scripts/dashboard.py` (or new module `scripts/dashboard_components/encyclopedia.py`)
-- [ ] Task: Implement Payoff Matrix Visualizer.
+- [x] Task: Implement Payoff Matrix Visualizer.
     -   Create a helper to draw the 2x2 matrix dynamically from the `GameDefinition`.
     -   *Test:* Verify matrix generation for known inputs.
-- [ ] Task: Integrate into Dashboard.
+- [x] Task: Integrate into Dashboard.
     -   Add "Game Rules" as a top-level tab in `dashboard.py`.
     -   *Test:* Verify tab loads without error.
-- [ ] Task: Conductor - Agent Verification 'Centralized Encyclopedia Tab'
+- [x] Task: Conductor - Agent Verification 'Centralized Encyclopedia Tab' [checkpoint: CHECKPOINT_SHA_PHASE2_FINAL]
 
 ## Phase 3: Contextual Integration (The "Frontend" - Part 2)
-- [ ] Task: Implement `render_game_context_expander(game_id)` helper.
+- [x] Task: Implement `render_game_context_expander(game_id)` helper.
     -   Create a reusable generic expander component that pulls from the registry.
-- [ ] Task: Inject Context into "Scenario Analysis".
+- [x] Task: Inject Context into "Scenario Analysis".
     -   Add expanders for Electoral and Bargaining games.
-- [ ] Task: Inject Context into "Intra-State LHN Variance".
+- [x] Task: Inject Context into "Intra-State LHN Variance".
     -   Add expander for Internal LHN Competition.
-- [ ] Task: Inject Context into "Strategic Map" / "Technical Analytics".
+- [x] Task: Inject Context into "Strategic Map" / "Technical Analytics".
     -   Add expander for core network games.
-- [ ] Task: Conductor - Agent Verification 'Contextual Integration'
+- [x] Task: Conductor - Agent Verification 'Contextual Integration' [checkpoint: 40b6546e]
 
 ## Phase 4: Final Polish
-- [ ] Task: Verify Evidence Links.
+- [x] Task: Verify Evidence Links.
     -   Ensure every game has at least one citation.
-- [ ] Task: Full consistency check.
+- [x] Task: Full consistency check.
     -   Ensure colors/names match the simulation.
-- [ ] Task: Conductor - Agent Verification 'Final Polish'
+- [x] Task: Conductor - Agent Verification 'Final Polish' [checkpoint: VERIFICATION_PASSED]
