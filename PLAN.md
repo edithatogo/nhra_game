@@ -68,3 +68,10 @@
 1. **GitHub CLI (`gh`)**: Install `gh` CLI for faster CI monitoring instead of browser checks.
 2. **Pre-commit bypass**: Use `--no-verify` for rapid iteration during CI debugging.
 3. **Incremental Pushes**: Commit/push after each fix to see incremental CI results.
+
+## [ ] Remediation: Implement Missing Features (from 2026 Audit)
+- [ ] Task: Implement 'Public Health' funding stream in src/nhra_gt/rules.py and enable agent selection.
+- [ ] Task: Formalize Audit 'Arms Race' feedback loop in src/nhra_gt/audit/fingerprint.py.
+- [ ] Task: Add 'Mid-term Review' signal logic to the simulation orchestrator.
+- [ ] Task: Model 'Dispute Resolution' and data matching business rules in the reconciliation loop.
+- [ ] Task: Implement 'Equity' stratification for access and outcome metrics.

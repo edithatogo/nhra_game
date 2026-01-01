@@ -30,6 +30,23 @@ def _table_rows(section_lines: list[str]) -> list[list[str]]:
     return rows
 
 
+def _reference_dois() -> dict[str, str]:
+    reference_path = Path("publications/shared/references/library.yaml")
+    content = reference_path.read_text(encoding="utf-8")
+    current_id = None
+    dois: dict[str, str] = {}
+    for raw_line in content.splitlines():
+        line = raw_line.strip()
+        if line.startswith("- id:"):
+            current_id = line.split(":", 1)[1].strip().strip('"')
+            continue
+        if current_id and line.startswith("doi:"):
+            doi = line.split(":", 1)[1].strip().strip('"')
+            if doi:
+                dois[current_id] = doi
+    return dois
+
+
 def test_input_parameter_sources_section_exists() -> None:
     audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
     content = audit_path.read_text(encoding="utf-8")
@@ -98,6 +115,25 @@ def test_input_sources_have_reference_details() -> None:
         assert units.upper() != "TBD", "Units required"
         assert scaling, "Scaling required"
         assert scaling.upper() != "TBD", "Scaling required"
+
+
+def test_input_sources_include_doi_when_available() -> None:
+    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    content = audit_path.read_text(encoding="utf-8")
+    section = _section_lines(content, "## Input & Parameter Sources")
+    rows = _table_rows(section)
+    dois = _reference_dois()
+    assert rows, "Input & Parameter Sources table should include data rows"
+    for row in rows:
+        if len(row) < 4:
+            continue
+        doi_url = row[3].strip().lower()
+        source_ids = [source_id.strip() for source_id in row[2].split(";")]
+        for source_id in source_ids:
+            doi = dois.get(source_id)
+            if not doi:
+                continue
+            assert doi.lower() in doi_url, f"DOI for {source_id} missing from DOI/URL column"
 
 
 def test_helper_edge_cases() -> None:

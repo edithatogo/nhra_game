@@ -33,3 +33,7 @@ To develop a State-of-the-Art (SOTA) predictive game-theory model of the Nationa
 8.  **Performance Modernization Reporting:** Automated benchmarking comparing NumPy vs. JAX cores to maintain 10-100x speedup targets.
 9.  **Automated Quality & Security Audits:** Formalized mutation testing (mutmut) and security scanning (bandit/safety) integrated into the CI pipeline.
 10. **Scenario Library & Interactive Interpretation:** Pre-defined policy scenarios and built-in "How to Read" guides for all visualizations.
+11. **Constitutional Game Layer:** Hierarchical coordination model (Commonwealth -> State -> LHN) implemented in `hierarchical_jax.py`.
+12. **JAX-native QRE Solver:** Quantal Response Equilibrium solver for modeling bounded rationality in negotiation subgames.
+13. **Asymmetric Capacity Friction:** Functional logic for modeling non-linear lags in hospital capacity expansion versus contraction.
+14. **Persistent Compilation Cache:** High-performance disk-based caching of XLA kernels to minimize simulation latency.
