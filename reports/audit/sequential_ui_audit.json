@@ -1,0 +1,15 @@
+{
+  "summary": "Sequential Bargaining UI is Missing. Backend logic exists in state.py and engine.py, but no UI toggle or parameter passing in dashboard.py.",
+  "findings": [
+    {
+      "file": "scripts/dashboard.py",
+      "finding": "No UI element (toggle/checkbox) found for use_sequential_bargaining."
+    },
+    {
+      "file": "scripts/dashboard.py",
+      "line": 835,
+      "finding": "p_game constructor does not include use_sequential_bargaining override."
+    }
+  ],
+  "recommendation": "Add a toggle in the sidebar (Policy & Behaviour section) for Sequential Bargaining and pass it to the Params object."
+}

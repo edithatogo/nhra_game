@@ -1,0 +1,21 @@
+{
+  "summary": "LHN Variance is Partially Mocked. Primary metrics (Pressure/NWAU) use real data if snapshot exists, but 'Type' and 'Block Revenue' are always mocked.",
+  "findings": [
+    {
+      "file": "scripts/dashboard.py",
+      "line": 1072,
+      "finding": "Uses traj_game.attrs['lhn_snapshot'] if available."
+    },
+    {
+      "file": "scripts/dashboard.py",
+      "line": 1076,
+      "finding": "LHN 'Type' is hardcoded random choice."
+    },
+    {
+      "file": "scripts/dashboard.py",
+      "line": 1128,
+      "finding": "'Block Revenue' is always mocked with np.random.uniform."
+    }
+  ],
+  "recommendation": "Expand StateJax/run_simulation to include LHN-level types and block revenue in the snapshot vector."
+}

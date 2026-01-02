@@ -1,0 +1,21 @@
+{
+  "summary": "Evidence Manager is Partially Mocked. Simulation does not load from CSV; relies on 10 hardcoded sliders. Promote only works for those 10.",
+  "findings": [
+    {
+      "file": "scripts/dashboard.py",
+      "line": 63,
+      "finding": "Hardcoded list of 10 keys in initialize_slider_state."
+    },
+    {
+      "file": "scripts/dashboard.py",
+      "line": 835,
+      "finding": "p_game constructor hardcodes 10 parameters from session state."
+    },
+    {
+      "file": "scripts/dashboard.py",
+      "line": 1045,
+      "finding": "Reads CSV for display but not for model input."
+    }
+  ],
+  "recommendation": "Use ParamsJax.from_yaml or EvidenceRegistry to bootstrap params; use session state overrides for ALL fields dynamically."
+}
