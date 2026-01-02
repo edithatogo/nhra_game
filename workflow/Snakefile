@@ -1,0 +1,19 @@
+include: "rules/ingestion.smk"
+include: "rules/simulation.smk"
+include: "rules/analysis.smk"
+
+rule all:
+    input:
+        "data/gsa/sensitivity_summary.md",
+        "data/calibration/calibration_optuna_best.csv",
+        "data/baseline/tables/trajectory.csv",
+        "outputs/diagrams/games_network_minimal.png",
+        "outputs/interactive/games_network_d3.html",
+        "context/CONTEXT_PACK.md",
+        "context/grounding.ok",
+        "reports/validation_report.md"
+
+rule validate:
+    input:
+        "reports/validation_report.md",
+        "outputs/validation/mechanism.ok"

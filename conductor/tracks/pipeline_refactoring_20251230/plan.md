@@ -3,7 +3,7 @@
 **Goal:** Modularize the simulation pipeline, implement advanced drift analysis, and ensure robust integration testing.
 
 ## Phase 1: Pipeline Modularization
-- [ ] **Task 1.1: Refactor Snakemake Logic**
+- [~] **Task 1.1: Refactor Snakemake Logic**
   - [ ] Sub-task: Break down the monolithic `Snakefile` into modular includes.
   - [ ] Sub-task: Standardize input/output paths for all pipeline stages.
 - [ ] **Task 1.2: NLP Standardization (SpaCy)**

@@ -124,5 +124,3 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [x] Track: Comprehensive Model Audit and Repairs
 *Link: [./conductor/tracks/model_audit_20260101/](./conductor/tracks/model_audit_20260101/)*
 
-## [~] Track: Comprehensive Game Documentation
-*Link: [./conductor/tracks/comprehensive_game_docs_20260101/](./conductor/tracks/comprehensive_game_docs_20260101/)*
