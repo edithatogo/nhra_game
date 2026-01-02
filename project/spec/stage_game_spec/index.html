@@ -1,0 +1,2958 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Stylised mechanism models for governance and policy reasoning (not a forecast). Licensed under Apache 2.0.">
+      
+      
+      
+        <link rel="canonical" href="https://edithatogo.github.io/nhra_game/project/spec/stage_game_spec/">
+      
+      
+        <link rel="prev" href="../all_in_spec/">
+      
+      
+        <link rel="next" href="../../../design/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Stage Game Spec - NHRA mechanism models and game-theory maps</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../css/timeago.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#game-theoretic-simulation-checklist-batch-5-stage-game-timeline-state-vector" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="NHRA mechanism models and game-theory maps" class="md-header__button md-logo" aria-label="NHRA mechanism models and game-theory maps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NHRA mechanism models and game-theory maps
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Stage Game Spec
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/edithatogo/nhra_game" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    edithatogo/nhra_game
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../guides/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Guides
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../models/queuing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Model Theory
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../../" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Project
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../guides/developer_guide/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Development
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../reference/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../faq/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="NHRA mechanism models and game-theory maps" class="md-nav__button md-logo" aria-label="NHRA mechanism models and game-theory maps" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NHRA mechanism models and game-theory maps
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/edithatogo/nhra_game" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    edithatogo/nhra_game
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../guides/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/researcher_quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Researcher Quickstart
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Logic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/tooling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tooling & Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/nep_terminology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NEP & Terminology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dashboard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Theory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model Theory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../models/queuing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Patient Choice & Queuing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../models/subgames/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Strategic Subgames
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../models/dynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Dynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../models/fiscal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fiscal Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../scenarios/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scenarios & Counterfactuals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Project
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../requirements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Requirements & Scope
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../feature_audit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Feature Audit (2026)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build_order/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build Order
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specifications
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Specifications
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../all_in_spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All-In Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stage Game Spec
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stage Game Spec
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-time-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1) Time structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-monthly-stage-game-within-year-repeated-game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2) Monthly stage game (within-year repeated game)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2) Monthly stage game (within-year repeated game)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-timeline-one-month-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage timeline (one month t)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-annual-stage-reconciliation-capredistribution-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3) Annual stage (reconciliation + cap/redistribution + reset)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-agreement-cycle-stage-renegotiation-extension-bargaining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4) Agreement-cycle stage (renegotiation / extension bargaining)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-compact-state-vector-code-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5) Compact state vector (code-ready)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5) Compact state vector (code-ready)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global-rule-set-state-r_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Global / rule-set state R_t
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-each-jurisdiction-j-fiscal-political-beliefs-j_tj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For each jurisdiction j: fiscal + political + beliefs J_t[j]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-each-providerlhn-p-within-j-operations-coding-capacity-p_tp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For each provider/LHN p within j: operations + coding + capacity P_t[p]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lags-measurement-layer-m_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lags / measurement layer M_t
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-transition-functions-what-updates-the-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6) Transition functions (what updates the state)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-invariants-sanity-checks-you-should-enforce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7) Invariants (sanity checks you should enforce)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Context
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../guides/developer_guide/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../dev/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../validation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validation &amp; Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../reference/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Full API Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    nhra_gt
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    nhra_gt
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/nhra_gt/engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/nhra_gt/rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/nhra_gt/solvers_jax/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    solvers_jax
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/nhra_gt/agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/nhra_gt/subgames/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    subgames
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/nhra_gt/domain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    domain
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/nhra_gt/visualization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    visualization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-time-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1) Time structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-monthly-stage-game-within-year-repeated-game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2) Monthly stage game (within-year repeated game)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2) Monthly stage game (within-year repeated game)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stage-timeline-one-month-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage timeline (one month t)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-annual-stage-reconciliation-capredistribution-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3) Annual stage (reconciliation + cap/redistribution + reset)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-agreement-cycle-stage-renegotiation-extension-bargaining" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4) Agreement-cycle stage (renegotiation / extension bargaining)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-compact-state-vector-code-ready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5) Compact state vector (code-ready)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5) Compact state vector (code-ready)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global-rule-set-state-r_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Global / rule-set state R_t
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-each-jurisdiction-j-fiscal-political-beliefs-j_tj" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For each jurisdiction j: fiscal + political + beliefs J_t[j]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#for-each-providerlhn-p-within-j-operations-coding-capacity-p_tp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For each provider/LHN p within j: operations + coding + capacity P_t[p]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lags-measurement-layer-m_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lags / measurement layer M_t
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-transition-functions-what-updates-the-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6) Transition functions (what updates the state)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-invariants-sanity-checks-you-should-enforce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7) Invariants (sanity checks you should enforce)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/edithatogo/nhra_game/edit/main/docs_mkdocs/project/spec/stage_game_spec.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="game-theoretic-simulation-checklist-batch-5-stage-game-timeline-state-vector">Game-Theoretic Simulation Checklist (Batch 5): Stage-Game Timeline &amp; State Vector<a class="headerlink" href="#game-theoretic-simulation-checklist-batch-5-stage-game-timeline-state-vector" title="Permanent link">&para;</a></h1>
+<p><strong>Source:</strong> User provided text (December 2025)
+<strong>Context:</strong> Formal stage-game specification, compact state vector, transition functions, and payoff templates for an agent-based or Markov game implementation.</p>
+<hr />
+<h2 id="1-time-structure">1) Time structure<a class="headerlink" href="#1-time-structure" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Layer</th>
+<th style="text-align: right;">Index</th>
+<th style="text-align: left;">Purpose</th>
+<th style="text-align: left;">What changes here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Operational</strong></td>
+<td style="text-align: right;">month <code>t</code></td>
+<td style="text-align: left;">queues, capacity use, coding/claims, cashflow</td>
+<td style="text-align: left;">demand shocks, admissions/LOS, coding, interim payments, public signals</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Financial</strong></td>
+<td style="text-align: right;">year <code>Y</code></td>
+<td style="text-align: left;">reconciliation + cap/redistribution + true-ups</td>
+<td style="text-align: left;">annual true-up, cap kink/redistribution, annual audit outcomes</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Constitutional</strong></td>
+<td style="text-align: right;">agreement cycle <code>G</code> (e.g., 5y)</td>
+<td style="text-align: left;">renegotiation / schedule extension</td>
+<td style="text-align: left;">contribution shares, cap design, side-payments, rule tweaks</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-monthly-stage-game-within-year-repeated-game">2) Monthly stage game (within-year repeated game)<a class="headerlink" href="#2-monthly-stage-game-within-year-repeated-game" title="Permanent link">&para;</a></h2>
+<h3 id="stage-timeline-one-month-t">Stage timeline (one month <code>t</code>)<a class="headerlink" href="#stage-timeline-one-month-t" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Stage</th>
+<th style="text-align: left;">Move order</th>
+<th style="text-align: left;">Information at this point</th>
+<th style="text-align: left;">Decision variables (examples)</th>
+<th style="text-align: left;">State updates (examples)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">World</td>
+<td style="text-align: left;">Everyone sees last month’s published metrics + own internal data</td>
+<td style="text-align: left;">–</td>
+<td style="text-align: left;">advance calendars; apply lags; roll forward cumulative counters</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Nature</td>
+<td style="text-align: left;">Demand shock realised: <code>ε_t</code> (may be partially observed)</td>
+<td style="text-align: left;">–</td>
+<td style="text-align: left;">arrival streams for ED + elective demand; inflation/price drift (if monthly)</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">State/Territory (principal)</td>
+<td style="text-align: left;">Knows own cash position, queues, capacity, election clock; uncertain about others’ internal constraints</td>
+<td style="text-align: left;"><code>B_jt</code> internal allocations to LHNs; elective target rules; surge directives; capacity investment orders (with lags); disclosure stance</td>
+<td style="text-align: left;">internal budgets/targets set; investment pipeline updated</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">LHNs / Hospitals (agents)</td>
+<td style="text-align: left;">Observe own queues, staffing, demand signals; imperfectly observe future audits and next-year rules</td>
+<td style="text-align: left;">admissions thresholds; scheduling; LOS management; substitution settings; coding governance effort <code>g_pt</code>; “classification shifting” choices (ABF vs block vs other stream)</td>
+<td style="text-align: left;">episodes generated; throughput; queue changes; quality pressure metrics</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">Claims submission</td>
+<td style="text-align: left;">Claims reflect coding intensity <code>θ_pt</code> within feasibility bounds</td>
+<td style="text-align: left;">choose coding intensity (bounded); documentation effort; claim timing</td>
+<td style="text-align: left;">NWAU computed from episodes + coding; measurement error introduced</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">NHFP payment engine (referee)</td>
+<td style="text-align: left;">Applies deterministic rules to submitted activity</td>
+<td style="text-align: left;">–</td>
+<td style="text-align: left;">interim payments; cash positions; cumulative cap-used counters</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">Audit / integrity (optional explicit player)</td>
+<td style="text-align: left;">Sees anomaly signals; chooses targeting</td>
+<td style="text-align: left;">audit targeting <code>A_t</code>; thresholds</td>
+<td style="text-align: left;">detections/repayments/penalties; update perceived audit risk</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">Dispute &amp; Arbitration (Clauses 127-130)</td>
+<td style="text-align: left;">Unresolved audit/payment disputes</td>
+<td style="text-align: left;">Move to formal arbitration; legal evidence</td>
+<td style="text-align: left;">final true-up; political capital hit</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">Public signal release</td>
+<td style="text-align: left;">Everyone observes published signals (some lagged/aggregated)</td>
+<td style="text-align: left;">–</td>
+<td style="text-align: left;">belief updates; reputational payoffs (rankings) update</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">Transition</td>
+<td style="text-align: left;">–</td>
+<td style="text-align: left;">–</td>
+<td style="text-align: left;">carry-forward state to next month</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-annual-stage-reconciliation-capredistribution-reset">3) Annual stage (reconciliation + cap/redistribution + reset)<a class="headerlink" href="#3-annual-stage-reconciliation-capredistribution-reset" title="Permanent link">&para;</a></h2>
+<p>At end of each year <code>Y</code> (or at a reconciliation boundary), run this “year-end game within the repeated game”:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Step</th>
+<th style="text-align: left;">What happens</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Outputs/state updates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">A1</td>
+<td style="text-align: left;"><strong>Annual reconciliation</strong></td>
+<td style="text-align: left;">submitted vs revised activity; lags; dispute outcomes</td>
+<td style="text-align: left;">true-up payments, revised entitlements, corrections to cumulative counters</td>
+</tr>
+<tr>
+<td style="text-align: right;">A2</td>
+<td style="text-align: left;"><strong>Cap + redistribution</strong></td>
+<td style="text-align: left;">cap design parameters; total growth and shares</td>
+<td style="text-align: left;">marginal funding kink realised; redistribution amounts assigned</td>
+</tr>
+<tr>
+<td style="text-align: right;">A3</td>
+<td style="text-align: left;"><strong>Audit outcomes finalised</strong></td>
+<td style="text-align: left;">audit pipeline, disputes, repayments</td>
+<td style="text-align: left;">net penalties/repayments; update compliance reputations</td>
+</tr>
+<tr>
+<td style="text-align: right;">A4</td>
+<td style="text-align: left;"><strong>Reputational true-up</strong></td>
+<td style="text-align: left;">annual performance league tables</td>
+<td style="text-align: left;">update <code>reputation_score</code>; political utility impacts</td>
+</tr>
+<tr>
+<td style="text-align: right;">A5</td>
+<td style="text-align: left;"><strong>Budget closure</strong></td>
+<td style="text-align: left;">state fiscal constraints; Commonwealth fiscal stance</td>
+<td style="text-align: left;">end-year deficits/surpluses; political utility impacts</td>
+</tr>
+<tr>
+<td style="text-align: right;">A6</td>
+<td style="text-align: left;"><strong>Next-year expectations formed</strong></td>
+<td style="text-align: left;">published year-end results; policy chatter</td>
+<td style="text-align: left;">belief priors for next year (NEP path, enforcement stance, negotiation probabilities)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-agreement-cycle-stage-renegotiation-extension-bargaining">4) Agreement-cycle stage (renegotiation / extension bargaining)<a class="headerlink" href="#4-agreement-cycle-stage-renegotiation-extension-bargaining" title="Permanent link">&para;</a></h2>
+<p>Run every <code>G</code> years (or whenever a “schedule extension / crisis” trigger occurs):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Stage</th>
+<th style="text-align: left;">Game form</th>
+<th style="text-align: left;">Players</th>
+<th style="text-align: left;">What’s chosen</th>
+<th style="text-align: left;">What updates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">G1</td>
+<td style="text-align: left;">Alternating-offers bargaining (deadline)</td>
+<td style="text-align: left;">Commonwealth ↔ States/Territories</td>
+<td style="text-align: left;">contribution shares; cap design; side-payments; rule changes; integrity regime</td>
+<td style="text-align: left;">new parameter set for next cycle</td>
+</tr>
+<tr>
+<td style="text-align: right;">G2</td>
+<td style="text-align: left;">Outside options realised</td>
+<td style="text-align: left;">same</td>
+<td style="text-align: left;">walk-away / interim extension</td>
+<td style="text-align: left;">fallback rule-set (extension), political costs</td>
+</tr>
+<tr>
+<td style="text-align: right;">G3</td>
+<td style="text-align: left;">Ratification &amp; signalling</td>
+<td style="text-align: left;">same</td>
+<td style="text-align: left;">public commitments</td>
+<td style="text-align: left;">belief resets + reputational terms</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-compact-state-vector-code-ready">5) Compact state vector (code-ready)<a class="headerlink" href="#5-compact-state-vector-code-ready" title="Permanent link">&para;</a></h2>
+<h3 id="global-rule-set-state-r_t">Global / rule-set state <code>R_t</code><a class="headerlink" href="#global-rule-set-state-r_t" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>NEP_t</code></td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">national efficient price (or price index)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>W_t</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">weight system / grouper parameters for NWAU calculation</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>elig_t</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">eligibility rules (ABF vs block vs other stream)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>alpha_t[j]</code></td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">Commonwealth share / contribution parameters by jurisdiction</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cap_t</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">cap design params (rate, base, redistribution rule, kink shape)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>recon_t</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">reconciliation lag structure, revision probabilities, dispute rules</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>audit_policy_t</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">baseline audit intensity, targeting logic, penalty schedule</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>bargain_state_t</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">where you are in the agreement cycle (time-to-deadline, offers on table)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="for-each-jurisdiction-j-fiscal-political-beliefs-j_tj">For each jurisdiction <code>j</code>: fiscal + political + beliefs <code>J_t[j]</code><a class="headerlink" href="#for-each-jurisdiction-j-fiscal-political-beliefs-j_tj" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>cash_jt</code></td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">cash position / liquidity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>own_spend_jt</code></td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">state-funded spend this year-to-date</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cum_nwau_jt</code></td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">cumulative NWAU (or eligible NWAU) this year-to-date</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cap_used_jt</code></td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">cap consumption metric needed for kink/redistribution</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>queue_metrics_jt</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">headline KPIs (elective breaches, ED LOS, ramping proxy, etc.)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>pol_jt</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">political state: election clock, salience weights, reputation</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>beliefs_jt</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">beliefs about demand growth, others’ constraints, audit risk, next-year rules</td>
+</tr>
+</tbody>
+</table>
+<h3 id="for-each-providerlhn-p-within-j-operations-coding-capacity-p_tp">For each provider/LHN <code>p</code> within <code>j</code>: operations + coding + capacity <code>P_t[p]</code><a class="headerlink" href="#for-each-providerlhn-p-within-j-operations-coding-capacity-p_tp" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>cap_pt</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">capacity state (beds/ICU/theatres/workforce)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>inv_pipe_pt</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">capacity investments in pipeline with lags</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>q_ed_pt</code></td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">ED queue state (or arrival + backlog)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>q_el_pt[u]</code></td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">elective queue by urgency class <code>u</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>mix_pt</code></td>
+<td style="text-align: left;">vector</td>
+<td style="text-align: left;">case-mix distribution over DRGs/service lines</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cost_pt</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">cost structure (fixed/variable, efficiency parameter)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>theta_pt</code></td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">coding intensity (bounded)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>g_pt</code></td>
+<td style="text-align: left;">float</td>
+<td style="text-align: left;">governance/documentation effort (affects feasible coding + audit risk)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>quality_pt</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">endogenous quality state (pressure → adverse events proxy)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>contract_pt</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">internal contract terms/targets from jurisdiction</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>beliefs_pt</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">local beliefs about demand, audits, budgets</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lags-measurement-layer-m_t">Lags / measurement layer <code>M_t</code><a class="headerlink" href="#lags-measurement-layer-m_t" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>claims_lag_t</code></td>
+<td style="text-align: left;">queue</td>
+<td style="text-align: left;">pipeline of submitted claims pending reconciliation</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>signal_lag_t</code></td>
+<td style="text-align: left;">queue</td>
+<td style="text-align: left;">what gets published when (lags/aggregation)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>revision_model_t</code></td>
+<td style="text-align: left;">dict</td>
+<td style="text-align: left;">probability of later revisions by class/provider</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-transition-functions-what-updates-the-state">6) Transition functions (what updates the state)<a class="headerlink" href="#6-transition-functions-what-updates-the-state" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Inputs</th>
+<th style="text-align: left;">Outputs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>demand_step(S_t, seed)</code></td>
+<td style="text-align: left;"><code>S_t</code></td>
+<td style="text-align: left;">arrivals <code>λ_t</code>, realised shocks <code>ε_t</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>policy_step(S_t)</code></td>
+<td style="text-align: left;"><code>S_t</code></td>
+<td style="text-align: left;">updates to any monthly policy knobs (if any)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>jurisdiction_move(S_t)</code></td>
+<td style="text-align: left;"><code>S_t</code></td>
+<td style="text-align: left;"><code>B_jt</code>, targets, directives, investment orders</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>provider_move(S_t)</code></td>
+<td style="text-align: left;"><code>S_t</code></td>
+<td style="text-align: left;">admissions/scheduling/LOS decisions; <code>theta_pt</code>, <code>g_pt</code>, stream-shifting</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ops_queue_update(S_t)</code></td>
+<td style="text-align: left;">decisions + capacity + arrivals</td>
+<td style="text-align: left;">updated queues, throughput, congestion metrics</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>nwau_calc(S_t)</code></td>
+<td style="text-align: left;">episodes + coding + rules</td>
+<td style="text-align: left;"><code>nwau_pt</code>, eligible splits by stream</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>payment_engine(S_t)</code></td>
+<td style="text-align: left;">eligible NWAU + cap state + rules</td>
+<td style="text-align: left;">interim payments, cash updates, cap_used updates</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>audit_step(S_t, seed)</code></td>
+<td style="text-align: left;">activity + anomalies + audit_policy</td>
+<td style="text-align: left;">detections, penalties/repayments, updated perceived risk</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>publish_signals(S_t)</code></td>
+<td style="text-align: left;">signal lag rules</td>
+<td style="text-align: left;">observed signals for belief updates</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>belief_update(S_t)</code></td>
+<td style="text-align: left;">observed signals + priors</td>
+<td style="text-align: left;">updated beliefs (Bayesian or heuristic)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>year_end_reconciliation(S_Y)</code></td>
+<td style="text-align: left;">claims pipeline + revisions/disputes</td>
+<td style="text-align: left;">true-up payments, corrected NWAU, redistribution, reset counters</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="7-invariants-sanity-checks-you-should-enforce">7) Invariants (sanity checks you should enforce)<a class="headerlink" href="#7-invariants-sanity-checks-you-should-enforce" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Invariant</th>
+<th style="text-align: left;">Check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Non-negative entitlements</td>
+<td style="text-align: left;">payments ≥ 0 unless explicit recovery/repayment</td>
+</tr>
+<tr>
+<td style="text-align: left;">Mass-balance of activity</td>
+<td style="text-align: left;">NWAU derived only from generated episodes; no “free” NWAU</td>
+</tr>
+<tr>
+<td style="text-align: left;">Capacity feasibility</td>
+<td style="text-align: left;">throughput ≤ feasible capacity given staffing and beds</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bounded coding</td>
+<td style="text-align: left;"><code>theta_pt</code> within [min,max] and constrained by documentation/governance</td>
+</tr>
+<tr>
+<td style="text-align: left;">Queue consistency</td>
+<td style="text-align: left;">queues update with arrivals − served + deferrals; never negative</td>
+</tr>
+<tr>
+<td style="text-align: left;">Cap accounting consistency</td>
+<td style="text-align: left;">cap_used updates match eligible growth definition exactly</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reconciliation traceability</td>
+<td style="text-align: left;">every year-end adjustment maps to a claim in the lag pipeline</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 1, 2026 12:54:26 UTC"><span class="timeago" datetime="2026-01-01T12:54:26+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 1, 2026 12:54:26 UTC">2026-01-01</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 26, 2025 07:56:09 UTC"><span class="timeago" datetime="2025-12-26T07:56:09+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 26, 2025 07:56:09 UTC">2025-12-26</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../all_in_spec/" class="md-footer__link md-footer__link--prev" aria-label="Previous: All-In Spec">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                All-In Spec
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../design/" class="md-footer__link md-footer__link--next" aria-label="Next: Design">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Design
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 Dylan A Mordaunt. Licensed under Apache 2.0.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.footer", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.top", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../../js/timeago.min.js"></script>
+      
+        <script src="../../../js/timeago_mkdocs_material.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
