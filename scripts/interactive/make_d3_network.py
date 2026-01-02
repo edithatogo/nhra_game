@@ -76,11 +76,11 @@ def main() -> None:
     }
     (out / "games_network.json").write_text(json.dumps(graph, indent=2), encoding="utf-8")
 
-    # Build scenario-year → node metric dict from the baseline tables
+    # Build scenario-year → node metric dict
     # This is a *diagram overlay*: we map outcomes to relevant nodes for colouring.
     series = {}
 
-    # Read both summary and intervention tables
+    # 1. Load Summary & Intervention Endpoints (for scenarios without full trajectories)
     base_dir = repo / "data" / "baseline" / "tables"
     dfs = []
 
@@ -97,26 +97,14 @@ def main() -> None:
         for _, r in df.iterrows():
             sc = r["scenario"]
             series.setdefault(sc, {})
-            # Data is currently only for 2030 in these summaries, but D3 expects a time series.
-            # We will project the 2030 value across the range for now, or just set it for 2030.
-            # The original script looped 2025-2031. Let's populate 2030 specifically,
-            # and maybe copy it to other years if needed, but the original code read specific year columns.
-            # The new data only has _2030 columns. We'll populate 2025-2031 with the 2030 static value
-            # to ensure the map shows *something* for any year selected, acting as a "steady state" view.
 
-            # Map columns:
-            # pressure_mean_2030 -> pressure
-            # rr_mean_2030 -> risk (harm)
-            # within4_mean_2030 -> within4
-            # offload_mean_2030 -> offload
-            # effgap_mean_2030 -> effshare (approximate 1-gap or just gap? Old code used effshare_effective_2030)
-            # Let's use 1.0 - effgap as "efficiency share" proxy if gap < 1.
-
+            # Endpoints are 2030 values. We project these flatly across 2025-2031
+            # for scenarios where we lack full trajectory data.
             p_val = float(r.get("pressure_mean_2030", 0.0))
             r_val = float(r.get("rr_mean_2030", 0.0))
             w_val = float(r.get("within4_mean_2030", 0.0))
             o_val = float(r.get("offload_mean_2030", 0.0))
-            e_val = 1.0 - float(r.get("effgap_mean_2030", 0.0))  # gap to share proxy
+            e_val = 1.0 - float(r.get("effgap_mean_2030", 0.0))
 
             metrics = {
                 "pressure": p_val,
@@ -128,14 +116,50 @@ def main() -> None:
 
             for y in range(2025, 2031):
                 series[sc].setdefault(y, {})
-                # Apply these metrics to all relevant state nodes
                 for state_node in ["PRESS", "RISK", "ED", "OFF", "EFF"]:
                     series[sc][y][state_node] = metrics
-
-                # Default: other nodes inherit pressure values for colour scaling
+                # Default others
                 for nid in node_ids:
                     if nid not in ["PRESS", "RISK", "ED", "OFF", "EFF"]:
-                        series[sc][y].setdefault(nid, series[sc][y]["PRESS"])
+                        series[sc][y].setdefault(nid, metrics)
+
+    # 2. Load Full Trajectory for Baseline (to enable dynamic year slider)
+    traj_csv = base_dir / "trajectory.csv"
+    if traj_csv.exists():
+        df_traj = pd.read_csv(traj_csv)
+        # The CSV likely has columns: year, pressure_mean, rr_mean, etc.
+        # "baseline_equilibria" is the key used in summary, let's overlap/update it.
+        sc_base = "baseline_equilibria"
+        series.setdefault(sc_base, {})
+
+        for _, r in df_traj.iterrows():
+            y = int(r["year"])
+            if 2025 <= y <= 2030:
+                series[sc_base].setdefault(y, {})
+
+                # Extract dynamic metrics
+                p_val = float(r.get("pressure_mean", 0.0))
+                r_val = float(r.get("rr_mean", 0.0))
+                w_val = float(r.get("within4_mean", 0.0))
+                o_val = float(r.get("offload_mean", 0.0))
+                # effgap_mean might not be in trajectory? Check output.
+                # Output showed: effgap_mean IS in trajectory.csv
+                e_val = 1.0 - float(r.get("effgap_mean", 0.0))
+
+                metrics = {
+                    "pressure": p_val,
+                    "risk": r_val,
+                    "within4": w_val,
+                    "offload": o_val,
+                    "effshare": e_val,
+                }
+
+                for state_node in ["PRESS", "RISK", "ED", "OFF", "EFF"]:
+                    series[sc_base][y][state_node] = metrics
+
+                for nid in node_ids:
+                    if nid not in ["PRESS", "RISK", "ED", "OFF", "EFF"]:
+                        series[sc_base][y].setdefault(nid, metrics)
 
     (out / "scenario_timeseries.json").write_text(json.dumps(series, indent=2), encoding="utf-8")
 
