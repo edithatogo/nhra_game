@@ -19,14 +19,14 @@
 - [x] Task: Validate reference correctness vs parameter values (units/scales) 0cfaaac
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Input & Assumption Validation' (Protocol in workflow.md) d94e2f6
 
-## Phase 3: Output Validation (Benchmarks + Sanity Checks)
+## Phase 3: Output Validation (Benchmarks + Sanity Checks) [checkpoint: 80ce822]
 - [x] Task: Define benchmark selection criteria and rationale 85a7fdf
 - [x] Task: Identify benchmarks for each model and define acceptance thresholds 9d9da3f
 - [x] Task: Implement/extend validation harness with tests (TDD: write failing tests, implement, refactor) 06cb139
   - [x] Sub-task: Add sanity checks (range/unit/monotonicity/edge cases)
   - [x] Sub-task: Add benchmark comparison tests where available
 - [x] Task: Run validation suite and record results in audit report, noting gaps 06cb139
-- [x] Task: Conductor - User Manual Verification 'Phase 3: Output Validation (Benchmarks + Sanity Checks)' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Output Validation (Benchmarks + Sanity Checks)' (Protocol in workflow.md) 80ce822
 
 ## Phase 4: Repairs & Verification
 - [x] Task: Triage issues by severity and prioritize fixes
