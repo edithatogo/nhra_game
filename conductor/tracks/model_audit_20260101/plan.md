@@ -12,12 +12,12 @@
 - [x] Task: Check data access/licensing constraints for published sources bc0a980
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Audit Setup & Inventory' (Protocol in workflow.md) 9535c5f
 
-## Phase 2: Input & Assumption Validation
+## Phase 2: Input & Assumption Validation [checkpoint: d94e2f6]
 - [x] Task: For each model, enumerate inputs and parameter sources aafdf8f
 - [x] Task: Map each input to a published source; record DOI/URL, date, units, scaling 0cfaaac
 - [x] Task: Document and assess assumptions (rationale, risk, impact) 0cfaaac
 - [x] Task: Validate reference correctness vs parameter values (units/scales) 0cfaaac
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Input & Assumption Validation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Input & Assumption Validation' (Protocol in workflow.md) d94e2f6
 
 ## Phase 3: Output Validation (Benchmarks + Sanity Checks)
 - [x] Task: Define benchmark selection criteria and rationale 85a7fdf
