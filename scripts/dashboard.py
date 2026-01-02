@@ -940,10 +940,10 @@ def main() -> None:
 
             # Inline the data by replacing the async fetch calls
             html_content = html_content.replace(
-                'await d3.json("games_network_v9.json")', f"{graph_data}"
+                'await d3.json("games_network.json")', f"{graph_data}"
             )
             html_content = html_content.replace(
-                'await d3.json("scenario_timeseries_v9.json")', f"{series_data}"
+                'await d3.json("scenario_timeseries.json")', f"{series_data}"
             )
 
             st.components.v1.html(html_content, height=600, scrolling=True)
