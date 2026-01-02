@@ -938,12 +938,12 @@ def main() -> None:
             else:
                 series_data = "{}"
 
-            # Inline the data by replacing the async fetch calls
+            # Inline the data by replacing the placeholder lines
             html_content = html_content.replace(
-                'await d3.json("games_network.json")', f"{graph_data}"
+                "let graph = null; // INJECT_GRAPH_HERE", f"let graph = {graph_data};"
             )
             html_content = html_content.replace(
-                'await d3.json("scenario_timeseries.json")', f"{series_data}"
+                "let series = null; // INJECT_SERIES_HERE", f"let series = {series_data};"
             )
 
             st.components.v1.html(html_content, height=600, scrolling=True)

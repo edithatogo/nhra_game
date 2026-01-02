@@ -59,10 +59,17 @@
 
 <script>
 (async function() {
-  const graph = await d3.json("games_network.json");
-  const series = await d3.json("scenario_timeseries.json");
+  // Fallback if injection missed
+  if (!graph) {
+    console.error("Graph data missing!");
+    // Minimal fallback to prevent crash
+    graph = { nodes: [], links: [] };
+  }
 
-  const scenarios = Object.keys(series);
+  // Use graph directly (it is now guaranteed to be an object)
+  // var fallbackGraph = graph; // This line is removed as per the instruction's implied change.
+
+  const scenarios = series ? Object.keys(series) : [];
   if (scenarios.length === 0) {
     scenarios.push("Baseline (Default)");
   }
