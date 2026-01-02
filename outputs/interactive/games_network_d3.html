@@ -48,6 +48,18 @@
     <div class="small" style="margin-top:10px;">
       Tip: drag nodes; scroll/zoom; hover for details.
     </div>
+    
+    <div class="card" style="margin-top: 16px;">
+       <div class="h">Legend</div>
+        <div class="small">
+          <b>PRESS</b>: System Pressure<br/>
+          <b>RISK</b>: Patient Risk (Harm)<br/>
+          <b>ED</b>: Emergency Occupancy<br/>
+          <b>OFF</b>: Ambulance Offload<br/>
+          <b>EFF</b>: Efficiency / Budget<br/>
+          <span style="color:#777">Other nodes represents strategic games.</span>
+        </div>
+    </div>
   </div>
 
   <div class="card">
@@ -139,6 +151,11 @@ let series = null; // INJECT_SERIES_HERE
     node.attr("cx", d => d.x).attr("cy", d => d.y);
     label.attr("x", d => d.x).attr("y", d => d.y);
   });
+  
+  // Helper to get value safe
+  function getVal(scenario, year, nodeId, metric) {
+     return series[scenario]?.[year]?.[nodeId]?.[metric] ?? 0;
+  }
 
   function recolour() {
     const scenario = scenarioSel.property("value");
@@ -147,17 +164,38 @@ let series = null; // INJECT_SERIES_HERE
     yearLabel.text(year);
 
     // If "Baseline (Default)" is selected or no data exists, use default #E8F0FE
-    if (scenario === "Baseline (Default)" || !series[scenario] || !series[scenario][year]) {
+    if (scenario === "Baseline (Default)" || !series[scenario]) {
        node.attr("fill", "#E8F0FE");
        return;
     }
 
-    const ts = series[scenario][year];
-    const values = graph.nodes.map(n => ts[n.id]?.[metric] ?? 0);
-    const vmin = d3.min(values), vmax = d3.max(values);
-    const scale = d3.scaleSequential(d3.interpolateYlOrRd).domain([vmin, vmax || (vmin+1e-6)]);
+    // GLOBAL SCALING: Calculate min/max across ALL years for this scenario and metric
+    // Only consider the nodes that have data (e.g. PRESS, RISK etc) to avoid 0s from skewing
+    let allValues = [];
+    const SCENARIO_YEARS = Object.keys(series[scenario]);
+    
+    SCENARIO_YEARS.forEach(y => {
+        graph.nodes.forEach(n => {
+           // Only add if it's non-zero to avoid "0" dominating the scale if 0 means "no data"
+           const v = getVal(scenario, y, n.id, metric);
+           if (v > 0) allValues.push(v);
+        });
+    });
+    
+    // If no data, default
+    if (allValues.length === 0) allValues = [0, 1];
 
-    node.attr("fill", d => scale(ts[d.id]?.[metric] ?? 0));
+    const vmin = d3.min(allValues);
+    const vmax = d3.max(allValues);
+    
+    // Use a fixed domain across all years
+    const scale = d3.scaleSequential(d3.interpolateYlOrRd).domain([vmin, vmax]);
+
+    // Apply color for current year
+    node.attr("fill", d => {
+        const val = getVal(scenario, year, d.id, metric);
+        return val > 0 ? scale(val) : "#E8F0FE"; 
+    });
   }
 
   scenarioSel.on("change", recolour);
