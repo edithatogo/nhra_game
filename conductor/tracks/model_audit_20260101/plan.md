@@ -29,7 +29,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Output Validation (Benchmarks + Sanity Checks)' (Protocol in workflow.md) 80ce822
 
 ## Phase 4: Repairs & Verification
-- [~] Task: Triage issues by severity and prioritize fixes
+- [x] Task: Triage issues by severity and prioritize fixes ca1c4ff
 - [ ] Task: For each issue, write failing tests or validation checks (TDD)
 - [ ] Task: Implement fixes (including model logic changes) and rerun tests
 - [ ] Task: Run full test/coverage/lint/type checks and record results
