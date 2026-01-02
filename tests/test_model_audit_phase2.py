@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 
@@ -45,6 +46,19 @@ def _reference_dois() -> dict[str, str]:
             if doi:
                 dois[current_id] = doi
     return dois
+
+
+def _assumption_ids(content: str) -> set[str]:
+    section = _section_lines(content, "## Assumption & Risk Register")
+    rows = _table_rows(section)
+    ids: set[str] = set()
+    for row in rows:
+        if not row:
+            continue
+        match = re.match(r"(ASSUMP-[A-Z0-9-]+)", row[0].strip())
+        if match:
+            ids.add(match.group(1))
+    return ids
 
 
 def test_input_parameter_sources_section_exists() -> None:
@@ -108,7 +122,12 @@ def test_input_sources_have_reference_details() -> None:
         assert source_id, "Source ID is required"
         assert source_id.upper() != "TBD", "Source ID is required"
         assert doi_url, "DOI/URL required"
-        assert "http" in doi_url or "doi:" in doi_url.lower(), "DOI/URL required"
+        if source_id.upper().startswith("ASSUMP-"):
+            assert "assumption" in doi_url.lower() or "register" in doi_url.lower(), (
+                "Assumption sources must reference the Assumption Register"
+            )
+        else:
+            assert "http" in doi_url or "doi:" in doi_url.lower(), "DOI/URL required"
         assert pub_date, "Publication date required"
         assert pub_date.upper() != "TBD", "Publication date required"
         assert units, "Units required"
@@ -130,6 +149,8 @@ def test_input_sources_include_doi_when_available() -> None:
         doi_url = row[3].strip().lower()
         source_ids = [source_id.strip() for source_id in row[2].split(";")]
         for source_id in source_ids:
+            if source_id.upper().startswith("ASSUMP-"):
+                continue
             doi = dois.get(source_id)
             if not doi:
                 continue
@@ -205,7 +226,28 @@ def test_input_sources_match_reference_registry() -> None:
 
     # Verify all cited sources are registered
     missing = cited_sources - registered_sources
+    missing = {s for s in missing if not s.upper().startswith("ASSUMP-")}
     # Filter out TBD if it helps validation during dev, but for strictness we want actuals
     missing = {s for s in missing if s.upper() != "TBD"}
 
     assert not missing, f"Cited sources not found in Reference Registry: {sorted(missing)}"
+
+
+def test_input_sources_assumptions_listed() -> None:
+    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    content = audit_path.read_text(encoding="utf-8")
+    input_section = _section_lines(content, "## Input & Parameter Sources")
+    input_rows = _table_rows(input_section)
+    assumption_ids = _assumption_ids(content)
+
+    cited_assumptions = set()
+    for row in input_rows:
+        if len(row) < 3:
+            continue
+        ids = [source_id.strip() for source_id in row[2].split(";")]
+        for source_id in ids:
+            if source_id.upper().startswith("ASSUMP-"):
+                cited_assumptions.add(source_id)
+
+    missing = cited_assumptions - assumption_ids
+    assert not missing, f"Assumption IDs missing from register: {sorted(missing)}"

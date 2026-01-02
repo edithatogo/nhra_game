@@ -30,15 +30,15 @@
 | Core simulation engine | init_state (occupancy, within4, offload, discharge_delay) | AIHW2024; Duckett2021 | https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23; DOI:10.5694/mja2.51016 | 2024; 2021 | proportion; minutes; days | monthly | Baseline hospital performance inputs |
 | Core simulation engine | economic_spine (nep_per_nwau, wpi_health_index) | IHACPA2024 | https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25 | 2024 | dollars per NWAU; index | annual | Pricing framework inputs |
 | Core simulation engine | strategies vector (policy actions) | Schelling1960; Hermans2014 | https://www.hup.harvard.edu/books/9780674840317; https://journals.sagepub.com/doi/10.1177/1356389013516053 | 1960; 2014 | unitless probabilities | per time step | Strategy representation for negotiation choices |
-| Core simulation engine | num_steps, prng_key | BaezHernandez2025 | DOI:10.14409/rfce.v1i1.12345; https://bibliotecavirtual.unl.edu.ar/ | 2025 | steps; unitless seed | per simulation run | Simulation configuration parameters |
+| Core simulation engine | num_steps, prng_key | ASSUMP-SIM-001 | Assumption Register | N/A (assumption) | steps; unitless seed | per simulation run | Simulation configuration parameters |
 | JAX solver suite | payoff matrices (u_row, u_col) | Schelling1960; Ostrom2005 | https://www.hup.harvard.edu/books/9780674840317; https://press.princeton.edu/books/paperback/9780691122380/understanding-institutional-diversity | 1960; 2005 | utility (unitless) | unitless | Game-theoretic payoff specification |
-| JAX solver suite | lam, tol, max_iter, learning_rate | Hermans2014 | https://journals.sagepub.com/doi/10.1177/1356389013516053 | 2014 | unitless; iterations | iterative | Solver configuration parameters |
+| JAX solver suite | lam, tol, max_iter, learning_rate | ASSUMP-SOLVER-001 | Assumption Register | N/A (assumption) | unitless; iterations | algorithmic | Solver hyperparameter defaults |
 | JAX solver suite | micro_game_factory | Ostrom2005 | https://press.princeton.edu/books/paperback/9780691122380/understanding-institutional-diversity | 2005 | unitless | unitless | Institutional diversity mapping for micro-games |
 | Queuing equilibrium | total_base_demand, capacity | AIHW2024 | https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23 | 2024 | admissions; beds | monthly | Demand/capacity inputs |
 | Queuing equilibrium | discharge_delay | Duckett2021 | DOI:10.5694/mja2.51016 | 2021 | days | per patient | Bed block and discharge delay context |
-| Queuing equilibrium | PatientUtilityParams (gp_out_of_pocket, wait_time, time_value, logit_sensitivity) | BaezHernandez2025 | DOI:10.14409/rfce.v1i1.12345; https://bibliotecavirtual.unl.edu.ar/ | 2025 | dollars; minutes; dollars per hour; unitless | per decision | Utility parameterization mapped to published economic decision framework |
+| Queuing equilibrium | PatientUtilityParams (gp_out_of_pocket, wait_time, time_value, logit_sensitivity) | ASSUMP-UTIL-001 | Assumption Register | N/A (assumption) | dollars; minutes; dollars per hour; unitless | per decision | Baseline utility parameters pending empirical sourcing |
 | Differentiable calibration | target_within4, base_params | AIHW2024 | https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23 | 2024 | proportion; unitless | monthly | Calibration target metrics |
-| Differentiable calibration | learning_rate, max_iter, prng_key | Hermans2014 | https://journals.sagepub.com/doi/10.1177/1356389013516053 | 2014 | unitless; iterations; seed | per optimization run | Calibration configuration |
+| Differentiable calibration | learning_rate, max_iter, prng_key | ASSUMP-CAL-001 | Assumption Register | N/A (assumption) | unitless; iterations; seed | per optimization run | Optimization configuration defaults |
 | Stability metrics | intensities, pressures, efficiency_gap | Duckett2021; AIHW2024 | DOI:10.5694/mja2.51016; https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23 | 2021; 2024 | unitless; index | monthly | Stability inputs aligned with system pressure context |
 | Stability metrics | x/y trajectories, modes list | Hermans2014 | https://journals.sagepub.com/doi/10.1177/1356389013516053 | 2014 | unitless | time series | Post-simulation resilience analysis |
 
@@ -46,12 +46,25 @@
 | Reference ID | Citation | DOI/URL | Publication Date | Parameter Mapping | Units/Scale | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | AIHW2024 | Hospital resources 2022-23: Australian hospital statistics | https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23 | 2024 | init_state, capacity, target metrics | proportion, count | Official government statistics |
-| Duckett2021 | The new National Health Reform Agreement: a major step backward? | DOI:10.5694/mja2.51016 | 2021 | init_state, discharge_delay, stability | index, days | MJA critique of NHRA |
+| Duckett2021 | Vicious cycles: hospital bed block and the National Health Reform Agreement | DOI:10.5694/mja2.51016 | 2021 | init_state, discharge_delay, stability | index, days | MJA analysis of bed block |
 | IHACPA2024 | Pricing Framework for Australian Public Hospital Services 2024-25 | https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25 | 2024 | economic_spine | dollars/NWAU | Official pricing determination |
 | Schelling1960 | The Strategy of Conflict | https://www.hup.harvard.edu/books/9780674840317 | 1960 | strategies vector, payoff matrices | unitless | Foundational game theory text |
-| Hermans2014 | Dynamic evaluation of public policy: a conceptual framework | https://journals.sagepub.com/doi/10.1177/1356389013516053 | 2014 | strategies vector, solver params, stability, calibration | unitless | Policy evaluation framework |
+| Hermans2014 | The usefulness of game theory as a method for policy evaluation | DOI:10.1177/1356389013516053; https://journals.sagepub.com/doi/10.1177/1356389013516053 | 2014 | strategies vector, stability | unitless | Policy evaluation framework |
 | Ostrom2005 | Understanding Institutional Diversity | https://press.princeton.edu/books/paperback/9780691122380/understanding-institutional-diversity | 2005 | payoff matrices, micro_game_factory | unitless | IAD Framework reference |
-| BaezHernandez2025 | Games theory. A valuable instrument in decision-making in public policies | DOI:10.14409/rfce.v1i1.12345; https://bibliotecavirtual.unl.edu.ar/ | 2025 | num_steps, queuing utility | various | Peer-reviewed journal article (Revista de la Facultad de Ciencias Económicas) |
+| BaezHernandez2025 | Games theory. A valuable instrument in decision-making in public policies | DOI:10.14409/rfce.v1i1.12345; https://bibliotecavirtual.unl.edu.ar/ | 2025 | none (unverified; not used for parameter mapping) | various | DOI did not resolve during automated check; requires manual validation |
+
+## Reference Validation Checks
+Automated DOI/URL checks performed 2026-01-02 using HTTP HEAD/GET; some hosts block automated access.
+
+| Reference ID | DOI/URL Checked | Result | Notes |
+| --- | --- | --- | --- |
+| AIHW2024 | https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23 | 403 (blocked) | Site blocks automated checks; manual validation required. |
+| Duckett2021 | https://doi.org/10.5694/mja2.51016; https://www.mja.com.au/journal/2021/214/8/vicious-cycles-hospital-bed-block-and-national-health-reform-agreement | 403 / 404 | DOI blocked; MJA URL returned 404; manual verification and updated link required. |
+| IHACPA2024 | https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25 | 200 OK | URL accessible. |
+| Schelling1960 | https://www.hup.harvard.edu/books/9780674840317 | 403 (blocked) | Harvard site blocks automated checks. |
+| Hermans2014 | https://doi.org/10.1177/1356389013516053; https://journals.sagepub.com/doi/10.1177/1356389013516053 | 403 / 403 | Access blocked; manual verification required. |
+| Ostrom2005 | https://press.princeton.edu/books/paperback/9780691122380/understanding-institutional-diversity | 200 OK | URL accessible. |
+| BaezHernandez2025 | https://doi.org/10.14409/rfce.v1i1.12345; https://bibliotecavirtual.unl.edu.ar/ | 404 / 200 | DOI did not resolve; reference flagged as unverified and not used for parameter mapping. |
 
 ## Reference Registry Conventions
 - Registry file: publications/shared/references/library.yaml
@@ -74,12 +87,16 @@
 
 | Assumption | Rationale | Risk (low/med/high) | Impact | Mitigation |
 | --- | --- | --- | --- | --- |
-| M/M/s Queuing Approximation | Closed-form approximation for ED wait times avoids DES overhead. | Medium | May underestimate wait times during rapid transient congestion spikes. | Calibrate discharge rates to empirical wait times; use steady-state validity. |
-| Monthly Time Steps | System dynamics aggregated to monthly accounting cycles (1440 min/day used for capacity). | Low | Misses circadian/daily variance and shift-level bottlenecks. | Ensure parameters are monthly averages; sufficient for strategic policy analysis. |
-| Linear Efficiency Drift/Decay | Empirical observation of gradual system degradation without intervention. | Medium | Long-term projections are sensitive to the decay rate parameter. | Sensitivity analysis on drift/decay parameters validation. |
-| Logit Choice Patient Model | Standard utility maximization framework for GP vs ED choice. | Low | Assumes rational trade-off between wait time and out-of-pocket cost. | Calibrate sensitivity parameter to observed ED/GP presentations. |
-| Stylized 2x2 Game Payoffs | Abstracted representation of Federal-State funding conflict (Prisoner's Dilemma). | High | Ignores complex multi-lateral negotiation and political side-payments. | Use primarily for mechanism design logic, not predictive forecasting. |
-| Hardcoded Start Year 2025 | Default start year for simulation initialization. | Low | Verification scripts rely on specific dates. | Ensure override parameters are exposed in all entry points. |
+| ASSUMP-QUEUE-001: M/M/s Queuing Approximation | Closed-form approximation for ED wait times avoids DES overhead. | Medium | May underestimate wait times during rapid transient congestion spikes. | Calibrate discharge rates to empirical wait times; use steady-state validity. |
+| ASSUMP-TIME-001: Monthly Time Steps | System dynamics aggregated to monthly accounting cycles (1440 min/day used for capacity). | Low | Misses circadian/daily variance and shift-level bottlenecks. | Ensure parameters are monthly averages; sufficient for strategic policy analysis. |
+| ASSUMP-DRIFT-001: Linear Efficiency Drift/Decay | Empirical observation of gradual system degradation without intervention. | Medium | Long-term projections are sensitive to the decay rate parameter. | Sensitivity analysis on drift/decay parameters validation. |
+| ASSUMP-CHOICE-001: Logit Choice Patient Model | Standard utility maximization framework for GP vs ED choice. | Low | Assumes rational trade-off between wait time and out-of-pocket cost. | Calibrate sensitivity parameter to observed ED/GP presentations. |
+| ASSUMP-GAME-001: Stylized 2x2 Game Payoffs | Abstracted representation of Federal-State funding conflict (Prisoner's Dilemma). | High | Ignores complex multi-lateral negotiation and political side-payments. | Use primarily for mechanism design logic, not predictive forecasting. |
+| ASSUMP-YEAR-001: Hardcoded Start Year 2025 | Default start year for simulation initialization. | Low | Verification scripts rely on specific dates. | Ensure override parameters are exposed in all entry points. |
+| ASSUMP-SIM-001: Simulation horizon and RNG defaults (num_steps, prng_key) | Reproducibility configuration without empirical sourcing. | Low | Alters stochastic variability between runs. | Document seeds and steps; run sensitivity sweeps. |
+| ASSUMP-UTIL-001: GP cost/time/value and logit sensitivity defaults | Baseline utility values set without published national estimates in repo. | High | Directly affects ED vs GP demand elasticity and wait time outcomes. | Calibrate against observed ED/GP presentation rates; source published fee/time studies. |
+| ASSUMP-SOLVER-001: Solver hyperparameter defaults (lam, tol, max_iter, learning_rate) | Numerical convergence settings selected for stability. | Low | Impacts convergence speed and equilibrium selection. | Sensitivity analysis on solver params; record config. |
+| ASSUMP-CAL-001: Calibration optimizer defaults (learning_rate, max_iter, prng_key) | Optimization settings chosen for reproducibility and runtime. | Low | Impacts calibration convergence and fit. | Sensitivity analysis on optimizer settings; record config. |
 
 
 ## Benchmark Selection Criteria
