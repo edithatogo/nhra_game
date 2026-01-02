@@ -63,6 +63,10 @@
   const series = await d3.json("scenario_timeseries.json");
 
   const scenarios = Object.keys(series);
+  if (scenarios.length === 0) {
+    scenarios.push("Baseline (Default)");
+  }
+
   const scenarioSel = d3.select("#scenario");
   scenarioSel.selectAll("option").data(scenarios).enter().append("option")
     .attr("value", d => d).text(d => d);
@@ -132,7 +136,13 @@
     const metric = metricSel.property("value");
     yearLabel.text(year);
 
-    const ts = (scenario && series[scenario] && series[scenario][year]) ? series[scenario][year] : {};
+    // If "Baseline (Default)" is selected or no data exists, use default #E8F0FE
+    if (scenario === "Baseline (Default)" || !series[scenario] || !series[scenario][year]) {
+       node.attr("fill", "#E8F0FE");
+       return;
+    }
+
+    const ts = series[scenario][year];
     const values = graph.nodes.map(n => ts[n.id]?.[metric] ?? 0);
     const vmin = d3.min(values), vmax = d3.max(values);
     const scale = d3.scaleSequential(d3.interpolateYlOrRd).domain([vmin, vmax || (vmin+1e-6)]);
