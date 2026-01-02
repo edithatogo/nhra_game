@@ -123,3 +123,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ## [~] Track: Comprehensive Model Audit and Repairs
 *Link: [./conductor/tracks/model_audit_20260101/](./conductor/tracks/model_audit_20260101/)*
+
+---
+
+## [~] Track: Gap Analysis & Artifact Synchronization (Manuscripts vs. Code)
+*Link: [./conductor/tracks/gap_analysis_20260102/](./conductor/tracks/gap_analysis_20260102/)*
