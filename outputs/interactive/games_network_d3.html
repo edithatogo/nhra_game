@@ -132,7 +132,7 @@
     const metric = metricSel.property("value");
     yearLabel.text(year);
 
-    const ts = series[scenario][year] || {};
+    const ts = (scenario && series[scenario] && series[scenario][year]) ? series[scenario][year] : {};
     const values = graph.nodes.map(n => ts[n.id]?.[metric] ?? 0);
     const vmin = d3.min(values), vmax = d3.max(values);
     const scale = d3.scaleSequential(d3.interpolateYlOrRd).domain([vmin, vmax || (vmin+1e-6)]);
