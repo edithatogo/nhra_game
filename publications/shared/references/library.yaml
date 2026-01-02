@@ -71,3 +71,12 @@
   type: report
   quality: high
   recency: current
+
+- id: ABS2024
+  title: "Wage Price Index: Health Care and Social Assistance (WPI_HEALTH_KEY 1.THRPEB.7.Q.10.AUS.Q)"
+  author: "Australian Bureau of Statistics"
+  year: 2024
+  url: "https://data.api.abs.gov.au/rest/data/ABS,WPI/1.THRPEB.7.Q.10.AUS.Q"
+  type: dataset
+  quality: high
+  recency: current
