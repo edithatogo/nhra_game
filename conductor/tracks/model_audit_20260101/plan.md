@@ -22,10 +22,10 @@
 ## Phase 3: Output Validation (Benchmarks + Sanity Checks)
 - [x] Task: Define benchmark selection criteria and rationale 85a7fdf
 - [x] Task: Identify benchmarks for each model and define acceptance thresholds 9d9da3f
-- [x] Task: Implement/extend validation harness with tests (TDD: write failing tests, implement, refactor)
+- [x] Task: Implement/extend validation harness with tests (TDD: write failing tests, implement, refactor) 06cb139
   - [x] Sub-task: Add sanity checks (range/unit/monotonicity/edge cases)
   - [x] Sub-task: Add benchmark comparison tests where available
-- [x] Task: Run validation suite and record results in audit report, noting gaps
+- [x] Task: Run validation suite and record results in audit report, noting gaps 06cb139
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Output Validation (Benchmarks + Sanity Checks)' (Protocol in workflow.md)
 
 ## Phase 4: Repairs & Verification
