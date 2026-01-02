@@ -920,11 +920,33 @@ def main() -> None:
         **Drag nodes** to explore the topology. **Node size** reflects its centrality in the mechanism.
         """)
 
-        # Embed the D3 HTML
+        # Embed the D3 HTML with inlined data (fix for Streamlit Cloud)
         d3_path = Path("outputs/interactive/games_network_d3.html")
-        if d3_path.exists():
+        json_path = Path("outputs/interactive/games_network.json")
+        series_path = Path("outputs/interactive/scenario_timeseries.json")
+
+        if d3_path.exists() and json_path.exists():
             with open(d3_path, encoding="utf-8") as f:
-                st.components.v1.html(f.read(), height=600, scrolling=True)
+                html_content = f.read()
+
+            with open(json_path, encoding="utf-8") as f:
+                graph_data = f.read()
+
+            if series_path.exists():
+                with open(series_path, encoding="utf-8") as f:
+                    series_data = f.read()
+            else:
+                series_data = "{}"
+
+            # Inline the data by replacing the async fetch calls
+            html_content = html_content.replace(
+                'await d3.json("games_network_v9.json")', f"{graph_data}"
+            )
+            html_content = html_content.replace(
+                'await d3.json("scenario_timeseries_v9.json")', f"{series_data}"
+            )
+
+            st.components.v1.html(html_content, height=600, scrolling=True)
         else:
             st.error(
                 "D3 network assets not found. Ensure `scripts/interactive/make_d3_network.py` has been run."
