@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from enum import IntEnum
 from pathlib import Path
 from typing import Any
@@ -11,6 +12,8 @@ try:
     import polars as pl
 except ImportError:  # pragma: no cover
     pl = None  # type: ignore[assignment]
+
+logger = logging.getLogger(__name__)
 
 
 class SystemModeJax(IntEnum):
@@ -177,25 +180,28 @@ class BaselineProvider:
     def load_spine(
         path: Path | str = "data/calibration/historical_normalized.csv",
     ) -> EconomicSpineJax:
+        required = {"year", "nep_per_nwau", "wpi_health_index"}
         if pl is None:
             import pandas as pd
 
             df_pd = pd.read_csv(path)
+            missing = required - set(df_pd.columns)
+            if missing:
+                raise ValueError(f"Spine missing required columns: {sorted(missing)}")
             return EconomicSpineJax(
                 years=jnp.array(df_pd["year"].to_numpy().astype(jnp.int32)),
-                nep_per_nwau=jnp.array(
-                    df_pd["within4"].to_numpy()
-                ),  # Placeholder for actual NEP if not in spine
-                wpi_health_index=jnp.array(df_pd["occupancy"].to_numpy()),  # Placeholder
+                nep_per_nwau=jnp.array(df_pd["nep_per_nwau"].to_numpy()),
+                wpi_health_index=jnp.array(df_pd["wpi_health_index"].to_numpy()),
             )
 
         df = pl.read_csv(path)
+        missing = required - set(df.columns)
+        if missing:
+            raise ValueError(f"Spine missing required columns: {sorted(missing)}")
         return EconomicSpineJax(
             years=jnp.array(df["year"].to_numpy().astype(jnp.int32)),
-            nep_per_nwau=jnp.array(
-                df["within4"].to_numpy()
-            ),  # Placeholder for actual NEP if not in spine
-            wpi_health_index=jnp.array(df["occupancy"].to_numpy()),  # Placeholder
+            nep_per_nwau=jnp.array(df["nep_per_nwau"].to_numpy()),
+            wpi_health_index=jnp.array(df["wpi_health_index"].to_numpy()),
         )
 
     @classmethod
@@ -206,8 +212,12 @@ class BaselineProvider:
         # Check if spine exists
         spine_path = Path("data/calibration/historical_normalized.csv")
         if spine_path.exists():
-            spine = cls.load_spine(spine_path)
-            params = params.replace(spine=spine)
+            try:
+                spine = cls.load_spine(spine_path)
+            except ValueError as exc:
+                logger.warning("Skipping spine load: %s", exc)
+            else:
+                params = params.replace(spine=spine)
 
         state = baseline_state_jax(2025, params)
         return params, state

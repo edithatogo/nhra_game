@@ -39,7 +39,9 @@ The reconciled statements were synthesized into an **Extensive Form Game with Im
 $$
 U_i = \alpha \cdot F(a_i, \theta) + \beta \cdot R(s_i) - C(e_i)
 $$
-$F$ represents financial payoffs, $R$ represents reputational payoffs, and $C$ represents clinical effort cost. Game trees were analyzed for Nash and Subgame Perfect Equilibria.
+$F$ represents financial payoffs, $R$ represents reputational payoffs, and $C$ represents clinical effort cost.
+
+**Computational Implementation:** The formal mapping was operationalized in a Python-based simulation engine (JAX/NumPy). While the theoretical mapping identifies sequential dynamics (e.g., Rubinstein bargaining), the computational model approximates these as **Simultaneous Nash Bargaining** games to facilitate rapid equilibrium solving across high-dimensional parameter spaces. This "Action Situation" engine is visualized in an interactive dashboard (*Game of NHRA*), which provides a "Strategic Map" of node interdependencies and a "Game Tree Explorer" for inspecting subgame logic {McKelvey, 2006 @pygambit #130}.
 
 ### 2.5 Reflexivity and Trustworthiness
 The study adhered to the Standards for Reporting Qualitative Research (SRQR) {O'Brien et al., 2014 @SRQR_2014 #119}. The audit trail includes the OSF preregistration and the clause-level parity matrix. Methodological rigour was ensured through simulated inter-rater reliability checks using divergent analytical lenses.

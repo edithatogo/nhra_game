@@ -1,3 +1,5 @@
+import pytest
+
 from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_gt.domain.state import BaselineProvider, Params
 
@@ -47,3 +49,12 @@ def test_baseline_provider_integration():
     assert state.year == 2025
     # Should have loaded from defaults.yaml
     assert params.nominal_cth_share_target == 0.45
+
+
+def test_load_spine_requires_nep_and_wpi(tmp_path):
+    """Ensure NEP/WPI columns are required before constructing spine values."""
+    spine_path = tmp_path / "spine.csv"
+    spine_path.write_text("year,within4,occupancy\n2022,0.60,0.90\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="nep_per_nwau"):
+        BaselineProvider.load_spine(spine_path)

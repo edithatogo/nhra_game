@@ -28,7 +28,7 @@
 | Model | Input | Source ID | DOI/URL | Publication Date | Units | Scaling | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Core simulation engine | init_state (occupancy, within4, offload, discharge_delay) | AIHW2024; Duckett2021 | https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23; DOI:10.5694/mja2.51016 | 2024; 2021 | proportion; minutes; days | monthly | Baseline hospital performance inputs |
-| Core simulation engine | economic_spine (nep_per_nwau, wpi_health_index) | IHACPA2024; ABS2024; ASSUMP-ECON-001 | https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25; https://data.api.abs.gov.au/rest/data/ABS,WPI/1.THRPEB.7.Q.10.AUS.Q; Assumption Register | 2024; 2024; N/A (assumption) | dollars per NWAU; index | annual | NEP from IHACPA; WPI from ABS when available. BaselineProvider uses within4/occupancy placeholders if spine missing (ISSUE-003). |
+| Core simulation engine | economic_spine (nep_per_nwau, wpi_health_index) | IHACPA2024; ABS2024; ASSUMP-ECON-001 | https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25; https://data.api.abs.gov.au/rest/data/ABS,WPI/1.THRPEB.7.Q.10.AUS.Q; Assumption Register | 2024; 2024; N/A (assumption) | dollars per NWAU; index | annual | NEP from IHACPA; WPI from ABS when available. BaselineProvider now requires NEP/WPI columns and skips spine load if missing (FIX-003). |
 | Core simulation engine | strategies vector (policy actions) | Schelling1960; Hermans2014 | https://www.hup.harvard.edu/books/9780674840317; https://journals.sagepub.com/doi/10.1177/1356389013516053 | 1960; 2014 | unitless probabilities | per time step | Strategy representation for negotiation choices |
 | Core simulation engine | num_steps, prng_key | ASSUMP-SIM-001 | Assumption Register | N/A (assumption) | steps; unitless seed | per simulation run | Simulation configuration parameters |
 | JAX solver suite | payoff matrices (u_row, u_col) | Schelling1960; Ostrom2005 | https://www.hup.harvard.edu/books/9780674840317; https://press.princeton.edu/books/paperback/9780691122380/understanding-institutional-diversity | 1960; 2005 | utility (unitless) | unitless | Game-theoretic payoff specification |
@@ -97,7 +97,7 @@ Automated DOI/URL checks performed 2026-01-02 using HTTP HEAD/GET; some hosts bl
 | --- | --- | --- | --- | --- |
 | ASSUMP-QUEUE-001: M/M/s Queuing Approximation | Closed-form approximation for ED wait times avoids DES overhead. | Medium | May underestimate wait times during rapid transient congestion spikes. | Calibrate discharge rates to empirical wait times; use steady-state validity. |
 | ASSUMP-TIME-001: Monthly Time Steps | System dynamics aggregated to monthly accounting cycles (1440 min/day used for capacity). | Low | Misses circadian/daily variance and shift-level bottlenecks. | Ensure parameters are monthly averages; sufficient for strategic policy analysis. |
-| ASSUMP-ECON-001: Economic spine placeholder mapping | When `historical_normalized.csv` is used, NEP/WPI are proxied by within4/occupancy due to missing series. | High | Distorts cost vs funding drift and any NEP/WPI-based dynamics. | Require IHACPA NEP and ABS WPI series; remove placeholder fallback or gate behind explicit flag. |
+| ASSUMP-ECON-001: Economic spine series requirement | Economic spine requires NEP/WPI columns; if unavailable, baseline uses static defaults without a time series. | Medium | Reduces realism of economic drift until series is supplied. | Load IHACPA NEP and ABS WPI series in `historical_normalized.csv`; keep spine data current. |
 | ASSUMP-DRIFT-001: Linear Efficiency Drift/Decay | Empirical observation of gradual system degradation without intervention. | Medium | Long-term projections are sensitive to the decay rate parameter. | Sensitivity analysis on drift/decay parameters validation. |
 | ASSUMP-CHOICE-001: Logit Choice Patient Model | Standard utility maximization framework for GP vs ED choice. | Low | Assumes rational trade-off between wait time and out-of-pocket cost. | Calibrate sensitivity parameter to observed ED/GP presentations. |
 | ASSUMP-GAME-001: Stylized 2x2 Game Payoffs | Abstracted representation of Federal-State funding conflict (Prisoner's Dilemma). | High | Ignores complex multi-lateral negotiation and political side-payments. | Use primarily for mechanism design logic, not predictive forecasting. |
@@ -145,13 +145,14 @@ To ensure validation rigor, selected benchmarks must meet the following criteria
 | --- | --- | --- | --- | --- | --- |
 | ISSUE-001 | Critical | Core simulation engine | Within4 metric (0.37) significantly below baseline target (0.65). | Tests: test_benchmark_within4_alignment | Closed |
 | ISSUE-002 | Medium | Queuing equilibrium | Wait time clipped to 5.0m at Rho=0.83; potential underestimation. | Tests: test_queuing_logic_erlang | Closed |
-| ISSUE-003 | High | Core simulation engine | Economic spine fallback maps NEP/WPI to within4/occupancy placeholders when `historical_normalized.csv` is used. Priority P1. | src/nhra_gt/domain/state.py (BaselineProvider.load_spine) | Open |
+| ISSUE-003 | High | Core simulation engine | Economic spine fallback maps NEP/WPI to within4/occupancy placeholders when `historical_normalized.csv` is used. Priority P1. | src/nhra_gt/domain/state.py (BaselineProvider.load_spine) | Closed |
 
 ## Fix Log
 | ID | Issue | Change | Tests | Evidence | Status |
 | --- | --- | --- | --- | --- | --- |
 | FIX-001 | ISSUE-001 | Recalibrated `within4_from_pressure_jax` intercept to 1.00. | test_benchmark_within4_alignment | Initial state Within4 = 0.64. | Verified |
 | FIX-002 | ISSUE-002 | Corrected unit conversion in `mm_s_queue_wait_jax` (x1440.0). | test_queuing_logic_erlang | Wait time = 82m. | Verified |
+| FIX-003 | ISSUE-003 | Require `nep_per_nwau` and `wpi_health_index` columns; remove placeholder mapping. | test_load_spine_requires_nep_and_wpi | Spine load fails without columns; defaults only used when spine file missing. | Verified |
 
 ## Provenance
 - Git SHA: 06cb13913db9ce97f5075840e2e625c9b6399518

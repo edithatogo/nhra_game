@@ -248,7 +248,6 @@ description = "Unbearably fast near-real-time pure-Python runtime-static type-ch
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"dev\""
 files = [
     {file = "beartype-0.22.9-py3-none-any.whl", hash = "sha256:d16c9bbc61ea14637596c5f6fbff2ee99cbe3573e46a716401734ef50c3060c2"},
     {file = "beartype-0.22.9.tar.gz", hash = "sha256:8f82b54aa723a2848a56008d18875f91c1db02c32ef6a62319a002e3e25a975f"},
@@ -8928,11 +8927,10 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 
 [extras]
 accel = ["chex", "numpyro", "polars"]
-dev = ["beartype"]
 observability = ["logfire"]
 opt = ["optuna"]
 
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.14"
-content-hash = "a55c66b9b9a8f44ae21eb6ec5c7cffb3bb58aea66c2993fb38769c169546d927"
+content-hash = "78c24e98b38872f263d8ea52c7f3f302f901e10fa4059574eca0c11d17d5df3d"

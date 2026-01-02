@@ -163,9 +163,36 @@ def select_equilibrium(
 
     scores = []
     for eq in eqs:
-        r, c = exp_pay(eq)
-        s = r if rule == "row_favourable" else r + c
-        scores.append(s)
+        if rule == "risk_dominant":
+            # Risk Dominance (Harsanyi & Selten) for 2x2 games
+            # Only applies to Pure Nash Equilibria
+            if eq.kind != "pure" or u_row.shape != (2, 2):
+                scores.append(-float("inf"))
+                continue
+
+            # Identify indices
+            r_idx = int(np.argmax(eq.row))
+            c_idx = int(np.argmax(eq.col))
+
+            # Deviation indices (for 2x2, it's 1 - idx)
+            r_dev = 1 - r_idx
+            c_dev = 1 - c_idx
+
+            # Deviation losses
+            # Row loss: Payoff(r, c) - Payoff(dev, c)
+            l_row = u_row[r_idx, c_idx] - u_row[r_dev, c_idx]
+
+            # Col loss: Payoff(r, c) - Payoff(r, dev)
+            l_col = u_col[r_idx, c_idx] - u_col[r_idx, c_dev]
+
+            # Nash Product
+            scores.append(l_row * l_col)
+
+        else:
+            r, c = exp_pay(eq)
+            s = r if rule == "row_favourable" else r + c
+            scores.append(s)
+
     idx = int(np.argmax(np.array(scores)))
     return EquilibriumSelection(eqs[idx], n_eqs)
 

@@ -1,0 +1,34 @@
+{
+  "project": "NHRA Game Theory Modelling",
+  "version": "2026.1.0-beta",
+  "commit_sha": "2ae5e687a2f3a9be0ed640710305be74afdd2517",
+  "artifacts": [
+    {
+      "name": "Qualitative Mapping (P1)",
+      "path": "publications/P1_Qualitative_MJA/03_Manuscript/manuscript_final_v2.0.md",
+      "description": "Updated manuscript with dashboard integration and glossary alignment."
+    },
+    {
+      "name": "Quantitative Modelling (P2)",
+      "path": "publications/P2_Modelling_MJA/03_Manuscript/manuscript_final_v2.0.md",
+      "description": "Updated manuscript with parameter mapping and forensic audit methods."
+    },
+    {
+      "name": "Parameter Registry",
+      "path": "context/04_parameter_registry.csv",
+      "description": "Defitive parameter source."
+    },
+    {
+      "name": "Codebase Snapshot",
+      "path": "src/nhra_gt/",
+      "description": "Core JAX engine including Risk Dominance implementation."
+    },
+    {
+      "name": "Dashboard Snapshot",
+      "path": "scripts/dashboard.py",
+      "description": "Interactive visualization suite."
+    }
+  ],
+  "verification_date": "2026-01-02",
+  "status": "Synchronized"
+}

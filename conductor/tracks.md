@@ -128,3 +128,6 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ## [~] Track: Gap Analysis & Artifact Synchronization (Manuscripts vs. Code)
 *Link: [./conductor/tracks/gap_analysis_20260102/](./conductor/tracks/gap_analysis_20260102/)*
+
+## [ ] Track: Sequential Bargaining Engine (Rubinstein/Stackelberg)
+*Link: [./conductor/tracks/sequential_bargaining_20260102/](./conductor/tracks/sequential_bargaining_20260102/)*

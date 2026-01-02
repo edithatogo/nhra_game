@@ -60,17 +60,6 @@ jaxopt = "^0.8.5"
 opt = ["optuna"]
 accel = ["chex", "numpyro", "polars"]
 observability = ["logfire"]
-dev = [
-    "pytest", "hypothesis", "hypothesis-auto", "icontract-hypothesis",
-    "icontract", "locust", "atheris", "ruff", "mypy", "pre-commit",
-    "nox", "isort", "mkdocs", "mkdocs-material", "mutmut", "pytest-mock",
-    "pytest-cov", "scalene", "pyinstrument", "py-spy", "memray",
-    "pytest-benchmark", "asv", "deptry", "vulture", "bandit", "pyright",
-    "beartype", "typeguard", "mkdocstrings-python", "mkdocs-literate-nav",
-    "mkdocs-section-index", "mypy", "types-requests", "types-PyYAML", "types-setuptools", "pandas-stubs",
-    "mkdocs-jupyter", "mike",
-    "mkdocs-git-revision-date-localized-plugin"
-]
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.4"

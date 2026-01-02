@@ -29,7 +29,19 @@ The simulation operates on a monthly time-step. Each step involves a 7-stage seq
 The core design concept is **Emergence**. Strategic gaming equilibria emerge as rational responses to the interaction between 6.5% growth caps and safety penalty rules. Agents utilize a **Sensing** mechanism. They update beliefs about audit thresholds based on lagged feedback. Interaction is modeled as an **Extensive Form Game with Imperfect Information**.
 
 ### 2.3 Empirical Grounding and Calibration
-The economic spine is calibrated using historical series (2011–2024) for the National Efficient Price (NEP) and the Wage Price Index (WPI) {IHACPA, 2024 @IHACPA_2024 #114}. Operational metrics are parameterized using a logistic transfer function grounded in AIHW data {AIHW, 2024 @AIHW_2024 #101}. Baseline parameters were verified through a 100% trace coverage parity audit.
+The economic spine is calibrated using historical series (2011–2024) for the National Efficient Price (NEP) and the Wage Price Index (WPI) {IHACPA, 2024 @IHACPA_2024 #114}. Operational metrics are parameterized using a logistic transfer function grounded in AIHW data {AIHW, 2024 @AIHW_2024 #101}. The simulation engine was implemented in **JAX**, enabling high-performance vectorization and differentiable calibration {Bradbury, 2018 @jax2018github #131}. Baseline parameters were verified through a 100% trace coverage parity audit.
+
+**Table 0: Key Model Parameters and Code Mapping**
+| Manuscript Symbol | Python Variable | Description |
+| :--- | :--- | :--- |
+| $\alpha$ | `nwau_utility` | Weight on revenue generation. |
+| $\beta$ | `kpi_satisfaction` | Weight on reputational standing. |
+| $\theta$ | `coding_intensity` | Strategic choice of upcoding effort. |
+| $P_{audit}$ | `audit_pressure` | Probability of regulatory audit. |
+| $C_{adjust}$ | `adjustment_costs` | Frictional cost of capacity change. |
+
+### 2.4 Forensic Audit Module
+To quantify the "Regulator Suspicion" metric visualized in the dashboard, the model calculates the divergence between reported case mix complexity and the expected clinical baseline. This "Suspicion Index" drives the dynamic audit probability, simulating an adaptive regulator.
 
 ## Results
 
