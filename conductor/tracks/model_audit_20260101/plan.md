@@ -29,17 +29,17 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Output Validation (Benchmarks + Sanity Checks)' (Protocol in workflow.md) 80ce822
 
 ## Phase 4: Repairs & Verification
-- [x] Task: Triage issues by severity and prioritize fixes
-- [x] Task: For each issue, write failing tests or validation checks (TDD)
-- [x] Task: Implement fixes (including model logic changes) and rerun tests
-- [x] Task: Run full test/coverage/lint/type checks and record results
-- [x] Task: Update references/assumptions and record before/after evidence
-- [x] Task: Produce consolidated change log with before/after metrics
-- [x] Task: Conductor - User Manual Verification 'Phase 4: Repairs & Verification' (Protocol in workflow.md)
+- [~] Task: Triage issues by severity and prioritize fixes
+- [ ] Task: For each issue, write failing tests or validation checks (TDD)
+- [ ] Task: Implement fixes (including model logic changes) and rerun tests
+- [ ] Task: Run full test/coverage/lint/type checks and record results
+- [ ] Task: Update references/assumptions and record before/after evidence
+- [ ] Task: Produce consolidated change log with before/after metrics
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Repairs & Verification' (Protocol in workflow.md)
 
 ## Phase 5: Audit Finalization
-- [x] Task: Stakeholder review of audit report (lightweight sign-off)
-- [x] Task: Finalize audit report (inventory, validations, issues, fixes, evidence)
-- [x] Task: Record provenance metadata (git SHA, data version, timestamps, seeds, environment)
-- [x] Task: Review for completeness, traceability, and policy compliance
-- [x] Task: Conductor - User Manual Verification 'Phase 5: Audit Finalization' (Protocol in workflow.md)
+- [ ] Task: Stakeholder review of audit report (lightweight sign-off)
+- [ ] Task: Finalize audit report (inventory, validations, issues, fixes, evidence)
+- [ ] Task: Record provenance metadata (git SHA, data version, timestamps, seeds, environment)
+- [ ] Task: Review for completeness, traceability, and policy compliance
+- [ ] Task: Conductor - User Manual Verification 'Phase 5: Audit Finalization' (Protocol in workflow.md)

@@ -145,7 +145,7 @@ To ensure validation rigor, selected benchmarks must meet the following criteria
 | --- | --- | --- | --- | --- | --- |
 | ISSUE-001 | Critical | Core simulation engine | Within4 metric (0.37) significantly below baseline target (0.65). | Tests: test_benchmark_within4_alignment | Closed |
 | ISSUE-002 | Medium | Queuing equilibrium | Wait time clipped to 5.0m at Rho=0.83; potential underestimation. | Tests: test_queuing_logic_erlang | Closed |
-| ISSUE-003 | High | Core simulation engine | Economic spine fallback maps NEP/WPI to within4/occupancy placeholders when `historical_normalized.csv` is used. | src/nhra_gt/domain/state.py (BaselineProvider.load_spine) | Open |
+| ISSUE-003 | High | Core simulation engine | Economic spine fallback maps NEP/WPI to within4/occupancy placeholders when `historical_normalized.csv` is used. Priority P1. | src/nhra_gt/domain/state.py (BaselineProvider.load_spine) | Open |
 
 ## Fix Log
 | ID | Issue | Change | Tests | Evidence | Status |
