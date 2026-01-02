@@ -951,6 +951,20 @@ def main() -> None:
             st.error(
                 "D3 network assets not found. Ensure `scripts/interactive/make_d3_network.py` has been run."
             )
+            # Debugging instrumentation
+            import os
+
+            st.warning("⚠️ Debug Info (Temporary):")
+            st.write(f"Current Working Directory: `{os.getcwd()}`")
+            st.write(f"Checking D3 Path: `{d3_path.absolute()}` (Exists: {d3_path.exists()})")
+            st.write(f"Checking JSON Path: `{json_path.absolute()}` (Exists: {json_path.exists()})")
+
+            parent_dir = d3_path.parent
+            if parent_dir.exists():
+                st.write(f"Contents of `{parent_dir}`:")
+                st.code("\n".join([str(p.name) for p in parent_dir.iterdir()]))
+            else:
+                st.error(f"Directory `{parent_dir}` does not exist.")
 
         st.caption("Strategic nodes (BARG, DEF, etc.) parameterize the simulation logic.")
 
