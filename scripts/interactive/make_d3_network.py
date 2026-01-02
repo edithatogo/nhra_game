@@ -76,57 +76,66 @@ def main() -> None:
     }
     (out / "games_network.json").write_text(json.dumps(graph, indent=2), encoding="utf-8")
 
-    # Build scenario-year → node metric dict from the v8 scenario table if available
+    # Build scenario-year → node metric dict from the baseline tables
     # This is a *diagram overlay*: we map outcomes to relevant nodes for colouring.
     series = {}
-    scenario_csv = repo / "outputs" / "v8" / "tables" / "scenario_table.csv"
-    if scenario_csv.exists():
-        df = pd.read_csv(scenario_csv)
+
+    # Read both summary and intervention tables
+    base_dir = repo / "data" / "baseline" / "tables"
+    dfs = []
+
+    summary_csv = base_dir / "scenario_summary.csv"
+    if summary_csv.exists():
+        dfs.append(pd.read_csv(summary_csv))
+
+    intervention_csv = base_dir / "intervention_scenarios.csv"
+    if intervention_csv.exists():
+        dfs.append(pd.read_csv(intervention_csv))
+
+    if dfs:
+        df = pd.concat(dfs, ignore_index=True)
         for _, r in df.iterrows():
             sc = r["scenario"]
             series.setdefault(sc, {})
+            # Data is currently only for 2030 in these summaries, but D3 expects a time series.
+            # We will project the 2030 value across the range for now, or just set it for 2030.
+            # The original script looped 2025-2031. Let's populate 2030 specifically,
+            # and maybe copy it to other years if needed, but the original code read specific year columns.
+            # The new data only has _2030 columns. We'll populate 2025-2031 with the 2030 static value
+            # to ensure the map shows *something* for any year selected, acting as a "steady state" view.
+
+            # Map columns:
+            # pressure_mean_2030 -> pressure
+            # rr_mean_2030 -> risk (harm)
+            # within4_mean_2030 -> within4
+            # offload_mean_2030 -> offload
+            # effgap_mean_2030 -> effshare (approximate 1-gap or just gap? Old code used effshare_effective_2030)
+            # Let's use 1.0 - effgap as "efficiency share" proxy if gap < 1.
+
+            p_val = float(r.get("pressure_mean_2030", 0.0))
+            r_val = float(r.get("rr_mean_2030", 0.0))
+            w_val = float(r.get("within4_mean_2030", 0.0))
+            o_val = float(r.get("offload_mean_2030", 0.0))
+            e_val = 1.0 - float(r.get("effgap_mean_2030", 0.0))  # gap to share proxy
+
+            metrics = {
+                "pressure": p_val,
+                "risk": r_val,
+                "within4": w_val,
+                "offload": o_val,
+                "effshare": e_val,
+            }
+
             for y in range(2025, 2031):
                 series[sc].setdefault(y, {})
-                series[sc][y] = {
-                    "PRESS": {
-                        "pressure": float(r.get("pressure_2030", 0.0)),
-                        "risk": float(r.get("harm_2030", 0.0)),
-                        "within4": float(r.get("within4_2030", 0.0)),
-                        "offload": float(r.get("offload_2030", 0.0)),
-                        "effshare": float(r.get("effshare_effective_2030", 0.0)),
-                    },
-                    "RISK": {
-                        "pressure": float(r.get("pressure_2030", 0.0)),
-                        "risk": float(r.get("harm_2030", 0.0)),
-                        "within4": float(r.get("within4_2030", 0.0)),
-                        "offload": float(r.get("offload_2030", 0.0)),
-                        "effshare": float(r.get("effshare_effective_2030", 0.0)),
-                    },
-                    "ED": {
-                        "pressure": float(r.get("pressure_2030", 0.0)),
-                        "risk": float(r.get("harm_2030", 0.0)),
-                        "within4": float(r.get("within4_2030", 0.0)),
-                        "offload": float(r.get("offload_2030", 0.0)),
-                        "effshare": float(r.get("effshare_effective_2030", 0.0)),
-                    },
-                    "OFF": {
-                        "pressure": float(r.get("pressure_2030", 0.0)),
-                        "risk": float(r.get("harm_2030", 0.0)),
-                        "within4": float(r.get("within4_2030", 0.0)),
-                        "offload": float(r.get("offload_2030", 0.0)),
-                        "effshare": float(r.get("effshare_effective_2030", 0.0)),
-                    },
-                    "EFF": {
-                        "pressure": float(r.get("pressure_2030", 0.0)),
-                        "risk": float(r.get("harm_2030", 0.0)),
-                        "within4": float(r.get("within4_2030", 0.0)),
-                        "offload": float(r.get("offload_2030", 0.0)),
-                        "effshare": float(r.get("effshare_effective_2030", 0.0)),
-                    },
-                }
+                # Apply these metrics to all relevant state nodes
+                for state_node in ["PRESS", "RISK", "ED", "OFF", "EFF"]:
+                    series[sc][y][state_node] = metrics
+
                 # Default: other nodes inherit pressure values for colour scaling
                 for nid in node_ids:
-                    series[sc][y].setdefault(nid, series[sc][y]["PRESS"])
+                    if nid not in ["PRESS", "RISK", "ED", "OFF", "EFF"]:
+                        series[sc][y].setdefault(nid, series[sc][y]["PRESS"])
 
     (out / "scenario_timeseries.json").write_text(json.dumps(series, indent=2), encoding="utf-8")
 
