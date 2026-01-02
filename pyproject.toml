@@ -44,6 +44,7 @@ jax = ">=0.4"
 jaxlib = ">=0.4"
 flax = ">=0.8"
 jaxtyping = ">=0.2"
+spacy = ">=3.7"
 
 # Optional dependencies (extras)
 optuna = { version = ">=3.6", optional = true }
