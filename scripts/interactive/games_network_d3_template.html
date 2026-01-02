@@ -59,8 +59,8 @@
 
 <script>
 (async function() {
-  const graph = await d3.json("games_network_v9.json");
-  const series = await d3.json("scenario_timeseries_v9.json");
+  const graph = await d3.json("games_network.json");
+  const series = await d3.json("scenario_timeseries.json");
 
   const scenarios = Object.keys(series);
   const scenarioSel = d3.select("#scenario");
