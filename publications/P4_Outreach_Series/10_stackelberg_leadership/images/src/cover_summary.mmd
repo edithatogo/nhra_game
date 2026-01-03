@@ -1,0 +1,14 @@
+graph LR
+    subgraph "Stackelberg Leadership"
+        Leader["Leader (Federal)"]
+        Follower["Follower (State)"]
+
+        Leader -- "Set Policy (L)" --> Follower
+        Follower -- "React (F)" --> Outcome
+
+        Outcome["Outcome (L, F)"]
+    end
+
+    Leader -- "Anticipates" --- Outcome
+    Adv["Equilibrium: LEADER WINS"]
+    Outcome -.-> Adv
