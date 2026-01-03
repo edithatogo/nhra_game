@@ -49,10 +49,10 @@
 - [x] Task: Bundle 11 (Queuing equilibrium) — v1 → feedback/consensus → v2 (run validators)
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Remaining Scenario Bundles (Single-cycle Each)' (Protocol in workflow.md)
 
-## Phase 4: Hybrid/Ensemble + Streamlit dashboard bundles
-- [ ] Task: Bundle 12 (Hybrid/Ensemble) — v1 → feedback/consensus → v2 (run validators)
-- [ ] Task: Bundle 13 (Streamlit dashboard) — v1 → feedback/consensus → v2 (run validators)
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Hybrid/Ensemble + Dashboard Bundles' (Protocol in workflow.md)
+## Phase 4: Hybrid/Ensemble + Streamlit dashboard bundles [checkpoint: d289b84]
+- [x] Task: Bundle 12 (Hybrid/Ensemble) — v1 → feedback/consensus → v2 (run validators)
+- [x] Task: Bundle 13 (Streamlit dashboard) — v1 → feedback/consensus → v2 (run validators)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Hybrid/Ensemble + Dashboard Bundles' (Protocol in workflow.md)
 
 ## Phase 5: Series QA, index, and link validation
 - [ ] Task: Generate/refresh series index from manifest (links + recommended reading order)
