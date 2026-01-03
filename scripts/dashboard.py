@@ -30,16 +30,16 @@ from nhra_gt.visualization.interactive import (
     plot_workforce_dynamics,
 )
 from nhra_gt.visualization.sensitivity import plot_morris_tornado as viz_plot_morris_tornado
-from nhra_gt.visualization.sensitivity import plot_sobol_indices as viz_plot_sobol_indices
 from nhra_gt.visualization.sensitivity import plot_sobol_heatmap as viz_plot_sobol_heatmap
+from nhra_gt.visualization.sensitivity import plot_sobol_indices as viz_plot_sobol_indices
 
 # Add src to path if needed for relative imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from nhra_gt import __version__
 from nhra_gt.domain.registry import EvidenceRegistry
-from nhra_gt.domain.state import ParamsJax
 from nhra_gt.domain.stability import analyze_cost_shifting_stability
+from nhra_gt.domain.state import ParamsJax
 from nhra_gt.domain.validation import RecursiveResult, aggregate_metrics
 from nhra_gt.engine import Params, apply_intervention, run_hybrid, summarise_outcome
 from nhra_gt.game_theory.content import get_populated_registry
@@ -72,9 +72,9 @@ def initialize_slider_state(scenarios: dict):
     if master_path.exists():
         try:
             df_reg = pd.read_csv(master_path)
-            csv_defaults = dict(zip(df_reg["parameter"], df_reg["value"]))
-        except Exception:
-            pass
+            csv_defaults = dict(zip(df_reg["parameter"], df_reg["value"], strict=False))
+        except Exception:  # noqa: S110
+            pass  # Silently ignore missing/invalid CSV
 
     # 2. Get all fields from ParamsJax
     # Note: ParamsJax fields represent the complete set of simulation controls.
@@ -115,9 +115,9 @@ def initialize_slider_state(scenarios: dict):
                             if val.is_integer():
                                 val = int(val)
                         except ValueError:
-                            pass
-            except Exception:
-                pass
+                            pass  # noqa: S110 - expected for type coercion
+            except Exception:  # noqa: S110, BLE001
+                pass  # Skip unparseable defaults
 
             st.session_state[key] = val
 
@@ -586,6 +586,7 @@ def main() -> None:
     # We run baseline at the requested fidelity
     p_base = Params()
     traj_base, _ = cached_run_model(p_base, years, n_mc=st.session_state.n_mc)
+    traj_base.attrs = {}
     summary_base = summarise_outcome(traj_base)
 
     # Calculate average SEM for pressure as a confidence proxy
@@ -611,14 +612,18 @@ def main() -> None:
             st.rerun()
 
     # Strategic Scenario Analysis
-    # Dynamically build parameters from session state to ensure all registry 
+    # Dynamically build parameters from session state to ensure all registry
     # promotions are captured.
     param_keys = {f.name for f in dataclasses.fields(ParamsJax)}
     overrides_final = {k: v for k, v in st.session_state.items() if k in param_keys}
-    
+
     p_game = Params(**overrides_final)
-    
+    from nhra_gt.rules import initialize_rules
+
+    p_game = initialize_rules(p_game)
+
     traj_game, _ = cached_run_model(p_game, years, n_mc=st.session_state.n_mc, overrides=overrides)
+    traj_game.attrs = {}
     summary_game = summarise_outcome(traj_game)
 
     # ----------------------------
@@ -691,6 +696,8 @@ def main() -> None:
                 # Prepare Plotly Data
                 traj_base_p = traj_base.copy()
                 traj_game_p = traj_game.copy()
+                traj_base_p.attrs = {}
+                traj_game_p.attrs = {}
                 traj_base_p["Scenario"] = "Baseline"
                 traj_game_p["Scenario"] = "Strategic Scenario Analysis"
                 combined = pd.concat([traj_base_p, traj_game_p])
@@ -1092,13 +1099,13 @@ def main() -> None:
 
         with col_lv1:
             st.subheader("🎯 Pressure vs. Revenue Trade-off")
-            
+
             if hasattr(traj_game, "attrs") and "lhn_snapshot" in traj_game.attrs:
                 lhn_df = traj_game.attrs["lhn_snapshot"]
                 # Assign types deterministically based on LHN_ID (stable across runs)
                 type_map = {0: "Metro", 1: "Metro", 2: "Regional", 3: "Regional", 4: "Remote"}
                 lhn_df["Type"] = lhn_df["LHN_ID"].map(type_map).fillna("Other")
-                lhn_df["LHN"] = [f"LHN {int(row['LHN_ID'])+1}" for _, row in lhn_df.iterrows()]
+                lhn_df["LHN"] = [f"LHN {int(row['LHN_ID']) + 1}" for _, row in lhn_df.iterrows()]
             else:
                 # Fallback if attributes missing
                 n_lhn = 5
@@ -1133,20 +1140,22 @@ def main() -> None:
             # If we had real block revenue in snapshot, use it.
             # Currently only pressure/nwau captured.
             # We will use a simplified view based on the same snapshot index.
-            
+
             # Show the split between ABF and Block for each LHN
             # Using NWAU as proxy for ABF, and a fraction for Block
             # Display first 10 for clarity if MC is large
             display_df = lhn_df.head(10).copy()
-            
+
             # Mock block based on global param for now (until LHN state has it)
             block_base = st.session_state.get("cost_shifting_intensity", 0.35) * 50
-            
+
             stream_df = pd.DataFrame(
                 {
                     "LHN": display_df["LHN"],
                     "ABF Revenue": display_df["NWAU Capture (Relative)"],
-                    "Block Revenue": np.random.uniform(block_base*0.8, block_base*1.2, len(display_df)),
+                    "Block Revenue": np.random.uniform(
+                        block_base * 0.8, block_base * 1.2, len(display_df)
+                    ),
                 }
             )
 
@@ -1372,7 +1381,7 @@ def main() -> None:
             df_master = pd.read_csv(master_path)
             st.dataframe(
                 df_master[["parameter", "value", "units", "citation_or_file"]],
-                use_container_width=True
+                use_container_width=True,
             )
         else:
             st.error("Master registry (context/04_parameter_registry.csv) not found.")
@@ -1380,13 +1389,13 @@ def main() -> None:
         # 2. Staging Registry (Candidates from Automated Pipeline)
         st.markdown("---")
         st.subheader("📋 Pending Ingestions (Staging)")
-        
+
         staging_path = Path("data/registry/staging.csv")
         if staging_path.exists():
             try:
                 # Attempt to load using domain object if available, else CSV
                 evidence_registry = EvidenceRegistry.load_from_csv(staging_path)
-                
+
                 # Conflict Resolver Section
                 st.subheader("🕵️ Conflict Resolver")
                 params_with_multiple = [
@@ -1394,7 +1403,9 @@ def main() -> None:
                 ]
 
                 if params_with_multiple:
-                    selected_param = st.selectbox("Resolve Conflict for Parameter:", params_with_multiple)
+                    selected_param = st.selectbox(
+                        "Resolve Conflict for Parameter:", params_with_multiple
+                    )
                     entries = evidence_registry.get_all_entries(selected_param)
 
                     st.markdown(f"**Sources for {selected_param}:**")
@@ -1412,7 +1423,7 @@ def main() -> None:
                                 st.rerun()
                 else:
                     st.info("No conflicts in staging.")
-                    
+
                 st.markdown("#### Full Staging Data")
                 st.dataframe(
                     pd.DataFrame(
@@ -1427,7 +1438,9 @@ def main() -> None:
                 st.warning(f"Could not load staging registry via domain object: {e}")
                 st.dataframe(pd.read_csv(staging_path))
         else:
-            st.info("No staging data found (`data/registry/staging.csv`). Run `automated_evidence_api` to generate candidates.")
+            st.info(
+                "No staging data found (`data/registry/staging.csv`). Run `automated_evidence_api` to generate candidates."
+            )
 
     # ... (existing code) ...
 

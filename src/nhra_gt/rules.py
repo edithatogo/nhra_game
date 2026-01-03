@@ -154,23 +154,25 @@ def initialize_rules(p: Any) -> Any:
     """Ensures all rule objects are initialized in a Params object."""
     # This works for both Params and Params
     updates = {}
-    if getattr(p, "cap_rule", None) is None:
+    curr_cap = getattr(p, "cap_rule", None)
+    if curr_cap is None or isinstance(curr_cap, str):
         rule_type = getattr(p, "cap_rule_type", 0)
         # Handle string types from legacy Params
         if isinstance(rule_type, str):
             rule_type = 1 if rule_type == "soft" else 0
         updates["cap_rule"] = CapRule(rule_type=rule_type, cap_limit=p.cap_growth)
 
-    if getattr(p, "audit_rule", None) is None:
+    curr_audit = getattr(p, "audit_rule", None)
+    if curr_audit is None or isinstance(curr_audit, str):
         rule_type = getattr(p, "audit_rule_type", 0)
         if isinstance(rule_type, str):
             rule_type = 1 if rule_type == "threshold" else 0
         updates["audit_rule"] = AuditRule(rule_type=rule_type, audit_pressure=p.audit_pressure)
 
-    if getattr(p, "eligibility_rule", None) is None:
+    if getattr(p, "eligibility_rule", None) is None or isinstance(p.eligibility_rule, str):
         updates["eligibility_rule"] = EligibilityRule(block_funding_base=p.block_funding_base)
 
-    if getattr(p, "reconciliation_rule", None) is None:
+    if getattr(p, "reconciliation_rule", None) is None or isinstance(p.reconciliation_rule, str):
         updates["reconciliation_rule"] = ReconciliationRule()
 
     if updates:
