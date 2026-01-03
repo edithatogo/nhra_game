@@ -1,0 +1,15 @@
+graph LR
+    subgraph "Internal Competition"
+        Urban["LHN A (Urban)"]
+        Regional["LHN B (Regional)"]
+
+        Urban -- "Cherry-pick?" --> Surplus
+        Regional -- "Safety Net?" --> Deficit
+
+        Surplus["Urban Surplus"]
+        Deficit["Regional Deficit"]
+    end
+
+    Urban -- "Share Load" --- Regional
+    Fix["Equilibrium: INEQUALITY"]
+    Deficit -.-> Fix
