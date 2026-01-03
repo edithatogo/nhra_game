@@ -1,5 +1,4 @@
-from __future__ import annotations
-
+import dataclasses
 import json
 import sys
 from pathlib import Path
@@ -31,14 +30,15 @@ from nhra_gt.visualization.interactive import (
     plot_workforce_dynamics,
 )
 from nhra_gt.visualization.sensitivity import plot_morris_tornado as viz_plot_morris_tornado
-from nhra_gt.visualization.sensitivity import plot_sobol_heatmap as viz_plot_sobol_heatmap
 from nhra_gt.visualization.sensitivity import plot_sobol_indices as viz_plot_sobol_indices
+from nhra_gt.visualization.sensitivity import plot_sobol_heatmap as viz_plot_sobol_heatmap
 
 # Add src to path if needed for relative imports
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from nhra_gt import __version__
 from nhra_gt.domain.registry import EvidenceRegistry
+from nhra_gt.domain.state import ParamsJax
 from nhra_gt.domain.stability import analyze_cost_shifting_stability
 from nhra_gt.domain.validation import RecursiveResult, aggregate_metrics
 from nhra_gt.engine import Params, apply_intervention, run_hybrid, summarise_outcome
@@ -65,44 +65,60 @@ def load_scenario_library() -> dict:
 
 
 def initialize_slider_state(scenarios: dict):
-    """Initializes session state for sliders if not already present."""
+    """Initializes session state for all model parameters dynamically."""
+    # 1. Load defaults from Registry CSV
+    csv_defaults = {}
+    master_path = Path("context/04_parameter_registry.csv")
+    if master_path.exists():
+        try:
+            df_reg = pd.read_csv(master_path)
+            csv_defaults = dict(zip(df_reg["parameter"], df_reg["value"]))
+        except Exception:
+            pass
+
+    # 2. Get all fields from ParamsJax
+    # Note: ParamsJax fields represent the complete set of simulation controls.
+    param_fields = dataclasses.fields(ParamsJax)
+
+    # 3. Identify defaults from 'steady_state' scenario
     default_scenario = scenarios.get("steady_state", {})
-    default_params = default_scenario.get("params", {})
+    scenario_params = default_scenario.get("params", {})
 
-    slider_keys = [
-        "nominal_cth_share_target",
-        "nep_annual_growth",
-        "bed_capacity_index",
-        "discharge_delay_base",
-        "political_salience",
-        "audit_pressure",
-        "rurality_weight",
-        "cost_shifting_intensity",
-        "signal_lag_months",
-        "claims_lag_months",
-        "use_sequential_bargaining",
-    ]
-
-    for key in slider_keys:
+    for field in param_fields:
+        key = field.name
         if key not in st.session_state:
-            # Use value from steady_state if available, otherwise hardcoded defaults
-            val = default_params.get(key)
+            # Priority: Scenario > CSV Registry > Dataclass Default
+            val = scenario_params.get(key)
             if val is None:
-                # Fallback defaults
-                defaults = {
-                    "nominal_cth_share_target": 0.45,
-                    "nep_annual_growth": 0.03,
-                    "bed_capacity_index": 1.0,
-                    "discharge_delay_base": 1.0,
-                    "political_salience": 0.30,
-                    "audit_pressure": 0.50,
-                    "rurality_weight": 0.35,
-                    "cost_shifting_intensity": 0.35,
-                    "signal_lag_months": 1,
-                    "claims_lag_months": 3,
-                    "use_sequential_bargaining": False,
-                }
-                val = defaults.get(key, 0.0)
+                val = csv_defaults.get(key)
+            if val is None:
+                # Handle flax.struct.field or dataclasses.field defaults
+                if not isinstance(field.default, dataclasses._MISSING_TYPE):
+                    val = field.default
+                elif not isinstance(field.default_factory, dataclasses._MISSING_TYPE):
+                    val = field.default_factory()
+                else:
+                    val = 0.0
+
+            # Type conversion for CSV strings
+            try:
+                if isinstance(val, str):
+                    if val.lower() == "true":
+                        val = True
+                    elif val.lower() == "false":
+                        val = False
+                    elif val.lower() == "none":
+                        val = None
+                    else:
+                        try:
+                            val = float(val)
+                            if val.is_integer():
+                                val = int(val)
+                        except ValueError:
+                            pass
+            except Exception:
+                pass
+
             st.session_state[key] = val
 
 
@@ -595,19 +611,13 @@ def main() -> None:
             st.rerun()
 
     # Strategic Scenario Analysis
-    p_game = Params(
-        nominal_cth_share_target=nominal_share,
-        nep_annual_growth=nep_growth,
-        bed_capacity_index=bed_capacity,
-        discharge_delay_base=discharge_delay,
-        political_salience=political_salience,
-        audit_pressure=audit_pressure,
-        rurality_weight=rurality_weight,
-        cost_shifting_intensity=cost_shifting,
-        signal_lag_months=signal_lag,
-        claims_lag_months=claims_lag,
-        use_sequential_bargaining=use_sequential,
-    )
+    # Dynamically build parameters from session state to ensure all registry 
+    # promotions are captured.
+    param_keys = {f.name for f in dataclasses.fields(ParamsJax)}
+    overrides_final = {k: v for k, v in st.session_state.items() if k in param_keys}
+    
+    p_game = Params(**overrides_final)
+    
     traj_game, _ = cached_run_model(p_game, years, n_mc=st.session_state.n_mc, overrides=overrides)
     summary_game = summarise_outcome(traj_game)
 
