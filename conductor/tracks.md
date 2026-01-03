@@ -135,10 +135,10 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [x] Track: Dashboard & Engine Integration Audit
 *Link: [./conductor/archive/dashboard_integration_audit_20260102/](./conductor/archive/dashboard_integration_audit_20260102/)*
 
-## [~] Track: Dashboard UI Finalization
-*Link: [./conductor/tracks/dashboard_ui_finalization_20260102/](./conductor/tracks/dashboard_ui_finalization_20260102/)*
+## [x] Track: Dashboard UI Finalization
+*Link: [./conductor/archive/dashboard_ui_finalization_20260102/](./conductor/archive/dashboard_ui_finalization_20260102/)*
 
-## [ ] Track: Evidence Manager Backend Integration
+## [~] Track: Evidence Manager Backend Integration
 *Link: [./conductor/tracks/evidence_manager_backend_20260102/](./conductor/tracks/evidence_manager_backend_20260102/)*
 
 ## [ ] Track: Configuration Hygiene
