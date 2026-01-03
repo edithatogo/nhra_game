@@ -1,0 +1,14 @@
+graph LR
+    subgraph "The Discharge Game"
+        Acute["Hospital (Acute)"]
+        Aged["Downstream (Aged/NDIS)"]
+
+        Acute -- "Push hard?" --> Clash
+        Aged -- "Block / Delay?" --> Clash
+
+        Clash["Coordination Failure"]
+    end
+
+    Acute -- "Coordinate" --- Aged
+    Gridlock["Equilibrium: GRIDLOCK"]
+    Clash -.-> Gridlock
