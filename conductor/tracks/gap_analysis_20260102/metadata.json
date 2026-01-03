@@ -1,8 +1,0 @@
-{
-  "track_id": "gap_analysis_20260102",
-  "type": "chore",
-  "status": "new",
-  "created_at": "2026-01-02T00:00:00Z",
-  "updated_at": "2026-01-02T00:00:00Z",
-  "description": "Undertake a gap analysis between the two papers (Mapping and Parameterising) and the current repo, including the Streamlit dashboard, to ensure all artifacts match the 'maximal' feature set."
-}
