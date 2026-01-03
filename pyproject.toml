@@ -38,6 +38,7 @@ dependencies = [
     "graphviz>=0.21",
     "jax>=0.4",
     "jaxlib>=0.4",
+    "jaxopt>=0.8",
     "flax>=0.8",
     "jaxtyping>=0.2",
     "spacy>=3.7",
@@ -57,6 +58,7 @@ packages = [
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.4"
+pytest-benchmark = "*"
 hypothesis = ">=6.100"
 hypothesis-auto = "*"
 icontract = "*"
