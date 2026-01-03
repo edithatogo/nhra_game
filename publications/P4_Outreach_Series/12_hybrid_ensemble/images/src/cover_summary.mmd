@@ -1,0 +1,14 @@
+graph TD
+    subgraph "Hybrid Ensemble"
+        Up["Upstream: Cost Shifting"]
+        Mid["Midstream: Competition"]
+        Down["Downstream: Bed Block"]
+        Pol["Overlay: Electoral Cycle"]
+
+        Up --> Mid
+        Mid --> Down
+        Pol -.-> Up & Mid & Down
+
+        System["Outcome: SYSTEMIC DRAG"]
+        Down --> System
+    end
