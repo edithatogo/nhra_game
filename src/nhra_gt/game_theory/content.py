@@ -2,6 +2,7 @@ from nhra_gt.game_theory.registry import GameDefinition, GameRegistry
 
 
 def get_populated_registry() -> GameRegistry:
+    # Trigger redeployment for matrix fix
     registry = GameRegistry()
 
     definition_game = GameDefinition(
