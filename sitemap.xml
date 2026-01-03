@@ -141,6 +141,10 @@
          <lastmod>2026-01-03</lastmod>
     </url>
     <url>
+         <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/dashboard/</loc>
+         <lastmod>2026-01-03</lastmod>
+    </url>
+    <url>
          <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/domain/</loc>
          <lastmod>2026-01-03</lastmod>
     </url>
@@ -221,6 +225,10 @@
          <lastmod>2026-01-03</lastmod>
     </url>
     <url>
+         <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/dashboard/schema/</loc>
+         <lastmod>2026-01-03</lastmod>
+    </url>
+    <url>
          <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/domain/abs_api/</loc>
          <lastmod>2026-01-03</lastmod>
     </url>
@@ -242,6 +250,10 @@
     </url>
     <url>
          <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/domain/ihacpa_api/</loc>
+         <lastmod>2026-01-03</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/domain/params_generated/</loc>
          <lastmod>2026-01-03</lastmod>
     </url>
     <url>
@@ -298,6 +310,10 @@
     </url>
     <url>
          <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/subgames/queuing/</loc>
+         <lastmod>2026-01-03</lastmod>
+    </url>
+    <url>
+         <loc>https://edithatogo.github.io/nhra_game/reference/api/nhra_gt/subgames/sequential/</loc>
          <lastmod>2026-01-03</lastmod>
     </url>
     <url>
