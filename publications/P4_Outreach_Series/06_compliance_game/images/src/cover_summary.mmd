@@ -1,0 +1,14 @@
+graph LR
+    subgraph "The Compliance Game"
+        Admin["Administrator (Audit)"]
+        Prov["Provider (Code)"]
+
+        Admin -- "Tight Audit?" --> Cycle
+        Prov -- "Upcode / Game?" --> Cycle
+
+        Cycle["Cat & Mouse (Mixed Strategy)"]
+    end
+
+    Admin -- "Automate" --- Prov
+    Fix["Equilibrium: REDUCE COST"]
+    Cycle -.-> Fix
