@@ -1,0 +1,14 @@
+graph LR
+    subgraph "The Governance Game"
+        MOH["Ministry (MOH)"]
+        LHN["Hospital (LHN)"]
+
+        MOH -- "Control Tightly?" --> Tension
+        LHN -- "Fight for Autonomy?" --> Tension
+
+        Tension["Friction & Agency Loss"]
+    end
+
+    MOH -- "Support" --- LHN
+    Equil["Equilibrium: SEPARATE"]
+    Tension -.-> Equil
