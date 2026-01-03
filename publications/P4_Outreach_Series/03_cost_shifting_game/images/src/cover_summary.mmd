@@ -1,0 +1,14 @@
+graph LR
+    subgraph "The Cost Shifting Game"
+        State["Hospital (State)"]
+        Federal["Primary Care (Federal)"]
+
+        State -- "Discharge early" --> Federal
+        Federal -- "GP access drop" --> State
+
+        Fail["System Failure / Low Cost"]
+    end
+
+    State -- "Invest" --- Federal
+    Nash["Nash Equilibrium: SHIFT"]
+    Fail -.-> Nash
