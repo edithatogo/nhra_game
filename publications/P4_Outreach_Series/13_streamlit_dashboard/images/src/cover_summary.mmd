@@ -1,0 +1,12 @@
+graph LR
+    subgraph "NHRA Dashboard"
+        User["User (You)"]
+        Inputs["Levers (Policy)"]
+        Engine["Game Engine"]
+        Outputs["Outcomes (Charts)"]
+
+        User -- "Adjust" --> Inputs
+        Inputs -- "Simulate" --> Engine
+        Engine -- "Visualize" --> Outputs
+        Outputs -- "Insight" --> User
+    end
