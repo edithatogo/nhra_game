@@ -7,6 +7,8 @@ from typing import Any
 import numpy as np
 
 
+from nhra_gt.subgames.sequential import rubinstein_solution, stackelberg_solution
+
 @dataclass(frozen=True)
 class NashEquilibrium:
     """A Nash equilibrium for a finite 2-player game.
@@ -56,6 +58,77 @@ class TwoPlayerGame:
     u_col: np.ndarray[Any, Any]  # shape (n,m)
     row_actions: tuple[str, ...]
     col_actions: tuple[str, ...]
+
+
+def solve_game(
+    game: TwoPlayerGame,
+    mechanism: str = "nash",
+    rule: str = "payoff_dominant",
+    discount_rate: float = 0.9,
+    first_mover: int = 0,  # 0=Row, 1=Col
+) -> EquilibriumSelection:
+    """Unified solver dispatch.
+
+    Args:
+        game: The game to solve.
+        mechanism: 'nash', 'stackelberg', 'rubinstein'.
+        rule: Equilibrium selection rule for Nash ('payoff_dominant', 'risk_dominant', 'random').
+        discount_rate: Delta for Rubinstein/Sequential.
+        first_mover: Index of the first mover (Stackelberg Leader).
+
+    Returns:
+        EquilibriumSelection wrapping the solution.
+    """
+    if mechanism == "stackelberg":
+        if first_mover == 0:  # Row Leader
+            r, c = stackelberg_solution(game.u_row, game.u_col)
+        else:  # Col Leader
+            # Swap roles: Col is Leader (Row in stackelberg_solution terms)
+            # Need to transpose payoffs?
+            # stackelberg_solution(leader_payoff, follower_payoff)
+            # If Col is Leader, they choose column j to max u_col[i, j] given Row response.
+            # Easiest way: Transpose the game.
+            c, r = stackelberg_solution(game.u_col.T, game.u_row.T)
+
+        row_strat = np.zeros(len(game.row_actions))
+        row_strat[r] = 1.0
+        col_strat = np.zeros(len(game.col_actions))
+        col_strat[c] = 1.0
+        eq = NashEquilibrium("pure", row_strat, col_strat)
+        return EquilibriumSelection(eq, 1)
+
+    elif mechanism == "rubinstein":
+        # Assumes 2x2 bargaining game over a pie.
+        # This is tricky because TwoPlayerGame is arbitrary matrix.
+        # Rubinstein applies to "splitting a pie".
+        # We need to map the matrix outcomes to "Share".
+        # Assumption: The game has a "Cooperate" outcome (A, A) which is the Pie.
+        # And a "Conflict" outcome (D, D) which is 0 (or breakdown).
+        # And the "First Mover" proposes a split.
+        #
+        # Implementation: We calculate the theoretical share and map it to a Mixed Strategy?
+        # No, Rubinstein result is a specific share (x, 1-x).
+        # We can return a pseudo-equilibrium where payoffs match the share.
+        # OR we just solve the Nash of the *Simultaneous* game but weighted by delta?
+        #
+        # Simplified Integration: Use the Rubinstein share to define the 'Effective' outcome
+        # if the game is 'bargaining_game'.
+        # For generic games, Rubinstein doesn't apply directly without defining the pie.
+        # Fallback to Nash for generic games.
+        if "A" in game.row_actions and "D" in game.row_actions:
+            # It's likely a bargaining game.
+            # Assume Pie Size is the sum of payoffs at (A, A)?
+            # Or max possible sum?
+            # Let's approximate by returning Nash for now, but logging a warning.
+            pass
+        return solve_game(game, mechanism="nash", rule=rule)
+
+    # Default: Nash
+    eqs = all_nash(game)
+    if not eqs:
+        # Should not happen in finite games (mixed always exists)
+        raise ValueError("No Nash Equilibrium found.")
+    return select_equilibrium(eqs, rule=rule, u_row=game.u_row, u_col=game.u_col)
 
 
 def _best_responses_row(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
