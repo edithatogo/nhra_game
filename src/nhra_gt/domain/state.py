@@ -114,6 +114,7 @@ class ParamsJax:
     tau: float = 0.25
     bargaining_cost: float = 0.12
     political_salience: float = 0.30
+    discount_rate: float = 0.9  # Patience factor for sequential games
 
     # Patient choice / Queuing Game
     gp_out_of_pocket: float = 40.0
@@ -121,6 +122,7 @@ class ParamsJax:
     patient_time_value_hour: float = 25.0
 
     use_equilibrium_bargaining: bool = False
+    use_sequential_bargaining: bool = False # Enable Rubinstein/Stackelberg logic
     use_quantal_response: bool = False
     qre_lambda: float = 4.0
     use_burden_feedback: bool = False
