@@ -138,14 +138,14 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [x] Track: Dashboard UI Finalization
 *Link: [./conductor/archive/dashboard_ui_finalization_20260102/](./conductor/archive/dashboard_ui_finalization_20260102/)*
 
-## [~] Track: Evidence Manager Backend Integration
-*Link: [./conductor/tracks/evidence_manager_backend_20260102/](./conductor/tracks/evidence_manager_backend_20260102/)*
+## [x] Track: Evidence Manager Backend Integration
+*Link: [./conductor/archive/evidence_manager_backend_20260102/](./conductor/archive/evidence_manager_backend_20260102/)*
 
-## [ ] Track: Configuration Hygiene
-*Link: [./conductor/tracks/config_hygiene_20260102/](./conductor/tracks/config_hygiene_20260102/)*
+## [x] Track: Configuration Hygiene
+*Link: [./conductor/archive/config_hygiene_20260102/](./conductor/archive/config_hygiene_20260102/)*
 
-## [ ] Track: Unified Parameter Schema
-*Link: [./conductor/tracks/unified_schema_20260102/](./conductor/tracks/unified_schema_20260102/)*
+## [x] Track: Unified Parameter Schema
+*Link: [./conductor/archive/unified_schema_20260102/](./conductor/archive/unified_schema_20260102/)*
 
-## [ ] Track: Quality Assurance & Performance
-*Link: [./conductor/tracks/qa_performance_20260102/](./conductor/tracks/qa_performance_20260102/)*
+## [x] Track: Quality Assurance & Performance
+*Link: [./conductor/archive/qa_performance_20260102/](./conductor/archive/qa_performance_20260102/)*
