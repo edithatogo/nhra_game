@@ -272,3 +272,63 @@ def qre_3player_jax(
     )
 
     return pf1, pf2, pf3, res_final
+
+
+# ----------------------------
+# Sequential / Extensive Form Solvers
+# ----------------------------
+
+
+@beartype
+def rubinstein_jax(
+    pie_size: float | Float[Array, ""],
+    delta_1: float | Float[Array, ""],
+    delta_2: float | Float[Array, ""],
+) -> Float[Array, ""]:
+    """
+    JAX implementation of Rubinstein bargaining share for Player 1 (First Mover).
+    Share = (1 - delta_2) / (1 - delta_1 * delta_2).
+    """
+    # Clip deltas to avoid division by zero or singularity at 1.0
+    d1 = jnp.clip(delta_1, 0.0, 0.9999)
+    d2 = jnp.clip(delta_2, 0.0, 0.9999)
+    
+    share = (1.0 - d2) / (1.0 - d1 * d2)
+    return pie_size * share
+
+
+@beartype
+def stackelberg_jax(
+    u_leader: Float[Array, "m n"],
+    u_follower: Float[Array, "m n"]
+) -> tuple[Float[Array, "m"], Float[Array, "n"]]:
+    """
+    JAX implementation of Stackelberg Equilibrium (Row=Leader).
+    Returns one-hot strategies.
+    """
+    m, n = u_leader.shape
+    
+    # 1. Follower Best Response for each Row
+    # follower_payoff[i, :] -> max over columns -> index j*(i)
+    # best_col_indices[i] = argmax_j u_follower[i, j]
+    follower_best_vals = jnp.max(u_follower, axis=1, keepdims=True)
+    is_best_response = u_follower == follower_best_vals # (m, n) mask
+    
+    # 2. Leader Payoff given Follower BR
+    # Leader utility if they pick row i = u_leader[i, j*(i)]
+    # We filter u_leader by the is_best_response mask.
+    # If multiple BRs, we assume optimistic or pessimistic?
+    # Standard: Leader anticipates one of them. Optimistic usually.
+    # Mask u_leader, set non-BR to -inf
+    leader_outcomes = jnp.where(is_best_response, u_leader, -jnp.inf)
+    
+    # 3. Leader Maximization
+    # Max over the whole matrix (since only valid (i, j*(i)) pairs are not -inf)
+    flat_idx = jnp.argmax(leader_outcomes.flatten())
+    row_idx = flat_idx // n
+    col_idx = flat_idx % n
+    
+    p = jnp.zeros(m).at[row_idx].set(1.0)
+    q = jnp.zeros(n).at[col_idx].set(1.0)
+    
+    return p, q
