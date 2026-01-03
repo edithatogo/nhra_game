@@ -1913,86 +1913,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#nhra_gt.domain.stability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        stability
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#nhra_gt.domain.stability-classes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Classes
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#nhra_gt.domain.stability-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Functions
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Functions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nhra_gt.domain.stability.analyze_cost_shifting_stability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        analyze_cost_shifting_stability
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nhra_gt.domain.stability.calculate_hysteresis_area" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        calculate_hysteresis_area
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nhra_gt.domain.stability.calculate_recovery_metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        calculate_recovery_metrics
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -2009,241 +1929,34 @@
 
 
 <h1 id="nhra_gtdomainstability"><code>nhra_gt.domain.stability</code><a class="headerlink" href="#nhra_gtdomainstability" title="Permanent link">&para;</a></h1>
-
-
-<div class="doc doc-object doc-module">
-
-
-
-<a id="nhra_gt.domain.stability"></a>
-    <div class="doc doc-contents first">
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-children">
-
-
-
-
-
-
-
-<h2 id="nhra_gt.domain.stability-classes">Classes<a href="#nhra_gt.domain.stability-classes" class="headerlink" title="Permanent link">&para;</a></h2>
-<h2 id="nhra_gt.domain.stability-functions">Functions<a href="#nhra_gt.domain.stability-functions" class="headerlink" title="Permanent link">&para;</a></h2>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="nhra_gt.domain.stability.analyze_cost_shifting_stability" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">analyze_cost_shifting_stability</span><span class="p">(</span><span class="n">intensities</span><span class="p">,</span> <span class="n">pressures</span><span class="p">,</span> <span class="n">efficiency_gap</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span></code>
-
-<a href="#nhra_gt.domain.stability.analyze_cost_shifting_stability" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Performs a grid search to map stability regions of the Cost Shifting game.</p>
-
-
-            <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/nhra_gt/domain/stability.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-12">12</a></span>
-<span class="normal"><a href="#__codelineno-0-13">13</a></span>
-<span class="normal"><a href="#__codelineno-0-14">14</a></span>
-<span class="normal"><a href="#__codelineno-0-15">15</a></span>
-<span class="normal"><a href="#__codelineno-0-16">16</a></span>
-<span class="normal"><a href="#__codelineno-0-17">17</a></span>
-<span class="normal"><a href="#__codelineno-0-18">18</a></span>
-<span class="normal"><a href="#__codelineno-0-19">19</a></span>
-<span class="normal"><a href="#__codelineno-0-20">20</a></span>
-<span class="normal"><a href="#__codelineno-0-21">21</a></span>
-<span class="normal"><a href="#__codelineno-0-22">22</a></span>
-<span class="normal"><a href="#__codelineno-0-23">23</a></span>
-<span class="normal"><a href="#__codelineno-0-24">24</a></span>
-<span class="normal"><a href="#__codelineno-0-25">25</a></span>
-<span class="normal"><a href="#__codelineno-0-26">26</a></span>
-<span class="normal"><a href="#__codelineno-0-27">27</a></span>
-<span class="normal"><a href="#__codelineno-0-28">28</a></span>
-<span class="normal"><a href="#__codelineno-0-29">29</a></span>
-<span class="normal"><a href="#__codelineno-0-30">30</a></span>
-<span class="normal"><a href="#__codelineno-0-31">31</a></span>
-<span class="normal"><a href="#__codelineno-0-32">32</a></span>
-<span class="normal"><a href="#__codelineno-0-33">33</a></span>
-<span class="normal"><a href="#__codelineno-0-34">34</a></span>
-<span class="normal"><a href="#__codelineno-0-35">35</a></span>
-<span class="normal"><a href="#__codelineno-0-36">36</a></span>
-<span class="normal"><a href="#__codelineno-0-37">37</a></span>
-<span class="normal"><a href="#__codelineno-0-38">38</a></span>
-<span class="normal"><a href="#__codelineno-0-39">39</a></span>
-<span class="normal"><a href="#__codelineno-0-40">40</a></span>
-<span class="normal"><a href="#__codelineno-0-41">41</a></span>
-<span class="normal"><a href="#__codelineno-0-42">42</a></span>
-<span class="normal"><a href="#__codelineno-0-43">43</a></span>
-<span class="normal"><a href="#__codelineno-0-44">44</a></span>
-<span class="normal"><a href="#__codelineno-0-45">45</a></span>
-<span class="normal"><a href="#__codelineno-0-46">46</a></span>
-<span class="normal"><a href="#__codelineno-0-47">47</a></span>
-<span class="normal"><a href="#__codelineno-0-48">48</a></span>
-<span class="normal"><a href="#__codelineno-0-49">49</a></span>
-<span class="normal"><a href="#__codelineno-0-50">50</a></span>
-<span class="normal"><a href="#__codelineno-0-51">51</a></span>
-<span class="normal"><a href="#__codelineno-0-52">52</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">def</span><span class="w"> </span><span class="nf">analyze_cost_shifting_stability</span><span class="p">(</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a>    <span class="n">intensities</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">pressures</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">efficiency_gap</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.20</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Performs a grid search to map stability regions of the Cost Shifting game.&quot;&quot;&quot;</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a>    <span class="k">for</span> <span class="n">csi</span> <span class="ow">in</span> <span class="n">intensities</span><span class="p">:</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a>        <span class="k">for</span> <span class="n">pr</span> <span class="ow">in</span> <span class="n">pressures</span><span class="p">:</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a>            <span class="n">gp</span> <span class="o">=</span> <span class="n">GameParams</span><span class="p">(</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a>                <span class="n">pressure</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">pr</span><span class="p">),</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a>                <span class="n">efficiency_gap</span><span class="o">=</span><span class="n">efficiency_gap</span><span class="p">,</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a>                <span class="n">discharge_delay</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a>                <span class="n">political_salience</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a>                <span class="n">audit_pressure</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a>                <span class="n">cost_shifting_intensity</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">csi</span><span class="p">),</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a>                <span class="n">political_capital</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a>            <span class="p">)</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a>            <span class="n">game</span> <span class="o">=</span> <span class="n">cost_shifting_game</span><span class="p">(</span><span class="n">gp</span><span class="p">)</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a>            <span class="n">eqs</span> <span class="o">=</span> <span class="n">all_nash</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a>            <span class="n">sel</span> <span class="o">=</span> <span class="n">select_equilibrium</span><span class="p">(</span>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a>                <span class="n">eqs</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;payoff_dominant&quot;</span><span class="p">,</span> <span class="n">u_row</span><span class="o">=</span><span class="n">game</span><span class="o">.</span><span class="n">u_row</span><span class="p">,</span> <span class="n">u_col</span><span class="o">=</span><span class="n">game</span><span class="o">.</span><span class="n">u_col</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a>            <span class="p">)</span>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a>            <span class="c1"># Determine effective strategy</span>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a>            <span class="n">row_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">sel</span><span class="o">.</span><span class="n">row</span><span class="p">))</span>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a>            <span class="n">col_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">sel</span><span class="o">.</span><span class="n">col</span><span class="p">))</span>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a>            <span class="n">row_strat</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="n">row_actions</span><span class="p">[</span><span class="n">row_idx</span><span class="p">]</span>
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a>            <span class="n">col_strat</span> <span class="o">=</span> <span class="n">game</span><span class="o">.</span><span class="n">col_actions</span><span class="p">[</span><span class="n">col_idx</span><span class="p">]</span>
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a>
-</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a>            <span class="n">effective_strat</span> <span class="o">=</span> <span class="s2">&quot;S&quot;</span> <span class="k">if</span> <span class="p">(</span><span class="n">row_strat</span> <span class="o">==</span> <span class="s2">&quot;S&quot;</span> <span class="ow">or</span> <span class="n">col_strat</span> <span class="o">==</span> <span class="s2">&quot;S&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;I&quot;</span>
-</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a>
-</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a>            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a>                <span class="p">{</span>
-</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46"></a>                    <span class="s2">&quot;cost_shifting_intensity&quot;</span><span class="p">:</span> <span class="n">csi</span><span class="p">,</span>
-</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a>                    <span class="s2">&quot;pressure&quot;</span><span class="p">:</span> <span class="n">pr</span><span class="p">,</span>
-</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a>                    <span class="s2">&quot;outcome&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">effective_strat</span> <span class="o">==</span> <span class="s2">&quot;S&quot;</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a>                <span class="p">}</span>
-</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a>            <span class="p">)</span>
-</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a>
-</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52"></a>    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-</span></code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="nhra_gt.domain.stability.calculate_hysteresis_area" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">calculate_hysteresis_area</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></code>
-
-<a href="#nhra_gt.domain.stability.calculate_hysteresis_area" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Calculates the area of the hysteresis loop in phase-space using the Shoelace formula.</p>
-<p>A larger area indicates greater system lag or inertia in responding to demand shocks.</p>
-
-
-            <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/nhra_gt/domain/stability.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-55">55</a></span>
-<span class="normal"><a href="#__codelineno-0-56">56</a></span>
-<span class="normal"><a href="#__codelineno-0-57">57</a></span>
-<span class="normal"><a href="#__codelineno-0-58">58</a></span>
-<span class="normal"><a href="#__codelineno-0-59">59</a></span>
-<span class="normal"><a href="#__codelineno-0-60">60</a></span>
-<span class="normal"><a href="#__codelineno-0-61">61</a></span>
-<span class="normal"><a href="#__codelineno-0-62">62</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="k">def</span><span class="w"> </span><span class="nf">calculate_hysteresis_area</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the area of the hysteresis loop in phase-space using the Shoelace formula.</span>
-</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a>
-</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a><span class="sd">    A larger area indicates greater system lag or inertia in responding to demand shocks.</span>
-</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a>        <span class="k">return</span> <span class="mf">0.0</span>
-</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a>    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
-</span></code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="nhra_gt.domain.stability.calculate_recovery_metrics" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">calculate_recovery_metrics</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span></code>
-
-<a href="#nhra_gt.domain.stability.calculate_recovery_metrics" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Calculates system resilience metrics based on mode transitions.</p>
-
-
-            <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/nhra_gt/domain/stability.py</code></summary>
-              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-65">65</a></span>
-<span class="normal"><a href="#__codelineno-0-66">66</a></span>
-<span class="normal"><a href="#__codelineno-0-67">67</a></span>
-<span class="normal"><a href="#__codelineno-0-68">68</a></span>
-<span class="normal"><a href="#__codelineno-0-69">69</a></span>
-<span class="normal"><a href="#__codelineno-0-70">70</a></span>
-<span class="normal"><a href="#__codelineno-0-71">71</a></span>
-<span class="normal"><a href="#__codelineno-0-72">72</a></span>
-<span class="normal"><a href="#__codelineno-0-73">73</a></span>
-<span class="normal"><a href="#__codelineno-0-74">74</a></span>
-<span class="normal"><a href="#__codelineno-0-75">75</a></span>
-<span class="normal"><a href="#__codelineno-0-76">76</a></span>
-<span class="normal"><a href="#__codelineno-0-77">77</a></span>
-<span class="normal"><a href="#__codelineno-0-78">78</a></span>
-<span class="normal"><a href="#__codelineno-0-79">79</a></span>
-<span class="normal"><a href="#__codelineno-0-80">80</a></span>
-<span class="normal"><a href="#__codelineno-0-81">81</a></span>
-<span class="normal"><a href="#__codelineno-0-82">82</a></span>
-<span class="normal"><a href="#__codelineno-0-83">83</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a><span class="k">def</span><span class="w"> </span><span class="nf">calculate_recovery_metrics</span><span class="p">(</span><span class="n">modes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates system resilience metrics based on mode transitions.&quot;&quot;&quot;</span>
-</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">modes</span><span class="p">:</span>
-</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;recovery_time&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;crisis_count&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;resilience_index&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
-</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a>
-</span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70"></a>    <span class="n">recovery_time</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">modes</span> <span class="k">if</span> <span class="n">m</span> <span class="o">!=</span> <span class="s2">&quot;normal&quot;</span><span class="p">)</span>
-</span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71"></a>    <span class="n">crisis_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
-</span><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72"></a>        <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">))</span> <span class="k">if</span> <span class="n">modes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;crisis&quot;</span> <span class="ow">and</span> <span class="n">modes</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;crisis&quot;</span>
-</span><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73"></a>    <span class="p">)</span>
-</span><span id="__span-0-74"><a id="__codelineno-0-74" name="__codelineno-0-74"></a>    <span class="k">if</span> <span class="n">modes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;crisis&quot;</span><span class="p">:</span>
-</span><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75"></a>        <span class="n">crisis_count</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="__span-0-76"><a id="__codelineno-0-76" name="__codelineno-0-76"></a>
-</span><span id="__span-0-77"><a id="__codelineno-0-77" name="__codelineno-0-77"></a>    <span class="n">resilience_index</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">recovery_time</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">modes</span><span class="p">))</span>
-</span><span id="__span-0-78"><a id="__codelineno-0-78" name="__codelineno-0-78"></a>
-</span><span id="__span-0-79"><a id="__codelineno-0-79" name="__codelineno-0-79"></a>    <span class="k">return</span> <span class="p">{</span>
-</span><span id="__span-0-80"><a id="__codelineno-0-80" name="__codelineno-0-80"></a>        <span class="s2">&quot;recovery_time&quot;</span><span class="p">:</span> <span class="n">recovery_time</span><span class="p">,</span>
-</span><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81"></a>        <span class="s2">&quot;crisis_count&quot;</span><span class="p">:</span> <span class="n">crisis_count</span><span class="p">,</span>
-</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82"></a>        <span class="s2">&quot;resilience_index&quot;</span><span class="p">:</span> <span class="n">resilience_index</span><span class="p">,</span>
-</span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83"></a>    <span class="p">}</span>
-</span></code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-
-
-  </div>
-
-    </div>
-
+<div class="admonition warning">
+<p class="admonition-title">Module not importable during docs build</p>
+<ul>
+<li>Error: <code>ModuleNotFoundError: No module named 'nhra_gt.subgames.sequential'</code></li>
+</ul>
+<p><details>
+<summary>Traceback</summary></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Traceback (most recent call last):
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  File &quot;/home/runner/work/nhra_game/nhra_game/docs_mkdocs/gen_api_reference.py&quot;, line 24, in _try_import
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    importlib.import_module(name)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  File &quot;/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/importlib/__init__.py&quot;, line 90, in import_module
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    return _bootstrap._gcd_import(name[level:], package, level)
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 1387, in _gcd_import
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 1360, in _find_and_load
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 1331, in _find_and_load_unlocked
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 935, in _load_unlocked
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 999, in exec_module
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  File &quot;/home/runner/work/nhra_game/nhra_game/src/nhra_gt/domain/stability.py&quot;, line 8, in &lt;module&gt;
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    from nhra_gt.subgames.games import GameParams, cost_shifting_game
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>  File &quot;/home/runner/work/nhra_game/nhra_game/src/nhra_gt/subgames/games.py&quot;, line 7, in &lt;module&gt;
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    from nhra_gt.subgames.nash import TwoPlayerGame
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>  File &quot;/home/runner/work/nhra_game/nhra_game/src/nhra_gt/subgames/nash.py&quot;, line 10, in &lt;module&gt;
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    from nhra_gt.subgames.sequential import rubinstein_solution, stackelberg_solution
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>ModuleNotFoundError: No module named &#39;nhra_gt.subgames.sequential&#39;
+</span></code></pre></div>
+</details>
 </div>
 
 
@@ -2267,7 +1980,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 2, 2026 22:28:02 UTC"><span class="timeago" datetime="2026-01-02T22:28:02+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 2, 2026 22:28:02 UTC">2026-01-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 3, 2026 05:40:34 UTC"><span class="timeago" datetime="2026-01-03T05:40:34+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 3, 2026 05:40:34 UTC">2026-01-03</span>
   </span>
 
     
@@ -2277,7 +1990,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 2, 2026 22:28:02 UTC"><span class="timeago" datetime="2026-01-02T22:28:02+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 2, 2026 22:28:02 UTC">2026-01-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 3, 2026 05:40:34 UTC"><span class="timeago" datetime="2026-01-03T05:40:34+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 3, 2026 05:40:34 UTC">2026-01-03</span>
   </span>
 
     
