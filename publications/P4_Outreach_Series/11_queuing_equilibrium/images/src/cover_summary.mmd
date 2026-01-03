@@ -1,0 +1,15 @@
+graph LR
+    subgraph "Queuing Equilibrium"
+        Patient["Patient"]
+        GP["GP (Cost $, Wait Days)"]
+        ED["ED (Free, Wait Hours)"]
+
+        Patient -- "Choice?" --> GP
+        Patient -- "Choice?" --> ED
+
+        ED -- "Wait Time Feedback" --> Patient
+    end
+
+    GP -- "Improve Access" --- ED
+    Fix["Equilibrium: STABLE WAIT"]
+    ED -.-> Fix
