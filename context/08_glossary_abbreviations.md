@@ -30,4 +30,5 @@ This table maps the mathematical symbols used in the manuscripts to the variable
 | $\beta$ (Beta) | `kpi_satisfaction` / `ramping_penalty` | Weight placed on reputation or KPI satisfaction (often related to tipping points). |
 | $\theta$ (Theta) | `coding_intensity` | The level of upcoding effort exerted by the LHN. |
 | $P_{audit}$ | `audit_pressure` | The probability or intensity of an audit by the regulator. |
+| $\delta$ (Delta) | `discount_rate` | Factor used to discount future payoffs in sequential or multi-period games. |
 | $C_{adjust}$ | `adjustment_costs` | Cost associated with changing capacity or service levels (frictional cost). |

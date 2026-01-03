@@ -1,21 +1,23 @@
 {
-  "summary": "LHN Variance is Partially Mocked. Primary metrics (Pressure/NWAU) use real data if snapshot exists, but 'Type' and 'Block Revenue' are always mocked.",
-  "findings": [
-    {
-      "file": "scripts/dashboard.py",
-      "line": 1072,
-      "finding": "Uses traj_game.attrs['lhn_snapshot'] if available."
-    },
-    {
-      "file": "scripts/dashboard.py",
-      "line": 1076,
-      "finding": "LHN 'Type' is hardcoded random choice."
-    },
-    {
-      "file": "scripts/dashboard.py",
-      "line": 1128,
-      "finding": "'Block Revenue' is always mocked with np.random.uniform."
-    }
+  "SummaryOfFindings": "The LHN Variance integration in the dashboard is currently a hybrid of real and mocked data, leaning heavily towards 'Mocked' for secondary attributes and fallback scenarios. 1. Data Extraction: lhn_df is created at line 1072: lhn_df = traj_game.attrs['lhn_snapshot']. 2. Source Confirmation: It attempts to pull from traj_game.attrs['lhn_snapshot']. However, a comment at line 1064 ('In a real run, traj_game should ideally contain these if we updated run_hybrid') and the presence of a full fallback at line 1082 suggest that this snapshot may not be consistently populated by the simulation engine yet. 3. Mock Check: Primary Metrics (Pressure, NWAU): If the snapshot exists, these are 'Live'. If the snapshot is missing, they are 'Mocked' using np.random.normal (lines 1086-1087). Categorical Data: The 'Type' (Metro/Regional/Remote) is ALWAYS mocked using np.random.choice (line 1076), even if the primary metrics are live. Funding Streams: 'Block Revenue' is ALWAYS mocked using np.random.uniform (line 1128) based on a global parameter, as the snapshot currently only captures pressure and NWAU.",
+  "ExplorationTrace": [
+    "Located scripts/dashboard.py and searched for lhn_df, fig_lhn, and fig_stream.",
+    "Identified the logic in Tab 2_6 (Intra-State LHN Variance) starting around line 1051.",
+    "Found that lhn_df is primarily sourced from traj_game.attrs[\"lhn_snapshot\"] at line 1072.",
+    "Observed a fallback mechanism at line 1082 that uses np.random.normal to generate mock data if the attribute is missing.",
+    "Noted that even when using the snapshot, the 'Type' column is mocked using np.random.choice at line 1076.",
+    "Found that 'Block Revenue' in the 'Funding Stream Mix' plot is mocked using np.random.uniform at line 1128.",
+    "Noticed a developer comment at line 1064 suggesting that run_hybrid might not yet fully support this snapshot."
   ],
-  "recommendation": "Expand StateJax/run_simulation to include LHN-level types and block revenue in the snapshot vector."
+  "RelevantLocations": [
+    {
+      "FilePath": "scripts/dashboard.py",
+      "Reasoning": "Contains the dashboard logic for Tab 2_6 where LHN variance is visualized.",
+      "KeySymbols": [
+        "lhn_df",
+        "fig_lhn",
+        "fig_stream"
+      ]
+    }
+  ]
 }

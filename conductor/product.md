@@ -1,7 +1,7 @@
 # Initial Concept
 
 This is a project which was developed in chatgpt, and has over a dozen versions. It's supposed to be incremental development, but there might have been variations throughout. What I'm thinking is that I'll need you to setup the most recent version as a repo, initiatlising git etc. but also archiving the old copies. I'd also want you to then review all of the older versions, and ascertain whether any features have unintentionally been dropped, then develop a plan to add them back in. From there I'm keen for you to develop a roadmap to get this to be a SOTA model for the stated purpose. **Update (Dec 2025):** The repository has undergone a comprehensive structural audit, standardizing the package name to `nhra_gt` and optimizing core Nash Equilibrium solvers for 2x performance.
-**Publication Update (Dec 2025):** A comprehensive publication series has been drafted, including a qualitative mapping of the NHRA statutory text, a quantitative simulation study of strategic gaming equilibria, and a RACMA position statement for the 2025-2030 negotiations. The codebase has been consolidated into a single high-performance JAX engine, with all legacy features recovered and documented.
+**Publication Update (Jan 2026):** A comprehensive publication series has been drafted and fully synchronized with the codebase. This includes a qualitative mapping of the NHRA statutory text (P1), a quantitative simulation study (P2), and a RACMA position statement. The codebase achieves "Maximal Feature Parity," integrating advanced forensic auditing and dashboard visualizations directly into the scientific record.
 
 ---
 
@@ -37,3 +37,7 @@ To develop a State-of-the-Art (SOTA) predictive game-theory model of the Nationa
 12. **JAX-native QRE Solver:** Quantal Response Equilibrium solver for modeling bounded rationality in negotiation subgames.
 13. **Asymmetric Capacity Friction:** Functional logic for modeling non-linear lags in hospital capacity expansion versus contraction.
 14. **Persistent Compilation Cache:** High-performance disk-based caching of XLA kernels to minimize simulation latency.
+15. **Forensic Audit Module:** Real-time monitoring of "Regulator Suspicion" and "Nash Stability" to detect strategic divergence.
+16. **Intra-State Variance:** Modeling strategic heterogeneity between individual LHNs within a jurisdiction.
+17. **Sequential Bargaining Engine:** Supports extensive-form game logic (Rubinstein/Stackelberg) to model first-mover advantage and patience.
+18. **Evidence Manager:** Interactive dashboard interface for auditing, resolving, and promoting conflicting parameter evidence sources.

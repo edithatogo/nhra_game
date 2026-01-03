@@ -1,15 +1,24 @@
 {
-  "summary": "Sequential Bargaining UI is Missing. Backend logic exists in state.py and engine.py, but no UI toggle or parameter passing in dashboard.py.",
-  "findings": [
+  "SummaryOfFindings": "The Sequential Bargaining UI integration is currently Missing. 1. Exposure Check: Missing. There is no st.sidebar.toggle or selectbox in scripts/dashboard.py that allows the user to set use_sequential_bargaining. 2. Usage Check: Missing. Since the parameter is not exposed in the UI, it is not passed to the Params object used in run_hybrid. 3. Visualization: Missing/Partial. The 'Game Tree Explorer' (Tab 2_5) renders extensive form trees which are sequential by nature, but it does not toggle its behavior or labels based on the use_sequential_bargaining parameter. It appears to be a static visualization of the subgames rather than a toggle for the simulation engine's logic.",
+  "ExplorationTrace": [
+    "Searched scripts/dashboard.py for use_sequential_bargaining - No matches found.",
+    "Searched scripts/dashboard.py for run_hybrid - Found matches but no use_sequential_bargaining override.",
+    "Searched src/ for use_sequential_bargaining - Found definition in src/nhra_gt/domain/state.py and usage in src/nhra_gt/engine.py.",
+    "Examined 'Game Tree Explorer' (Tab 2_5) in scripts/dashboard.py (lines 972+) - It uses GameParams and renders extensive form trees using pygambit, but does not reference use_sequential_bargaining.",
+    "Checked Params instantiation in dashboard.py - Found p_base = Params() and p_game = Params(...) but neither includes the sequential bargaining flag."
+  ],
+  "RelevantLocations": [
     {
-      "file": "scripts/dashboard.py",
-      "finding": "No UI element (toggle/checkbox) found for use_sequential_bargaining."
+      "FilePath": "scripts/dashboard.py",
+      "Reasoning": "The target file for the audit. It lacks the required UI elements and parameter passing for sequential bargaining.",
+      "KeySymbols": []
     },
     {
-      "file": "scripts/dashboard.py",
-      "line": 835,
-      "finding": "p_game constructor does not include use_sequential_bargaining override."
+      "FilePath": "src/nhra_gt/domain/state.py",
+      "Reasoning": "Defines the parameter in the Params object, confirming it exists in the backend but is not exposed in the dashboard.",
+      "KeySymbols": [
+        "use_sequential_bargaining"
+      ]
     }
-  ],
-  "recommendation": "Add a toggle in the sidebar (Policy & Behaviour section) for Sequential Bargaining and pass it to the Params object."
+  ]
 }
