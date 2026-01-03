@@ -409,7 +409,7 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
     )
 
     def _renegotiate(jurs: JurisdictionState) -> JurisdictionState:
-        from nhra_gt.solvers_jax import discrete_nash_jax
+        from nhra_gt.solvers_jax import discrete_nash_jax, stackelberg_jax
         from nhra_gt.subgames.games_jax import GameParamsJax, renegotiation_game_jax
 
         # Aggregate params for game
@@ -424,7 +424,20 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
         )
 
         u_row, u_col = renegotiation_game_jax(gp)
-        p_row, q_col = discrete_nash_jax(u_row, u_col)
+        
+        # Use sequential solver if configured
+        def solve_nash():
+            return discrete_nash_jax(u_row, u_col)
+            
+        def solve_stackelberg():
+            # Assume Commonwealth (Row) is Leader
+            return stackelberg_jax(u_row, u_col)
+            
+        p_row, q_col = lax.cond(
+            p.use_sequential_bargaining,
+            solve_stackelberg,
+            solve_nash
+        )
 
         cth_concede = p_row[0] > 0.5
         state_hold_up = q_col[1] > 0.5
@@ -681,6 +694,8 @@ def run_simulation(
         "reported_occupancy": _to_np(traj_host.reported_occupancy),
         "reported_within4": _to_np(traj_host.reported_within4),
         "prob_ed": _to_np(traj_host.prob_ed),
+        "lhn_pressure": _to_np(traj_host.lhn_pressure),
+        "lhn_nwau": _to_np(traj_host.lhn_nwau),
     }
 
 
@@ -918,6 +933,24 @@ def run_hybrid(
         df.groupby("year")["system_mode"].agg(lambda s: s.value_counts().index[0]).reset_index()
     )
     agg_yearly = agg_yearly.merge(mode_year, on="year", how="left")
+
+    # Capture LHN snapshot (Final step, all MC samples)
+    # Shape: [n_mc, num_months, n_lhns]
+    try:
+        n_lhns_found = all_trajectories.lhn_pressure.shape[2]
+        last_step_p = np.array(all_trajectories.lhn_pressure[:, -1, :]).flatten()
+        last_step_n = np.array(all_trajectories.lhn_nwau[:, -1, :]).flatten()
+        
+        # Create a snapshot dataframe with stable LHN IDs
+        lhn_snapshot = pd.DataFrame({
+            "LHN_ID": np.tile(np.arange(n_lhns_found), n_mc),
+            "Pressure Index": last_step_p,
+            "NWAU Capture (Relative)": last_step_n,
+            "Type": ["LHN"] * len(last_step_p) # Placeholder type
+        })
+        agg_yearly.attrs["lhn_snapshot"] = lhn_snapshot
+    except (AttributeError, IndexError):
+        pass # Fallback for scalar states
 
     strat_freq = pd.DataFrame(
         [

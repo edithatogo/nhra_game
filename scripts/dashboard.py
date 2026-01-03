@@ -38,7 +38,7 @@ from nhra_gt.visualization.sensitivity import plot_sobol_indices as viz_plot_sob
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from nhra_gt import __version__
-from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
+from nhra_gt.domain.registry import EvidenceRegistry
 from nhra_gt.domain.stability import analyze_cost_shifting_stability
 from nhra_gt.domain.validation import RecursiveResult, aggregate_metrics
 from nhra_gt.engine import Params, apply_intervention, run_hybrid, summarise_outcome
@@ -80,6 +80,7 @@ def initialize_slider_state(scenarios: dict):
         "cost_shifting_intensity",
         "signal_lag_months",
         "claims_lag_months",
+        "use_sequential_bargaining",
     ]
 
     for key in slider_keys:
@@ -99,6 +100,7 @@ def initialize_slider_state(scenarios: dict):
                     "cost_shifting_intensity": 0.35,
                     "signal_lag_months": 1,
                     "claims_lag_months": 3,
+                    "use_sequential_bargaining": False,
                 }
                 val = defaults.get(key, 0.0)
             st.session_state[key] = val
@@ -414,6 +416,14 @@ def main() -> None:
     )
     st.session_state.audit_pressure = audit_pressure
 
+    use_sequential = st.sidebar.toggle(
+        "Enable Sequential Bargaining",
+        value=st.session_state.use_sequential_bargaining,
+        key="toggle_sequential",
+        help="Replaces simultaneous Nash solving with Rubinstein/Stackelberg sequential logic.",
+    )
+    st.session_state.use_sequential_bargaining = use_sequential
+
     # Clinical & Workforce
     st.sidebar.subheader("🩺 Clinical & Workforce")
     rurality_weight = st.sidebar.slider(
@@ -510,6 +520,10 @@ def main() -> None:
             conflicts.append(
                 "Force 'Shift' strategy contradicts low 'Cost-Shifting Intensity' policy."
             )
+        if use_sequential and ("BARG" in overrides or "DEF" in overrides):
+            conflicts.append(
+                "Sequential mode is enabled, but manual subgame overrides (BARG/DEF) will bypass the sequential solver logic."
+            )
 
         if conflicts:
             st.sidebar.warning("⚠️ **Strategic Contradictions Detected:**")
@@ -592,6 +606,7 @@ def main() -> None:
         cost_shifting_intensity=cost_shifting,
         signal_lag_months=signal_lag,
         claims_lag_months=claims_lag,
+        use_sequential_bargaining=use_sequential,
     )
     traj_game, _ = cached_run_model(p_game, years, n_mc=st.session_state.n_mc, overrides=overrides)
     summary_game = summarise_outcome(traj_game)
@@ -1067,19 +1082,25 @@ def main() -> None:
 
         with col_lv1:
             st.subheader("🎯 Pressure vs. Revenue Trade-off")
-            # Simulated data for now based on engine_jax logic
-            n_lhn = 5
-            lhn_ids = [f"LHN {i + 1}" for i in range(n_lhn)]
-            # We pull from a mock or real vectorized state if available
-            # For this MVP, we generate a scatter plot of sub-agent states
-            lhn_df = pd.DataFrame(
-                {
-                    "LHN": lhn_ids,
-                    "Pressure Index": np.random.normal(1.1, 0.1, n_lhn),
-                    "NWAU Capture (Relative)": np.random.normal(100, 10, n_lhn),
-                    "Type": ["Regional", "Metro", "Metro", "Remote", "Regional"],
-                }
-            )
+            
+            if hasattr(traj_game, "attrs") and "lhn_snapshot" in traj_game.attrs:
+                lhn_df = traj_game.attrs["lhn_snapshot"]
+                # Assign types deterministically based on LHN_ID (stable across runs)
+                type_map = {0: "Metro", 1: "Metro", 2: "Regional", 3: "Regional", 4: "Remote"}
+                lhn_df["Type"] = lhn_df["LHN_ID"].map(type_map).fillna("Other")
+                lhn_df["LHN"] = [f"LHN {int(row['LHN_ID'])+1}" for _, row in lhn_df.iterrows()]
+            else:
+                # Fallback if attributes missing
+                n_lhn = 5
+                lhn_ids = [f"LHN {i + 1}" for i in range(n_lhn)]
+                lhn_df = pd.DataFrame(
+                    {
+                        "LHN": lhn_ids,
+                        "Pressure Index": np.random.normal(1.1, 0.1, n_lhn),
+                        "NWAU Capture (Relative)": np.random.normal(100, 10, n_lhn),
+                        "Type": ["Regional", "Metro", "Metro", "Remote", "Regional"],
+                    }
+                )
 
             import plotly.express as px
 
@@ -1088,9 +1109,9 @@ def main() -> None:
                 x="Pressure Index",
                 y="NWAU Capture (Relative)",
                 color="Type",
-                text="LHN",
+                hover_data=["LHN"],
                 size_max=20,
-                title="LHN Strategic Distribution (Current Scenario)",
+                title="LHN Strategic Distribution (End State)",
             )
             fig_lhn.add_vline(
                 x=1.0, line_dash="dash", line_color="red", annotation_text="Target Pressure"
@@ -1099,12 +1120,23 @@ def main() -> None:
 
         with col_lv2:
             st.subheader("💰 Funding Stream Mix")
+            # If we had real block revenue in snapshot, use it.
+            # Currently only pressure/nwau captured.
+            # We will use a simplified view based on the same snapshot index.
+            
             # Show the split between ABF and Block for each LHN
+            # Using NWAU as proxy for ABF, and a fraction for Block
+            # Display first 10 for clarity if MC is large
+            display_df = lhn_df.head(10).copy()
+            
+            # Mock block based on global param for now (until LHN state has it)
+            block_base = st.session_state.get("cost_shifting_intensity", 0.35) * 50
+            
             stream_df = pd.DataFrame(
                 {
-                    "LHN": lhn_ids,
-                    "ABF Revenue": np.random.uniform(70, 90, n_lhn),
-                    "Block Revenue": np.random.uniform(10, 30, n_lhn),
+                    "LHN": display_df["LHN"],
+                    "ABF Revenue": display_df["NWAU Capture (Relative)"],
+                    "Block Revenue": np.random.uniform(block_base*0.8, block_base*1.2, len(display_df)),
                 }
             )
 
@@ -1112,7 +1144,7 @@ def main() -> None:
                 stream_df,
                 x="LHN",
                 y=["ABF Revenue", "Block Revenue"],
-                title="Funding Allocation by Stream",
+                title="Funding Allocation by Stream (Sample LHNs)",
                 labels={"value": "Revenue Units", "variable": "Stream"},
                 barmode="stack",
                 color_discrete_map={"ABF Revenue": "#636EFA", "Block Revenue": "#00CC96"},
@@ -1323,63 +1355,69 @@ def main() -> None:
         st.markdown("### 🛡️ Evidence Manager & Auditor")
         st.markdown("Review and promote evidence from automated ingestion to the active model.")
 
-        # Load Registry (Placeholder file for now)
-        reg_path = Path("data/registry/staging.csv")
-        if not reg_path.exists():
-            # Create a mock entry for demo purposes
-            reg_path.parent.mkdir(parents=True, exist_ok=True)
-            mock_reg = EvidenceRegistry()
-            mock_reg.add_entry(
-                EvidenceEntry(
-                    parameter="within4_base", mean=0.53, source_url="AIHW 2024", nhmrc_level="III-2"
-                )
+        # 1. Master Registry (Active Configuration)
+        st.subheader("📚 Active Parameter Registry")
+        master_path = Path("context/04_parameter_registry.csv")
+        if master_path.exists():
+            df_master = pd.read_csv(master_path)
+            st.dataframe(
+                df_master[["parameter", "value", "units", "citation_or_file"]],
+                use_container_width=True
             )
-            mock_reg.add_entry(
-                EvidenceEntry(
-                    parameter="within4_base",
-                    mean=0.55,
-                    source_url="Scholarly Study 2025",
-                    nhmrc_level="I",
-                )
-            )
-            mock_reg.save_to_csv(reg_path)
-
-        evidence_registry = EvidenceRegistry.load_from_csv(reg_path)
-
-        # Conflict Resolver Section
-        st.subheader("🕵️ Conflict Resolver")
-        params_with_multiple = [
-            p for p, entries in evidence_registry.entries.items() if len(entries) > 1
-        ]
-
-        if params_with_multiple:
-            selected_param = st.selectbox("Resolve Conflict for Parameter:", params_with_multiple)
-            entries = evidence_registry.get_all_entries(selected_param)
-
-            st.markdown(f"**Sources for {selected_param}:**")
-            for i, e in enumerate(entries):
-                col_a, col_b = st.columns([3, 1])
-                with col_a:
-                    st.write(
-                        f"Source {i + 1}: {e.source_url} (Grade: {e.nhmrc_level}) - Mean: {e.mean}"
-                    )
-                with col_b:
-                    if st.button(f"Promote Source {i + 1}", key=f"prom_{i}"):
-                        st.success(f"Source {i + 1} promoted to active model configuration.")
         else:
-            st.info("No parameter conflicts detected.")
+            st.error("Master registry (context/04_parameter_registry.csv) not found.")
 
+        # 2. Staging Registry (Candidates from Automated Pipeline)
         st.markdown("---")
-        st.subheader("📋 Pending Ingestions")
-        st.dataframe(
-            pd.DataFrame(
-                [
-                    e.model_dump()
-                    for p_entries in evidence_registry.entries.values()
-                    for e in p_entries
+        st.subheader("📋 Pending Ingestions (Staging)")
+        
+        staging_path = Path("data/registry/staging.csv")
+        if staging_path.exists():
+            try:
+                # Attempt to load using domain object if available, else CSV
+                evidence_registry = EvidenceRegistry.load_from_csv(staging_path)
+                
+                # Conflict Resolver Section
+                st.subheader("🕵️ Conflict Resolver")
+                params_with_multiple = [
+                    p for p, entries in evidence_registry.entries.items() if len(entries) > 1
                 ]
-            )
-        )
+
+                if params_with_multiple:
+                    selected_param = st.selectbox("Resolve Conflict for Parameter:", params_with_multiple)
+                    entries = evidence_registry.get_all_entries(selected_param)
+
+                    st.markdown(f"**Sources for {selected_param}:**")
+                    for i, e in enumerate(entries):
+                        col_a, col_b = st.columns([3, 1])
+                        with col_a:
+                            st.write(
+                                f"Source {i + 1}: {e.source_url} (Grade: {e.nhmrc_level}) - Mean: {e.mean}"
+                            )
+                        with col_b:
+                            if st.button(f"Promote Source {i + 1}", key=f"prom_{i}"):
+                                # Apply to Session State Overrides
+                                st.session_state[selected_param] = e.mean
+                                st.success(f"Source {i + 1} ({e.mean}) promoted to active session.")
+                                st.rerun()
+                else:
+                    st.info("No conflicts in staging.")
+                    
+                st.markdown("#### Full Staging Data")
+                st.dataframe(
+                    pd.DataFrame(
+                        [
+                            e.model_dump()
+                            for p_entries in evidence_registry.entries.values()
+                            for e in p_entries
+                        ]
+                    )
+                )
+            except Exception as e:
+                st.warning(f"Could not load staging registry via domain object: {e}")
+                st.dataframe(pd.read_csv(staging_path))
+        else:
+            st.info("No staging data found (`data/registry/staging.csv`). Run `automated_evidence_api` to generate candidates.")
 
     # ... (existing code) ...
 
