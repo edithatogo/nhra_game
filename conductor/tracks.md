@@ -126,8 +126,26 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Gap Analysis & Artifact Synchronization (Manuscripts vs. Code)
-*Link: [./conductor/tracks/gap_analysis_20260102/](./conductor/tracks/gap_analysis_20260102/)*
+## [x] Track: Sequential Bargaining Engine (Rubinstein/Stackelberg)
+*Link: [./conductor/archive/sequential_bargaining_20260102/](./conductor/archive/sequential_bargaining_20260102/)*
 
-## [ ] Track: Sequential Bargaining Engine (Rubinstein/Stackelberg)
-*Link: [./conductor/tracks/sequential_bargaining_20260102/](./conductor/tracks/sequential_bargaining_20260102/)*
+## [x] Track: Evidence Manager & Hierarchical UI Integration
+*Link: [./conductor/archive/evidence_manager_ui_20260102/](./conductor/archive/evidence_manager_ui_20260102/)*
+
+## [x] Track: Dashboard & Engine Integration Audit
+*Link: [./conductor/archive/dashboard_integration_audit_20260102/](./conductor/archive/dashboard_integration_audit_20260102/)*
+
+## [~] Track: Dashboard UI Finalization
+*Link: [./conductor/tracks/dashboard_ui_finalization_20260102/](./conductor/tracks/dashboard_ui_finalization_20260102/)*
+
+## [ ] Track: Evidence Manager Backend Integration
+*Link: [./conductor/tracks/evidence_manager_backend_20260102/](./conductor/tracks/evidence_manager_backend_20260102/)*
+
+## [ ] Track: Configuration Hygiene
+*Link: [./conductor/tracks/config_hygiene_20260102/](./conductor/tracks/config_hygiene_20260102/)*
+
+## [ ] Track: Unified Parameter Schema
+*Link: [./conductor/tracks/unified_schema_20260102/](./conductor/tracks/unified_schema_20260102/)*
+
+## [ ] Track: Quality Assurance & Performance
+*Link: [./conductor/tracks/qa_performance_20260102/](./conductor/tracks/qa_performance_20260102/)*
