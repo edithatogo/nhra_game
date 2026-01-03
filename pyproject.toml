@@ -1,65 +1,59 @@
-[tool.poetry]
+[project]
 name = "nhra_gt"
 version = "26.0.1"
 description = "Stylised game-theory mechanism models for NHRA negotiations and downstream system pressure"
-authors = ["Dylan A Mordaunt (RACMA working draft)"]
-readme = "README.md"
-packages = [
-    {include = "nhra_gt", from = "src"},
-    {include = "scripts"}
+authors = [
+    { name = "Dylan A Mordaunt", email = "15080672+edithatogo@users.noreply.github.com" }
 ]
 license = "Apache-2.0"
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Mathematics",
 ]
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "matplotlib>=3.7",
+    "networkx>=3.2",
+    "plotly>=5.18",
+    "scipy>=1.10",
+    "SALib>=1.4.7",
+    "snakemake>=7.32",
+    "streamlit>=1.35",
+    "pydantic>=2.0",
+    "pandera>=0.18",
+    "pydantic-settings>=2.0",
+    "seaborn",
+    "requests",
+    "PyYAML",
+    "pyxlsb",
+    "beartype",
+    "pygambit>=16.4.1",
+    "graphviz>=0.21",
+    "jax>=0.4",
+    "jaxlib>=0.4",
+    "flax>=0.8",
+    "jaxtyping>=0.2",
+    "spacy>=3.7",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<3.14"
-numpy = ">=1.24"
-pandas = ">=2.0"
-matplotlib = ">=3.7"
-networkx = ">=3.2"
-plotly = ">=5.18"
-scipy = ">=1.10"
-SALib = ">=1.4.7"
-snakemake = ">=7.32"
-streamlit = ">=1.35"
-pydantic = ">=2.0"
-pandera = ">=0.18"
-pydantic-settings = ">=2.0"
-seaborn = "*"
-requests = "*"
-PyYAML = "*"
-pyxlsb = "*"
-beartype = "*"
-pygambit = "^16.4.1"
-graphviz = "^0.21"
-jax = ">=0.4"
-jaxlib = ">=0.4"
-flax = ">=0.8"
-jaxtyping = ">=0.2"
-spacy = ">=3.7"
+[project.optional-dependencies]
+opt = ["optuna>=3.6"]
+accel = ["chex>=0.1", "numpyro>=0.13", "polars>=0.20"]
+observability = ["logfire>=0.46"]
 
-# Optional dependencies (extras)
-optuna = { version = ">=3.6", optional = true }
-chex = { version = ">=0.1", optional = true }
-numpyro = { version = ">=0.13", optional = true }
-polars = { version = ">=0.20", optional = true }
-logfire = { version = ">=0.46", optional = true }
-reportlab = "^4.4.7"
-kaleido = "^1.2.0"
-jaxopt = "^0.8.5"
-
-[tool.poetry.extras]
-opt = ["optuna"]
-accel = ["chex", "numpyro", "polars"]
-observability = ["logfire"]
+[tool.poetry]
+# Legacy section for build-backend and packages
+packages = [
+    {include = "nhra_gt", from = "src"},
+    {include = "scripts"}
+]
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=7.4"
@@ -79,12 +73,10 @@ nox = ">=2024.0"
 isort = ">=5.13"
 mkdocs = ">=1.6"
 mkdocs-material = ">=9.5"
-mutmut = ">=2.4"
 pytest-mock = "*"
 pytest-cov = "*"
 scalene = ">=1.5"
 deptry = "*"
-vulture = "*"
 bandit = "^1.9.2"
 pyright = "*"
 typeguard = "*"
@@ -96,7 +88,8 @@ mkdocs-section-index = "*"
 mkdocs-jupyter = "*"
 mike = "*"
 pytest-mpl = "^0.18.0"
-
+kaleido = "^1.2.0"
+reportlab = "^4.4.7"
 
 [tool.coverage.run]
 omit = ["tests/*", "scripts/*", ".nox/*", ".gemini/*", "*/__init__.py"]
@@ -121,11 +114,9 @@ exclude_lines = [
 
 [tool.coverage.html]
 directory = "htmlcov"
-playwright = "^1.57.0"
-pytest-playwright = "^0.7.2"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
@@ -192,11 +183,6 @@ DEP001 = ["nhra_gt", "scripts"]
 DEP002 = ["scipy", "snakemake", "jaxlib", "jaxtyping", "polars", "seaborn", "pydantic-settings", "pandera", "networkx", "streamlit", "optuna", "chex", "reportlab", "kaleido"]
 DEP003 = ["yaml", "pyxlsb"]
 DEP004 = ["nox", "pytest", "hypothesis", "logfire", "mypy", "ruff", "bandit", "deptry", "jaxopt"]
-
-[tool.vulture]
-exclude = [".nox", ".gemini", "outputs", "reports", "docs", "archive", "build", "dist"]
-min_confidence = 80
-paths = ["src", "scripts"]
 
 [tool.bandit]
 exclude_dirs = ["tests", ".nox", ".gemini", "outputs", "reports", "docs", "archive", "build", "dist"]
