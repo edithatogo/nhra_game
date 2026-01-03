@@ -38,16 +38,16 @@
 - [x] Task: Bundle 03 — v1 → iterate to v2/v3 until “public + 14yo” pass (1b461ec)
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Full-cycle Iteration (First 3 Bundles)' (Protocol in workflow.md)
 
-## Phase 3: Remaining scenario bundles (single feedback cycle each)
-- [ ] Task: Bundle 04 — v1 → feedback/consensus → v2 (run validators)
-- [ ] Task: Bundle 05 — v1 → feedback/consensus → v2 (run validators)
-- [ ] Task: Bundle 06 — v1 → feedback/consensus → v2 (run validators)
-- [ ] Task: Bundle 07 — v1 → feedback/consensus → v2 (run validators)
-- [ ] Task: Bundle 08 — v1 → feedback/consensus → v2 (run validators)
-- [ ] Task: Bundle 09 (Rubinstein) — v1 → feedback/consensus → v2 (run validators)
-- [ ] Task: Bundle 10 (Stackelberg) — v1 → feedback/consensus → v2 (run validators)
-- [ ] Task: Bundle 11 (Queuing equilibrium) — v1 → feedback/consensus → v2 (run validators)
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Remaining Scenario Bundles (Single-cycle Each)' (Protocol in workflow.md)
+## Phase 3: Remaining scenario bundles (single feedback cycle each) [checkpoint: 5764810]
+- [x] Task: Bundle 04 — v1 → feedback/consensus → v2 (run validators)
+- [x] Task: Bundle 05 — v1 → feedback/consensus → v2 (run validators)
+- [x] Task: Bundle 06 — v1 → feedback/consensus → v2 (run validators)
+- [x] Task: Bundle 07 — v1 → feedback/consensus → v2 (run validators)
+- [x] Task: Bundle 08 — v1 → feedback/consensus → v2 (run validators)
+- [x] Task: Bundle 09 (Rubinstein) — v1 → feedback/consensus → v2 (run validators)
+- [x] Task: Bundle 10 (Stackelberg) — v1 → feedback/consensus → v2 (run validators)
+- [x] Task: Bundle 11 (Queuing equilibrium) — v1 → feedback/consensus → v2 (run validators)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Remaining Scenario Bundles (Single-cycle Each)' (Protocol in workflow.md)
 
 ## Phase 4: Hybrid/Ensemble + Streamlit dashboard bundles
 - [ ] Task: Bundle 12 (Hybrid/Ensemble) — v1 → feedback/consensus → v2 (run validators)
