@@ -10,6 +10,19 @@ def get_populated_registry() -> GameRegistry:
         players=["Commonwealth", "State"],
         strategies=["Realism", "Strictness"],
         payoffs={
+            "p1_strategies": ["Strictness", "Realism"],  # Commonwealth
+            "p2_strategies": ["Realism", "Strictness"],  # State
+            "matrix": [
+                [
+                    ("Low Cost / High Risk", "High Risk / Low Funding"),
+                    ("Low Cost / Low Risk", "High Risk / Low Funding"),
+                ],
+                [
+                    ("High Cost / Low Risk", "Low Risk / High Funding"),
+                    ("Medium Cost / Medium Risk", "Medium Risk / Medium Funding"),
+                ],
+            ],
+            # Legacy fields kept for backward compatibility if needed, though viz uses matrix
             "Realism": {"Commonwealth": "Higher Cost", "State": "Lower Risk"},
             "Strictness": {"Commonwealth": "Lower Cost", "State": "Higher Risk"},
         },
@@ -26,6 +39,15 @@ def get_populated_registry() -> GameRegistry:
         players=["Federal", "State"],
         strategies=["Agree", "Defer"],
         payoffs={
+            "p1_strategies": ["Enforce (Hard)", "Concede (Soft)"],
+            "p2_strategies": ["Agree", "Hold-Up"],
+            "matrix": [
+                [("Status Quo", "Funding Certainty"), ("Crisis / Failure", "Crisis / Blame Shift")],
+                [
+                    ("High Cost / Peace", "Max Funding"),
+                    ("High Cost / Delay", "High Grant / Leverage"),
+                ],
+            ],
             "Agree": {"Federal": "Stability", "State": "Funding Certainty"},
             "Defer": {"Federal": "Status Quo", "State": "Potential Gain/Loss"},
         },
@@ -42,6 +64,18 @@ def get_populated_registry() -> GameRegistry:
         players=["Hospital (State)", "Primary Care (Federal)"],
         strategies=["Invest", "Shift"],
         payoffs={
+            "p1_strategies": ["Invest (Holistic)", "Shift (Cut Costs)"],
+            "p2_strategies": ["Invest (Holistic)", "Shift (Refer to ED)"],
+            "matrix": [
+                [
+                    ("Optimal Health / High Cost", "Optimal Health / High Cost"),
+                    ("Sucker's Payoff (Overburdened)", "Free Ride (Savings)"),
+                ],
+                [
+                    ("Free Ride (Savings)", "Sucker's Payoff (Overburdened)"),
+                    ("System Failure / Low Cost", "System Failure / Low Cost"),
+                ],
+            ],
             "Invest": {"State": "Higher Cost", "Federal": "Better Outcomes"},
             "Shift": {"State": "Lower Cost", "Federal": "Higher Burden"},
         },
@@ -58,6 +92,18 @@ def get_populated_registry() -> GameRegistry:
         players=["Acute Care", "Aged Care/NDIS"],
         strategies=["Coordinate", "Fragment"],
         payoffs={
+            "p1_strategies": ["Coordinate (Push)", "Fragment (Hold)"],
+            "p2_strategies": ["Accept (Pull)", "Block (Delay)"],
+            "matrix": [
+                [
+                    ("Flow / High Effort", "Flow / High Resource Use"),
+                    ("Bed Block / High Effort", "Savings / Low Effort"),
+                ],
+                [
+                    ("Internal Delay / Low Effort", "Flow / High Resource Use"),
+                    ("Gridlock / Low Effort", "Gridlock / Low Effort"),
+                ],
+            ],
             "Coordinate": {"Acute": "Faster Flow", "Aged": "Resource Strain"},
             "Fragment": {"Acute": "Bed Block", "Aged": "Resource Preservation"},
         },
@@ -74,6 +120,18 @@ def get_populated_registry() -> GameRegistry:
         players=["LHN", "MOH"],
         strategies=["Integrate", "Separate"],
         payoffs={
+            "p1_strategies": ["Control (Centralise)", "Delegate (Devolve)"],  # MOH
+            "p2_strategies": ["Comply (Integrate)", "Resist (Autonomy)"],  # LHN
+            "matrix": [
+                [
+                    ("High Control / Low Agility", "Loss of Agency"),
+                    ("Conflict / Dysfunction", "Autonomy Preserved (Hostile)"),
+                ],
+                [
+                    ("Low Control / High Agency", "Responsive / Integrated"),
+                    ("Low Control / Fragmentation", "Autonomy / Fragmentation"),
+                ],
+            ],
             "Integrate": {"LHN": "Autonomy Loss", "MOH": "Control"},
             "Separate": {"LHN": "Autonomy", "MOH": "Agency Loss"},
         },
@@ -90,6 +148,18 @@ def get_populated_registry() -> GameRegistry:
         players=["Administrator", "Provider"],
         strategies=["Tight Audit", "Light Audit"],
         payoffs={
+            "p1_strategies": ["Tight Audit", "Light Audit"],
+            "p2_strategies": ["High Compliance", "Gaming/Upcoding"],
+            "matrix": [
+                [
+                    ("High Cost / High Recovery", "High Effort / Low Margin"),
+                    ("High Cost / Penalty", "Penalty / Reputation Loss"),
+                ],
+                [
+                    ("Low Cost / Moderate Leakage", "Standard Effort / Good Margin"),
+                    ("Low Cost / High Leakage", "Max Profit / Risk"),
+                ],
+            ],
             "Tight": {"Admin": "High Discovery", "Provider": "High Compliance Cost"},
             "Light": {"Admin": "Low Discovery", "Provider": "Low Compliance Cost"},
         },

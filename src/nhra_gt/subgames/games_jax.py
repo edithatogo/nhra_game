@@ -6,15 +6,18 @@ from flax import struct
 from jaxtyping import Array, Float
 
 
+from typing import Any
+
+
 @struct.dataclass
 class GameParamsJax:
-    pressure: float
-    efficiency_gap: float
-    discharge_delay: float
-    political_salience: float
-    audit_pressure: float
-    cost_shifting_intensity: float
-    political_capital: float
+    pressure: Any
+    efficiency_gap: Any
+    discharge_delay: Any
+    political_salience: Any
+    audit_pressure: Any
+    cost_shifting_intensity: Any
+    political_capital: Any
 
 
 @beartype

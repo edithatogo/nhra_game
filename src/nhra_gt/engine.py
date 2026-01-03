@@ -23,7 +23,7 @@ from nhra_gt.domain.state import (
 from nhra_gt.rules import initialize_rules
 from nhra_gt.subgames.queuing import PatientUtilityParams, solve_queuing_equilibrium_jax
 
-config.update("jax_enable_x64", True)
+config.update("jax_enable_x64", True)  # type: ignore[no-untyped-call]
 
 # Aliases for compatibility
 Params = ParamsJax
@@ -78,10 +78,10 @@ def mm_s_queue_wait_jax(
     utilization = arrival_rate / jnp.maximum(1e-9, (service_rate * servers))
 
     # Approximation for M/M/s wait time
-    def at_capacity(_) -> float:
-        return 1440.0
+    def at_capacity(_: Any) -> Float[Array, ""]:
+        return jnp.asarray(1440.0)
 
-    def below_capacity(_) -> float:
+    def below_capacity(_: Any) -> Float[Array, ""]:
         wait = (utilization ** (jnp.sqrt(2 * (servers + 1)) - 1)) / (servers * (1 - utilization))
         return jnp.clip(wait * 1440.0, 5.0, 1440.0)
 
@@ -161,10 +161,10 @@ def baseline_state(start_year: int = 2025, p: ParamsJax | None = None) -> StateJ
     n_jurisdictions = 1
     n_lhns = 5
 
-    def init_lhn(i: int) -> LhnState:
+    def init_lhn(i: Any) -> LhnState:
         return LhnState(id=i)
 
-    def init_jurisdiction(i: int) -> JurisdictionState:
+    def init_jurisdiction(i: Any) -> JurisdictionState:
         lhns = jax.vmap(init_lhn)(jnp.arange(n_lhns))
         return JurisdictionState(id=i, lhn_states=lhns)
 
@@ -424,20 +424,16 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
         )
 
         u_row, u_col = renegotiation_game_jax(gp)
-        
+
         # Use sequential solver if configured
-        def solve_nash():
+        def solve_nash() -> tuple[Float[Array, "m"], Float[Array, "n"]]:
             return discrete_nash_jax(u_row, u_col)
-            
-        def solve_stackelberg():
+
+        def solve_stackelberg() -> tuple[Float[Array, "m"], Float[Array, "n"]]:
             # Assume Commonwealth (Row) is Leader
             return stackelberg_jax(u_row, u_col)
-            
-        p_row, q_col = lax.cond(
-            p.use_sequential_bargaining,
-            solve_stackelberg,
-            solve_nash
-        )
+
+        p_row, q_col = lax.cond(p.use_sequential_bargaining, solve_stackelberg, solve_nash)
 
         cth_concede = p_row[0] > 0.5
         state_hold_up = q_col[1] > 0.5
@@ -598,7 +594,7 @@ def step(
     gap0 = float(np.asarray(state.efficiency_gap))
     gap1 = ((1.0 + gap0) * drift_factor - 1.0) * decay
 
-    if getattr(next_state, "jurisdictions", None) is not None:
+    if next_state.jurisdictions is not None:
         next_state = next_state.replace(
             jurisdictions=next_state.jurisdictions.replace(
                 efficiency_gap=jnp.full_like(next_state.jurisdictions.efficiency_gap, gap1)
@@ -940,17 +936,19 @@ def run_hybrid(
         n_lhns_found = all_trajectories.lhn_pressure.shape[2]
         last_step_p = np.array(all_trajectories.lhn_pressure[:, -1, :]).flatten()
         last_step_n = np.array(all_trajectories.lhn_nwau[:, -1, :]).flatten()
-        
+
         # Create a snapshot dataframe with stable LHN IDs
-        lhn_snapshot = pd.DataFrame({
-            "LHN_ID": np.tile(np.arange(n_lhns_found), n_mc),
-            "Pressure Index": last_step_p,
-            "NWAU Capture (Relative)": last_step_n,
-            "Type": ["LHN"] * len(last_step_p) # Placeholder type
-        })
+        lhn_snapshot = pd.DataFrame(
+            {
+                "LHN_ID": np.tile(np.arange(n_lhns_found), n_mc),
+                "Pressure Index": last_step_p,
+                "NWAU Capture (Relative)": last_step_n,
+                "Type": ["LHN"] * len(last_step_p),  # Placeholder type
+            }
+        )
         agg_yearly.attrs["lhn_snapshot"] = lhn_snapshot
     except (AttributeError, IndexError):
-        pass # Fallback for scalar states
+        pass  # Fallback for scalar states
 
     strat_freq = pd.DataFrame(
         [
