@@ -1,0 +1,14 @@
+graph LR
+    subgraph "Rubinstein Bargaining"
+        P1["Player 1 (Patient)"]
+        P2["Player 2 (Impatient)"]
+
+        P1 -- "Offer?" --> Delay
+        P2 -- "Reject & Wait?" --> Delay
+
+        Delay["Time Cost (Discounting)"]
+    end
+
+    P1 -- "Agreement" --- P2
+    Deal["Equilibrium: SKEWED DEAL"]
+    Delay -.-> Deal
