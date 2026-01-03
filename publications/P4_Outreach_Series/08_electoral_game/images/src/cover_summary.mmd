@@ -1,0 +1,14 @@
+graph LR
+    subgraph "The Electoral Game"
+        Gov["Government"]
+        Opp["Opposition"]
+
+        Gov -- "Spend (Salience)" --> Cycle
+        Gov -- "Cut (Fiscal)" --> Cycle
+
+        Cycle["Boom-Bust Cycle"]
+    end
+
+    Gov -- "Independent Body" --- Opp
+    Fix["Equilibrium: STABILITY"]
+    Cycle -.-> Fix
