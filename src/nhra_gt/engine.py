@@ -90,7 +90,7 @@ def mm_s_queue_wait_jax(
 
 @beartype
 def within4_from_pressure_jax(pidx: Float[Array, ""]) -> Float[Array, ""]:
-    return jnp.clip(1.00 - 0.45 * jax_logistic((pidx - 1.0) / 0.20), 0.05, 0.85)
+    return jnp.clip(1.02 - 0.45 * jax_logistic((pidx - 1.0) / 0.20), 0.05, 0.85)
 
 
 @beartype

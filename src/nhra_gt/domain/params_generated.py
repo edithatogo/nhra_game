@@ -1,5 +1,8 @@
 # AUTO-GENERATED FILE. DO NOT EDIT.
 from __future__ import annotations
+
+from typing import Any
+
 from flax import struct
 
 
@@ -18,48 +21,56 @@ class ParamsGenerated:
     has_cumulative_cap: bool = False  # Model parameter (unitless)
     use_equilibrium_bargaining: bool = False  # Model parameter (unitless)
     use_stage_game_equilibria: bool = True  # Model parameter (unitless)
-    equilibrium_selection_rule: str = "payoff_dominant"  # Model parameter (unitless)
-    nep_per_nwau_start: float = 1.0  # Model parameter (unitless)
+    equilibrium_selection_rule: str = struct.field(
+        default="payoff_dominant", pytree_node=False
+    )  # Model parameter (unitless)
+    nep_per_nwau_start: int = 1  # Model parameter (unitless)
     nep_annual_growth: float = 0.03  # Model parameter (fraction/year)
-    representative_nwau: float = 1.0  # Model parameter (unitless)
-    input_cost_per_nwau_start: float = 1.0  # Model parameter (unitless)
+    representative_nwau: int = 1  # Model parameter (unitless)
+    input_cost_per_nwau_start: int = 1  # Model parameter (unitless)
     input_cost_annual_growth: float = 0.04  # Model parameter (fraction/year)
-    demand_base: float = 1.0  # Model parameter (unitless)
+    demand_base: int = 1  # Model parameter (unitless)
     avoidable_ed_share: float = 0.18  # Model parameter (fraction)
-    discharge_delay_base: float = 1.0  # Model parameter (unitless)
-    bed_capacity_index: float = 1.0  # Model parameter (unitless)
+    discharge_delay_base: int = 1  # Model parameter (unitless)
+    bed_capacity_index: int = 1  # Model parameter (unitless)
     cost_shifting_intensity: float = 0.35  # Model parameter (unitless)
-    fragmentation_index: float = 1.0  # Model parameter (unitless)
+    fragmentation_index: int = 1  # Model parameter (unitless)
     audit_pressure: float = 0.5  # Model parameter (unitless)
     admin_burden_weight: float = 0.25  # Model parameter (unitless)
     occupancy_base: float = 0.88  # Model parameter (unitless)
-    offload_base_min: float = 18.0  # Model parameter (unitless)
+    offload_base_min: int = 18  # Model parameter (unitless)
     within4_base: float = 0.53  # Model parameter (unitless)
     rr_beta_pressure: float = 0.35  # Model parameter (unitless)
     rr_beta_offload: float = 0.015  # Model parameter (unitless)
-    offload_threshold_min: float = 20.0  # Model parameter (unitless)
+    offload_threshold_min: int = 20  # Model parameter (unitless)
     tau: float = 0.25  # Model parameter (unitless)
     bargaining_cost: float = 0.12  # Model parameter (unitless)
     political_salience: float = 0.3  # Model parameter (unitless)
     use_quantal_response: bool = False  # Model parameter (unitless)
-    qre_lambda: float = 4.0  # Model parameter (unitless)
+    qre_lambda: int = 4  # Model parameter (unitless)
     use_burden_feedback: bool = False  # Model parameter (unitless)
     burden_to_throughput_beta: float = 0.06  # Model parameter (unitless)
     noise_sd: float = 0.03  # Model parameter (unitless)
     capacity_lag: float = 0.15  # Model parameter (unitless)
-    orchestration_mode: str = "simultaneous"  # Model parameter (unitless)
-    isolated_game: str = "nan"  # Model parameter (unitless)
-    cap_rule_type: str = "hard"  # Model parameter (unitless)
-    audit_rule_type: str = "proportional"  # Model parameter (unitless)
-    adjustment_cost_beta: float = 5.0  # Model parameter (unitless)
+    orchestration_mode: str = struct.field(
+        default="simultaneous", pytree_node=False
+    )  # Model parameter (unitless)
+    isolated_game: Any = struct.field(default=None, pytree_node=False)  # Model parameter (unitless)
+    cap_rule_type: str = struct.field(
+        default="hard", pytree_node=False
+    )  # Model parameter (unitless)
+    audit_rule_type: str = struct.field(
+        default="proportional", pytree_node=False
+    )  # Model parameter (unitless)
+    adjustment_cost_beta: int = 5  # Model parameter (unitless)
     cannibalization_beta: float = 0.1  # Model parameter (unitless)
     block_funding_base: float = 0.15  # Model parameter (fraction)
     shifting_friction: float = 0.05  # Model parameter (unitless)
-    signal_lag_months: float = 1.0  # Model parameter (months)
-    claims_lag_months: float = 3.0  # Model parameter (months)
-    gp_out_of_pocket: float = 40.0  # Model parameter (NZD)
-    gp_wait_time_min: float = 15.0  # Model parameter (minutes)
-    patient_time_value_hour: float = 25.0  # Model parameter (NZD/hour)
+    signal_lag_months: int = 1  # Model parameter (months)
+    claims_lag_months: int = 3  # Model parameter (months)
+    gp_out_of_pocket: int = 40  # Model parameter (NZD)
+    gp_wait_time_min: int = 15  # Model parameter (minutes)
+    patient_time_value_hour: int = 25  # Model parameter (NZD/hour)
     expansion_lag: float = 0.1  # Model parameter (unitless)
     contraction_lag: float = 0.2  # Model parameter (unitless)
     use_sequential_bargaining: bool = False  # Model parameter (unitless)

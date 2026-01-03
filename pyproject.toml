@@ -92,6 +92,9 @@ mike = "*"
 pytest-mpl = "^0.18.0"
 kaleido = "^1.2.0"
 reportlab = "^4.4.7"
+playwright = "^1.57.0"
+pytest-playwright = "^0.7.2"
+vcrpy = "^7.0.0"
 
 [tool.coverage.run]
 omit = ["tests/*", "scripts/*", ".nox/*", ".gemini/*", "*/__init__.py"]

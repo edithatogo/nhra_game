@@ -121,7 +121,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Comprehensive Model Audit and Repairs
+## [x] Track: Comprehensive Model Audit and Repairs
 *Link: [./conductor/tracks/model_audit_20260101/](./conductor/tracks/model_audit_20260101/)*
 
 ---
@@ -149,3 +149,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ## [x] Track: Quality Assurance & Performance
 *Link: [./conductor/archive/qa_performance_20260102/](./conductor/archive/qa_performance_20260102/)*
+
+---
+
+## [ ] Track: P4 Outreach Series (NHRA-centred, Game Theory Explained)
+*Link: [./conductor/tracks/p4_outreach_series_20260103/](./conductor/tracks/p4_outreach_series_20260103/)*

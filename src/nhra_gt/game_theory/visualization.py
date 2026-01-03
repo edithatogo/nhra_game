@@ -53,8 +53,10 @@ def generate_payoff_matrix_figure(game: GameDefinition) -> go.Figure:
             z=[[0, 0], [0, 0]],
             x=p2_strats,
             y=p1_strats,  # Note: y order matters
-            colorscale="Greys",
+            colorscale=[[0, "#f0f2f6"], [1, "#f0f2f6"]],  # Explicit light grey
             showscale=False,
+            zmin=0,
+            zmax=1,
             ygap=2,
             xgap=2,
         )

@@ -1,4 +1,4 @@
-# Context Pack — NHRA game-theory repo (built 2026-01-02)
+# Context Pack — NHRA game-theory repo (built 2026-01-03)
 
 
 ---
@@ -273,68 +273,70 @@ The canonical record is `context/04_parameter_registry.csv`.
 ## 04_parameter_registry.csv
 
 ```csv
-parameter,description,value,units,source_type,citation_or_file,locator,range_low,range_high,justification
-nep_to_cost_ratio_metro,Model parameter,0.9,unitless,assumed,,,0.7200000000000001,1.08,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-nep_to_cost_ratio_regional,Model parameter,0.83,unitless,assumed,,,0.664,0.9959999999999999,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-nep_to_cost_ratio_remote,Model parameter,0.75,unitless,assumed,,,0.6000000000000001,0.8999999999999999,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-rurality_weight,Model parameter,0.35,unitless,assumed,,,0.27999999999999997,0.42,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-remote_weight,Model parameter,0.07,unitless,assumed,,,0.05600000000000001,0.084,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-nominal_cth_share_target,Model parameter,0.45,fraction,secondary,https://www.publichospitalfunding.gov.au/,NHRA Agreement,0.36000000000000004,0.54,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-effective_cth_share_base,Model parameter,0.38,fraction,secondary,https://www.publichospitalfunding.gov.au/,NHRA Agreement,0.30400000000000005,0.45599999999999996,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-cap_growth,Model parameter,0.065,fraction/year,assumed,,,0.052000000000000005,0.078,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-has_cumulative_cap,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-use_equilibrium_bargaining,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-use_stage_game_equilibria,Model parameter,True,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-equilibrium_selection_rule,Model parameter,payoff_dominant,unitless,assumed,,,,,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-nep_per_nwau_start,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-nep_annual_growth,Model parameter,0.03,fraction/year,primary,https://www.ihacpa.gov.au/resources/national-efficient-price-determination-2025-26,NEP Indexation,0.024,0.036,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-representative_nwau,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-input_cost_per_nwau_start,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-input_cost_annual_growth,Model parameter,0.04,fraction/year,primary,https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/wage-price-index-australia,WPI Health,0.032,0.048,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-demand_base,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-avoidable_ed_share,Model parameter,0.18,fraction,secondary,https://www.publichospitalfunding.gov.au/,NHRA Agreement,0.144,0.216,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-discharge_delay_base,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-bed_capacity_index,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-cost_shifting_intensity,Model parameter,0.35,unitless,assumed,,,0.27999999999999997,0.42,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-fragmentation_index,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-audit_pressure,Model parameter,0.5,unitless,assumed,,,0.4,0.6,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-admin_burden_weight,Model parameter,0.25,unitless,assumed,,,0.2,0.3,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-occupancy_base,Model parameter,0.88,unitless,assumed,,,0.7040000000000001,1.056,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-offload_base_min,Model parameter,18.0,unitless,assumed,,,14.4,21.599999999999998,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-within4_base,Model parameter,0.53,unitless,assumed,,,0.42400000000000004,0.636,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-rr_beta_pressure,Model parameter,0.35,unitless,assumed,,,0.27999999999999997,0.42,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-rr_beta_offload,Model parameter,0.015,unitless,assumed,,,0.012,0.018,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-offload_threshold_min,Model parameter,20.0,unitless,assumed,,,16.0,24.0,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-tau,Model parameter,0.25,unitless,assumed,,,0.2,0.3,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-bargaining_cost,Model parameter,0.12,unitless,assumed,,,0.096,0.144,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-political_salience,Model parameter,0.3,unitless,assumed,,,0.24,0.36,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-use_quantal_response,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-qre_lambda,Model parameter,4.0,unitless,assumed,,,3.2,4.8,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-use_burden_feedback,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-burden_to_throughput_beta,Model parameter,0.06,unitless,assumed,,,0.048,0.072,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-noise_sd,Model parameter,0.03,unitless,assumed,,,0.024,0.036,Stylised mechanism parameter used for scenario comparison rather than forecasting. Default chosen for face-valid dynamics; explored in sensitivity analysis. Pending formal calibration against jurisdictional data where available.
-economic_spine,Historical NEP and WPI series,(DataFrame),unitless,calibrated,https://www.ihacpa.gov.au/,Multiple determinations 2011-2025,,,Ingested from official sources via scripts/data/ingest_economic_spine.py
-capacity_lag,Model parameter,0.15,unitless,assumed,,,0.1,0.3,Stylised mechanism parameter representing the operational inertia and hiring friction in expanding bed or workforce capacity. This ensures that system throughput does not adjust instantaneously to demand shocks while reflecting realistic constraints in hospital staffing and physical infrastructure expansion over short time horizons.
-orchestration_mode,Model parameter,simultaneous,unitless,assumed,,,,,Strategic control parameter determining whether game-theory sub-games are solved simultaneously (parallel strategic choices) or sequentially (respecting causal dependencies like Signalling before Bargaining). This is critical for exploring how the order of negotiations influences final funding and operational outcomes in the NHRA framework.
-isolated_game,Model parameter,None,unitless,assumed,,,,,Diagnostic parameter used in 'isolation mode' to freeze all strategic actors except for one specific sub-game (e.g. Bargaining or Coding). This allows for rigorous counterfactual analysis of individual game mechanics without the confounding noise of interacting strategic feedback loops and helps with model identification and mechanism validation.
-cap_rule_type,Model parameter,hard,unitless,assumed,,,,,Structural policy parameter defining the implementation of the National Funding Growth Cap. 'Hard' represents a strict 6.5 percent limit on Commonwealth growth while 'Soft' allows for negotiated overages or threshold-based penalties. This enables testing the impact of different budget constraint definitions on jurisdictional bargaining toughness and activity surges.
-audit_rule_type,Model parameter,proportional,unitless,assumed,,,,,Integrity regime parameter defining how Auditor agents detect upcoding or boundary-shifting behavior. 'Proportional' risk increases linearly with coding intensity while 'Threshold' risk spikes only when outliers cross specific statistical bounds. This captures the strategic 'arms race' between provider gaming and regulatory scrutiny in the activity-based funding environment.
-adjustment_cost_beta,Model parameter,5.0,unitless,assumed,,,4.0,6.0,Stylised mechanism parameter controlling how costly rapid capacity changes are (hiring and contracting and onboarding and organisational disruption). This is used for scenario comparison rather than forecasting; defaults are chosen for face-valid dynamics and explored via sensitivity analysis. The aim is to penalise implausibly rapid expansion or contraction while keeping the model stable across long horizons.
-cannibalization_beta,Model parameter,0.1,unitless,assumed,,,0.05,0.2,Stylised mechanism parameter capturing workforce/volume competition effects where expansion in one sector reduces effective capacity elsewhere. This is used for mechanism exploration rather than point prediction; defaults are chosen for stability and tested in sensitivity analysis until calibration evidence is available.
-block_funding_base,Model parameter,0.15,fraction,assumed,,,0.05,0.25,Stylised mechanism parameter representing the typical share of activity funded via block arrangements rather than pure activity-based pricing. This is used for scenario comparison and stress tests; defaults are chosen for face-valid dynamics and varied in sensitivity analysis pending jurisdiction-specific calibration.
-shifting_friction,Model parameter,0.05,unitless,assumed,,,0.01,0.1,Stylised mechanism parameter representing the friction or cost of shifting activity between funding streams (e.g. classification and eligibility and contracting and administrative overhead). Defaults are used for comparative scenarios and robustness checks rather than forecasting; explored in sensitivity analysis. Higher values reduce opportunistic boundary shifting and test whether conclusions depend on administrative mobility assumptions.
-signal_lag_months,Model parameter,1.0,months,assumed,,,0.0,6.0,Measurement lag for publicly visible indicators (pressure and occupancy and within-4h) reflecting reporting and media cycles. Included to avoid unrealistically instantaneous feedback in strategic behaviour; defaults are chosen for face-valid dynamics and varied in sensitivity analysis. This lag is a modelling device for information delay rather than a precise estimate and is stress-tested across a plausible range.
-claims_lag_months,Model parameter,3.0,months,assumed,,,0.0,12.0,Measurement lag for financial/claims-related indicators (e.g. NWAU reporting and coding intensity) reflecting audit and reconciliation delays. Included to model real-world reporting inertia and information asymmetry; defaults are used for scenario comparison and varied in sensitivity analysis.
-gp_out_of_pocket,Model parameter,40.0,NZD,assumed,,,0.0,120.0,Patient choice parameter representing typical out-of-pocket cost faced in primary care. This is used to shape the queuing/avoidance mechanism (GP vs ED) for scenario comparison rather than forecasting; defaults are selected for plausible dynamics and tested in sensitivity analysis.
-gp_wait_time_min,Model parameter,15.0,minutes,assumed,,,0.0,120.0,Patient choice parameter representing typical wait time for GP access in minutes. Used to drive the GP-vs-ED equilibrium mechanism for scenario comparison; defaults are chosen for plausible qualitative behaviour and varied in sensitivity analysis to test robustness across access conditions.
-patient_time_value_hour,Model parameter,25.0,NZD/hour,assumed,,,5.0,80.0,Patient time-value parameter used in the queuing game to trade off monetary cost vs time cost in choosing GP vs ED. This supports mechanism exploration and scenario comparison; defaults are selected for plausible behaviour and varied in sensitivity analysis pending empirical calibration.
-expansion_lag,Model parameter,0.1,unitless,assumed,,,0.05,0.25,Operational inertia parameter controlling how quickly capacity can expand (e.g. hiring and commissioning delays). Included to prevent unrealistically fast responses to demand shocks and to reflect staffing constraints; defaults are chosen for stable face-valid dynamics and explored in sensitivity analysis.
-contraction_lag,Model parameter,0.2,unitless,assumed,,,0.05,0.35,Operational inertia parameter controlling how quickly capacity can contract (e.g. attrition and redeployment and shutdown friction). Included to reflect asymmetric adjustment costs and realistic constraints; defaults are chosen for stable dynamics and explored in sensitivity analysis. This prevents unrealistic month-to-month collapse in capacity and supports stable comparison of policy regimes under negative shocks.
-cap_rule,Runtime rule object,(runtime),unitless,assumed,,,,,This is a runtime-initialised policy rule object injected by `initialize_rules()` to encode cap mechanics (hard/soft cap behaviour). It is not a scalar calibration target; it exists to make the simulation modular and configurable. Presence is documented for traceability and reproducibility of rule selection.
-audit_rule,Runtime rule object,(runtime),unitless,assumed,,,,,This is a runtime-initialised policy rule object injected by `initialize_rules()` to encode audit intensity/penalty logic. It is not a scalar parameter; it provides modularity for scenario design and controlled experiments. Documented here to ensure full traceability of model inputs and rule wiring.
-eligibility_rule,Runtime rule object,(runtime),unitless,assumed,,,,,This is a runtime-initialised rule object injected by `initialize_rules()` to determine eligibility/boundary rules between funding streams. It is not a scalar value; it exists so scenarios can swap boundary conditions without changing core dynamics. Documented for reproducibility of rule configuration.
-reconciliation_rule,Runtime rule object,(runtime),unitless,assumed,,,,,This is a runtime-initialised rule object injected by `initialize_rules()` to encode end-of-period reconciliation logic between jurisdictions and the Commonwealth. It is not a scalar parameter; it is documented here so that the complete set of model inputs is traceable and reproducible across runs.
-spine,Economic spine time series,(EconomicSpineJax|None),unitless,calibrated,https://www.ihacpa.gov.au/resources/national-efficient-price-determination-2025-26,NEP/WPI series in data/calibration/historical_normalized.csv,,,Loaded from publicly available economic inputs assembled by the project data pipeline. When present this provides the time series used to index NEP/WPI dynamics; when absent the model falls back to defaults for exploratory scenarios.
+parameter,description,value,units,source_type,citation_or_file,locator,range_low,range_high,justification,group
+nep_to_cost_ratio_metro,Model parameter,0.9,unitless,assumed,,,0.72,1.08,Stylised mechanism parameter,Funding
+nep_to_cost_ratio_regional,Model parameter,0.83,unitless,assumed,,,0.66,1.0,Stylised mechanism parameter,Funding
+nep_to_cost_ratio_remote,Model parameter,0.75,unitless,assumed,,,0.6,0.9,Stylised mechanism parameter,Funding
+rurality_weight,Model parameter,0.35,unitless,assumed,,,0.28,0.42,Stylised mechanism parameter,Funding
+remote_weight,Model parameter,0.07,unitless,assumed,,,0.05,0.09,Stylised mechanism parameter,Funding
+nominal_cth_share_target,Model parameter,0.45,fraction,secondary,https://www.publichospitalfunding.gov.au/,NHRA Agreement,0.3,0.6,Stylised mechanism parameter,Funding
+effective_cth_share_base,Model parameter,0.38,fraction,secondary,https://www.publichospitalfunding.gov.au/,NHRA Agreement,0.3,0.46,Stylised mechanism parameter,Funding
+cap_growth,Model parameter,0.065,fraction/year,assumed,,,0.05,0.08,Stylised mechanism parameter,Funding
+has_cumulative_cap,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter,Funding
+use_equilibrium_bargaining,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter,Behavioural
+use_stage_game_equilibria,Model parameter,True,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter,Behavioural
+equilibrium_selection_rule,Model parameter,payoff_dominant,unitless,assumed,,,,,Stylised mechanism parameter,Behavioural
+nep_per_nwau_start,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter,Pricing
+nep_annual_growth,Model parameter,0.03,fraction/year,primary,https://www.ihacpa.gov.au/resources/national-efficient-price-determination-2025-26,NEP Indexation,0.01,0.08,Stylised mechanism parameter,Pricing
+representative_nwau,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter,Pricing
+input_cost_per_nwau_start,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter,Pricing
+input_cost_annual_growth,Model parameter,0.04,fraction/year,primary,https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/wage-price-index-australia,WPI Health,0.01,0.08,Stylised mechanism parameter,Pricing
+demand_base,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter,Operations
+avoidable_ed_share,Model parameter,0.18,fraction,secondary,https://www.publichospitalfunding.gov.au/,NHRA Agreement,0.1,0.3,Stylised mechanism parameter,Operations
+discharge_delay_base,Model parameter,1.0,unitless,assumed,,,0.5,2.0,Stylised mechanism parameter,Operations
+bed_capacity_index,Model parameter,1.0,unitless,assumed,,,0.7,1.3,Stylised mechanism parameter,Operations
+cost_shifting_intensity,Model parameter,0.35,unitless,assumed,,,0.05,0.8,Stylised mechanism parameter,Policy
+fragmentation_index,Model parameter,1.0,unitless,assumed,,,0.6,1.5,Stylised mechanism parameter,Policy
+audit_pressure,Model parameter,0.5,unitless,assumed,,,0.05,1.0,Stylised mechanism parameter,Policy
+admin_burden_weight,Model parameter,0.25,unitless,assumed,,,0.05,0.6,Stylised mechanism parameter,Policy
+occupancy_base,Model parameter,0.88,unitless,assumed,,,0.7,1.0,Stylised mechanism parameter,Clinical
+offload_base_min,Model parameter,18.0,unitless,assumed,,,5.0,60.0,Stylised mechanism parameter,Clinical
+within4_base,Model parameter,0.53,unitless,assumed,,,0.3,0.8,Stylised mechanism parameter,Clinical
+rr_beta_pressure,Model parameter,0.35,unitless,assumed,,,0.1,0.6,Stylised mechanism parameter,Clinical
+rr_beta_offload,Model parameter,0.015,unitless,assumed,,,0.0,0.05,Stylised mechanism parameter,Clinical
+offload_threshold_min,Model parameter,20.0,unitless,assumed,,,10.0,40.0,Stylised mechanism parameter,Clinical
+tau,Model parameter,0.25,unitless,assumed,,,0.1,0.5,Stylised mechanism parameter,Behavioural
+bargaining_cost,Model parameter,0.12,unitless,assumed,,,0.05,0.3,Stylised mechanism parameter,Behavioural
+political_salience,Model parameter,0.3,unitless,assumed,,,0.05,0.8,Stylised mechanism parameter,Policy
+use_quantal_response,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter,Behavioural
+qre_lambda,Model parameter,4.0,unitless,assumed,,,1.0,10.0,Stylised mechanism parameter,Behavioural
+use_burden_feedback,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter,Behavioural
+burden_to_throughput_beta,Model parameter,0.06,unitless,assumed,,,0.0,0.2,Stylised mechanism parameter,Behavioural
+noise_sd,Model parameter,0.03,unitless,assumed,,,0.01,0.1,Stylised mechanism parameter,Behavioural
+capacity_lag,Model parameter,0.15,unitless,assumed,,,0.05,0.5,Stylised mechanism parameter,Operations
+orchestration_mode,Model parameter,simultaneous,unitless,assumed,,,,,Stylised mechanism parameter,Policy
+isolated_game,Model parameter,None,unitless,assumed,,,,,Stylised mechanism parameter,Policy
+cap_rule_type,Model parameter,hard,unitless,assumed,,,,,Stylised mechanism parameter,Policy
+audit_rule_type,Model parameter,proportional,unitless,assumed,,,,,Stylised mechanism parameter,Policy
+adjustment_cost_beta,Model parameter,5.0,unitless,assumed,,,1.0,10.0,Stylised mechanism parameter,Operations
+cannibalization_beta,Model parameter,0.1,unitless,assumed,,,0.0,0.5,Stylised mechanism parameter,Policy
+block_funding_base,Model parameter,0.15,fraction,assumed,,,0.05,0.3,Stylised mechanism parameter,Funding
+shifting_friction,Model parameter,0.05,unitless,assumed,,,0.0,0.2,Stylised mechanism parameter,Funding
+signal_lag_months,Model parameter,1.0,months,assumed,,,0.0,6.0,Stylised mechanism parameter,Lags
+claims_lag_months,Model parameter,3.0,months,assumed,,,0.0,12.0,Stylised mechanism parameter,Lags
+gp_out_of_pocket,Model parameter,40.0,NZD,assumed,,,0.0,120.0,Stylised mechanism parameter,Choice
+gp_wait_time_min,Model parameter,15.0,minutes,assumed,,,0.0,120.0,Stylised mechanism parameter,Choice
+patient_time_value_hour,Model parameter,25.0,NZD/hour,assumed,,,5.0,100.0,Stylised mechanism parameter,Choice
+expansion_lag,Model parameter,0.1,unitless,assumed,,,0.05,0.3,Stylised mechanism parameter,Operations
+contraction_lag,Model parameter,0.2,unitless,assumed,,,0.05,0.5,Stylised mechanism parameter,Operations
+use_sequential_bargaining,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter,Behavioural
+discount_rate,Model parameter,0.9,unitless,assumed,,,0.5,1.0,Stylised mechanism parameter,Behavioural
+economic_spine,Historical NEP and WPI series,(DataFrame),unitless,calibrated,https://www.ihacpa.gov.au/,,,Ingested from official sources,Pricing
+cap_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime rule object,Policy
+audit_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime rule object,Policy
+eligibility_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime rule object,Policy
+reconciliation_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime rule object,Policy
+spine,Economic spine time series,(EconomicSpineJax|None),unitless,calibrated,https://www.ihacpa.gov.au/,,,Economic inputs,Pricing
 ```
 
 
@@ -342,19 +344,40 @@ spine,Economic spine time series,(EconomicSpineJax|None),unitless,calibrated,htt
 
 ## 08_glossary_abbreviations.md
 
-# Glossary and abbreviations
+# Glossary and Abbreviations
 
-- **ABF**: Activity-based funding.
+## Acronyms & Domain Terms
+- **ABF**: Activity-Based Funding. A funding method where hospitals are paid based on the number and mix of services provided.
 - **ACEC**: Australian Emergency Care Classification.
 - **AIHW**: Australian Institute of Health and Welfare.
-- **IHACPA**: Independent Health and Aged Care Pricing Authority.
+- **IHACPA**: Independent Health and Aged Care Pricing Authority. Sets the NEP.
 - **IHPA**: Independent Hospital Pricing Authority (historic name).
-- **NEP**: National Efficient Price (annual $/NWAU, determined by IHACPA) used with a service **NWAU** weight to compute an efficient payment.
-- **NWAU**: National Weighted Activity Unit.
-- **NHFB**: National Health Funding Body.
-- **NHRA**: National Health Reform Agreement.
-- **VFI**: Vertical fiscal imbalance.
-- **ED≤4h**: Percentage of ED presentations completed within 4 hours.
+- **NEP**: National Efficient Price (annual $/NWAU, determined by IHACPA).
+- **NWAU**: National Weighted Activity Unit. A measure of health service activity expressed as a common unit of cost.
+- **NHFB**: National Health Funding Body. Administers the payments.
+- **NHRA**: National Health Reform Agreement. The policy framework being modeled.
+- **VFI**: Vertical Fiscal Imbalance. The mismatch between revenue raising powers and expenditure responsibilities.
+- **ED≤4h**: Emergency Department performance metric (Percentage of presentations completed within 4 hours).
+- **LHN**: Local Hospital Network. The state-managed entity operating hospitals.
+
+## Game Theoretic Concepts
+- **Nash Equilibrium**: A stable state of a system involving the interaction of different participants, in which no participant can gain by a unilateral change of strategy.
+- **Cost Shifting**: Strategic action where an agent transfers costs to another agent without a corresponding transfer of benefits.
+- **Upcoding**: Systematically assigning higher-paying codes to patient encounters than is warranted by the clinical documentation.
+- **Fragility Node**: A point in the system (e.g., information lag) that is structurally vulnerable to exploitation or failure.
+- **Information Lag**: The delay between an action (e.g., treating a patient) and the observation of its outcome (e.g., data reporting), creating strategic ambiguity.
+
+## Parameter Mapping (Manuscript vs. Code)
+This table maps the mathematical symbols used in the manuscripts to the variable names in the `nhra_gt` codebase.
+
+| Manuscript Symbol | Code Variable | Description |
+| :--- | :--- | :--- |
+| $\alpha$ (Alpha) | `nwau_utility` | Weight placed on revenue generation in the agent's utility function. |
+| $\beta$ (Beta) | `kpi_satisfaction` / `ramping_penalty` | Weight placed on reputation or KPI satisfaction (often related to tipping points). |
+| $\theta$ (Theta) | `coding_intensity` | The level of upcoding effort exerted by the LHN. |
+| $P_{audit}$ | `audit_pressure` | The probability or intensity of an audit by the regulator. |
+| $\delta$ (Delta) | `discount_rate` | Factor used to discount future payoffs in sequential or multi-period games. |
+| $C_{adjust}$ | `adjustment_costs` | Cost associated with changing capacity or service levels (frictional cost). |
 
 
 ---

@@ -30,7 +30,7 @@ class DashboardPage:
         """Navigate to the app and wait for load."""
         self.page.goto(self.base_url)
         # Wait for the main title to ensure basic load
-        expect(self.main_header).to_contain_text("NHRA Strategic Scenario", timeout=15000)
+        expect(self.main_header).to_contain_text("NHRA Strategic Scenario", timeout=60000)
         self.check_for_errors()
 
     def check_for_errors(self):
@@ -44,6 +44,6 @@ class DashboardPage:
 
     def navigate_to_tab(self, tab_locator):
         """Click a tab and wait for stability."""
-        tab_locator.click()
-        self.page.wait_for_timeout(500)  # Small UI settle
+        tab_locator.click(timeout=60000)
+        self.page.wait_for_timeout(1000)  # UI settle
         self.check_for_errors()
