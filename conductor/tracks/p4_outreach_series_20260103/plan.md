@@ -54,9 +54,9 @@
 - [x] Task: Bundle 13 (Streamlit dashboard) — v1 → feedback/consensus → v2 (run validators)
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Hybrid/Ensemble + Dashboard Bundles' (Protocol in workflow.md)
 
-## Phase 5: Series QA, index, and link validation
-- [ ] Task: Generate/refresh series index from manifest (links + recommended reading order)
-- [ ] Task: Run offline validations (completeness + images + social + readability) and fix issues
-- [ ] Task: Run online link validation for all referenced URLs (requires network approval) and fix broken/unstable links
-- [ ] Task: Final consistency pass (tone, humour, accessibility, policy implications, evidence)
-- [ ] Task: Conductor - User Manual Verification 'Phase 5: Series QA, Index, Link Validation' (Protocol in workflow.md)
+## Phase 5: Series QA, index, and link validation [checkpoint: 6918417]
+- [x] Task: Generate/refresh series index from manifest (links + recommended reading order)
+- [x] Task: Run offline validations (completeness + images + social + readability) and fix issues
+- [x] Task: Run online link validation for all referenced URLs (requires network approval) and fix broken/unstable links
+- [x] Task: Final consistency pass (tone, humour, accessibility, policy implications, evidence)
+- [x] Task: Conductor - User Manual Verification 'Phase 5: Series QA, Index, Link Validation' (Protocol in workflow.md)
