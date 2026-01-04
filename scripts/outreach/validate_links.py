@@ -23,8 +23,8 @@ _url_re = re.compile(r"https?://[^\s<>()]+")
 def _extract_urls(text: str) -> set[str]:
     urls: set[str] = set()
     for raw in _url_re.findall(text):
-        url = raw.rstrip(').,;]}>\"\'')
-        if url.startswith("http://") or url.startswith("https://"):
+        url = raw.rstrip(").,;]}>\"'")
+        if url.startswith(("http://", "https://")):
             urls.add(url)
     return urls
 
@@ -53,7 +53,7 @@ def _bundle_dirs_from_manifest(manifest: dict) -> list[tuple[int, str, tuple[str
     for b in manifest.get("bundles") or []:
         order = int(b["order"])
         slug = str(b["slug"])
-        required = tuple(((b.get("outputs") or {}).get("required") or []))
+        required = tuple((b.get("outputs") or {}).get("required") or [])
         parsed.append((order, slug, required))
     parsed.sort(key=lambda x: x[0])
     return parsed
@@ -107,7 +107,7 @@ def _check_url(url: str, *, timeout_s: float) -> LinkCheck:
     }
 
     try:
-        if url.startswith("https://doi.org/") or url.startswith("http://doi.org/"):
+        if url.startswith(("https://doi.org/", "http://doi.org/")):
             resp = requests.get(url, timeout=timeout_s, allow_redirects=False, headers=headers)
         else:
             # Avoid downloading large PDFs by default.
@@ -119,7 +119,9 @@ def _check_url(url: str, *, timeout_s: float) -> LinkCheck:
         status = int(resp.status_code)
         resp.close()
     except requests.RequestException as exc:
-        return LinkCheck(url=url, status_code=None, outcome="fail", detail=f"{type(exc).__name__}: {exc}")
+        return LinkCheck(
+            url=url, status_code=None, outcome="fail", detail=f"{type(exc).__name__}: {exc}"
+        )
 
     if 200 <= status < 400 or status == 206:
         return LinkCheck(url=url, status_code=status, outcome="ok")
@@ -128,7 +130,9 @@ def _check_url(url: str, *, timeout_s: float) -> LinkCheck:
     return LinkCheck(url=url, status_code=status, outcome="fail")
 
 
-def validate_urls(*, urls: set[str], timeout_s: float = 15.0) -> tuple[list[LinkCheck], list[LinkCheck], list[LinkCheck]]:
+def validate_urls(
+    *, urls: set[str], timeout_s: float = 15.0
+) -> tuple[list[LinkCheck], list[LinkCheck], list[LinkCheck]]:
     ok: list[LinkCheck] = []
     warn: list[LinkCheck] = []
     fail: list[LinkCheck] = []
@@ -159,7 +163,9 @@ def main() -> int:
         type=Path,
         default=Path("publications/shared/references/library.yaml"),
     )
-    parser.add_argument("--bundle", type=str, default=None, help="Validate only a single bundle slug")
+    parser.add_argument(
+        "--bundle", type=str, default=None, help="Validate only a single bundle slug"
+    )
     parser.add_argument("--timeout", type=float, default=15.0)
     parser.add_argument(
         "--strict",
@@ -196,4 +202,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

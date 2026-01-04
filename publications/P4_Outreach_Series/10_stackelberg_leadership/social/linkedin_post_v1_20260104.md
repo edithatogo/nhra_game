@@ -18,4 +18,4 @@ Stop the Leader/Follower dynamic. Decide together.
 
 Read the analysis: [Link]
 
-#NHRA #GameTheory #Stackelberg #HealthPolicy #Leadership
+# NHRA #GameTheory #Stackelberg #HealthPolicy #Leadership

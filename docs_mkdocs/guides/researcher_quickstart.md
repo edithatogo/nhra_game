@@ -24,11 +24,13 @@ poetry install --with dev,accel,opt
 The project uses `Justfile` to simplify complex commands.
 
 ### Run Baseline Trajectory
+
 ```bash
 just baseline
 ```
 
 ### Start Interactive Dashboard
+
 ```bash
 just dashboard
 ```
@@ -39,10 +41,12 @@ To reproduce the exact figures found in the MJA publication series:
 
 1. Ensure the `data/raw` directory contains the AIHW/ABS snapshots (or run `just ingest`).
 2. Run the Snakemake pipeline:
+
 ```bash
 just all
 ```
-3. Check the `outputs/` folder for generated figures and tables.
+
+1. Check the `outputs/` folder for generated figures and tables.
 
 ## 5. Troubleshooting
 

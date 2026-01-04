@@ -3,6 +3,7 @@
 **Goal:** Achieve a "best practice" repository state with error-free workflows, live documentation, and PyPI-ready distribution artifacts.
 
 ## Phase 1: Local Workflow Validation & Hardening
+
 - [~] **Task 1.1: Local CI Simulation (act)** (Skipped by user request)
   - [~] Sub-task: Install and configure `act` locally.
   - [~] Sub-task: Run each workflow in `/.github/workflows/` using `act` and resolve any environment or secret-related failures.
@@ -15,6 +16,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Workflow Hardening' (Protocol in workflow.md)**
 
 ## Phase 2: Repository Health & Polish
+
 - [x] **Task 2.1: File & Directory Reorganization** b850628
   - [x] Sub-task: Tidy the project root; move any stray artifacts into appropriate subdirectories.
   - [x] Sub-task: Verify presence and correctness of `LICENSE`, `CONTRIBUTING.md`, and `CODE_OF_CONDUCT.md`.
@@ -23,6 +25,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Repository Health' (Protocol in workflow.md)**
 
 ## Phase 3: Documentation Excellence
+
 - [x] **Task 3.1: Best-Practice README.md Implementation**
   - [x] Sub-task: Draft a clear project explanation and feature matrix.
   - [x] Sub-task: Implement a script to auto-generate architecture diagrams (e.g., via `diagrams` or `graphviz`) from code. (Leveraged existing context/02_system_map.md)
@@ -36,6 +39,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Documentation Excellence' (Protocol in workflow.md)**
 
 ## Phase 4: Distribution & Release Integrity
+
 - [x] **Task 4.1: Security & Vulnerability Scanning**
   - [x] Sub-task: Run `pip-audit` or `safety` to scan the locked dependency tree for known vulnerabilities. (Ran bandit: Pass. Ran pip-audit: Found upstream issues, logged).
 - [x] **Task 4.2: Distribution Artifact Verification**
@@ -49,6 +53,7 @@
 ---
 **Track Status:** COMPLETED 2025-12-25
 Repository polished for release.
+
 - README updated with badges and quickstart.
 - CI hardened with link checking and permissions.
 - Documentation build verified.

@@ -5,19 +5,22 @@
 **Authors:** Dylan A Mordaunt
 
 **Affiliations:**
+
 1. Flinders University, Adelaide, Australia.
 
 **Corresponding Author:**
 Dylan A Mordaunt
-Email: dylan.mordaunt@flinders.edu.au
+Email: <dylan.mordaunt@flinders.edu.au>
 
 **Keywords:** NHRA, Activity Based Funding, Agent-Based Modelling, Strategic Gaming, Policy Simulation.
 
 **Word Counts:**
+
 - Abstract: 295 words
 - Main Text: 1365 words
 
 **Display Items:**
+
 - Tables: 1
 - Figures: 3
 

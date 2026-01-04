@@ -1,4 +1,5 @@
 # Performance Modernization Report
+
 Date: 2025-12-27
 
 | Engine | Method | Time (s) | Speedup |
@@ -8,6 +9,7 @@ Date: 2025-12-27
 | JAX | Parallel (jit + vmap) | 0.0001 | 240790.1x |
 
 **Benchmark configuration:**
+
 - MC Samples: 1000
 - Years: 6
 - Platform: cpu

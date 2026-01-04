@@ -1,4 +1,5 @@
 import numpy as np
+
 from nhra_gt.subgames.sequential import rubinstein_solution, stackelberg_solution
 
 

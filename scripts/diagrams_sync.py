@@ -44,12 +44,7 @@ def mermaid_to_dot(mmd_text: str, name: str) -> str:
     for raw in mmd_text.splitlines():
         line = raw.strip()
         if (
-            not line
-            or line.startswith("%%")
-            or line.startswith("flowchart")
-            or line.startswith("graph")
-            or line.startswith("subgraph")
-            or line == "end"
+            not line or line.startswith(("%%", "flowchart", "graph", "subgraph")) or line == "end"
         ):
             continue
         if ":::" in line:

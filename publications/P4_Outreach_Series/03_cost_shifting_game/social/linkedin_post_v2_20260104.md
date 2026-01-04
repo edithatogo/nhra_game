@@ -19,4 +19,4 @@ To fix it, we need:
 
 Read the full analysis: [Link]
 
-#NHRA #HealthPolicy #GameTheory #PublicHealth #AusPol
+# NHRA #HealthPolicy #GameTheory #PublicHealth #AusPol

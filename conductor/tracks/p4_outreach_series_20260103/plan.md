@@ -1,6 +1,7 @@
 # Implementation Plan: P4 Outreach Series (NHRA-centred, Public-first)
 
 ## Phase 1: Foundations (Manifest, Scaffold, Templates, Rendering, Validators)
+
 - [x] Task: Define authoritative series manifest (`series_manifest.yaml`)
   - [x] Create `publications/P4_Outreach_Series/00_series_meta/series_manifest.yaml`
   - [x] Include bundle ordering, slugs, pairings, code pointers, required outputs, required image targets, key evidence links
@@ -32,6 +33,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundations (Manifest, Scaffold, Templates, Rendering, Validators)' (Protocol in workflow.md)
 
 ## Phase 2: Full-cycle iteration (first 3 bundles; multi-round feedback) [checkpoint: 3223376]
+
 - [x] Task: Bundle 01 — v1 drafts + images + renders + validations + feedback/consensus
 - [x] Task: Bundle 01 — iterate to v2/v3 until “public + 14yo” pass (rubric-based)
 - [x] Task: Bundle 02 — v1 → iterate to v2/v3 until “public + 14yo” pass
@@ -39,6 +41,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Full-cycle Iteration (First 3 Bundles)' (Protocol in workflow.md)
 
 ## Phase 3: Remaining scenario bundles (single feedback cycle each) [checkpoint: 5764810]
+
 - [x] Task: Bundle 04 — v1 → feedback/consensus → v2 (run validators)
 - [x] Task: Bundle 05 — v1 → feedback/consensus → v2 (run validators)
 - [x] Task: Bundle 06 — v1 → feedback/consensus → v2 (run validators)
@@ -50,11 +53,13 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Remaining Scenario Bundles (Single-cycle Each)' (Protocol in workflow.md)
 
 ## Phase 4: Hybrid/Ensemble + Streamlit dashboard bundles [checkpoint: d289b84]
+
 - [x] Task: Bundle 12 (Hybrid/Ensemble) — v1 → feedback/consensus → v2 (run validators)
 - [x] Task: Bundle 13 (Streamlit dashboard) — v1 → feedback/consensus → v2 (run validators)
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Hybrid/Ensemble + Dashboard Bundles' (Protocol in workflow.md)
 
 ## Phase 5: Series QA, index, and link validation [checkpoint: 6918417]
+
 - [x] Task: Generate/refresh series index from manifest (links + recommended reading order)
 - [x] Task: Run offline validations (completeness + images + social + readability) and fix issues
 - [x] Task: Run online link validation for all referenced URLs (requires network approval) and fix broken/unstable links

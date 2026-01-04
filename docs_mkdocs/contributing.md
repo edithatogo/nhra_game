@@ -149,11 +149,11 @@ def new_game(gp: GameParams) -> TwoPlayerGame:
     )
 ```
 
-2. **Add to agents** in `src/nhra_gt/agents/base.py` if the game should be played in simulation
+1. **Add to agents** in `src/nhra_gt/agents/base.py` if the game should be played in simulation
 
-3. **Document** the game in `docs_mkdocs/guides/models.md`
+2. **Document** the game in `docs_mkdocs/guides/models.md`
 
-4. **Add tests** in `tests/`
+3. **Add tests** in `tests/`
 
 ---
 

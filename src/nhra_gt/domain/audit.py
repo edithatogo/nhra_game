@@ -75,6 +75,5 @@ class Recorder:
         with open(filepath, "w") as f:
             json.dump(self.current_experiment, f, indent=2)
 
-        print(f"Audit record and artifacts saved to {self.experiment_dir}")
         self.current_experiment = None
         self.experiment_dir = None

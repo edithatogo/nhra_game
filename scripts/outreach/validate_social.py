@@ -55,7 +55,9 @@ def validate_x_threads(*, root: Path) -> list[TweetIssue]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate X/Twitter thread tweet lengths (<= 280 chars).")
+    parser = argparse.ArgumentParser(
+        description="Validate X/Twitter thread tweet lengths (<= 280 chars)."
+    )
     parser.add_argument("--root", type=Path, default=Path("publications/P4_Outreach_Series"))
     args = parser.parse_args()
 
@@ -71,4 +73,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

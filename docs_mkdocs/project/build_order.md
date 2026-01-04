@@ -23,21 +23,29 @@
 ## A pragmatic “build order”
 
 ### Core v1 (Must-Have)
+
 **Focus:** Timing/Threshold (#1), Coding Drift (#2), Capacity/Queues (#4).
-*   **State:** Time, Budget caps, Claim timing, NWAU, Coding intensity, Capacity utilization, Queue lengths.
-*   **Actions:** Submit claim, Allocate capacity, Manage queues.
+
+* **State:** Time, Budget caps, Claim timing, NWAU, Coding intensity, Capacity utilization, Queue lengths.
+* **Actions:** Submit claim, Allocate capacity, Manage queues.
 
 ### v2 (High Value)
+
 **Focus:** Boundary Shifting (#3), Internal Contracting (#5).
-*   **State:** v1 State + Eligibility rules, Internal contract targets.
-*   **Actions:** v1 Actions + Reclassify activity, Adjust internal targets.
+
+* **State:** v1 State + Eligibility rules, Internal contract targets.
+* **Actions:** v1 Actions + Reclassify activity, Adjust internal targets.
 
 ### v3 (Policy Breadth)
+
 **Focus:** Cost Shifting (#6), Audit Arms Race (#7).
-*   **State:** v1/v2 State + Audit intensity, Penalty structure.
-*   **Actions:** v1/v2 Actions + Adjust audit params, Gaming responses.
+
+* **State:** v1/v2 State + Audit intensity, Penalty structure.
+* **Actions:** v1/v2 Actions + Adjust audit params, Gaming responses.
 
 ### v4 (Long-Horizon Realism)
+
 **Focus:** Renegotiation & Side-Payments (#8).
-*   **State:** v1/v2/v3 State + Renegotiation params, Side-payment rules.
-*   **Actions:** v1/v2/v3 Actions + Initiate renegotiation, Offer/accept side-payments.
+
+* **State:** v1/v2/v3 State + Renegotiation params, Side-payment rules.
+* **Actions:** v1/v2/v3 Actions + Initiate renegotiation, Offer/accept side-payments.

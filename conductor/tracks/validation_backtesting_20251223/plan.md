@@ -1,6 +1,7 @@
 # Track Plan: Model Validation & Backtesting (SOTA)
 
 ## Phase 0: Infrastructure Rigor (Quality Baseline)
+
 - [x] **Task 0.1: Pydantic V2 Refactor (TDD)** 8e0aaaf
   - [x] Sub-task: Refactor `Params` dataclass to a Pydantic Model with field validators (e.g., probability bounds).
   - [x] Sub-task: Refactor `EvidenceEntry` and `EvidenceRegistry` to Pydantic for robust JSON/CSV serialization.
@@ -15,6 +16,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Infrastructure Rigor' (Protocol in workflow.md)** [checkpoint: f48928f]
 
 ## Phase 1: Historical Data Ingestion & Pre-processing [checkpoint: 236e5f2]
+
 - [x] **Task 1: Ingest and Align Historical NHRA Datasets (TDD)**
   - [x] Sub-task: Write tests for data alignment utility (matching historical years to model steps).
   - [x] Sub-task: Implement `scripts/data/preprocess_historical.py` to normalize 2011–2025 data from AIHW and ABS.
@@ -23,6 +25,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Historical Data Ingestion' (Protocol in workflow.md)**
 
 ## Phase 2: Recursive Backtesting & Metric Engine [checkpoint: 8cb857d]
+
 - [x] **Task 2: Recursive Rolling Horizon Validation Engine (TDD)**
   - [x] Sub-task: Write tests for the rolling horizon "Train-Test" loop.
   - [x] Sub-task: Integrate `optimize_calibration_v21.py` into the recursive loop logic. (Note: Stubbed, full integration pending calibration refactor)
@@ -36,6 +39,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Backtesting Engine' (Protocol in workflow.md)**
 
 ## Phase 3: Mechanism Validation & Holdout Reveal [checkpoint: b3a0d24]
+
 - [x] **Task 4: Structural Integrity & Mechanism Consistency Checks (TDD)**
   - [x] Sub-task: Write tests for driver-matching logic (comparing GSA results to historical narratives).
   - [x] Sub-task: Implement the mechanism validation suite. (Note: Validation script `scripts/validation/validate_mechanism.py` confirms integrity checks are active. **Current Status: FAILING** on Discharge Delay and Cost Shifting rules.)
@@ -44,6 +48,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Mechanism Validation' (Protocol in workflow.md)**
 
 ## Phase 4: Dashboard Integration & Reporting [checkpoint: 3bffc15]
+
 - [x] **Task 6: Interactive Validation Dashboard (TDD)**
   - [x] Sub-task: Write tests for Plotly overlay data generation (History vs. Prediction).
   - [x] Sub-task: Implement "Validation Scorecard" and "Ghost Overlay" tabs in Streamlit.

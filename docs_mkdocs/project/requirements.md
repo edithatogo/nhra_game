@@ -53,7 +53,7 @@ The simulation toolkit is designed to explore:
 
     This is a **stylised mechanism model** for policy reasoning, **not a forecast**. It should be used to understand strategic incentives and compare policy directions, not to predict specific outcomes.
 
-### Key limitations:
+### Key limitations
 
 1. **Simplified payoffs**: Payoff functions are parameterised approximations, not empirically estimated
 2. **Equilibrium selection**: When multiple equilibria exist, selection rules are heuristic

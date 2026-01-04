@@ -4,7 +4,6 @@ from pathlib import Path
 
 import pytest
 from PIL import Image
-
 from scripts.outreach.validate_images import validate_cover_images
 
 
@@ -69,4 +68,3 @@ def test_validate_cover_images_dimension_mismatch(mini_series: tuple[Path, Path]
     missing, errors = validate_cover_images(manifest_path=manifest, series_root=root)
     assert missing == []
     assert len(errors) == 1
-

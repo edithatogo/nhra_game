@@ -8,25 +8,25 @@ This documentation provides details on the simulation models, game theory mechan
 
 <div class="grid cards" markdown>
 
--   :material-book-open-page-variant: **Guides**
+- :material-book-open-page-variant: **Guides**
 
     Detailed guides on usage, profiling, and development workflows.
 
     [:arrow_right: Explore Guides](guides/index.md)
 
--   :material-chart-bell-curve-cumulative: **Models**
+- :material-chart-bell-curve-cumulative: **Models**
 
     Technical specifications of the game theory mechanisms and simulation logic.
 
     [:arrow_right: View Models](guides/models.md)
 
--   :material-clipboard-text-outline: **Project**
+- :material-clipboard-text-outline: **Project**
 
     Requirements, design documents, and task tracking.
 
     [:arrow_right: Project Docs](project/index.md)
 
--   :material-api: **API Reference**
+- :material-api: **API Reference**
 
     Auto-generated Python API reference for the `nhra_gt` package.
 
@@ -48,9 +48,9 @@ This documentation provides details on the simulation models, game theory mechan
 
 ## Key Features
 
-*   **Mechanism Design**: Custom game-theory models for hospital funding negotiations.
-*   **Safety Theatre**: Simulation of "Safety Theatre" dynamics in high-reliability organizations.
-*   **Validation**: Rigorous validation suite including sensitivity analysis and backtesting.
+- **Mechanism Design**: Custom game-theory models for hospital funding negotiations.
+- **Safety Theatre**: Simulation of "Safety Theatre" dynamics in high-reliability organizations.
+- **Validation**: Rigorous validation suite including sensitivity analysis and backtesting.
 
 ## Getting Started
 

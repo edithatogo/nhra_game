@@ -3,6 +3,7 @@
 This document tracks the implementation status of all planned features for the `nhra_gt` project, as defined in `conductor/product.md` and `context/nhra_all_in_spec.md`.
 
 ## Status Key
+
 - **Implemented**: Full functionality exists in the codebase.
 - **Stubbed**: Placeholder exists (e.g., function with `pass` or `NotImplementedError`).
 - **Missing**: No trace of the feature found in the codebase.

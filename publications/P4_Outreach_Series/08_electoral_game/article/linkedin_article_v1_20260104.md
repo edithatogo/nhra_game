@@ -25,10 +25,11 @@ If the Government spends huge (Salience), the Opposition attacks on "Waste/Debt"
 ## The Equilibrium: "Cyclical Salience"
 
 There is no stable point. The system cycles.
-1.  **Election Mode**: Spend, spend, spend! (Boost Salience).
-2.  **Post-Election**: "Oh no, the deficit!" (Cut spending).
-3.  **Mid-Term**: Wait lists blow out. Opposition attacks.
-4.  **Pre-Election**: Panic spend! (Repeat).
+
+1. **Election Mode**: Spend, spend, spend! (Boost Salience).
+2. **Post-Election**: "Oh no, the deficit!" (Cut spending).
+3. **Mid-Term**: Wait lists blow out. Opposition attacks.
+4. **Pre-Election**: Panic spend! (Repeat).
 
 ## How to fix it
 

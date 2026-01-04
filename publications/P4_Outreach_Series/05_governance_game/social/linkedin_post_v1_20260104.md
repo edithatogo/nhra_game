@@ -19,4 +19,4 @@ Use real-time data to build trust. If the outcome is good, let the local team dr
 
 Read the full breakdown: [Link]
 
-#NHRA #HealthGovernance #Leadership #GameTheory #PublicHealth
+# NHRA #HealthGovernance #Leadership #GameTheory #PublicHealth

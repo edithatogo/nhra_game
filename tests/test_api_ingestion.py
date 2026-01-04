@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from scripts.data.ingest_aihw_api import process_api_data
 
 

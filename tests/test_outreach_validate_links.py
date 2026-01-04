@@ -3,7 +3,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
 from scripts.outreach.validate_links import _extract_urls, collect_series_urls, validate_urls
 
 
@@ -78,7 +77,7 @@ def test_collect_series_urls_uses_latest_version(mini_series: tuple[Path, Path, 
 
 
 def test_validate_urls_classification(monkeypatch: pytest.MonkeyPatch) -> None:
-    def fake_get(url: str, *args, **kwargs):  # noqa: ANN001
+    def fake_get(url: str, *args, **kwargs):
         if "doi.org" in url:
             return _DummyResponse(302)
         if url.endswith("/ok"):
@@ -101,4 +100,3 @@ def test_validate_urls_classification(monkeypatch: pytest.MonkeyPatch) -> None:
     assert {r.url for r in ok} == {"https://doi.org/10.2307/1907266", "https://example.com/ok"}
     assert {r.url for r in warn} == {"https://example.com/warn"}
     assert {r.url for r in fail} == {"https://example.com/bad"}
-

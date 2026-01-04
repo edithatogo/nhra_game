@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import pandas as pd
+from scripts.dashboard import rank_interventions
 
 from nhra_gt.engine import Params
-from scripts.dashboard import rank_interventions
 
 
 def test_rank_interventions():

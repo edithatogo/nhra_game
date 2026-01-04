@@ -19,6 +19,7 @@ This index is auto-generated from `series_manifest.yaml`.
 | 13 | [Dashboard: How to explore NHRA scenarios (without needing a PhD)](../13_streamlit_dashboard/) | How the dashboard supports policy discussion and sense-making. | user-facing interpretation layer |
 
 ## Verification Status
+
 - All bundles have passed `validate_readability.py` (Grade < 9.5).
 - All bundles have passed `validate_bundle_completeness.py`.
 - All bundles have passed `validate_images.py`.

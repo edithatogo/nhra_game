@@ -17,4 +17,4 @@ Make Primary Care cheaper and faster. 📉
 
 Read the analysis: [Link]
 
-#NHRA #EmergencyMedicine #HealthEconomics #QueuingTheory #PublicHealth
+# NHRA #EmergencyMedicine #HealthEconomics #QueuingTheory #PublicHealth

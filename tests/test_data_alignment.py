@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import polars as pl
 import pytest
-
 from scripts.data.preprocess_historical import normalize_nhra_data
 
 

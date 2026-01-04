@@ -92,9 +92,10 @@ The project uses a high-performance JAX/XLA functional core for the simulation e
 ### Functional Programming Rules
 
 To maintain JIT-compatibility, all code in `src/nhra_gt/engine.py` must be **purely functional**:
-1.  **No Side Effects:** No `print()`, no global variable mutations, no in-place array updates.
-2.  **No Python Control Flow:** Use `jax.lax.cond`, `jax.lax.switch`, and `jax.lax.scan` instead of `if`, `elif`, and `for`.
-3.  **Statelessness:** Use `StateJax` Pytrees instead of objects with `self`.
+
+1. **No Side Effects:** No `print()`, no global variable mutations, no in-place array updates.
+2. **No Python Control Flow:** Use `jax.lax.cond`, `jax.lax.switch`, and `jax.lax.scan` instead of `if`, `elif`, and `for`.
+3. **Statelessness:** Use `StateJax` Pytrees instead of objects with `self`.
 
 ### Pytree State Management
 
@@ -122,6 +123,7 @@ parallel_results = jax.vmap(run_simulation)(keys)
 The engine automatically uses a persistent disk cache for compiled XLA kernels located at `~/.cache/jax_cache`. This minimizes "Time-to-First-Plot" in the dashboard.
 
 To run performance benchmarks:
+
 ```bash
 poetry run python scripts/benchmark_modernization.py
 ```
@@ -174,6 +176,7 @@ The GitHub Actions CI runs on every push and PR:
 ### Matrix
 
 Tests run across:
+
 - **OS**: Ubuntu, macOS, Windows
 - **Python**: 3.10, 3.11, 3.12, 3.13
 

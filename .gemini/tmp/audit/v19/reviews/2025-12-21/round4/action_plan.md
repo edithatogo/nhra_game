@@ -20,5 +20,6 @@ Date: 2025-12-21
    - Adds Hatch environment definitions to complement existing tooling and provide a clean entry-point for reproducible runs in external environments.
 
 ### Remaining future work (explicitly out-of-scope for v19)
+
 - Optional integration of IHACPA classification calculators as a plug-in module.
 - Formal optimisation (e.g., Optuna) as a policy design tool once objective functions and constraints are specified.

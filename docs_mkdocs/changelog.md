@@ -7,11 +7,13 @@ This page tracks major changes to the NHRA Game Theory toolkit.
 ## v26.0.1 — 2025-12-27
 
 ### Documentation
+
 - **Comprehensive documentation expansion**: Added guides (usage, models), project (requirements), and reference sections
 - **Game theory models reference**: Documented all 9 stage games with payoff formulas
 - **Architecture diagrams**: Added Mermaid diagrams for system architecture and data flow
 
 ### CI/CD
+
 - Fixed isort/ruff conflict by consolidating on ruff I001
 - Added `.gitattributes` for LF line endings (Windows fix)
 - Updated deptry ignores for dependency hygiene
@@ -21,6 +23,7 @@ This page tracks major changes to the NHRA Game Theory toolkit.
 ## v23 — 2025-12-24
 
 ### Features
+
 - **Dashboard Enhancements**: Added Effective Share Drift analysis and Ranked Intervention Table (with uncertainty)
 - **Reporting**: Automated generation of Methods Appendix and Manuscript Parameter Table (STRESS compliant)
 - **Documentation**: Restructured reporting scripts into `scripts/reporting/`
@@ -30,6 +33,7 @@ This page tracks major changes to the NHRA Game Theory toolkit.
 ## v22 — 2025-12-24
 
 ### Features
+
 - **Empirical Spine**: Integrated historical NEP (IHACPA) and WPI (ABS) series to drive efficiency gap drift dynamically
 - **Mechanism Refinement**: Overhauled Cost Shifting game to correct inert parameter sensitivity
 - **Stability Analysis**: Added tipping point heatmap and PSA distribution analysis
@@ -40,6 +44,7 @@ This page tracks major changes to the NHRA Game Theory toolkit.
 ## v21 — 2025-12-21
 
 ### Features
+
 - Added Kiro-style project context artifacts: requirements.md, design.md, tasks.md
 - Updated context pack builder to include project docs and parameter registry
 - Migrated parameter registry schema and strengthened public-only grounding checks
@@ -49,6 +54,7 @@ This page tracks major changes to the NHRA Game Theory toolkit.
 ## v17 — 2025-12-21
 
 ### Features
+
 - Round 2 review + implementation: decision-oriented intervention scenarios
 - Extended equilibria exports
 - Expanded narrative report with figure captions and abbreviations
@@ -59,6 +65,7 @@ This page tracks major changes to the NHRA Game Theory toolkit.
 ## v16 — 2025-12-21
 
 ### Features
+
 - Round 1 review + implementation
 - Per-file coverage enforcement (>=95%)
 - Expanded reporting and summaries
@@ -69,6 +76,7 @@ This page tracks major changes to the NHRA Game Theory toolkit.
 ## v15 — 2025-12-20
 
 ### Features
+
 - Initial equilibria solver implementation (pure + mixed where applicable)
 - Scenario and sensitivity analysis additions
 

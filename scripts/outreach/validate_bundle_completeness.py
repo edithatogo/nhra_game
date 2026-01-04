@@ -21,7 +21,7 @@ def _load_bundle_requirements(manifest: dict) -> list[BundleRequirement]:
     for b in bundles:
         order = int(b["order"])
         slug = str(b["slug"])
-        required = tuple(((b.get("outputs") or {}).get("required") or []))
+        required = tuple((b.get("outputs") or {}).get("required") or [])
         parsed.append(BundleRequirement(order=order, slug=slug, required_outputs=required))
     parsed.sort(key=lambda x: x.order)
     return parsed
@@ -79,9 +79,7 @@ def main() -> int:
         type=Path,
         default=Path("publications/P4_Outreach_Series/00_series_meta/series_manifest.yaml"),
     )
-    parser.add_argument(
-        "--root", type=Path, default=Path("publications/P4_Outreach_Series")
-    )
+    parser.add_argument("--root", type=Path, default=Path("publications/P4_Outreach_Series"))
     parser.add_argument(
         "--bundle",
         type=str,

@@ -5,6 +5,7 @@ This repository provides **stylised** simulation and game-theory mapping to supp
 > These models are **not forecasts** and should not be used to estimate budgets or clinical event counts.
 
 Key outputs:
+
 - `reports/` (HTML report, narrative summary)
 - `outputs/` (plots, tables, diagrams)
 - `diagrams/` (Mermaid and Graphviz sources)

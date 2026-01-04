@@ -3,6 +3,7 @@
 This series uses a mixed stakeholder panel to iteratively improve clarity, accessibility, and policy usefulness.
 
 ## Panel roles
+
 - 14yo reader: checks jargon, concrete examples, and “does this make sense?”
 - Curious lay reader: checks story flow and “why should I care?”
 - Patient/consumer advocate: checks patient impact is acknowledged and not trivialised.
@@ -13,6 +14,7 @@ This series uses a mixed stakeholder panel to iteratively improve clarity, acces
 - Journalist/editor: checks hooks, headlines, and readability.
 
 ## Scoring rubric (1–5)
+
 - Clarity
 - Accuracy
 - Humour appropriateness
@@ -20,4 +22,3 @@ This series uses a mixed stakeholder panel to iteratively improve clarity, acces
 - Policy usefulness
 
 Include “Top 3 fixes” and one suggested image improvement per feedback round.
-

@@ -1,6 +1,7 @@
 # Search Strings (Boolean Logic)
 
 ## PubMed / MEDLINE
+
 ```text
 ("National Health Reform Agreement" OR "NHRA" OR "Activity Based Funding" OR "ABF")
 AND
@@ -10,6 +11,7 @@ AND
 ```
 
 ## Scopus
+
 ```text
 TITLE-ABS-KEY(
     ("National Health Reform Agreement" OR "NHRA" OR "Activity Based Funding")
@@ -19,6 +21,7 @@ TITLE-ABS-KEY(
 ```
 
 ## Grey Literature (Google Scholar)
+
 ```text
 "National Health Reform Agreement" "safety theatre"
 "National Health Reform Agreement" "gaming"

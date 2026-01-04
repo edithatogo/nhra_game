@@ -35,6 +35,7 @@ NHRA negotiations (2025–2030) require decision‑relevant insight into how **v
 ## Scope
 
 ### In-scope
+
 - Mechanism-level modelling of NHRA dynamics and incentives (Commonwealth vs state split levers).
 - Stage games (definition/bargaining/cost shifting/discharge coordination/governance/compliance).
 - System dynamics for pressure, discharge delay, and flow proxies.
@@ -42,6 +43,7 @@ NHRA negotiations (2025–2030) require decision‑relevant insight into how **v
 - Reproducible pipeline: `just`, `snakemake`, CI checks.
 
 ### Out-of-scope (for now)
+
 - Full implementation of IHACPA NWAU XLSB calculators at runtime.
 - Jurisdiction‑specific hospital cost accounting.
 - Patient-level simulation; individual facility operational optimisation.

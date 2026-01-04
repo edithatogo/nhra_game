@@ -7,6 +7,7 @@ That sounds strange when everyone agrees the health system is under pressure.
 But it happens. And game theory helps explain why.
 
 Quick glossary (plain English):
+
 - **NHRA**: the national deal that shapes how public hospitals are funded.
 - **Bargaining**: a negotiation where each side wants a better deal.
 - **Discounting**: waiting makes future benefits worth less (or makes the “pie” shrink).
@@ -32,10 +33,12 @@ Let’s simplify the bargaining moment into two choices for each side:
 - **Hold out**
 
 And we’ll keep the payoffs qualitative:
+
 - “high” = better terms (or better position) for that side
 - “low” = worse terms, more uncertainty, or bigger delay costs
 
 This is the toy version of the model in the codebase:
+
 - `src/nhra_gt/subgames/games.py` → `bargaining_game()`
 
 Here’s a 2×2 picture of the logic:
@@ -62,6 +65,7 @@ Here’s the part that makes this feel real in health policy:
 **Time isn’t free.**
 
 While negotiations drag on:
+
 - planning gets harder,
 - reforms stall,
 - uncertainty grows,
@@ -86,17 +90,18 @@ if both sides keep saying “you go first”, the system can end up waiting… a
 ## Evidence / further reading
 
 Primary sources (NHRA / governance):
-- NHRA page (Council on Federal Financial Relations): https://federalfinancialrelations.gov.au/agreements/national-health-reform-agreement
-- NHRA 2020–25 Addendum (Consolidated) (PDF): https://federalfinancialrelations.gov.au/sites/federalfinancialrelations.gov.au/files/2021-07/NHRA_2020-25_Addendum_consolidated.pdf
-- Federal Financial Relations Act 2009 (Cth): https://www.legislation.gov.au/C2009A00138/latest/text
+
+- NHRA page (Council on Federal Financial Relations): <https://federalfinancialrelations.gov.au/agreements/national-health-reform-agreement>
+- NHRA 2020–25 Addendum (Consolidated) (PDF): <https://federalfinancialrelations.gov.au/sites/federalfinancialrelations.gov.au/files/2021-07/NHRA_2020-25_Addendum_consolidated.pdf>
+- Federal Financial Relations Act 2009 (Cth): <https://www.legislation.gov.au/C2009A00138/latest/text>
 
 Game theory background:
-- Nash (1950), “The Bargaining Problem” (DOI): https://doi.org/10.2307/1907266
-- Osborne & Rubinstein (1994), *A Course in Game Theory*: https://mitpress.mit.edu/9780262650403/a-course-in-game-theory/
+
+- Nash (1950), “The Bargaining Problem” (DOI): <https://doi.org/10.2307/1907266>
+- Osborne & Rubinstein (1994), *A Course in Game Theory*: <https://mitpress.mit.edu/9780262650403/a-course-in-game-theory/>
 
 ## TL;DR
 
 - In NHRA bargaining, waiting can be a rational play for leverage.
 - But waiting isn’t free: uncertainty and pressure can shrink the “pie”.
 - Policy design can reduce hold-out incentives with clear defaults and timelines.
-

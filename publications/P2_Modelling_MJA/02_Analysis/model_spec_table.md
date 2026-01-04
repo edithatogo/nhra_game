@@ -1,4 +1,5 @@
 # Comprehensive Model Specification (P2 Supplementary Data)
+
 **Author:** Dylan A Mordaunt
 
 ## 1. Parameter Table
@@ -15,10 +16,12 @@
 ## 2. Core Equations
 
 ### 2.1 Utility ($U$)
+
 $$U_i = \alpha \cdot F(a_i, \theta) + \beta \cdot R(s_i) - C(e_i) - P_{audit} \cdot \delta$$
 Where $\delta$ is the penalty for detected gaming.
 
 ### 2.2 System Pressure ($P$)
+
 $$P = 0.8 + 0.8 \cdot (0.55 \cdot \text{occ\_term} + 0.45 \cdot \text{off\_term}) \cdot \text{discharge\_delay}$$
 
 ## 3. Diagram Mapping

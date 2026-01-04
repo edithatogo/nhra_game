@@ -1,10 +1,12 @@
 # Technology Stack
 
 ## Language & Runtime
+
 - **Primary Language:** Python 3.10+
 - **Containerization:** Docker (Mandatory for MJA reproducibility and deployment)
 
 ## Core Modeling & Simulation
+
 - **Numerical Computing:** JAX/XLA (Consolidated Core), Polars (Data Spine), NumPy, SciPy
 - **Data Validation:** Pydantic V2 (Models), Pandera (DataFrame Schemas)
 - **Network Analysis:** NetworkX
@@ -15,6 +17,7 @@
 - **Strategic Game Analysis:** PyGambit (C++ Nash Oracle and tree construction)
 
 ## Development & Quality Assurance
+
 - **Build System:** Hatch
 - **Environment Orchestration:** Nox (Replacing Tox)
 - **Linting & Formatting:** Ruff, Bandit
@@ -25,5 +28,6 @@
 - Documentation: MkDocs, Mkdocstrings
 
 ## Publication & Meta-Research
+
 - Citation Management: Custom YAML-to-BibTeX/RIS pipeline (`manage_refs.py`)
 - Quality Metrics: Textstat (Readability/Grade Level optimization)

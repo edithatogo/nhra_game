@@ -23,6 +23,7 @@ We model this as an Inspection Game (like tax auditing or ticket inspectors).
 ## The Equilibrium: "Mixed Strategy" (Randomness)
 
 There is no stable single strategy here.
+
 - If the Admin never audits, the Provider will always Game.
 - If the Provider always Games, the Admin will always Audit.
 - If the Admin always Audits, the Provider will Comply.

@@ -15,6 +15,7 @@ U_{GP} = -( \frac{W_{GP}}{60} \times V_{time} ) - C_{OOP}
 $$
 
 Where:
+
 - $W_{ED}$: Wait time in ED (minutes), derived from system occupancy.
 - $W_{GP}$: Fixed wait time for a GP appointment.
 - $V_{time}$: Value of patient time ($/hour).
@@ -29,6 +30,7 @@ W_{ED} = \frac{\rho^{\sqrt{2(s+1)}-1}}{s(1-\rho)} \times 60
 $$
 
 Where:
+
 - $\rho$: System utilization (arrival rate / service rate).
 - $s$: Number of servers (staffed beds).
 
@@ -43,6 +45,7 @@ $$
 The system iterates until demand $D_{ED} = D_{total} \times P_{ED}$ stabilizes.
 
 ## 4. Evidence Grounding
+
 - **Time Value:** Grounded in ABS hourly wage data.
 - **Wait Times:** Sourced from AIHW MyHospitals performance reports.
 - **Costs:** Sourced from Medicare MBS data.

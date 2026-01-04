@@ -5,4 +5,5 @@
 If you want the full explanation (with diagrams), read the article: {link}
 
 Evidence (real links only; 1–3 is plenty):
+
 - {Reference}

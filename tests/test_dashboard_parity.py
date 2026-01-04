@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import numpy as np
+from scripts.dashboard import cached_run_model
 
 from nhra_gt.engine import Params, State, baseline_state, decide_strategies, run_hybrid, step
-from scripts.dashboard import cached_run_model
 
 
 def test_engine_dashboard_parity_logic():

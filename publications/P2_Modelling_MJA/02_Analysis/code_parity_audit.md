@@ -1,4 +1,5 @@
 # Code-to-Text Parity Audit (P2 Manuscript)
+
 **Author:** Dylan A Mordaunt
 
 ## 1. Core Equations Audit
@@ -11,8 +12,10 @@
 | **Within-4h Map** | Logistic transfer function. | `within4_from_pressure` (lines 71-73) | **Match** |
 
 ## 2. Identified Discrepancies
-*   **Reputation Variable:** Fixed in commit `3bea18f`. `reputation_score` added to `State`.
-*   **Wait Time servers:** The code uses `capacity * 10.0` as the server count (line 269). This has been documented in the ODD protocol as a calibrated server-to-bed ratio.
+
+* **Reputation Variable:** Fixed in commit `3bea18f`. `reputation_score` added to `State`.
+* **Wait Time servers:** The code uses `capacity * 10.0` as the server count (line 269). This has been documented in the ODD protocol as a calibrated server-to-bed ratio.
 
 ## 3. Final Status (v2.0)
+
 All core equations now map 1:1 between the modelling specification and the Python implementation.

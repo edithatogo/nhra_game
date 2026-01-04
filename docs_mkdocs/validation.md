@@ -130,6 +130,7 @@ poetry run python scripts/run_sobol_analysis.py --samples 1024
 ```
 
 This produces:
+
 - First-order indices (S1): Direct effect of each parameter
 - Total-order indices (ST): Total effect including interactions
 
@@ -157,6 +158,7 @@ poetry run python scripts/validation/recursive_backtest.py
 ```
 
 The backtest:
+
 1. Initialises from historical state (2017)
 2. Runs simulation forward
 3. Compares predicted vs actual trajectories
@@ -191,6 +193,7 @@ All validation runs automatically in GitHub Actions:
 ### Validation Gates
 
 PRs must pass:
+
 - [x] All unit tests
 - [x] Type checking (mypy strict)
 - [x] Lint/format (ruff)

@@ -53,7 +53,9 @@ def score_text(text: str) -> tuple[int, int, int, float]:
     return n_words, len(sentences), syllables, float(grade)
 
 
-def validate_articles(*, root: Path, max_grade: float = 9.5) -> tuple[list[ReadabilityResult], list[ReadabilityResult]]:
+def validate_articles(
+    *, root: Path, max_grade: float = 9.5
+) -> tuple[list[ReadabilityResult], list[ReadabilityResult]]:
     ok: list[ReadabilityResult] = []
     too_hard: list[ReadabilityResult] = []
 
@@ -114,7 +116,9 @@ def validate_latest_articles(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate readability heuristics for LinkedIn articles.")
+    parser = argparse.ArgumentParser(
+        description="Validate readability heuristics for LinkedIn articles."
+    )
     parser.add_argument("--root", type=Path, default=Path("publications/P4_Outreach_Series"))
     parser.add_argument("--max-grade", type=float, default=9.5)
     parser.add_argument(
@@ -131,7 +135,9 @@ def main() -> int:
     if too_hard:
         print("Readability issues (Flesch–Kincaid grade too high):")
         for r in too_hard:
-            print(f"- {r.path}: grade={r.flesch_kincaid_grade:.1f} words={r.words} sentences={r.sentences}")
+            print(
+                f"- {r.path}: grade={r.flesch_kincaid_grade:.1f} words={r.words} sentences={r.sentences}"
+            )
         return 2
     print(f"ok articles_scored={len(ok)}")
     return 0

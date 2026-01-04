@@ -1,6 +1,5 @@
 # Context Pack — NHRA game-theory repo (built 2026-01-04)
 
-
 ---
 
 ## requirements.md
@@ -42,6 +41,7 @@ NHRA negotiations (2025–2030) require decision‑relevant insight into how **v
 ## Scope
 
 ### In-scope
+
 - Mechanism-level modelling of NHRA dynamics and incentives (Commonwealth vs state split levers).
 - Stage games (definition/bargaining/cost shifting/discharge coordination/governance/compliance).
 - System dynamics for pressure, discharge delay, and flow proxies.
@@ -49,6 +49,7 @@ NHRA negotiations (2025–2030) require decision‑relevant insight into how **v
 - Reproducible pipeline: `just`, `snakemake`, CI checks.
 
 ### Out-of-scope (for now)
+
 - Full implementation of IHACPA NWAU XLSB calculators at runtime.
 - Jurisdiction‑specific hospital cost accounting.
 - Patient-level simulation; individual facility operational optimisation.
@@ -77,7 +78,6 @@ NHRA negotiations (2025–2030) require decision‑relevant insight into how **v
 - A1: `just all` and `snakemake` complete on a clean machine.
 - A2: `scripts/check_parameters_grounded.py` passes with **public-only** sources.
 - A3: Reports contain titled tables and figures with captions, abbreviations, and narrative synthesis.
-
 
 ---
 
@@ -109,9 +109,11 @@ The repository is designed as a **model-based policy analysis** toolchain with t
 ## Evidence and “public-only” constraint
 
 ### Parameter registry
+
 `context/04_parameter_registry.csv` is the single source of truth for parameters.
 
 Each parameter record includes:
+
 - value and units,
 - source type (`primary`, `secondary`, `calibrated`, `assumed`, `normalisation`),
 - a **public URL** and locator (page/table/section),
@@ -119,7 +121,9 @@ Each parameter record includes:
 - justification (required for assumptions).
 
 ### Enforcement
+
 `scripts/check_parameters_grounded.py` fails CI if:
+
 - a parameter is labelled `primary` or `secondary` and lacks a public URL,
 - an URL is not http/https,
 - a parameter is `assumed` but justification is insufficiently detailed,
@@ -130,7 +134,9 @@ This ensures the model can be audited by external reviewers.
 ## Modelling approach
 
 ### 1) Stage games
+
 A small set of two-player stage games represent strategic tensions, e.g.:
+
 - definition (what counts as “efficient”),
 - bargaining (cap/glide path),
 - cost shifting,
@@ -139,30 +145,38 @@ A small set of two-player stage games represent strategic tensions, e.g.:
 - compliance/audit incentives.
 
 For each game, the code:
+
 - constructs payoff matrices from state variables (pressure, efficiency gap, discharge delay),
 - solves **all Nash equilibria** (pure + mixed) using enumeration / support methods,
 - selects equilibria for simulation using a configurable rule (e.g., welfare, risk-dominant).
 
 ### 2) System dynamics
+
 A compact set of state variables evolve annually (or finer if needed), including:
+
 - NEP index and input-cost index (publicly sourced where available),
 - efficiency gap as cost-per-NWAU relative to NEP,
 - pressure, discharge delay, and flow proxies.
 
 The dynamics support:
+
 - stochastic Monte Carlo runs (for robustness),
 - deterministic mean-field and fixed-point checks (equation solving for stability).
 
 ## Outputs and reporting
 
 ### Reports
+
 Reports are built from templates that:
+
 - introduce each results section in full sentences,
 - provide figure/table titles, captions, and abbreviations,
 - include a synthesis paragraph per section and an overall conclusion.
 
 ### Diagrams
+
 Diagrams are maintained in source form:
+
 - `diagrams/*.mmd` (Mermaid)
 - `diagrams/*.dot` (Graphviz)
 
@@ -174,7 +188,6 @@ Render scripts generate publication-ready PNG/SVG.
 - `Snakefile` provides a DAG for pipelines.
 - `.github/workflows/ci.yml` runs:
   - lint/format, tests, coverage gates, grounding checks, context pack build.
-
 
 ---
 
@@ -188,6 +201,7 @@ This repository contains **stylised mechanism models** and **game-theory maps** 
 2) an **MJA original article** focusing on *governance, incentives, and system pressure* (not forecasting).
 
 ## What this is
+
 - A reproducible set of small models encoding hypothesised mechanisms:
   - valuation divergence (NEP vs inputs)
   - vertical fiscal imbalance (VFI) spillovers
@@ -197,18 +211,20 @@ This repository contains **stylised mechanism models** and **game-theory maps** 
   - strategic interaction (“games”) among key actors
 
 ## What this is not
+
 - Not a prediction tool.
 - Not an ABF calculator.
 - Not a mortality model.
 
 ## Outputs that matter
+
 - A short set of **decision-ready figures** that are stable across scenarios.
 - A transparent **parameter registry** with public sources or explicit assumption justifications.
 - A **position statement** narrative aligned to the mechanism findings.
 
 ## Primary policy questions
-See `context/01_policy_questions.md`.
 
+See `context/01_policy_questions.md`.
 
 ---
 
@@ -219,22 +235,24 @@ See `context/01_policy_questions.md`.
 These questions are the “north star” for both the **RACMA position statement** and the **MJA article**.
 
 ## Negotiation questions
+
 1. When the Commonwealth offers “45%”, what *exactly* is being shared?
    - 45% of **efficient price** (NEP × NWAU), 45% of **efficient growth**, or 45% of **actual cost**?
 2. Under what conditions does a **capped** grant (hard/soft cap) shift financial risk to States?
 3. How do different cap designs (hard cap vs cumulative catch‑up) change incentives?
 
 ## System performance questions
-4. How does **vertical fiscal imbalance** create predictable pathways from upstream constraints
+
+1. How does **vertical fiscal imbalance** create predictable pathways from upstream constraints
    (primary care, aged care, disability supports) to downstream pressure (ED throughput, occupancy, offload)?
-5. Which levers are likely to reduce **exit block** most effectively (aged care capacity, discharge coordination,
+2. Which levers are likely to reduce **exit block** most effectively (aged care capacity, discharge coordination,
    interoperability, middle‑tier workforce)?
 
 ## Governance questions
-6. Which “integration” interventions are most likely to improve safety without adding administrative burden?
-7. What contractual and governance conditions should attach to Commonwealth-funded models (e.g., UCCs)
-   to avoid fragmentation?
 
+1. Which “integration” interventions are most likely to improve safety without adding administrative burden?
+2. What contractual and governance conditions should attach to Commonwealth-funded models (e.g., UCCs)
+   to avoid fragmentation?
 
 ---
 
@@ -243,17 +261,21 @@ These questions are the “north star” for both the **RACMA position statement
 # Model overview
 
 ## What the models are
+
 These models are **stylised mechanism models** that combine:
+
 - a **system dynamics backbone** (pressure → occupancy/offload/ED≤4h), and
 - a layer of interacting **stage games** (bargaining/definition/cost-shifting/discharge/governance/compliance/signalling).
 
 They are designed for *scenario comparison* and *mechanism explanation*.
 
 ## What the models are not
+
 - Not a forecast, not an econometric model, not a clinical-outcomes model.
 - Not suitable for estimating real-world morbidity/mortality.
 
 ## Core state variables
+
 - **Pressure (index):** composite of demand, discharge delay, and valuation divergence.
 - **Occupancy:** proxy for access block.
 - **Ambulance offload minutes:** proxy for ED access block.
@@ -261,12 +283,13 @@ They are designed for *scenario comparison* and *mechanism explanation*.
 - **Risk proxy:** comparative index derived from pressure/offload/ED≤4h.
 
 ## Parameterisation philosophy
+
 All parameters must be either:
+
 1) backed by a **publicly retrievable source**, or
 2) explicitly labelled as an **assumption/calibration**, with a written rationale and a plausible range for sensitivity analysis.
 
 The canonical record is `context/04_parameter_registry.csv`.
-
 
 ---
 
@@ -339,7 +362,6 @@ reconciliation_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime r
 spine,Economic spine time series,(EconomicSpineJax|None),unitless,calibrated,https://www.ihacpa.gov.au/,,,Economic inputs,Pricing
 ```
 
-
 ---
 
 ## 08_glossary_abbreviations.md
@@ -347,6 +369,7 @@ spine,Economic spine time series,(EconomicSpineJax|None),unitless,calibrated,htt
 # Glossary and Abbreviations
 
 ## Acronyms & Domain Terms
+
 - **ABF**: Activity-Based Funding. A funding method where hospitals are paid based on the number and mix of services provided.
 - **ACEC**: Australian Emergency Care Classification.
 - **AIHW**: Australian Institute of Health and Welfare.
@@ -361,6 +384,7 @@ spine,Economic spine time series,(EconomicSpineJax|None),unitless,calibrated,htt
 - **LHN**: Local Hospital Network. The state-managed entity operating hospitals.
 
 ## Game Theoretic Concepts
+
 - **Nash Equilibrium**: A stable state of a system involving the interaction of different participants, in which no participant can gain by a unilateral change of strategy.
 - **Cost Shifting**: Strategic action where an agent transfers costs to another agent without a corresponding transfer of benefits.
 - **Upcoding**: Systematically assigning higher-paying codes to patient encounters than is warranted by the clinical documentation.
@@ -368,6 +392,7 @@ spine,Economic spine time series,(EconomicSpineJax|None),unitless,calibrated,htt
 - **Information Lag**: The delay between an action (e.g., treating a patient) and the observation of its outcome (e.g., data reporting), creating strategic ambiguity.
 
 ## Parameter Mapping (Manuscript vs. Code)
+
 This table maps the mathematical symbols used in the manuscripts to the variable names in the `nhra_gt` codebase.
 
 | Manuscript Symbol | Code Variable | Description |
@@ -379,8 +404,8 @@ This table maps the mathematical symbols used in the manuscripts to the variable
 | $\delta$ (Delta) | `discount_rate` | Factor used to discount future payoffs in sequential or multi-period games. |
 | $C_{adjust}$ | `adjustment_costs` | Cost associated with changing capacity or service levels (frictional cost). |
 
-
 ---
+
 ## Missing files
 
 - tasks.md

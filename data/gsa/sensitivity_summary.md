@@ -3,6 +3,7 @@
 This report summarizes the findings from the Morris screening and Sobol variance decomposition.
 
 ## 1. Morris Screening (Influence & Non-linearity)
+
 The Morris method identifies parameters with the greatest overall influence (mu_star) and those with non-linear or interactive effects (sigma).
 
 |                         |   mu_star |     sigma |
@@ -14,6 +15,7 @@ The Morris method identifies parameters with the greatest overall influence (mu_
 | admin_burden_weight     | 0         | 0         |
 
 ## 2. Sobol Analysis (Variance Decomposition)
+
 The Sobol method quantifies the percentage of output variance attributable to each parameter (S1) and its total effect including interactions (ST).
 
 |    | Parameter               |      S1 |      ST |
@@ -25,5 +27,6 @@ The Sobol method quantifies the percentage of output variance attributable to ea
 |  4 | admin_burden_weight     | 0       | 0       |
 
 ## 3. Key Findings
+
 - **Primary Driver:** The most influential parameter in the system is **discharge_delay_base**.
 - **Interactions:** High sigma values in Morris or gaps between ST and S1 in Sobol indicate strong parameter interactions.

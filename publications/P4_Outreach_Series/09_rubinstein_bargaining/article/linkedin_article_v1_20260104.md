@@ -8,10 +8,12 @@ The key variable isn't just "power"—it's **Patience**.
 ## The real-world situation
 
 The Federal and State governments have to sign a new NHRA every 5 years.
+
 - **If they sign quickly**: Funding flows, certainty is high.
 - **If they delay**: The system drifts, uncertainty rises.
 
 Usually, one side is more "desperate" for a deal than the other.
+
 - If the State is running out of cash, they have a **high discount rate** (impatience).
 - If the Federal government has a surplus, they can afford to wait.
 

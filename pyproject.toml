@@ -127,6 +127,9 @@ build-backend = "poetry.core.masonry.api"
 [dependency-groups]
 dev = [
     "basedpyright>=1.36.2",
+    "deptry>=0.24.0",
+    "interrogate>=1.7.0",
+    "vulture>=2.14",
 ]
 
 [tool.ruff]
@@ -170,7 +173,23 @@ ignore = [
     "F722",  # Syntax error in forward annotation (Jaxtyping compatibility)
 ]
 
-[tool.ruff.lint.per-file-ignores]
+[tool.interrogate]
+ignore-init-method = true
+ignore-init-module = false
+ignore-magic = false
+ignore-semiprivate = false
+ignore-private = false
+ignore-property-decorators = false
+ignore-module = false
+ignore-nested-functions = false
+ignore-nested-classes = true
+ignore-setters = false
+fail-under = 80
+exclude = ["setup.py", "docs", "build", "dist", ".nox", ".venv", ".git", "__pycache__", "tests"]
+ignore-regex = ["^get$", "^mock_.*", ".*Base$"]
+verbose = 0
+quiet = false
+color = true
 "scripts/**" = ["E402", "T201", "PTH", "ARG"]
 "tests/**" = ["S101", "S105", "PT011", "B017", "E402", "S607", "S603", "ARG001", "ARG002", "T201", "RUF059"]
 "src/nhra_gt/agent_logic.py" = ["F821", "ARG001"]

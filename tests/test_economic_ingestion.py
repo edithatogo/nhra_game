@@ -3,9 +3,9 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 from pandera.errors import SchemaError
+from scripts.data.ingest_economic_spine import process_economic_data
 
 from nhra_gt.domain.schemas import EconomicSpineSchema
-from scripts.data.ingest_economic_spine import process_economic_data
 
 
 def test_economic_data_processing():

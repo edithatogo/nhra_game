@@ -1,6 +1,7 @@
 import jax
 import jax.numpy as jnp
-from nhra_gt.engine import run_simulation_jax, baseline_state, ParamsJax
+
+from nhra_gt.engine import ParamsJax, baseline_state, run_simulation_jax
 
 
 def test_simulation_performance(benchmark):

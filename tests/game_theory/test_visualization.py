@@ -31,4 +31,3 @@ def test_payoff_matrix_generation():
 def test_payoff_matrix_missing_data():
     """Test handling of games with weird payoff structures."""
     # This might fail if the visualizer expects specific structure
-    pass

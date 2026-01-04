@@ -9,8 +9,9 @@ This is the **Queuing Equilibrium**.
 ## The real-world situation
 
 Patients have a choice:
-1.  **Go to GP**: Cost $ (gap fee), Wait (days).
-2.  **Go to ED**: Cost $0, Wait (hours).
+
+1. **Go to GP**: Cost $ (gap fee), Wait (days).
+2. **Go to ED**: Cost $0, Wait (hours).
 
 If the GP is expensive or unavailable, the ED becomes the rational choice, even if the wait is 4 hours.
 

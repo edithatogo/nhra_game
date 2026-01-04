@@ -12,7 +12,6 @@ This report synthesises a stylised, policy-facing simulation of the NHRA negotia
 * **ED≤4h**: Emergency department presentations completed within 4 hours
 * **RR**: Relative risk proxy (dimensionless index; higher is worse)
 
-
 ## 1. Baseline dynamics
 
 Baseline outputs are the mean of Monte Carlo runs from 2025–2030. The core dynamic is a feedback loop: rising pressure worsens discharge and offload, degrading ED performance and raising risk, which in turn increases political salience and audit intensity in the stage games.
@@ -46,9 +45,7 @@ The table below provides the first years of the baseline trajectory. Full tables
 |   2029 |         1.0436  |         0.901488 |          0.75    |        23.4837 |       0.52994  |   1.12972 |     0.10843   |             0.394561 |
 |   2030 |         1.05663 |         0.895081 |          0.75    |        23.9166 |       0.529532 |   1.15123 |     0.119687  |             0.393421 |
 
-
 *Interpretation:* pressure and occupancy jointly govern throughput. As the efficiency gap widens, the effective Commonwealth share falls in the model’s accounting identity, intensifying the incentive for cost-shifting.
-
 
 ## 2. Macro drift: NEP vs input costs
 
@@ -73,9 +70,7 @@ IHACPA’s NEP is an annual price per NWAU; the activity-funded payment for a ca
 |   2029 |        1.12551 |            1.16986 |            0.96209  |
 |   2030 |        1.15927 |            1.21665 |            0.952839 |
 
-
 *Interpretation:* when input costs grow faster than NEP, the NEP-to-cost ratio falls and the ‘efficiency gap’ in practice widens for higher-cost settings (regional, rural, remote). In the model this drift pushes the system toward higher-pressure equilibria unless offset by either NEP realism or demand-relief interventions.
-
 
 ## 3. Stage-game equilibria
 
@@ -104,7 +99,6 @@ Stage games are solved as normal-form games each year using the mean state (pres
 |   2027 | GOV    |          1 | pure   | I            | I            |     1.25237  |     1.45737  |                      1 |
 |   2027 | COMP   |          1 | pure   | L            | L            |     0.660608 |     0.85     |                      1 |
 
-
 *Interpretation:* multiple equilibria indicate that small changes in assumptions (e.g., political salience or audit intensity) can flip the system between materially different strategic outcomes (e.g., cooperate vs shift). This is why ‘hybrid’ sensitivity analysis is useful: it captures regime switching rather than smooth marginal effects.
 
 ### Figure set: equilibria count grids
@@ -132,7 +126,6 @@ Stage games are solved as normal-form games each year using the mean state (pres
 ![Number of Nash equilibria across a pressure × efficiency-gap grid for SHIFT](outputs/v19/plots/equilibria_grid_SHIFT.png)
 
 *Figure:* Number of Nash equilibria across a pressure × efficiency-gap grid for SHIFT
-
 
 ## 4. Policy scenarios and intervention effects
 
@@ -166,9 +159,7 @@ Scenarios apply individual levers (e.g., pooled funding, UCC integration, aged/N
 | ucc_integration         |        1.1515  |              1.05678 |             23.9271 |            0.529501 |         0.1197     |        0.895104 |           0.951723 |
 | wage_compact            |        1.09806 |              1.05678 |             23.9271 |            0.529501 |         0.0669054  |        0.895104 |           0.998817 |
 
-
 *Interpretation:* integration levers primarily operate by reducing fragmentation and cost shifting, which lowers demand growth and pressure; macro-alignment levers operate by reducing the NEP-to-cost drift, which narrows the efficiency gap. The full package combines both, and therefore tends to produce the largest reductions in the model’s risk proxy.
-
 
 ## 5. Strategy frequencies
 
@@ -195,9 +186,7 @@ The table below reports the most common strategies selected in the Monte Carlo b
 |   2029 | DEF    | R        |      1 |
 |   2030 | DEF    | R        |      1 |
 
-
 *Interpretation:* when the model persistently selects cost-shifting or non-integration strategies, it typically reflects a parameterisation where downstream operational costs are externalised across jurisdictions.
-
 
 ## Synthesis and conclusion
 

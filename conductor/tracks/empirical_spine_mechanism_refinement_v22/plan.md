@@ -3,6 +3,7 @@
 **Goal:** Ground the model in real IHACPA/ABS time series, resolve mechanism validation failures, and implement robust stability analysis.
 
 ## Phase 1: Automated Empirical Data Integration [checkpoint: 5b260fb]
+
 - [x] **Task 1.1: Automated Economic Data Ingestion (TDD)**
   - [x] Sub-task: Create `scripts/data/ingest_economic_spine.py` to ingest historical NEP ($/NWAU) and ABS WPI.
   - [x] Sub-task: Write tests to verify data normalization and schema compliance.
@@ -14,6 +15,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Empirical Integration' (Protocol in workflow.md)**
 
 ## Phase 2: Mechanism Logic & Stability Analysis [checkpoint: 3880b41]
+
 - [x] **Task 2.1: Subgame Stability Audit**
   - [x] Sub-task: Analyze payoff matrices to identify why Cost Shifting is inert (zero sensitivity).
   - [x] Sub-task: Map stability regions to find "Tipping Points" where strategies should flip. (Finding: Game is "stuck" in 'Invest' strategy for all tested pressures. `cost_shifting_intensity` parameter is unused in game logic.)
@@ -25,6 +27,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Mechanism Refinement' (Protocol in workflow.md)**
 
 ## Phase 3: Robustness, Reporting & Governance [checkpoint: edcda2b]
+
 - [x] **Task 3.1: Tipping Point Analysis & Dashboard**
   - [x] Sub-task: Implement a dashboard tab to visualize stability regions and tipping points.
 - [x] **Task 3.2: Probabilistic Sensitivity Analysis (PSA)**

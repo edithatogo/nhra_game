@@ -35,5 +35,6 @@ Compiled from IHACPA Pricing Framework documents, NEP/NEC determinations, and co
 ---
 
 Notes:
+
 - This appendix is intended as a concise reference for year-to-year methodological or schedule shifts that could impact unit rule extraction and sensitivity analysis; for full source links and document locators, refer to `sources.md`.
 - If you want, I can expand any year into clause-level changes (document + clause locators) to support precise sensitivity tests — say which years you'd like prioritised and I'll extract them next.

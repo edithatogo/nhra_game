@@ -22,7 +22,9 @@ Values are *anchors for mechanism exploration* (not estimates).
 | `treasury_cap` | Feasibility constraint linking effort to slack | If on: low `c` limits max `u` |
 
 ## Outcome mapping
+
 We use an ED≤4h **proxy**:
+
 - V7.2: `ED = clamp(0.67 - γ x, 0, 1)`
 - V8: `ED = clamp(0.67 - γ x - λ(1-c), 0, 1)`
 

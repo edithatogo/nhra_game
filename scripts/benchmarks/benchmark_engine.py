@@ -23,7 +23,7 @@ def benchmark_engine(n_mc: int = 300, n_years: int = 6):
     print(f"Starting benchmark: {n_mc} MC runs, {n_years} years...")
 
     start_time = time.time()
-    traj, freq = run_hybrid(years=years, p=p, n_mc=n_mc, seed=42, recorder=recorder)
+    _traj, _freq = run_hybrid(years=years, p=p, n_mc=n_mc, seed=42, recorder=recorder)
     end_time = time.time()
 
     duration = end_time - start_time

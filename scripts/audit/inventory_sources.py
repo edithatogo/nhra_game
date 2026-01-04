@@ -12,7 +12,7 @@ class IntegrityReport(TypedDict):
 
 def discover_sources() -> dict[str, list[Path]]:
     """Recursively discover zip files and diagram files."""
-    root = Path(".")
+    root = Path()
     zips = sorted(root.rglob("*.zip"))
     # Diagrams can be mermaid (.mmd) or graphviz (.dot)
     diagrams = sorted(list(root.rglob("*.mmd")) + list(root.rglob("*.dot")))

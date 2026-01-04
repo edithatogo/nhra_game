@@ -11,6 +11,7 @@ Because the health system isn't a single game. It's a **Network of Games**.
 ## The real-world situation
 
 The **NHRA Game** is an ensemble of interacting pressures.
+
 - **Upstream**: Cost shifting affects ED demand.
 - **Midstream**: Internal competition affects hospital budgets.
 - **Downstream**: Discharge coordination affects bed block.

@@ -18,6 +18,5 @@ def mpl_cleanup():
     """
     Cleans up any temporary matplotlib artifacts after the session.
     """
-    yield
+    return
     # Could add cleanup logic here if needed, but pytest-mpl mostly handles itself
-    pass

@@ -5,6 +5,7 @@ Why does it sometimes feel like the health system is just moving a problem from 
 In Australia, the answer is often found in the **National Health Reform Agreement (NHRA)**.
 
 We have a split system:
+
 - **Commonwealth** pays for GPs and aged care.
 - **States** pay for public hospitals.
 
@@ -14,8 +15,8 @@ This split creates a **Cost Shifting Game**.
 
 Imagine a patient needs care.
 
-1.  **If GP access is hard:** The patient goes to the ED. The Commonwealth saves a Medicare rebate; the State pays for an expensive hospital visit.
-2.  **If hospital discharge is rushed:** The patient leaves early but isn't ready. They end up back at the GP or needing Federal aged care. The State saves a bed-day; the Commonwealth pays for the fix.
+1. **If GP access is hard:** The patient goes to the ED. The Commonwealth saves a Medicare rebate; the State pays for an expensive hospital visit.
+2. **If hospital discharge is rushed:** The patient leaves early but isn't ready. They end up back at the GP or needing Federal aged care. The State saves a bed-day; the Commonwealth pays for the fix.
 
 ## The “game” incentives
 
@@ -33,6 +34,7 @@ Why? Because if you Invest and the other side Shifts, you lose twice: you pay fo
 Economists call this an **externality** (making someone else pay for your choice).
 
 When both sides shift costs, we get a "System Failure" outcome.
+
 - Budgets look "efficient" on paper.
 - Patients get stuck in the gaps (waiting lists, ambulance ramping, bed block).
 - The total cost to the taxpayer actually goes *up*.

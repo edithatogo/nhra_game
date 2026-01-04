@@ -11,6 +11,7 @@ $$
 $$
 
 Where:
+
 - **Efficiency Gap:** The divergence between hospital input costs and the indexation of the NEP.
 
 ## 2. The 6.5% Cap
@@ -26,5 +27,6 @@ $$
 To bypass caps, agents may shift activity to 'Block' funding streams. This is modeled as a choice between ABF and Block revenue based on relative shadow prices.
 
 ## 4. Evidence Grounding
+
 - **NEP:** IHACPA Annual Determinations (2011-2025).
 - **Cap:** NHRA Addendum 2020-25, Clause 42.

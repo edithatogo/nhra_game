@@ -18,4 +18,4 @@ To fix it, we need:
 
 Read more: [Link]
 
-#NHRA #HealthEconomics #RuralHealth #Equity #PublicHealth
+# NHRA #HealthEconomics #RuralHealth #Equity #PublicHealth

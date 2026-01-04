@@ -3,6 +3,7 @@
 **Goal:** Transition to API-driven data ingestion and establish a professional academic bibliography management system.
 
 ## Phase 1: AIHW MyHospitals API Ingestion [checkpoint: 6e45873]
+
 - [x] **Task 1.1: AIHW API Client Implementation (TDD)**
   - [x] Sub-task: Develop `src/nhra_game_theory/domain/aihw_api.py` to interface with the MyHospitals API.
   - [x] Sub-task: Implement facility-level and quarterly metric fetching (ED within 4h, Admitted Occupancy).
@@ -12,6 +13,7 @@
 - [x] **Task: Conductor - User Manual Verification 'API Integration' (Protocol in workflow.md)**
 
 ## Phase 2: Bibliography & Citation Engine [checkpoint: ee33c12]
+
 - [x] **Task 2.1: Bibliography Domain Model (TDD)**
   - [x] Sub-task: Implement `Reference` Pydantic model in `src/nhra_game_theory/domain/bibliography.py`.
   - [x] Sub-task: Add parsing for Endnote style `{Author, YYYY @Label #RecordNumber}` tokens.
@@ -21,6 +23,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Bibliography System' (Protocol in workflow.md)**
 
 ## Phase 3: Experiment Audit & Provenance [checkpoint: 1ff2060]
+
 - [x] **Task 3.1: Structured Experiment Recording**
   - [x] Sub-task: Implement a `Recorder` class to log Monte Carlo rollout metadata (seed, git-hash, timing).
   - [x] Sub-task: Integrate logging into `run_hybrid` and save to `outputs/audit/`.

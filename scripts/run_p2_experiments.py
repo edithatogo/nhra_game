@@ -25,7 +25,7 @@ def main() -> None:
     results = []
     for name, p in scenarios.items():
         print(f"Running scenario: {name}")
-        traj, strat = run_hybrid(years=years, p=p, seed=42, n_mc=300)
+        traj, _strat = run_hybrid(years=years, p=p, seed=42, n_mc=300)
 
         # Save raw trajectory
         traj.to_csv(out_dir / f"traj_{name}.csv", index=False)

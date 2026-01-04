@@ -11,6 +11,6 @@ Policy question: if we don’t agree by date X, what *exactly* happens by defaul
 Full draft (with diagrams): ../article/linkedin_article_v3_20260104.md
 
 Evidence (real links only; 1–3 is plenty):
-- NHRA page: https://federalfinancialrelations.gov.au/agreements/national-health-reform-agreement
-- Nash (1950) bargaining paper (DOI): https://doi.org/10.2307/1907266
 
+- NHRA page: <https://federalfinancialrelations.gov.au/agreements/national-health-reform-agreement>
+- Nash (1950) bargaining paper (DOI): <https://doi.org/10.2307/1907266>

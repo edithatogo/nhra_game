@@ -3,6 +3,7 @@
 **Goal:** Enhance the dashboard with negotiation-specific visualizations (Effective Share Drift) and generate publication-ready methods documentation.
 
 ## Phase 1: Negotiation Dashboard Enhancements [checkpoint: 2e35b70]
+
 - [x] **Task 1.1: Effective Share Drift Threshold Plot**
   - [x] Sub-task: Implement a visualization showing how the "Efficiency Gap" degrades the Commonwealth's effective contribution over time.
   - [x] Sub-task: Add a "Threshold" toggle to show when the effective share drops below critical levels (e.g., 40%).
@@ -12,6 +13,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Dashboard Reporting' (Protocol in workflow.md)**
 
 ## Phase 2: Publication Readiness & Methods [checkpoint: 670c1a2]
+
 - [x] **Task 2.1: Methods Appendix Generator**
   - [x] Sub-task: Create `scripts/reporting/generate_methods_appendix.py` to auto-generate a Markdown appendix based on the current model code (`v9.py`) and parameter registry.
   - [x] Sub-task: Ensure the output meets STRESS/CHEERS reporting standards (e.g., listing all equations and parameter sources).
@@ -20,6 +22,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Methods Documentation' (Protocol in workflow.md)**
 
 ## Phase 3: Governance & Release [checkpoint: 2647f4d]
+
 - [x] **Task 3.1: Changelog & Context Update**
   - [x] Sub-task: Update `CHANGELOG.md` with v21, v22, and v23 features.
   - [x] Sub-task: Regenerate `context/CONTEXT_PACK.md`.

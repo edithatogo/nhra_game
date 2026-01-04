@@ -16,4 +16,4 @@ To fix federalism, States need **fiscal buffers**—the ability to say "No" and 
 
 Read the analysis: [Link]
 
-#NHRA #Negotiation #GameTheory #Rubinstein #Economics
+# NHRA #Negotiation #GameTheory #Rubinstein #Economics

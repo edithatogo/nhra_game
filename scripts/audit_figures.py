@@ -78,7 +78,7 @@ def audit_file(filepath: Path) -> list[dict]:
 
 
 def main():
-    root_dir = Path(".")
+    root_dir = Path()
     relevant_files = []
 
     # Scan src and scripts

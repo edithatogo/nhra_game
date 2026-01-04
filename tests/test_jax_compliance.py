@@ -25,4 +25,3 @@ def test_jax_array_compatibility() -> None:
 def test_nash_solver_placeholder() -> None:
     """Placeholder for JAX-based Nash solver verification."""
     # Future: implement projected gradient descent here
-    pass

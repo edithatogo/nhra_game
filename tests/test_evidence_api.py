@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from nhra_gt.domain.evidence import EvidenceType
 from scripts.llm_evidence_parser import LLMEvidenceExtractor
+
+from nhra_gt.domain.evidence import EvidenceType
 
 
 def test_evidence_parsing_basic():

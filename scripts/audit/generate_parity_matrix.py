@@ -66,11 +66,8 @@ def generate_parity_matrix() -> None:
     for src, tgt, desc in intended_influences:
         status = "[Implemented]"  # Simplified for logic
         # Check logic in engine.py (heuristic)
-        if (
-            src == "Audit"
-            and "COMP" in current_features
-            or src == "VFI"
-            and "SHIFT" in current_features
+        if (src == "Audit" and "COMP" in current_features) or (
+            src == "VFI" and "SHIFT" in current_features
         ):
             status = "[Implemented]"
 

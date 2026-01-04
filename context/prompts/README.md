@@ -1,6 +1,7 @@
 # Prompts
 
 This folder is for reusable prompts for:
+
 - policy brief drafting
 - manuscript drafting
 - reviewer simulation

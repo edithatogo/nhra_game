@@ -102,10 +102,10 @@ def main() -> int:
         type=Path,
         default=Path("publications/P4_Outreach_Series/00_series_meta/series_manifest.yaml"),
     )
+    parser.add_argument("--root", type=Path, default=Path("publications/P4_Outreach_Series"))
     parser.add_argument(
-        "--root", type=Path, default=Path("publications/P4_Outreach_Series")
+        "--bundle", type=str, default=None, help="Validate only a single bundle slug"
     )
-    parser.add_argument("--bundle", type=str, default=None, help="Validate only a single bundle slug")
     args = parser.parse_args()
 
     missing, errors = validate_cover_images(
@@ -126,4 +126,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

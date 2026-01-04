@@ -51,7 +51,7 @@ def animate_pressure(
         for line in lines:
             line.set_data([], [])
         mean_line.set_data([], [])
-        return lines + [mean_line]
+        return [*lines, mean_line]
 
     def update(frame):
         # frame is the year index (0 to n_years-1)
@@ -63,7 +63,7 @@ def animate_pressure(
         mean_y = np.mean(raw_data[:, : frame + 1], axis=0)
         mean_line.set_data(x, mean_y)
 
-        return lines + [mean_line]
+        return [*lines, mean_line]
 
     ani = animation.FuncAnimation(
         fig, update, frames=len(years), init_func=init, blit=True, interval=500

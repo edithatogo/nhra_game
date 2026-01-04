@@ -10,11 +10,9 @@ import jax.numpy as jnp
 # Add src
 sys.path.append("src")
 
-from nhra_gt.engine import Params
+from nhra_gt.engine import Params, baseline_state, run_simulation_jax
 from nhra_gt.engine import Params as ParamsNp
-from nhra_gt.engine import baseline_state
 from nhra_gt.engine import run_hybrid as run_hybrid_np
-from nhra_gt.engine import run_simulation_jax
 
 
 def benchmark():

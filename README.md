@@ -16,16 +16,19 @@ This project implements a "Cognitive Digital Twin" of the Australian health fund
 ## 🎯 Key Features
 
 ### 1. Cognitive Simulation
+
 - **Strategic Agents:** Modular `LLMAgent` and `HeuristicAgent` frameworks.
 - **Negotiation Loops:** Structured "Debate Loops" between Commonwealth and State agents.
 - **Explainable AI:** "Cognitive Trace" logging providing natural language rationales for agent moves.
 
 ### 2. Decision-Grade Operational Realism
+
 - **Monthly Time-steps:** Captures seasonal demand peaks, claim timing games, and monthly cashflow dynamics.
 - **M/M/s Queuing:** Explicit queuing theory implementation converting demand/capacity into waiting times.
 - **Crisis State Machine:** Hysteretic "Code Red" logic simulating system failure and recovery cycles.
 
 ### 3. Institutional Realism
+
 - **VFI Waterfall:** Explicit tracking of Valuation Divergence (Nominal vs. Effective share).
 - **Interface Games:** Dedicated sub-games for Aged Care and NDIS bottlenecks.
 - **Structural Rules:** Swappable implementation of Funding Caps (Hard/Soft) and Audit Regimes.
@@ -35,6 +38,7 @@ This project implements a "Cognitive Digital Twin" of the Australian health fund
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Python 3.13+
 - [Poetry](https://python-poetry.org/)
 - [Just](https://github.com/casey/just) (Command runner)
@@ -61,24 +65,28 @@ for the dashboard runtime; optional features (e.g. some game-tree rendering) may
 
 **1. Strategic Dashboard**
 Launch the interactive "War Gaming" interface:
+
 ```bash
 just dashboard
 ```
 
 **2. Simulation Pipeline**
 Run the core simulation, diagram rendering, and network generation:
+
 ```bash
 just run
 ```
 
 **3. Model Calibration**
 Optimize parameters against multi-target historical data:
+
 ```bash
 python scripts/optimize_calibration.py
 ```
 
 **4. Full Quality Suite**
 Execute formatting, linting, grounding checks, and tests:
+
 ```bash
 just all
 ```
@@ -88,6 +96,7 @@ just all
 ## 📂 Scenario Library
 
 The `scenario_library/` contains standard YAML-based counterfactuals for policy exploration:
+
 - `baseline.yaml`: Standard NHRA settings.
 - `cap_removed.yaml`: Impact of removing the 6.5% growth cap.
 - `audit_surge.yaml`: High-intensity compliance regime.
@@ -99,16 +108,18 @@ The `scenario_library/` contains standard YAML-based counterfactuals for policy 
 ## 🏗️ Architecture
 
 The model is built on a modular four-layer architecture:
-1.  **Macro-Fiscal:** NEP trajectory and input cost drift (NEP vs. WPI).
-2.  **Strategic Layer:** Interacting games (Bargaining, Signalling, Definition, Coding).
-3.  **Operational Layer:** M/M/s patient flow and capacity dynamics.
-4.  **Political/Utility:** Non-linear loss functions driven by KPI threshold breaches.
+
+1. **Macro-Fiscal:** NEP trajectory and input cost drift (NEP vs. WPI).
+2. **Strategic Layer:** Interacting games (Bargaining, Signalling, Definition, Coding).
+3. **Operational Layer:** M/M/s patient flow and capacity dynamics.
+4. **Political/Utility:** Non-linear loss functions driven by KPI threshold breaches.
 
 ---
 
 ## 👩‍💻 Development Standards
 
 We adhere to high-integrity software engineering standards:
+
 - **Linting/Formatting:** [Ruff](https://github.com/astral-sh/ruff)
 - **Type Checking:** [Mypy](https://mypy-lang.org/) (Strict mode)
 - **Testing:** [Pytest](https://docs.pytest.org/) (>95% coverage requirement)
@@ -120,4 +131,4 @@ We adhere to high-integrity software engineering standards:
 
 If you use this model in your research, please cite:
 
-> Mordaunt, D. A. (2025). *NHRA Game Theory: A Cognitive Digital Twin Framework for Mechanism Design*. https://github.com/edithatogo/nhra_gt
+> Mordaunt, D. A. (2025). *NHRA Game Theory: A Cognitive Digital Twin Framework for Mechanism Design*. <https://github.com/edithatogo/nhra_gt>

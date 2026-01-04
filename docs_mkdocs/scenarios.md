@@ -38,6 +38,7 @@ results = run_simulation(years=10, params=pooled)
 ```
 
 **Expected Outcomes**:
+
 - ↓ Downstream pressure
 - ↓ ED presentations from cost shifting
 - ↑ Primary care investment
@@ -61,6 +62,7 @@ results = run_simulation(years=10, params=ucc)
 ```
 
 **Expected Outcomes**:
+
 - ↓ ED overcrowding
 - ↑ Low-acuity diversion
 - ↑ Coordination of care
@@ -84,6 +86,7 @@ results = run_simulation(years=10, params=transparency)
 ```
 
 **Expected Outcomes**:
+
 - ↑ Pressure to acknowledge cost reality
 - ↓ Efficiency gap drift
 - ↑ Evidence-based policy
@@ -107,6 +110,7 @@ results = run_simulation(years=10, params=audit)
 ```
 
 **Expected Outcomes**:
+
 - ↓ Upcoding prevalence
 - ↑ ABF accuracy
 - ↓ Revenue leakage (short-term)

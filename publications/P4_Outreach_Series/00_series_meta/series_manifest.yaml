@@ -225,4 +225,3 @@ bundles:
     outputs:
       required: [linkedin_article, linkedin_post, x_thread]
       required_images: [dashboard_map, how_to_read_outputs, glossary_card, cover_summary]
-

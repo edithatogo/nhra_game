@@ -3,6 +3,7 @@
 **Goal:** Polish the codebase for publication, recover lost features via forensic audit, and create high-impact visualizations (animations).
 
 ## Phase 1: Core Refactoring & JAX Foundation
+
 - [x] **Task 1.0: Benchmark Baseline**
   - [x] Sub-task: Create `scripts/benchmarks/benchmark_engine.py` to record current simulation speed (samples/second). (Result: ~1047 steps/sec)
 - [x] **Task 1.1: Intuitive Renaming**
@@ -16,6 +17,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Refactoring' (Protocol in workflow.md)**
 
 ## Phase 2: Forensic Deep Dive (Code Investigator)
+
 - [x] **Task 2.1: Automated Legacy Audit**
   - [x] Sub-task: Deploy `codebase_investigator` to map every function in `archive/legacy_versions`.
   - [x] Sub-task: Generate a "Feature Gap Report". (Finding: Identified missing 'Political Capital' stateful variable and detailed Audit-Burden feedback loop.)
@@ -25,6 +27,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Forensic Audit' (Protocol in workflow.md)**
 
 ## Phase 3: Visualization & Polish
+
 - [x] **Task 3.0: Mechanism Re-integration (from Forensic Audit)**
   - [x] Sub-task: Restore 'Political Capital' state variable to `State` and `engine.py` logic.
   - [x] Sub-task: Re-implement 'Best Response Iteration' logic for visualization.
@@ -39,6 +42,7 @@
 - [x] **Task: Conductor - User Manual Verification 'Gold Master Polish' (Protocol in workflow.md)**
 
 ## Phase 4: Tooling & Dependency Hygiene
+
 - [x] **Task 4.0: Modernize Build System**
   - [x] Sub-task: Migrate `pyproject.toml` from Hatch to Poetry.
   - [x] Sub-task: Generate `poetry.lock`.

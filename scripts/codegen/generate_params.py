@@ -1,7 +1,9 @@
-import pandas as pd
-from pathlib import Path
-import sys
 import argparse
+import sys
+from pathlib import Path
+
+import pandas as pd
+
 
 def infer_type(val):
     s = str(val).lower()
@@ -18,12 +20,13 @@ def infer_type(val):
     except ValueError:
         return "str"
 
+
 def generate_params_code(csv_path, output_path):
     df = pd.read_csv(csv_path)
-    
+
     # Filter out rows that are not scalar parameters
     scalar_df = df[~df["value"].astype(str).str.startswith("(")]
-    
+
     content = "# AUTO-GENERATED FILE. DO NOT EDIT.\n"
     content += "from __future__ import annotations\n"
     content += "from typing import Any\n"
@@ -32,15 +35,15 @@ def generate_params_code(csv_path, output_path):
     content += "@struct.dataclass\n"
     content += "class ParamsGenerated:\n"
     content += '    """Auto-generated parameter container from registry CSV."""\n'
-    
+
     for _, row in scalar_df.iterrows():
         param = row["parameter"]
         val = row["value"]
         desc = row["description"]
         units = row["units"]
-        
+
         py_type = infer_type(val)
-        
+
         if py_type == "str":
             val_code = f'"{val}"'
             field_def = f"struct.field(default={val_code}, pytree_node=False)"
@@ -56,10 +59,11 @@ def generate_params_code(csv_path, output_path):
         else:
             val_code = str(val)
             field_def = val_code
-            
+
         content += f"    {param}: {py_type} = {field_def}  # {desc} ({units})\n"
-        
+
     return content
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -71,7 +75,7 @@ def main():
     generated = generate_params_code(csv_path, output_path)
     if args.check:
         if output_path.exists():
-            with open(output_path, "r") as f:
+            with open(output_path) as f:
                 current = f.read()
             if current == generated:
                 print("Check passed")
@@ -84,6 +88,7 @@ def main():
         with open(output_path, "w") as f:
             f.write(generated)
         print(f"Generated {output_path}")
+
 
 if __name__ == "__main__":
     main()

@@ -3,6 +3,7 @@
 ## Status: All Enhancements Complete ✅
 
 Latest commits:
+
 - `fde586b` — Initial documentation expansion  
 - `2231a0f` — Changelog, contributing guide, enhanced dev docs
 - `pending` — FAQ, validation, policy scenarios
@@ -12,6 +13,7 @@ Latest commits:
 ## 1. DISC Game Re-integration ✅ COMPLETE
 
 The `discharge_coordination_game` is **already integrated**:
+
 - Import at `src/nhra_gt/agents/base.py:17`
 - Usage at `src/nhra_gt/agents/base.py:277`
 - Definition at `src/nhra_gt/subgames/games.py:135`
@@ -21,6 +23,7 @@ The `discharge_coordination_game` is **already integrated**:
 ## 2. Documentation Overhaul ✅ COMPLETE
 
 ### Core Structure
+
 - [x] `guides/` — index, usage, models (9 games)
 - [x] `project/` — index, requirements
 - [x] `reference/` — API reference
@@ -30,11 +33,13 @@ The `discharge_coordination_game` is **already integrated**:
 - [x] `dev.md` — Tooling, testing, profiling, CI/CD
 
 ### Enhancements
+
 - [x] `faq.md` — Frequently asked questions
 - [x] `validation.md` — Testing and validation documentation
 - [x] `scenarios.md` — Policy comparison tables
 
 ### Fixes
+
 - [x] Fixed `context.md` — `nhra_gt.v9.Params` → `nhra_gt.engine.Params`
 - [x] Fixed `index.md` — Correct links to new directories
 - [x] Updated `mkdocs.yml` — Explicit nav with all new pages

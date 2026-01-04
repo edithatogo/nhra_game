@@ -1,6 +1,5 @@
 import pytest
 import yaml
-
 from scripts.pub_tools.manage_refs import (
     load_references,
     validate_quality,

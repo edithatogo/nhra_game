@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from scripts.reporting.generate_methods_appendix import generate_appendix
 
 

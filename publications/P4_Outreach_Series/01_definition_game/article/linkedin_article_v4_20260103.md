@@ -7,6 +7,7 @@ Sometimes the biggest fights in health funding are about one boring question:
 Under Australia’s **National Health Reform Agreement (NHRA)**, what “counts” can change funding signals. That can change behaviour. And when behaviour changes, patients feel it.
 
 Quick glossary (plain English):
+
 - **NHRA**: the national deal that shapes how public hospitals are funded.
 - **IHACPA**: publishes pricing frameworks used in public hospital funding.
 - **AIHW**: publishes national hospital data and reports.
@@ -43,6 +44,7 @@ Think of each side choosing a posture:
 It is things like ED waits, bed block, staffing strain, and political heat.
 
 In the codebase, this is a small 2×2 game:
+
 - `src/nhra_gt/subgames/games.py` → `definition_game()`
 
 ## What “equilibrium” means (no math)
@@ -52,6 +54,7 @@ An equilibrium is not “the best outcome”.
 It is the outcome that tends to stick because neither side can improve by changing alone.
 
 Often (not always), “strictness” can become sticky because it is:
+
 - simpler to explain,
 - easier to audit,
 - easier to sell as “fiscal control”.
@@ -77,12 +80,11 @@ when rules and reality don’t match, the system often “pays” in delays and 
 
 ## Evidence / further reading
 
-- IHACPA. *Pricing Framework for Australian Public Hospital Services 2024–25*. https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25
-- AIHW. *Hospital resources (data tables / topic hub)*. https://www.aihw.gov.au/hospitals/topics/hospital-resources
+- IHACPA. *Pricing Framework for Australian Public Hospital Services 2024–25*. <https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25>
+- AIHW. *Hospital resources (data tables / topic hub)*. <https://www.aihw.gov.au/hospitals/topics/hospital-resources>
 
 ## TL;DR
 
 - In the NHRA, “what counts” changes funding signals.
 - Funding signals change behaviour.
 - A simple game can explain why some positions become sticky until pressure forces change.
-

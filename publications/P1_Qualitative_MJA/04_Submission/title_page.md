@@ -5,19 +5,22 @@
 **Authors:** Dylan A Mordaunt
 
 **Affiliations:**
+
 1. Flinders University, Adelaide, Australia.
 
 **Corresponding Author:**
 Dylan A Mordaunt
-Email: dylan.mordaunt@flinders.edu.au
+Email: <dylan.mordaunt@flinders.edu.au>
 
 **Keywords:** National Health Reform Agreement, Activity Based Funding, Game Theory, Strategic Gaming, Institutional Isomorphism.
 
 **Word Counts:**
+
 - Abstract: 285 words
 - Main Text: 1477 words
 
 **Display Items:**
+
 - Tables: 1
 - Figures: 1
 

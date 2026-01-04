@@ -7,5 +7,6 @@ This is a simple idea: the definition debate often behaves like a small game —
 Full explainer (with diagrams): (link to be added)
 
 Evidence:
-- IHACPA Pricing Framework 2024–25: https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25
-- AIHW Hospital resources 2022–23: https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23
+
+- IHACPA Pricing Framework 2024–25: <https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25>
+- AIHW Hospital resources 2022–23: <https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23>

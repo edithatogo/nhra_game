@@ -115,8 +115,8 @@ def initialize_slider_state(scenarios: dict):
                             if val.is_integer():
                                 val = int(val)
                         except ValueError:
-                            pass  # noqa: S110 - expected for type coercion
-            except Exception:  # noqa: S110, BLE001
+                            pass
+            except Exception:  # noqa: S110
                 pass  # Skip unparseable defaults
 
             st.session_state[key] = val
@@ -351,7 +351,7 @@ def main() -> None:
 
     if selected_scenario_name != "Manual / Custom":
         # Find the scenario key
-        sk = [k for k in scenarios if scenarios[k]["name"] == selected_scenario_name][0]
+        sk = next(k for k in scenarios if scenarios[k]["name"] == selected_scenario_name)
         s_data = scenarios[sk]
         st.sidebar.info(s_data["description"])
         # Update session state
@@ -1271,7 +1271,7 @@ def main() -> None:
                         fig_stab = plot_stability_heatmap(pivot_table)
                         st.plotly_chart(fig_stab, width="stretch")
                     except Exception as e:
-                        st.error(f"Stability analysis failed: {str(e)}")
+                        st.error(f"Stability analysis failed: {e!s}")
 
         with tab5_2:
             st.subheader("🌀 Global Sensitivity Analysis (GSA)")

@@ -5,7 +5,6 @@ import subprocess
 from pathlib import Path
 
 import pandas as pd
-import pytest
 
 
 def run_snakemake(rule: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess:
@@ -48,7 +47,7 @@ def test_pipeline_calibrate_minimal():
 
     # Use environment variable to speed up test
     result = run_snakemake("calibrate", env={"NHRA_CALIBRATION_TRIALS": "1"})
-    
+
     assert result.returncode == 0
     assert out_path.exists()
 
@@ -62,18 +61,18 @@ def test_pipeline_baseline_integrity():
     out_path = Path("data/baseline/tables/trajectory.csv")
     # Rule might have already run, or we run it
     run_snakemake("run_baseline")
-    
+
     assert out_path.exists()
     df = pd.read_csv(out_path)
-    
+
     # Check years
     assert df["year"].min() >= 2020
     assert df["year"].max() <= 2040
-    
+
     # Check within4_mean (share should be 0-1)
     if "within4_mean" in df.columns:
         assert df["within4_mean"].between(0, 1).all()
-    
+
     # Check occupancy (should be positive and generally < 1.1)
     if "occupancy_mean" in df.columns:
         assert (df["occupancy_mean"] > 0).all()

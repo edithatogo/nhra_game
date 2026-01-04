@@ -7,6 +7,7 @@ plus a small Markov Perfect Equilibrium (MPE) extension (V7.2/V8) used for scena
 and governance levers can shift system-level outcomes.
 
 ## Structure
+
 - `src/` — model code (V1–V5 scripts + MPE models)
 - `scripts/` — runnable entrypoints
 - `outputs/` — generated plots/tables
@@ -14,15 +15,18 @@ and governance levers can shift system-level outcomes.
 - `.github/workflows/` — CI checks (lint + tests)
 
 ## Run everything (recommended)
+
 ```bash
 python scripts/run_all.py
 ```
 
 ## Run fast MPE scenario suite only
+
 ```bash
 python scripts/run_mpe.py --fast
 ```
 
 ## Reproducibility
+
 - Deterministic seeds are used where stochasticity exists.
 - CI uses “fast” settings so the pipeline stays lightweight.

@@ -28,9 +28,11 @@ If $G_{shifting} > C_{penalty}$, the State chooses to 'Shift' rather than 'Inves
 ## 3. Solver Implementation
 
 We use two primary solvers:
+
 1. **Discrete Nash:** Brute-force enumeration for small 2x2 games.
 2. **Quantal Response Equilibrium (QRE):** A JAX-native Logit solver for boundedly rational agents.
 
 ## 4. Evidence Grounding
+
 - **Strategies:** Derived from the **Blinded Qualitative Mapping** of the NHRA statutory text (see `publications/P1`).
 - **Payoffs:** Stylised based on vertical fiscal imbalance metrics.

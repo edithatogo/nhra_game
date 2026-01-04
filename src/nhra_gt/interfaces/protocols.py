@@ -16,7 +16,7 @@ IntArray: Any = NDArray[np.int_]
 
 # Optional: jaxtyping support if available
 try:
-    from jaxtyping import Array, Float, Int  # noqa: F401
+    from jaxtyping import Array, Float, Int
 
     has_jaxtyping = True
 except ImportError:

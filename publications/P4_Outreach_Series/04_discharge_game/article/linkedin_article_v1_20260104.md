@@ -26,6 +26,7 @@ If Downstream creates capacity but the Hospital delays paperwork, Downstream was
 ## The Equilibrium: "Gridlock"
 
 Often, the path of least resistance (Nash equilibrium) is for both sides to **Fragment**.
+
 - Hospital: "They won't take them, so we'll wait."
 - Downstream: "They aren't ready, so we won't hold a spot."
 

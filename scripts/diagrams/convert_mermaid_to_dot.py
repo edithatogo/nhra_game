@@ -63,11 +63,7 @@ def mermaid_to_dot(mmd_text: str, title: str = "Mermaid converted") -> str:
     for raw in mmd_text.splitlines():
         line = raw.strip()
         if (
-            not line
-            or line.startswith("%%")
-            or line.startswith("classDef")
-            or line.startswith("class ")
-            or line.startswith("style ")
+            not line or line.startswith(("%%", "classDef", "class ", "style "))
         ):
             continue
         if line.lower().startswith(("flowchart", "graph", "subgraph", "end")):

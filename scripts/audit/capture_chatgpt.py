@@ -33,7 +33,7 @@ def main():
 
         with open(output_path, "w", encoding="utf-8") as f:
             f.write("# ChatGPT Origin Context Capture\n\n")
-            f.write(f"Captured on: {Path('.').absolute()}\n\n")
+            f.write(f"Captured on: {Path().absolute()}\n\n")
             f.write(content)
 
         print(f"Captured content saved to {output_path}")

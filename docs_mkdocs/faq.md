@@ -57,6 +57,7 @@ results = run_simulation(years=10, n_samples=100, params=Params())
 ### What does "strict mypy mode" mean?
 
 The codebase uses mypy in strict mode, requiring:
+
 - Type hints on all functions
 - No implicit `Any` types
 - Explicit return types
@@ -125,6 +126,7 @@ See [Requirements & Scope](project/requirements.md) for full discussion.
 ### How do I report a bug?
 
 Open an issue on [GitHub](https://github.com/edithatogo/nhra_game/issues) with:
+
 - Description of the issue
 - Steps to reproduce
 - Expected vs actual behaviour
@@ -170,6 +172,7 @@ custom = Params(
 ### How can I contribute?
 
 See the [Contributing Guide](contributing.md) for:
+
 - Development setup
 - Code style requirements
 - Pull request process

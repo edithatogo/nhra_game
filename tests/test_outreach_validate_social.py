@@ -12,4 +12,3 @@ def test_validate_social_flags_long_tweet(tmp_path: Path) -> None:
     (social / "x_thread_v1_20260103.md").write_text("Tweet 1: " + ("a" * 281), encoding="utf-8")
     issues = validate_x_threads(root=root)
     assert len(issues) == 1
-

@@ -4,7 +4,9 @@ from scripts.outreach.validate_readability import _pick_latest_versions, score_t
 
 
 def test_score_text_returns_grade() -> None:
-    words, sentences, syllables, grade = score_text("This is a short sentence. This is another one.")
+    words, sentences, syllables, grade = score_text(
+        "This is a short sentence. This is another one."
+    )
     assert words > 0
     assert sentences >= 1
     assert syllables > 0

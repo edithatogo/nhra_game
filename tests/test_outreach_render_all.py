@@ -2,9 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
 from PIL import Image
-
 from scripts.outreach import render_all
 
 
@@ -14,7 +12,7 @@ def test_render_mermaid_includes_puppeteer_config_when_present(tmp_path: Path, m
     mermaid_cfg = cfg_dir / "mermaid-config.json"
     puppeteer_cfg = cfg_dir / "puppeteer-config.json"
     mermaid_cfg.write_text("{}", encoding="utf-8")
-    puppeteer_cfg.write_text("{\"args\": []}", encoding="utf-8")
+    puppeteer_cfg.write_text('{"args": []}', encoding="utf-8")
 
     captured: dict[str, object] = {}
 
@@ -66,4 +64,3 @@ def test_pad_to_exact_size(tmp_path: Path) -> None:
 
     with Image.open(dest) as img:
         assert img.size == (1200, 644)
-

@@ -1,6 +1,7 @@
 # Glossary and Abbreviations
 
 ## Acronyms & Domain Terms
+
 - **ABF**: Activity-Based Funding. A funding method where hospitals are paid based on the number and mix of services provided.
 - **ACEC**: Australian Emergency Care Classification.
 - **AIHW**: Australian Institute of Health and Welfare.
@@ -15,6 +16,7 @@
 - **LHN**: Local Hospital Network. The state-managed entity operating hospitals.
 
 ## Game Theoretic Concepts
+
 - **Nash Equilibrium**: A stable state of a system involving the interaction of different participants, in which no participant can gain by a unilateral change of strategy.
 - **Cost Shifting**: Strategic action where an agent transfers costs to another agent without a corresponding transfer of benefits.
 - **Upcoding**: Systematically assigning higher-paying codes to patient encounters than is warranted by the clinical documentation.
@@ -22,6 +24,7 @@
 - **Information Lag**: The delay between an action (e.g., treating a patient) and the observation of its outcome (e.g., data reporting), creating strategic ambiguity.
 
 ## Parameter Mapping (Manuscript vs. Code)
+
 This table maps the mathematical symbols used in the manuscripts to the variable names in the `nhra_gt` codebase.
 
 | Manuscript Symbol | Code Variable | Description |

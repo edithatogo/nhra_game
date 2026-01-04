@@ -9,14 +9,17 @@ When one side pays for “upstream” care (like GPs) and another pays for “do
 ## The real-world situation
 
 Imagine a patient who needs help that could be provided in two places:
-1.  **Primary Care (GPs/Clinics)**: Funded mostly by the Federal government.
-2.  **Hospital EDs/Wards**: Funded by the State (with a share from the Federal government).
+
+1. **Primary Care (GPs/Clinics)**: Funded mostly by the Federal government.
+2. **Hospital EDs/Wards**: Funded by the State (with a share from the Federal government).
 
 If primary care is hard to access, people go to the ED.
+
 - The Federal government “saves” on GP rebates.
 - The State “pays” for an expensive hospital visit.
 
 Conversely, if a hospital discharges a patient quickly without enough support, they might end up back at their GP or in a Federal aged care program.
+
 - The State “saves” on a hospital bed-day.
 - The Federal government “pays” for the follow-up or complications.
 
@@ -28,6 +31,7 @@ In the codebase, we model this as a choice between two postures:
 - **Shift (Cut/Shunt)**: saving money in your own budget by letting the other side handle the consequence.
 
 Check the logic:
+
 - `src/nhra_gt/subgames/games.py` → `cost_shifting_game()`
 
 ## What “equilibrium” means here

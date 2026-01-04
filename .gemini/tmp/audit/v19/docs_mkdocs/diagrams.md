@@ -7,6 +7,7 @@
 - Rendered figures: `outputs/v9/diagrams/`
 
 Render + convert:
+
 ```bash
 PYTHONPATH=src python scripts/diagrams/render_all.py
 ```

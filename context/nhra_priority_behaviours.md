@@ -6,6 +6,7 @@
 ---
 
 ## 1) Threshold & timing behaviour
+
 ```mermaid
 %%{init: {"flowchart":{"curve":"basis","nodeSpacing":55,"rankSpacing":70}}}%%
 flowchart LR
@@ -24,6 +25,7 @@ flowchart LR
 ---
 
 ## 2) Coding intensity / complexity drift
+
 ```mermaid
 %%{init: {"flowchart":{"curve":"basis","nodeSpacing":55,"rankSpacing":70}}}%%
 flowchart LR
@@ -43,6 +45,7 @@ flowchart LR
 ---
 
 ## 3) ABF ↔ block (boundary / classification shifting)
+
 ```mermaid
 %%{init: {"flowchart":{"curve":"basis","nodeSpacing":55,"rankSpacing":70}}}%%
 flowchart LR
@@ -60,6 +63,7 @@ flowchart LR
 ---
 
 ## 4) Capacity-constrained access dynamics
+
 ```mermaid
 %%{init: {"flowchart":{"curve":"basis","nodeSpacing":55,"rankSpacing":70}}}%%
 flowchart LR
@@ -77,6 +81,7 @@ flowchart LR
 ---
 
 ## 5) Internal contracting / delegation
+
 ```mermaid
 %%{init: {"flowchart":{"curve":"basis","nodeSpacing":55,"rankSpacing":70}}}%%
 flowchart LR
@@ -93,6 +98,7 @@ flowchart LR
 ---
 
 ## 6) Cost shifting & substitution across settings
+
 ```mermaid
 %%{init: {"flowchart":{"curve":"basis","nodeSpacing":55,"rankSpacing":70}}}%%
 flowchart LR
@@ -113,6 +119,7 @@ flowchart LR
 ---
 
 ## 7) Audit / integrity “arms race”
+
 ```mermaid
 %%{init: {"flowchart":{"curve":"basis","nodeSpacing":55,"rankSpacing":70}}}%%
 flowchart LR
@@ -130,6 +137,7 @@ flowchart LR
 ---
 
 ## 8) Renegotiation & side-payments
+
 ```mermaid
 %%{init: {"flowchart":{"curve":"basis","nodeSpacing":55,"rankSpacing":70}}}%%
 flowchart LR
@@ -148,6 +156,7 @@ flowchart LR
 ---
 
 ## Combined Strategic Map
+
 ```mermaid
 %%{init: {"flowchart":{"curve":"basis","nodeSpacing":50,"rankSpacing":65}}}%%
 flowchart TB

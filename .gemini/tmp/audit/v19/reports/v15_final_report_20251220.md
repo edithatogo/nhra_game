@@ -24,6 +24,7 @@ A large empirical literature links emergency department crowding, access block, 
 ## Results overview
 
 Figures and tables are produced in `outputs/v15/`. The key additions are:
+
 - an **equilibria grid** showing how many equilibria exist as pressure and efficiency gap vary;
 - scenario comparisons under alternative equilibrium selection rules.
 
@@ -39,13 +40,11 @@ All code and reproducible scripts are included in this repository. Key commands:
 
 A practical next step is to calibrate NEP time series (IHACPA determinations), map the model's pressure index to a jurisdiction’s offload/crowding proxy, and constrain discharge-delay parameters to observed delayed discharge measures. The IHACPA NWAU calculators are most valuable if the model is extended to activity-mix and coding-driven NWAU variation; otherwise NEP-as-index is sufficient for the mechanism focus.
 
-
 ## Outputs
 
 - `outputs/v15/tables/equilibria_grid.csv`: number of equilibria by game, across a (pressure × efficiency-gap) grid.
 - `outputs/v15/tables/scenario_summary.csv`: end-year metrics under scenario set.
 - `outputs/v15/plots/equilibria_grid_*.png`: equilibria-count visualisations.
-
 
 ### Equilibria solved
 

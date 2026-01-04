@@ -49,6 +49,7 @@ The dashboard will open at `http://localhost:8501`.
 ### Expert Mode
 
 Toggle "🧠 Expert Strategic Mode" to manually override game equilibria:
+
 - Definition: R (Realism) / E (Strict)
 - Bargaining: A (Agree) / D (Defer)
 - Cost-Shifting: I (Invest) / S (Shift)
@@ -132,6 +133,7 @@ logfire = "your-api-key"
 ```
 
 Access in code:
+
 ```python
 import streamlit as st
 api_key = st.secrets["api_keys"]["logfire"]
@@ -192,11 +194,13 @@ def apply_custom_theme():
 ### Adding New Tabs
 
 1. Add to the tabs list:
+
 ```python
 tab1, tab2, ..., new_tab = st.tabs([..., "🆕 New Tab"])
 ```
 
-2. Implement tab content:
+1. Implement tab content:
+
 ```python
 with new_tab:
     st.markdown("### New Feature")

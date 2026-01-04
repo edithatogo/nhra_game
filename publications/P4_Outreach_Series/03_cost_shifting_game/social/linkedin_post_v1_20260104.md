@@ -18,4 +18,4 @@ How do we fix it?
 
 Read more in our latest deep dive into the NHRA Cost Shifting Game: [Link]
 
-#NHRA #HealthPolicy #GameTheory #HealthReform #Economics #PublicHealth
+# NHRA #HealthPolicy #GameTheory #HealthReform #Economics #PublicHealth

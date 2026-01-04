@@ -3,8 +3,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from scripts.audit.inventory_sources import discover_sources
 from src.nhra_gt.audit.fingerprint import fingerprint_zip
+
+from scripts.audit.inventory_sources import discover_sources
 
 
 def fingerprint_all() -> None:

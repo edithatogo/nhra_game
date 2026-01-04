@@ -51,6 +51,7 @@ Quantitative results should be read as **internal comparisons** (scenario A vs B
 ## Why this helps NHRA negotiation
 
 The model and diagrams provide:
+
 - a shared language for **what exactly is being negotiated** (definition, cap, indexation, levers);  
 - a transparent pathway from negotiation choices to operational consequences; and  
 - a way to stress-test “packages” of levers (including via optional optimisation search with Optuna) without pretending the system is fully knowable.

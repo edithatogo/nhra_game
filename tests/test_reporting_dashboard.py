@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from scripts.dashboard import prepare_share_drift_data
 
 

@@ -29,13 +29,7 @@ def dot_to_mermaid(dot_text: str, direction: str = "LR") -> str:
     for raw in dot_text.splitlines():
         line = raw.strip()
         if (
-            not line
-            or line.startswith("//")
-            or line.startswith("digraph")
-            or line.startswith("graph")
-            or line.startswith("node")
-            or line.startswith("edge")
-            or line in ("{", "}")
+            not line or line.startswith(("//", "digraph", "graph", "node", "edge")) or line in ("{", "}")
         ):
             continue
         m = NODE_LABEL.match(line)
