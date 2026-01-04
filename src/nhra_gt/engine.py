@@ -1,3 +1,11 @@
+"""
+Core NHRA Simulation Engine (JAX-accelerated).
+
+This module contains the primary simulation loop and transition logic for the
+National Health Reform Agreement (NHRA) game-theoretic model. It uses JAX for
+performance and differentiability.
+"""
+
 from __future__ import annotations
 
 import math
@@ -22,6 +30,7 @@ from nhra_gt.domain.state import (
 )
 from nhra_gt.rules import initialize_rules
 from nhra_gt.subgames.queuing import PatientUtilityParams, solve_queuing_equilibrium_jax
+from nhra_gt.solvers_jax import regret_min_solver_jax
 
 config.update("jax_enable_x64", True)  # type: ignore[no-untyped-call]
 
@@ -36,6 +45,16 @@ SystemMode = SystemModeJax
 
 
 def _pad_strategies(strategies: Float[Array, "..."], width: int = 13) -> Float[Array, "..."]:
+    """
+    Ensures strategy vectors have consistent dimensions for JAX batching.
+
+    Args:
+        strategies: Input strategy array.
+        width: Target width (default 13 for standard game set).
+
+    Returns:
+        Padded or truncated array.
+    """
     arr = jnp.asarray(strategies)
 
     if arr.ndim == 1:
@@ -59,11 +78,22 @@ def _pad_strategies(strategies: Float[Array, "..."], width: int = 13) -> Float[A
 
 @beartype
 def jax_logistic(x: Float[Array, "*"]) -> Float[Array, "*"]:
+    """Standard logistic sigmoid function in JAX."""
     return 1.0 / (1.0 + jnp.exp(-x))
 
 
 @beartype
 def jax_softmax(u: Float[Array, "n"], tau: float = 0.25) -> Float[Array, "n"]:
+    """
+    Tau-tempered softmax for equilibrium selection.
+
+    Args:
+        u: Utility vector.
+        tau: Temperature parameter (lower = more deterministic).
+
+    Returns:
+        Probability distribution over actions.
+    """
     u = u - jnp.max(u)
     z = jnp.exp(u / jnp.maximum(1e-9, tau))
     return z / jnp.sum(z)
@@ -75,13 +105,28 @@ def mm_s_queue_wait_jax(
     service_rate: Float[Array, ""],
     servers: Float[Array, ""],
 ) -> Float[Array, ""]:
+    """
+    Approximation of M/M/s queuing wait time in minutes.
+
+    Uses Kingman's formula variant for JAX compatibility.
+
+    Args:
+        arrival_rate: Patients per minute.
+        service_rate: Patients per minute per server.
+        servers: Number of active servers (e.g. beds/staff).
+
+    Returns:
+        Estimated wait time in minutes.
+    """
     utilization = arrival_rate / jnp.maximum(1e-9, (service_rate * servers))
 
     # Approximation for M/M/s wait time
     def at_capacity(_: Any) -> Float[Array, ""]:
+        """Wait time capped at 24h when at or over capacity."""
         return jnp.asarray(1440.0)
 
     def below_capacity(_: Any) -> Float[Array, ""]:
+        """Calculate wait time using utilization formula."""
         wait = (utilization ** (jnp.sqrt(2 * (servers + 1)) - 1)) / (servers * (1 - utilization))
         return jnp.clip(wait * 1440.0, 5.0, 1440.0)
 
@@ -90,6 +135,7 @@ def mm_s_queue_wait_jax(
 
 @beartype
 def within4_from_pressure_jax(pidx: Float[Array, ""]) -> Float[Array, ""]:
+    """Maps system pressure index to NEAT 'Within 4 Hours' performance."""
     return jnp.clip(1.02 - 0.45 * jax_logistic((pidx - 1.0) / 0.20), 0.05, 0.85)
 
 
@@ -117,7 +163,15 @@ def update_lag_buffers(
     Float[Array, ""],
     Float[Array, ""],
 ]:
-    """Rolls the lag buffers and extracts reported values based on configured lags."""
+    """
+    Rolls the lag buffers and extracts reported values based on configured lags.
+
+    This ensures that agents make decisions based on delayed information,
+    simulating real-world reporting cycles in the Australian health system.
+
+    Returns:
+        A tuple of (new_buffers, reported_values).
+    """
     new_buf_p = jnp.roll(s.lag_buffer_pressure, -1).at[-1].set(current_pressure)
     new_buf_o = jnp.roll(s.lag_buffer_occupancy, -1).at[-1].set(current_occupancy)
     new_buf_w = jnp.roll(s.lag_buffer_within4, -1).at[-1].set(current_within4)
@@ -152,6 +206,16 @@ def update_lag_buffers(
 
 
 def baseline_state(start_year: int = 2025, p: ParamsJax | None = None) -> StateJax:
+    """
+    Initializes the simulation state at a stable baseline.
+
+    Args:
+        start_year: Year to start the simulation.
+        p: Parameters to use for initialization.
+
+    Returns:
+        Initial StateJax object.
+    """
     if p is None:
         p = ParamsJax()
     p = initialize_rules(p)
@@ -224,7 +288,15 @@ def lhn_step_jax(
     discharge_delay_target: Any,
     workforce_availability: Any,
 ) -> LhnState:
-    """Operational step for a single LHN agent."""
+    """
+    Operational step for a single LHN agent.
+
+    Handles localized demand, capacity constraints, discharge delays, and workforce
+    attrition for a Local Health Network (LHN).
+
+    Returns:
+        Updated LhnState.
+    """
     strategies = _pad_strategies(strategies)
     demand = jnp.asarray(demand)
     offload_noise = jnp.asarray(offload_noise)
@@ -281,9 +353,16 @@ def jurisdiction_step_jax(
     prng_key: Any,
     wf_pool: Float[Array, ""],
 ) -> JurisdictionState:
-    """Step for a single jurisdiction and its batch of LHNs."""
+    """
+    Step for a single jurisdiction and its batch of LHNs.
+
+    Handles jurisdictional policy targets and vmaps over child LHNs.
+
+    Returns:
+        Updated JurisdictionState.
+    """
     strategies = _pad_strategies(strategies)
-    k_ops, k_pay = jax.random.split(prng_key)
+    k_ops, _k_pay = jax.random.split(prng_key)
     n_lhns = js.lhn_states.id.shape[0]
 
     # State-level target
@@ -697,6 +776,14 @@ def run_simulation(
 
 @beartype
 def update_system_mode_jax(s: StateJax, p: ParamsJax, current_pressure: Float[Array, ""]) -> Any:
+    """
+    Updates the operational mode based on current system pressure.
+
+    Modes: Normal -> Stress -> Crisis -> Recovery.
+
+    Returns:
+        New SystemModeJax value.
+    """
     mode = s.system_mode
     mode = jnp.where((mode == 0) & (current_pressure > 1.25), 1, mode)
 
@@ -717,6 +804,15 @@ def update_system_mode_jax(s: StateJax, p: ParamsJax, current_pressure: Float[Ar
 def demand_step_jax(
     s: StateJax, p: ParamsJax, strategies: Float[Array, "13"], noise: Float[Array, ""]
 ) -> tuple[Float[Array, ""], Float[Array, ""]]:
+    """
+    Calculates realized macro demand for the current step.
+
+    Demand is influenced by cost-shifting strategies and patient queuing choice
+    between GP and ED.
+
+    Returns:
+        A tuple of (realized_demand, probability_of_ed).
+    """
     shift_val = strategies[3]
     demand_factor = shift_val * (1.04 * p.cost_shifting_intensity / 0.35) + (1.0 - shift_val) * 0.96
     qp = PatientUtilityParams(
@@ -734,6 +830,19 @@ def demand_step_jax(
 
 
 def apply_intervention(p: ParamsJax, name: str) -> ParamsJax:
+    """
+    Applies a named policy intervention to a parameter set.
+
+    Supported interventions: pooled_funding, ucc_integration, nep_realism,
+    aged_ndis_capacity, middle_tier, cumulative_cap, audit_relief.
+
+    Args:
+        p: Input parameters.
+        name: Name of the intervention to apply.
+
+    Returns:
+        Modified parameters.
+    """
     key = name.lower().strip().replace(" ", "_")
 
     def clamp(val, low, high):
@@ -783,6 +892,23 @@ def run_hybrid(
     recorder: Any | None = None,
     overrides: dict[str, Any] | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Runs a high-fidelity simulation with heuristic agents and Monte Carlo sampling.
+
+    This is the primary entry point for experimental runs and calibration. It
+    returns results as Pandas DataFrames for easy analysis and visualization.
+
+    Args:
+        years: List of years to simulate.
+        p: Parameters.
+        seed: Random seed.
+        n_mc: Number of Monte Carlo samples.
+        recorder: Optional audit recorder.
+        overrides: Dictionary of strategy overrides for specific actions.
+
+    Returns:
+        A tuple of (aggregated_timeseries, strategy_frequencies).
+    """
     start_year = years[0]
     end_year = years[-1]
     num_years = end_year - start_year + 1

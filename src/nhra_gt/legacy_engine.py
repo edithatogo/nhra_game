@@ -5,6 +5,12 @@ set of helper functions. The simulation core has since moved to a JAX-first
 implementation in `nhra_gt.engine`.
 """
 
+"""
+Legacy Simulation Engine (Numpy-based).
+
+Maintained for backward compatibility and verification against the JAX core.
+"""
+
 from __future__ import annotations
 
 from typing import Any

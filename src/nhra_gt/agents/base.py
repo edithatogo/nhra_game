@@ -1,3 +1,11 @@
+"""
+Base classes and orchestrators for NHRA strategic agents.
+
+This module defines the interfaces for strategic actors in the simulation,
+including heuristic models and LLM-driven agents. It also provides utilities
+for generating narratives and validating strategic traces.
+"""
+
 from __future__ import annotations
 
 import math
@@ -11,10 +19,12 @@ if TYPE_CHECKING:
 
 
 def logistic(x: float) -> float:
+    """Standard sigmoid function."""
     return 1.0 / (1.0 + math.exp(-x))
 
 
 def softmax(u: np.ndarray, tau: float = 0.25) -> np.ndarray:
+    """Numpy implementation of tau-tempered softmax."""
     u = np.asarray(u, dtype=float)
     u = u - u.max()
     z = np.exp(u / max(1e-9, tau))
@@ -26,17 +36,7 @@ class Agent(ABC):
 
     @abstractmethod
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
-        """Choose strategies based on current system state.
-
-        Args:
-            state: The current simulation state (pressure, funds, etc.).
-            params: The simulation parameters and configuration.
-            rng: A random number generator seeded for this rollout.
-
-        Returns:
-            A dictionary of strategic choices (e.g., {"DEF": "E", "BARG": "A"}).
-        """
-        pass
+        """Choose strategies based on current system state."""
 
 
 class BriefGenerator:
@@ -44,19 +44,7 @@ class BriefGenerator:
 
     @staticmethod
     def generate(state: State, params: Params, role: str) -> str:
-        """Generate a policy brief for a specific role (Commonwealth/State/Provider).
-
-        Converts quantitative state metrics into a qualitative textual narrative
-        suitable for LLM consumption.
-
-        Args:
-            state: Current simulation state.
-            params: System parameters.
-            role: The role to generate the brief for (e.g., "State Health Dept").
-
-        Returns:
-            A formatted markdown string containing the policy brief.
-        """
+        """Generate a policy brief for a specific role (Commonwealth/State/Provider)."""
         mode_desc = {
             "normal": "The system is currently stable.",
             "stress": "The system is under significant pressure.",
@@ -167,9 +155,14 @@ class LLMAgent(Agent):
 
 
 class CommonwealthAgent(Agent):
-    """The Principal (Federal Govt) setting price and compliance rules."""
+    """
+    The Principal (Federal Govt) setting price and compliance rules.
+
+    Focuses on fiscal sustainability, compliance targets, and framing the NEP.
+    """
 
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
+        """Chooses framing (DEF) and compliance (COMP) strategies."""
         obs_pressure = getattr(state, "reported_pressure", state.pressure)
         obs_efficiency_gap = state.reported_efficiency_gap
 
@@ -188,9 +181,14 @@ class CommonwealthAgent(Agent):
 
 
 class JurisdictionAgent(Agent):
-    """The Intermediary (State/Territory Govt) managing the Agreement."""
+    """
+    The Intermediary (State/Territory Govt) managing the Agreement.
+
+    Focuses on budget reconciliation, political capital, and cost-shifting.
+    """
 
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
+        """Chooses bargaining (BARG), cost-shifting (SHIFT), and governance (GOV) strategies."""
         obs_pressure = getattr(state, "reported_pressure", state.pressure)
         obs_efficiency_gap = state.reported_efficiency_gap
 
@@ -220,9 +218,14 @@ class JurisdictionAgent(Agent):
 
 
 class LHNAgent(Agent):
-    """The Operator (Hospital/LHN) managing clinical demand and revenue."""
+    """
+    The Operator (Hospital/LHN) managing clinical demand and revenue.
+
+    Focuses on upcoding, venue shifting, and coordination with aged care/NDIS.
+    """
 
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
+        """Chooses coding, venue, and clinical coordination strategies."""
         obs_pressure = getattr(state, "reported_pressure", state.pressure)
         obs_efficiency_gap = state.reported_efficiency_gap
 

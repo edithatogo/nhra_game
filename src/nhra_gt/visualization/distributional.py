@@ -1,3 +1,9 @@
+"""
+Distributional and Cross-Sectional Plotting.
+
+Heatmaps, pareto charts, and CDFs for comparing simulation results.
+"""
+
 from __future__ import annotations
 
 import matplotlib.pyplot as plt

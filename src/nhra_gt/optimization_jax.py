@@ -1,3 +1,9 @@
+"""
+Policy Optimization and Parameter Search.
+
+Utilities for finding optimal policy levers using JAX-accelerated objective functions.
+"""
+
 from __future__ import annotations
 
 from collections.abc import Callable

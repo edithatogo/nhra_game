@@ -1,3 +1,9 @@
+"""
+System Stability and Hysteresis Metrics.
+
+Utilities for calculating phase space area and recovery times.
+"""
+
 from __future__ import annotations
 
 from typing import Any

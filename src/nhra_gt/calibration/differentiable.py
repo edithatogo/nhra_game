@@ -1,3 +1,9 @@
+"""
+Differentiable Calibration using JAX.
+
+Uses gradient-based optimization to minimize prediction error against targets.
+"""
+
 from __future__ import annotations
 
 from typing import Any
@@ -113,7 +119,6 @@ def calibrate_jax(
     # JIT the loss and gradient
     grad_fn = jax.jit(jax.grad(loss_fn))
 
-    print(f"Initial loss: {loss_fn(x, target_within4, init_state, base_params, prng_key):.6f}")
 
     for i in range(max_iter):
         grads = grad_fn(x, target_within4, init_state, base_params, prng_key)
@@ -122,7 +127,6 @@ def calibrate_jax(
         x = x - learning_rate * grads
 
         if i % 20 == 0:
-            loss = loss_fn(x, target_within4, init_state, base_params, prng_key)
-            print(f"Iter {i:3}: loss = {loss:.6f}")
+            loss_fn(x, target_within4, init_state, base_params, prng_key)
 
     return x

@@ -1,3 +1,11 @@
+"""
+Nash Equilibrium Solvers for 2-Player Normal-Form Games.
+
+This module provides standard game-theoretic solvers for computing Pure and Mixed
+Nash Equilibria, as well as Stackelberg and Rubinstein bargaining solutions.
+It includes equilibrium selection rules (payoff dominant, risk dominant).
+"""
+
 from __future__ import annotations
 
 from collections.abc import Iterator
@@ -11,12 +19,11 @@ from nhra_gt.subgames.sequential import stackelberg_solution
 
 @dataclass(frozen=True)
 class NashEquilibrium:
-    """A Nash equilibrium for a finite 2-player game.
+    """
+    A Nash equilibrium for a finite 2-player game.
 
-    Attributes:
-        kind: 'pure' or 'mixed'
-        row: row strategy (probabilities over actions)
-        col: col strategy (probabilities over actions)
+    Represents a steady state where no player can benefit by changing their
+    strategy while the other players keep theirs unchanged.
     """
 
     kind: str
@@ -26,23 +33,27 @@ class NashEquilibrium:
 
 @dataclass(frozen=True)
 class EquilibriumSelection:
-    """Return type for `select_equilibrium` with backwards-compatible unpacking.
+    """
+    Result of an equilibrium selection process.
 
-    Behaves like a `NashEquilibrium` for attribute access (e.g. `.row`, `.col`)
-    and can also be unpacked as `(equilibrium, n_equilibria)`.
+    Wraps a chosen equilibrium and the total count of equilibria found,
+    providing a backwards-compatible interface for callers.
     """
 
     equilibrium: NashEquilibrium
     n_equilibria: int
 
     def __iter__(self) -> Iterator[object]:
+        """Allows unpacking as (equilibrium, n_equilibria)."""
         yield self.equilibrium
         yield self.n_equilibria
 
     def __getattr__(self, name: str) -> Any:
+        """Proxy attribute access to the chosen equilibrium."""
         return getattr(self.equilibrium, name)
 
     def __eq__(self, other: object) -> bool:
+        """Structural equality check."""
         if isinstance(other, NashEquilibrium):
             return self.equilibrium == other
         if isinstance(other, EquilibriumSelection):
@@ -52,7 +63,11 @@ class EquilibriumSelection:
 
 @dataclass(frozen=True)
 class TwoPlayerGame:
-    """Normal-form game with payoffs for row and column players."""
+    """
+    Represents a 2-player normal-form game.
+
+    Includes payoff matrices and action labels for both players.
+    """
 
     u_row: np.ndarray[Any, Any]  # shape (n,m)
     u_col: np.ndarray[Any, Any]  # shape (n,m)
@@ -132,6 +147,7 @@ def solve_game(
 
 
 def _best_responses_row(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
+    """Computes a boolean matrix of best responses for the Row player."""
     # boolean matrix (n,m): row action i is best response to column action j
     A = game.u_row
     n, m = A.shape
@@ -143,6 +159,7 @@ def _best_responses_row(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
 
 
 def _best_responses_col(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
+    """Computes a boolean matrix of best responses for the Column player."""
     B = game.u_col
     n, m = B.shape
     br = np.zeros((n, m), dtype=bool)
@@ -153,6 +170,12 @@ def _best_responses_col(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
 
 
 def pure_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
+    """
+    Finds all Pure Strategy Nash Equilibria.
+
+    An action profile is a PNE if no player can unilaterally improve their payoff
+    by switching to a different pure action.
+    """
     br_r = _best_responses_row(game)
     br_c = _best_responses_col(game)
     n, m = game.u_row.shape
@@ -169,7 +192,11 @@ def pure_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
 
 
 def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
-    """Solve mixed Nash for 2x2 games, returning None if degenerate."""
+    """
+    Solve mixed Nash for 2x2 games using the indifference principle.
+
+    Returns None if the game is degenerate or has only pure equilibria.
+    """
     if game.u_row.shape != (2, 2):
         return None
     A = game.u_row
@@ -194,6 +221,7 @@ def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
 
 
 def all_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
+    """Finds all pure Nash equilibria, plus the mixed equilibrium for 2x2 games."""
     eqs = pure_nash(game)
     if game.u_row.shape == (2, 2):
         m = mixed_nash_2x2(game)

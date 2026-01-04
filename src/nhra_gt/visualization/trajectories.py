@@ -1,3 +1,9 @@
+"""
+Time-Series Trajectory Plotting.
+
+Standard line and swarm plots for simulation history.
+"""
+
 from __future__ import annotations
 
 from typing import Any

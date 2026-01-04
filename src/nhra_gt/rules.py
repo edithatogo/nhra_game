@@ -1,3 +1,11 @@
+"""
+Modular Rules Engine for NHRA simulation.
+
+This module defines the policy rules (caps, audits, eligibility, reconciliation)
+as JAX-compatible PyTrees. This allows rules to be swapped dynamically and
+for gradients to flow through rule logic during optimization.
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
@@ -25,7 +33,11 @@ if TYPE_CHECKING:
 
 @struct.dataclass
 class CapRule:
-    """Base class for growth cap rules."""
+    """
+    Handles growth cap logic for Commonwealth funding.
+
+    Supports both 'Hard' (strict limit) and 'Soft' (marginal reduction) caps.
+    """
 
     # rule_type: 0 = Hard, 1 = Soft
     rule_type: int = 0
@@ -64,7 +76,11 @@ class CapRule:
 
 @struct.dataclass
 class AuditRule:
-    """Base class for audit/integrity rules."""
+    """
+    Handles integrity and audit pressure logic.
+
+    Defines how coding intensity translates into detection risk or financial penalties.
+    """
 
     # rule_type: 0 = Proportional, 1 = Threshold
     rule_type: int = 0
@@ -72,16 +88,7 @@ class AuditRule:
     threshold: float = 1.15
 
     def evaluate(self, coding_intensity: float, active_pressure: float) -> float:
-        """Calculate the probability of detection or audit penalty.
-
-        Args:
-            coding_intensity: The agent's chosen level of coding documentation.
-            active_pressure: The current system pressure (affects detection sensitivity).
-
-        Returns:
-            The expected penalty or audit detection signal.
-        """
-
+        """Calculate the probability of detection or audit penalty."""
         # Proportional logic
         def proportional():
             return active_pressure * jnp.maximum(0.0, coding_intensity - 1.0) * 2.0
@@ -100,21 +107,18 @@ class AuditRule:
 
 @struct.dataclass
 class EligibilityRule:
-    """Rules for determining NWAU eligibility (e.g. ABF vs Block)."""
+    """
+    Determines NWAU eligibility and activity stream partitioning.
+
+    Defines the boundary between Activity Based Funding (ABF) and Block funding.
+    """
 
     # boundary_type: 0 = Default, 1 = Shifted
     boundary_type: int = 0
     block_funding_base: float = 0.15
 
     def get_abf_share(self, venue_shift_strat: float) -> float:
-        """Determines the share of activity that remains in ABF.
-
-        Args:
-            venue_shift_strat: Strategic choice between ABF (0.0) and Block (1.0).
-
-        Returns:
-            The fraction of activity to be funded via the ABF stream.
-        """
+        """Determines the share of activity that remains in ABF."""
         base_abf_share = 1.0 - self.block_funding_base
         # If strategy is 'Shift' (1.0), we reduce ABF share (moving activity to Block)
         target_abf_share = jnp.where(
@@ -125,22 +129,18 @@ class EligibilityRule:
 
 @struct.dataclass
 class ReconciliationRule:
-    """Rules for annual true-ups and safety nets."""
+    """
+    Handles annual financial true-ups and emergency transfers.
+
+    Simulates the "Safety Net" or bailout mechanisms triggered by system pressure.
+    """
 
     # recon_type: 0 = Standard, 1 = Safety Net
     recon_type: int = 0
     safety_net_threshold: float = 1.2  # Pressure threshold for bailout
 
     def calculate_bailout(self, current_pressure: float, month_growth_factor: float) -> float:
-        """Calculates the bailout amount based on system pressure.
-
-        Args:
-            current_pressure: The observed system pressure.
-            month_growth_factor: The factor mapping annual to monthly growth.
-
-        Returns:
-            The additional funding transfer amount (bailout).
-        """
+        """Calculates the bailout amount based on system pressure."""
         bail_inc = jnp.where(
             current_pressure > self.safety_net_threshold, 0.05 * month_growth_factor, 0.0
         )

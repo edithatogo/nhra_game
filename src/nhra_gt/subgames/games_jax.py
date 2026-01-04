@@ -1,12 +1,17 @@
+"""
+JAX-native Game Payload Definitions.
+
+Optimized versions of subgame matrices for use in differentiable rollouts.
+"""
+
 from __future__ import annotations
+
+from typing import Any
 
 import jax.numpy as jnp
 from beartype import beartype
 from flax import struct
 from jaxtyping import Array, Float
-
-
-from typing import Any
 
 
 @struct.dataclass

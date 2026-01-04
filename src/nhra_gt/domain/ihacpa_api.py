@@ -1,3 +1,9 @@
+"""
+IHACPA API Client and Data Ingestion.
+
+Handles fetching and parsing National Efficient Price (NEP) series data.
+"""
+
 from __future__ import annotations
 
 import logging
@@ -97,5 +103,3 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
     client = IHACPAClient()
     nep_df = client.fetch_nep_series()
-    print("\nIHACPA NEP Series (Automated + Baseline):")
-    print(nep_df.tail(10))

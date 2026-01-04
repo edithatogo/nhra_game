@@ -1,5 +1,12 @@
+"""
+ABS Data API Client.
+
+Handles fetching and parsing Wage Price Index (WPI) data for the health sector.
+"""
+
 from __future__ import annotations
 
+import contextlib
 import logging
 from pathlib import Path
 
@@ -75,9 +82,5 @@ if __name__ == "__main__":
     # Test script
     logging.basicConfig(level=logging.INFO)
     client = ABSApiClient()
-    try:
+    with contextlib.suppress(Exception):
         wpi_df = client.fetch_wpi_health(use_cache=False)
-        print("\nProcessed WPI Health (Normalized 2011=100):")
-        print(wpi_df[wpi_df["year"] >= 2011].head(15))
-    except Exception as e:
-        print(f"Error: {e}")

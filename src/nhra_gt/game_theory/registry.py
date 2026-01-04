@@ -1,9 +1,18 @@
+"""
+Central Registry for Game-Theoretic Mechanism Definitions.
+
+Stores metadata, strategies, and qualitative insights for all NHRA subgames.
+"""
+
 from typing import Any
 
 from pydantic import BaseModel
 
 
 class GameDefinition(BaseModel):
+    """
+    Complete definition of a subgame, including qualitative insights.
+    """
     id: str
     title: str
     players: list[str]
@@ -17,6 +26,9 @@ class GameDefinition(BaseModel):
 
 
 class GameRegistry:
+    """
+    In-memory store for game definitions.
+    """
     def __init__(self) -> None:
         self._games: dict[str, GameDefinition] = {}
 

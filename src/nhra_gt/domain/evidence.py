@@ -1,3 +1,9 @@
+"""
+Evidence Types and Reliability Schemas.
+
+Defines the structure of evidence entries used in the registry.
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

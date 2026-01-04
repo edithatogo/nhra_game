@@ -1,3 +1,12 @@
+"""
+Hierarchical Simulation and Constitutional Game Solvers.
+
+This module handles the interaction between different levels of the health
+system (Commonwealth, Jurisdiction, LHN) using vectorized JAX operations.
+It includes solvers for "Constitutional" games where macro-level choices
+affect micro-level incentives.
+"""
+
 from __future__ import annotations
 
 from typing import Any
@@ -42,6 +51,7 @@ def hierarchical_step_jax(
     keys = jax.random.split(prng_key, num_jurisdictions)
 
     def _in_axes_for_batch(tree: Any) -> Any:
+        """Determines vmap in_axes for a state PyTree batch."""
         def axis_for(x: Any) -> int | None:
             try:
                 if hasattr(x, "ndim") and x.ndim > 0 and x.shape[0] == num_jurisdictions:
@@ -58,6 +68,7 @@ def hierarchical_step_jax(
     # For now, we'll assume micro-strategies are determined inside a vectorized step
 
     def single_jurisdiction_step(s, k):
+        """Performs a step for a single jurisdiction in the batch."""
         # Merge macro and micro strategies into the 12-vector
         # 0: SIGNAL, 1: DEF (Macro), 2: BARG (Macro), 3: SHIFT (Micro),
         # 4: DISC (Micro), 5: AGED (Micro), 6: NDIS (Micro), 7: CODING (Micro),
@@ -96,15 +107,21 @@ def solve_constitutional_game_jax(
     lam: float = 5.0,
 ) -> tuple[Float[Array, "m"], Float[Array, "n"], Float[Array, "m n"], Float[Array, "m n"]]:
     """
-    Solves the nested Constitutional game:
+    Solves the nested Constitutional game using backward induction.
+
     1. Commonwealth vs State (Macro)
     2. State vs LHN (Micro)
 
-    The State's macro payoff is its own payoff from (1) PLUS its equilibrium payoff from (2).
+    The State's macro payoff is its own payoff from (1) PLUS its equilibrium
+    payoff from (2).
+
+    Returns:
+        Tuple of (p_cth, q_state, state_micro_utils, lhn_micro_utils).
     """
     m, n = u_cth.shape
 
     def get_micro_equilibria(i, j):
+        """Helper to resolve micro-game equilibria for each macro outcome."""
         u_state_micro, u_lhn = micro_game_factory(i, j)
         p_micro, q_micro, _ = qre_solver_jax(u_state_micro, u_lhn, lam=lam)
         # Return State and LHN utilities from micro game

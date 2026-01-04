@@ -1,3 +1,12 @@
+"""
+JAX-compatible state definitions for the NHRA simulation.
+
+This module defines the data structures used to represent the state of the system
+at various levels of granularity (LHN, Jurisdiction, Global). It uses
+`flax.struct.dataclass` to ensure compatibility with JAX transformations
+like `jit`, `vmap`, and `grad`.
+"""
+
 from __future__ import annotations
 
 import logging
@@ -19,6 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 class SystemModeJax(IntEnum):
+    """Enumeration of system-wide operational modes."""
     NORMAL = 0
     STRESS = 1
     CRISIS = 2
@@ -102,12 +112,22 @@ Params = ParamsJax
 
 
 class BaselineProvider:
-    """Manages loading of the automated data spine and baseline parameters."""
+    """
+    Manages loading of the automated data spine and baseline parameters.
+
+    Provides a centralized interface for synchronizing empirical data into
+    the JAX simulation environment.
+    """
 
     @staticmethod
     def load_spine(
         path: Path | str = "data/calibration/historical_normalized.csv",
     ) -> EconomicSpineJax:
+        """
+        Loads the economic spine (NEP, WPI) from a CSV file.
+
+        Uses Polars if available, otherwise falls back to Pandas.
+        """
         required = {"year", "nep_per_nwau", "wpi_health_index"}
         if pl is None:
             import pandas as pd
@@ -134,6 +154,9 @@ class BaselineProvider:
 
     @classmethod
     def get_baseline(cls, config_path: str = "configs/defaults.yaml") -> tuple[ParamsJax, StateJax]:
+        """
+        Retrieves baseline parameters and state for a new simulation run.
+        """
         from nhra_gt.engine_jax import baseline_state_jax
 
         params = ParamsJax.from_yaml(config_path)
@@ -153,7 +176,12 @@ class BaselineProvider:
 
 @struct.dataclass
 class LhnState:
-    """Granular state for a single Local Hospital Network (LHN)."""
+    """
+    Granular state for a single Local Hospital Network (LHN).
+
+    Represents the operational and strategic status of a hospital cluster,
+    including its pressure, occupancy, and internal choices.
+    """
 
     id: int
     pressure: float = 1.0
@@ -169,12 +197,17 @@ class LhnState:
     adjustment_costs: float = 0.0
 
     def replace(self, **kwargs: Any) -> LhnState:
+        """Flax-compatible field replacement."""
         return self.replace(**kwargs)
 
 
 @struct.dataclass
 class JurisdictionState:
-    """Granular state for a single Jurisdiction (State/Territory)."""
+    """
+    Granular state for a single Jurisdiction (State/Territory).
+
+    Aggregates LHNs and manages jurisdictional-level fiscal and political state.
+    """
 
     id: int
     reconciliation_balance: float = 0.0
@@ -189,12 +222,18 @@ class JurisdictionState:
     )  # Vectorized in practice
 
     def replace(self, **kwargs: Any) -> JurisdictionState:
+        """Flax-compatible field replacement."""
         return self.replace(**kwargs)
 
 
 @struct.dataclass
 class StateJax:
-    """JAX-compatible simulation state (Global Orchestrator)."""
+    """
+    JAX-compatible simulation state (Global Orchestrator).
+
+    The root PyTree for the entire simulation state. It contains both global
+    aggregates and hierarchical jurisdictional/LHN states.
+    """
 
     year: Any
     month: Any

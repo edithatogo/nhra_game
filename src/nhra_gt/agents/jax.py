@@ -1,3 +1,9 @@
+"""
+JAX-native Heuristic Agents.
+
+Optimized implementations of agent logic for use inside JIT-compiled loops.
+"""
+
 from __future__ import annotations
 
 import jax.numpy as jnp

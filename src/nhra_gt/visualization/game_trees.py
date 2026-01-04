@@ -1,3 +1,11 @@
+"""
+Extensive-Form Game Tree Visualization.
+
+This module provides tools for constructing and rendering extensive-form game
+trees using PyGambit and Graphviz. It supports both simple 2-player games and
+hierarchical 3-player (Hybrid) models.
+"""
+
 from __future__ import annotations
 
 from collections.abc import Sequence
@@ -16,12 +24,14 @@ except ImportError:  # pragma: no cover
 
 
 def beartype(func):  # type: ignore[no-untyped-def]
+    """Conditional beartype decorator."""
     if gambit is None or _beartype is None:
         return func
     return _beartype(func)
 
 
 def _require_pygambit() -> None:
+    """Ensures pygambit is available for tree operations."""
     if gambit is None:  # pragma: no cover
         raise ImportError(
             "Optional dependency `pygambit` is required for game tree utilities. "
@@ -112,7 +122,11 @@ def create_hybrid_game_tree(
 
 
 def render_tree_static(game: Any, output_path: Path | str) -> None:
-    """Renders the game tree to an SVG/PNG using Graphviz."""
+    """
+    Renders the game tree to an SVG/PNG using Graphviz.
+
+    Traverses the PyGambit tree and builds a Graphviz Digraph.
+    """
     try:
         import graphviz
     except ImportError as e:  # pragma: no cover
@@ -125,6 +139,7 @@ def render_tree_static(game: Any, output_path: Path | str) -> None:
     dot.attr(rankdir="LR")  # Left to right for trees
 
     def walk(node, parent_id=None, edge_label=""):
+        """Recursive tree walker for Graphviz construction."""
         node_id = str(id(node))
 
         if node.is_terminal:
@@ -149,7 +164,9 @@ def render_tree_static(game: Any, output_path: Path | str) -> None:
 
 
 def export_gte_html(game: Any, output_path: Path | str) -> None:
-    """Exports the game in .efg format."""
+    """
+    Exports the game in .efg format for use in Game Theory Explorer.
+    """
     path = Path(output_path).with_suffix(".efg")
     path.write_text(game.serialize(), encoding="utf-8")
 

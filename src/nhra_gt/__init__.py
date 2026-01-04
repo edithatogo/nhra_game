@@ -1,19 +1,12 @@
-from __future__ import annotations
-
-from importlib.metadata import PackageNotFoundError, version
-from typing import Any
+"""NHRA Game Theory Simulation Library."""
 
 try:
-    __version__ = version("nhra_gt")
-except PackageNotFoundError:
-    __version__ = "unknown"
-
-logfire: Any | None = None
-try:  # pragma: no cover
-    import logfire as _logfire
+    import logfire
+    logfire.configure(send_to_logfire='if-token-present')
 except ImportError:
-    _logfire = None
+    pass
 
-logfire = _logfire
+from nhra_gt.engine import run_simulation, step
+from nhra_gt.hierarchical_jax import solve_constitutional_game_jax
 
-__all__ = ["__version__", "logfire"]
+__all__ = ["run_simulation", "step", "solve_constitutional_game_jax"]

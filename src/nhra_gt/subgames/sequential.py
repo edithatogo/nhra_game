@@ -1,6 +1,15 @@
+"""
+Sequential and Alternating-Offer Bargaining Solvers.
+
+Includes Rubinstein infinite-horizon bargaining and Stackelberg leader-follower
+equilibrium solvers.
+"""
+
 from __future__ import annotations
-import numpy as np
+
 from typing import Any
+
+import numpy as np
 
 
 def rubinstein_solution(
@@ -42,7 +51,7 @@ def stackelberg_solution(
     Returns:
         Tuple (leader_action_idx, follower_action_idx).
     """
-    n_rows, n_cols = u_leader.shape
+    n_rows, _n_cols = u_leader.shape
 
     # Step 1: Determine Follower's Best Response for each Leader action
     follower_responses = []

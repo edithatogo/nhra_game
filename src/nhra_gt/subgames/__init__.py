@@ -1,1 +1,1 @@
-__all__ = ["nash", "games"]
+"""Subgame mechanism definitions."""

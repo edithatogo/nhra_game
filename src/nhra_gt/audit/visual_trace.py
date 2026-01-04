@@ -1,3 +1,9 @@
+"""
+Visual Trace and Dependency Mapping.
+
+Extracts edges and nodes for visualizing data flow and agent interactions.
+"""
+
 from __future__ import annotations
 
 import re

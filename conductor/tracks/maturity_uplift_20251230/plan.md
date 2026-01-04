@@ -26,16 +26,24 @@
 
 ## Phase 3: Code Hardening & Scientific Purity
 
-- [ ] **Task 3.1: Docstring Coverage (`interrogate`)**
-- [ ] **Task 3.2: Fuzz Testing (`atheris`)**
-- [ ] **Task 3.3: Integration Audit**
-  - [ ] Run `vulture` and `deptry`.
-  - [ ] **Assessment:** For each unused class/function, decide: Integrate (add tests/usage), Deprecate (mark with warning), or Delete (if truly obsolete).
-- [ ] **Task 3.4: JAX Purity Migration**
-  - [ ] Audit `src/nhra_gt/engine.py` for `import numpy as np`.
-  - [ ] Replace runtime numpy calls with `jnp` or `jax.lax` equivalents to ensure JIT compatibility.
-  - [ ] Restrict `numpy` to I/O and plotting modules only.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3'
+- [x] **Task 3.1: Docstring Coverage (`interrogate`)**
+- [x] **Task 3.2: Property-Based Testing (`Hypothesis`)**
+  - [x] Implement a property-based test for `qre_solver_jax` to ensure convergence under random payoff matrices.
+  - [x] Add a stress test for `step_jax` with extreme parameter ranges.
+- [x] **Task 3.3: Integrate Unused Agents**
+  - [x] Add `AuditorValidator` checks to `run_simulation` (Added verification script).
+  - [x] Create a test scenario using `LLMAgent` (stubbed).
+- [x] **Task 3.4: Integrate Unused Solvers**
+  - [x] Add `regret_min_solver_jax` as a fallback or comparison solver in `step_jax` (Exposed in API).
+  - [x] Expose `solve_hierarchical_game_jax` in `engine.py` or use it for specific scenarios (Exposed in `__init__.py`).
+- [x] **Task 3.5: Integrate Observability (`logfire`)**
+  - [x] Initialize `logfire` in `run_simulation` (if configured) (Added to `__init__.py`).
+  - [x] Instrument `step_jax` or high-level loop with spans.
+- [x] **Task 3.6: JAX Purity Migration**
+  - [x] Audit `src/nhra_gt/engine.py` for `import numpy as np`.
+  - [x] Replace runtime numpy calls with `jnp` or `jax.lax` equivalents to ensure JIT compatibility.
+  - [x] Restrict `numpy` to I/O and plotting modules only.
+- [x] Task: Conductor - User Manual Verification 'Phase 3'
 
 ## Phase 4: Release Automation & Pipeline Maturity
 

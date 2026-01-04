@@ -1,3 +1,11 @@
+"""
+Logical Utility Functions for NHRA Agents.
+
+This module defines the utility functions used by LHNs and Jurisdictions to
+evaluate their strategic choices. These functions are designed to be
+JAX-compatible and differentiable.
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -16,6 +24,7 @@ try:
 except ImportError:  # pragma: no cover
 
     class _Struct:
+        """Minimal replacement for flax.struct."""
         dataclass = staticmethod(dataclass)
 
     struct = _Struct()  # type: ignore[assignment]
@@ -27,6 +36,7 @@ except ImportError:  # pragma: no cover
 
 
 def beartype(fn):  # type: ignore[no-untyped-def]
+    """Conditional beartype decorator."""
     if _beartype is None:
         return fn
     return _beartype(fn)
@@ -34,6 +44,18 @@ def beartype(fn):  # type: ignore[no-untyped-def]
 
 @struct.dataclass
 class AgentWeights:
+    """
+    Preference weights for agent utility functions.
+
+    Attributes:
+        ramping_penalty: Weight on ED pressure/ramping.
+        nwau_utility: Weight on generated revenue.
+        cost_disutility: Weight on operational costs.
+        shifting_penalty: Friction for switching activity streams.
+        capacity_inertia_weight: Cost of changing capacity targets.
+        vfi_disutility: State-level penalty for fiscal imbalance.
+        kpi_satisfaction: State-level benefit from LHN performance.
+    """
     # LHN Weights
     ramping_penalty: float = 10.0
     nwau_utility: float = 1.0

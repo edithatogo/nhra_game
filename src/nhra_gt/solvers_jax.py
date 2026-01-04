@@ -1,3 +1,12 @@
+"""
+JAX-Accelerated Game Theory Solvers.
+
+This module provides high-performance solvers for various equilibrium concepts,
+including Quantal Response Equilibrium (QRE), Regret Minimization,
+Stackelberg (Leader-Follower), and Rubinstein bargaining. All solvers are
+designed to be compatible with JAX transformations (`jit`, `vmap`, `grad`).
+"""
+
 from __future__ import annotations
 
 from typing import Any
@@ -192,13 +201,24 @@ def solve_hierarchical_game_jax(
     lam: float = 5.0,
 ) -> tuple[Float[Array, "m"], Float[Array, "n"], Float[Array, "m n"]]:
     """
-    Solves a nested hierarchical game.
-    The macro game results determine the parameters of the micro games.
-    Uses backward induction (or approximation thereof) for equilibrium.
+    Solves a nested hierarchical game using backward induction.
+
+    The macro game payoffs are augmented by the equilibrium utilities of the
+    resulting micro games for each macro strategy profile.
+
+    Args:
+        macro_row_matrix: Baseline payoffs for the macro row player.
+        macro_col_matrix: Baseline payoffs for the macro column player.
+        micro_game_factory: A function (i, j) -> (u_micro_row, u_micro_col).
+        lam: QRE rationality parameter.
+
+    Returns:
+        A tuple of (macro_row_strat, macro_col_strat, micro_utilities_matrix).
     """
     m, n = macro_row_matrix.shape
 
     def get_micro_utility(i: int, j: int) -> float:
+        """Helper to resolve a specific micro game cell."""
         # Resolve micro game for cell (i, j)
         u_micro_row, u_micro_col = micro_game_factory(i, j)
         p_micro, q_micro, _ = qre_solver_jax(u_micro_row, u_micro_col, lam=lam)
@@ -235,7 +255,16 @@ def qre_3player_jax(
     tol: float = 1e-6,
 ) -> tuple[Float[Array, "m"], Float[Array, "n"], Float[Array, "k"], Float[Array, ""]]:
     """
-    Solves for QRE in a 3-player normal form game.
+    Solves for QRE in a 3-player normal form game using tensor contractions.
+
+    Args:
+        u1, u2, u3: 3D payoff tensors for each player.
+        lam: QRE rationality parameter.
+        max_iter: Max fixed-point iterations.
+        tol: Convergence tolerance.
+
+    Returns:
+        A tuple of (strat1, strat2, strat3, residual).
     """
     m, n, k = u1.shape
 

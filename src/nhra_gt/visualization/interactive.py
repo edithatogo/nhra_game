@@ -1,3 +1,9 @@
+"""
+Interactive Plotly Visualizations for the Dashboard.
+
+Dynamic charts for risk, pressure, stability, and workforce dynamics.
+"""
+
 from __future__ import annotations
 
 import pandas as pd

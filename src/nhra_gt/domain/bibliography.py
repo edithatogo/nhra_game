@@ -1,3 +1,9 @@
+"""
+Bibliography and Citation Management.
+
+Handles parsing and exporting references in multiple formats (RIS, BibTeX, ENW).
+"""
+
 from __future__ import annotations
 
 import re

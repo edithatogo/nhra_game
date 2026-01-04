@@ -1,3 +1,11 @@
+"""
+Evidence Registry for NHRA Simulation.
+
+This module manages the collection, grading, and promotion of empirical evidence
+to simulation parameters. It ensures that the model is grounded in real-world
+data and that multiple data sources are resolved consistently.
+"""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -12,6 +20,11 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class EvidenceEntry(BaseModel):
+    """
+    A single piece of empirical evidence for a parameter.
+
+    Contains the value, confidence interval, and NHMRC evidence level.
+    """
     parameter: str
     mean: float
     lower_ci: float | None = None
@@ -23,6 +36,7 @@ class EvidenceEntry(BaseModel):
 
     @model_validator(mode="after")
     def validate_ci_bounds(self) -> EvidenceEntry:
+        """Ensures CI bounds are consistent with the mean."""
         if self.lower_ci is not None and self.lower_ci > self.mean:
             raise ValueError("lower_ci must be <= mean")
         if self.upper_ci is not None and self.upper_ci < self.mean:
@@ -37,17 +51,25 @@ class EvidenceEntry(BaseModel):
 
 
 class EvidenceRegistry(BaseModel):
+    """
+    Registry for managing multiple evidence sources.
+
+    Handles conflict resolution (choosing the highest quality source) and
+    syncing evidence to configuration files.
+    """
     # Key is parameter name, value is a list of entries
     entries: dict[str, list[EvidenceEntry]] = Field(default_factory=dict)
 
     model_config = ConfigDict(validate_assignment=True)
 
     def add_entry(self, entry: EvidenceEntry) -> None:
+        """Adds a new evidence entry to the registry."""
         if entry.parameter not in self.entries:
             self.entries[entry.parameter] = []
         self.entries[entry.parameter].append(entry)
 
     def get_all_entries(self, parameter: str) -> list[EvidenceEntry]:
+        """Retrieves all evidence entries for a given parameter."""
         return self.entries.get(parameter, [])
 
     def get_entry(self, parameter: str) -> EvidenceEntry | None:
@@ -177,6 +199,7 @@ class EvidenceRegistry(BaseModel):
         return deviation <= threshold
 
     def save_to_csv(self, path: Path | str) -> None:
+        """Persists the registry to a CSV file."""
         flat_data = []
         for p_entries in self.entries.values():
             for e in p_entries:
@@ -191,6 +214,7 @@ class EvidenceRegistry(BaseModel):
 
     @classmethod
     def load_from_csv(cls, path: Path | str) -> EvidenceRegistry:
+        """Loads a registry from a CSV file."""
         registry = cls()
         if pl is None:
             import math

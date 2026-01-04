@@ -1,3 +1,9 @@
+"""
+Evidence Analysis and Evaluation Logic.
+
+Extracts structured insights from raw qualitative evidence for model grounding.
+"""
+
 from __future__ import annotations
 
 import logging

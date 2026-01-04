@@ -1,3 +1,12 @@
+"""
+Patient Queuing Game and Wardrop Equilibrium Solver.
+
+This module models the choice patients make between attending an Emergency
+Department (ED) or a General Practitioner (GP), based on expected wait times
+and out-of-pocket costs. It uses fixed-point iteration to find the equilibrium
+demand levels.
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -14,7 +23,7 @@ except ImportError:  # pragma: no cover
 
 try:
     from beartype import beartype as _beartype
-    from jaxtyping import Array, Float  # noqa: F401
+    from jaxtyping import Array, Float
 except ImportError:  # pragma: no cover
     Array = Any  # type: ignore[assignment]
     Float = Any  # type: ignore[assignment]
@@ -22,6 +31,7 @@ except ImportError:  # pragma: no cover
 
 
 def beartype(fn):  # type: ignore[no-untyped-def]
+    """Conditional beartype decorator."""
     if _beartype is None:
         return fn
     return _beartype(fn)
@@ -29,7 +39,16 @@ def beartype(fn):  # type: ignore[no-untyped-def]
 
 @dataclass(frozen=True)
 class PatientUtilityParams:
-    """Parameters defining patient choice utility."""
+    """
+    Parameters defining patient choice utility.
+
+    Attributes:
+        gp_out_of_pocket: Financial cost of GP visit ($).
+        gp_wait_time_min: Expected wait time for GP (minutes).
+        patient_time_value_hour: Shadow price of patient time ($/hr).
+        ed_base_utility: Intrinsic utility of ED (e.g. equipment access).
+        logit_sensitivity: Rationality parameter for logit choice.
+    """
 
     gp_out_of_pocket: float = 40.0
     gp_wait_time_min: float = 15.0
@@ -40,7 +59,12 @@ class PatientUtilityParams:
 
 @beartype
 def calculate_patient_utilities(ed_wait_min: Any, p: PatientUtilityParams) -> tuple[Any, Any]:
-    """Calculates utilities for choosing ED vs GP."""
+    """
+    Calculates utilities for choosing ED vs GP.
+
+    Returns:
+        Tuple of (utility_ed, utility_gp).
+    """
     u_ed = p.ed_base_utility - (ed_wait_min / 60.0 * p.patient_time_value_hour)
     u_gp = jnp.array(-(p.gp_wait_time_min / 60.0 * p.patient_time_value_hour) - p.gp_out_of_pocket)
     return u_ed, u_gp

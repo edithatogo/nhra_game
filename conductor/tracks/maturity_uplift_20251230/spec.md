@@ -22,14 +22,23 @@ This track focuses on modernizing the project's development toolchain, consolida
 
 ### 2.2 Quality Assurance & Integration
 
-- **Integration Audit (formerly Dead Code):**
-  - Run `vulture` and `deptry` to identify unused components.
-  - **Policy:** Do *not* delete unused code immediately. Assess for integration into the library or simulation engine. If valuable, add tests/bindings. Only delete if obsolete.
-- **JAX Purity Check:**
-  - Audit the `src/nhra_gt/engine.py` and solvers for legacy `numpy` usage.
-  - **Goal:** Ensure core simulation logic is JAX-compliant (pure, compilable). `numpy` should only be used for I/O (Pandas) and plotting.
+-   **Integration of "Lost" Logic:**
+
+    -   **Agents:** Integrate `AuditorValidator` (for post-hoc analysis) and `LLMAgent` (as a configurable player type) into the main engine or verification suite.
+
+    -   **Solvers:** Expose `regret_min_solver_jax` and `solve_hierarchical_game_jax` in the top-level API or use them in specific advanced scenarios.
+
+    -   **Observability:** Integrate **`logfire`** for structured logging/tracing within the main simulation loop (optional flag) to satisfy the dependency requirement.
+
+-   **JAX Purity Check:**
+
+    -   Audit the `src/nhra_gt/engine.py` and solvers for legacy `numpy` usage.
+
+    -   **Goal:** Ensure core simulation logic is JAX-compliant (pure, compilable). `numpy` should only be used for I/O (Pandas) and plotting.
+
+
 - **Docstring Coverage:** Implement **`interrogate`** to enforce documentation standards.
-- **Fuzz Testing:** Integrate **`atheris`** for edge-case testing on core game theoretic logic.
+- **Property-Based Testing:** Expand usage of **`Hypothesis`** for edge-case testing on core game theoretic logic and JAX solvers.
 
 ### 2.3 Pipeline Provenance (Snakemake)
 

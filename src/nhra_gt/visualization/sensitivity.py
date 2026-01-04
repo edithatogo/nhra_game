@@ -1,3 +1,9 @@
+"""
+Sensitivity Analysis Visualizations.
+
+Sobol indices, Morris screening, and tornado plots.
+"""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -183,7 +189,7 @@ def plot_rank_tornado(
     """Rank-correlation tornado using Spearman rho."""
     # Validation
     RankCorrelationSchema.validate(data)
-    for col in [outcome_col] + params:
+    for col in [outcome_col, *params]:
         if col not in data.columns:
             raise ValueError(f"Column '{col}' not found in data.")
 

@@ -1,3 +1,9 @@
+"""
+Negotiation and Debate Loop logic.
+
+Models multi-round interactions between agents to reach consensus or deadlock.
+"""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
