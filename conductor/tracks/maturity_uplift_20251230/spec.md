@@ -1,57 +1,63 @@
 # Specification: Maturity Uplift & Modernization (v26)
 
 ## 1. Overview
-This track focuses on modernizing the project's development toolchain, consolidating configuration, and ensuring the codebase reaches a state of "maturity" suitable for a State-of-the-Art (SOTA) designation. This involves migrating to faster, more unified tools (Ruff, uv, Basedpyright), eliminating technical debt (stubs, dead code), hardening the verification pipeline (E2E testing, docstring coverage), and automating release management.
+This track focuses on modernizing the project's development toolchain, consolidating configuration, and ensuring the codebase reaches a state of "maturity" suitable for a State-of-the-Art (SOTA) designation. This involves migrating to faster, more unified tools (Ruff, uv, Basedpyright), eliminating technical debt, hardening the verification pipeline, and automating release management.
+
+**Key Constraint:** "YOLO mode" is active for execution, but architectural decisions must be documented and reversible.
 
 ## 2. Functional Requirements
 
 ### 2.1 Toolchain Migration & Consolidation
--   **Package Management:** Migrate from `poetry`/`conda` to **`uv`** for dependency management and virtual environment handling.
--   **Linting & Formatting:** Consolidate `isort`, `bandit`, and `flake8` functionality into **`Ruff`**. Remove legacy configuration files (`.flake8`, `isort.cfg`, etc.).
--   **Type Checking:** Migrate from `mypy` to **`Basedpyright`** for stricter, faster type analysis.
--   **Orchestration:** Ensure `nox` is the sole task runner, removing any residual `tox` configuration. Maximize usage of **`just`** for developer convenience (shortcuts).
--   **Configuration:** Centralize all possible tool configurations into `pyproject.toml`.
+-   **Package Management:** Migrate from `poetry`/`conda` to **`uv`** for dependency management.
+    -   Ensure `uv.lock` is the single source of truth.
+    -   **Requirement:** All dependencies (dev, opt, accel) must be installed in the local `.venv`.
+-   **Linting & Formatting:** Consolidate `isort`, `bandit`, and `flake8` into **`Ruff`**.
+    -   **Strictness:** Enable `RUF` (Ruff specific), `ARG` (Unused arguments), `T20` (Print statements), and `PIE` (Misc) rulesets.
+    -   **Documentation:** Explicitly document *why* any rule is ignored in `pyproject.toml`.
+-   **Type Checking:** Migrate from `mypy` to **`Basedpyright`**.
+    -   Target `strict` mode eventually, but establish a passing `standard` baseline first.
+-   **Orchestration:** Ensure `nox` is the sole task runner, wrapped by `just` for convenience.
 
-### 2.2 Quality Assurance & Hardening
--   **Docstring Coverage:** Implement **`interrogate`** to enforce documentation standards on public interfaces.
+### 2.2 Quality Assurance & Integration
+-   **Integration Audit (formerly Dead Code):**
+    -   Run `vulture` and `deptry` to identify unused components.
+    -   **Policy:** Do *not* delete unused code immediately. Assess for integration into the library or simulation engine. If valuable, add tests/bindings. Only delete if obsolete.
+-   **JAX Purity Check:**
+    -   Audit the `src/nhra_gt/engine.py` and solvers for legacy `numpy` usage.
+    -   **Goal:** Ensure core simulation logic is JAX-compliant (pure, compilable). `numpy` should only be used for I/O (Pandas) and plotting.
+-   **Docstring Coverage:** Implement **`interrogate`** to enforce documentation standards.
 -   **Fuzz Testing:** Integrate **`atheris`** for edge-case testing on core game theoretic logic.
--   **Dead Code Detection:** Use **`vulture`** to identify unused code and **`deptry`** to verify dependency usage.
--   **Stub Resolution:** Scan for and resolve any `NotImplementedError`, `pass` blocks, or mock functions intended for production.
--   **Security & Compliance:**
-    -   Add **`osv-scanner`** or **`safety`** for supply chain security.
-    -   Add license compliance scanning (e.g., `pip-licenses`).
 
-### 2.3 Streamlit Dashboard Verification
--   **Testing Strategy:** Implement a tiered testing approach:
-    1.  **Unit/Integration:** Use `streamlit.testing` (AppTest) for fast, functional verification.
-    2.  **E2E:** Refine or replace the existing Playwright suite to ensure robust, headless browser verification.
+### 2.3 Pipeline Provenance (Snakemake)
+-   **Versioning:** Ensure Snakemake rules explicitly track:
+    -   **Input Data:** Checksums or strict versioning for input files.
+    -   **Dependencies:** Environment hash or container ID used for execution.
+    -   **Outputs:** Output paths should include version/timestamp identifiers to prevent overwrites and enable comparison.
+-   **Reproducibility:** The pipeline must be resumable and deterministic.
+
+### 2.4 Streamlit Dashboard Verification
+-   **Testing:** Implement `AppTest` (unit) and Playwright (E2E) suites.
 -   **Documentation:** Ensure repository documentation explicitly links to and explains the dashboard.
 
-### 2.4 Workflow & Provenance
--   **Release Management:** Enforce **Conventional Commits** (via `commitizen` or `pre-commit`) and configure **Python Semantic Release** for automated versioning/changelogs.
--   **Snakemake Maturity:** Ensure `Snakemake` workflows utilize provenance tracking, version pinning, and maximizing feature usage (e.g., profiles, containerization directives).
--   **CI/CD Optimization:** Audit GitHub Actions to utilize `uv` caching, minimize redundancy, and integrate the new tools (Basedpyright, Ruff).
-
-### 2.5 Documentation (MkDocs)
--   **Plugins:** Add `mkdocs-git-revision-date-localized-plugin` and `mkdocs-literate-nav` to enhance navigation and currency.
--   **Completeness:** Ensure all new tools and workflows are documented in `CONTRIBUTING.md` or `dev.md`.
+### 2.5 Workflow & Release
+-   **Release Management:** Enforce **Conventional Commits** and configure **Python Semantic Release**.
+-   **Dependency Updates:**
+    -   Dependabot is cloud-only (GitHub).
+    -   **Local Equivalent:** Add a `just update` command using `uv lock --upgrade` to facilitate local maintenance.
 
 ## 3. Non-Functional Requirements
--   **Performance:** CI pipeline time should decrease or remain neutral.
--   **Maintainability:** Reduce root directory clutter.
+-   **Performance:** CI pipeline time should decrease.
+-   **Maintainability:** Centralize config in `pyproject.toml`.
 -   **Reliability:** The main branch must remain passing.
 
 ## 4. Acceptance Criteria
--   [ ] `uv.lock` replaces `poetry.lock` / `requirements.txt`.
--   [ ] `ruff` handles all linting and imports.
--   [ ] `basedpyright` passes in strict mode.
--   [ ] `interrogate` passes with defined thresholds.
--   [ ] `vulture` and `deptry` reports are clean.
--   [ ] No production code relies on `NotImplementedError`.
--   [ ] Streamlit dashboard passes both `AppTest` and Playwright suites.
--   [ ] `snakemake` provenance tracking is active.
--   [ ] Semantic release workflow is configured.
--   [ ] Documentation includes dashboard links and new tool usage.
+-   [ ] `uv` fully manages the environment (dev/opt/accel).
+-   [ ] `ruff` passes with expanded ruleset (`RUF`, `ARG`, `T20`).
+-   [ ] `basedpyright` passes in `standard` mode (baseline).
+-   [ ] `engine.py` is audit-confirmed for JAX purity (no runtime numpy mix).
+-   [ ] Unused code is integrated or explicitly deprecated.
+-   [ ] `snakemake` outputs include provenance metadata.
+-   [ ] Streamlit dashboard passes automated tests.
 
 ## 5. Out of Scope
--   Major architectural refactoring of the *simulation engine* (unless required to fix stubs).
+-   Refactoring the entire simulation to a new framework (sticking to JAX/Flax).

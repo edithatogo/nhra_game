@@ -124,6 +124,11 @@ directory = "htmlcov"
 requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[dependency-groups]
+dev = [
+    "basedpyright>=1.36.2",
+]
+
 [tool.ruff]
 line-length = 100
 target-version = "py310"
@@ -151,7 +156,7 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["E","F","B","UP","SIM","A","C4","N","PT","S"]
+select = ["E","F","B","UP","SIM","A","C4","N","PT","S","I"]
 ignore = ["E501", "N806", "F722"]
 
 [tool.ruff.lint.per-file-ignores]
@@ -173,11 +178,6 @@ quote-style = "double"
 indent-style = "space"
 line-ending = "lf"
 
-[tool.isort]
-profile = "black"
-line_length = 100
-known_first_party = ["nhra_gt", "scripts"]
-
 [tool.deptry]
 ignore_notebooks = true
 extend_exclude = ["tests", "scripts", "archive", "docs_mkdocs", "sitecustomize.py", ".nox", ".gemini"]
@@ -197,3 +197,16 @@ skips = ["B101"]
 paths_to_mutate = "src/nhra_gt"
 tests_dir = "tests"
 runner = "python -m pytest -q"
+
+[tool.basedpyright]
+typeCheckingMode = "basic"
+include = ["src"]
+exclude = ["**/node_modules", "**/__pycache__", "**/.*"]
+# Ensure src is in search path
+executionEnvironments = [{ root = "." }]
+reportMissingTypeStubs = "warning"
+reportMissingImports = "warning"
+reportUnknownVariableType = "none"
+reportUnknownMemberType = "none"
+reportUnknownArgumentType = "none"
+reportGeneralTypeIssues = "none"

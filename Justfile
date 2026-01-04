@@ -1,8 +1,13 @@
 set shell := ["bash", "-lc"]
 
-# Install dependencies
+# Install all dependencies including optional and accelerated groups
 install:
-  uv sync
+  uv sync --all-groups
+
+# Update dependencies locally (local equivalent of dependabot)
+update:
+  uv lock --upgrade
+  uv sync --all-groups
 
 # Quick pipeline run
 run:

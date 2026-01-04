@@ -34,10 +34,7 @@ def generate_index(
 
         # Link to the folder if it exists
         folder_name = f"{order:02d}_{slug}"
-        if (root_dir / folder_name).exists():
-            link = f"[{title}](../{folder_name}/)"
-        else:
-            link = title
+        link = f"[{title}](../{folder_name}/)" if (root_dir / folder_name).exists() else title
 
         lines.append(f"| {order} | {link} | {scenario} | {model_type} |")
 

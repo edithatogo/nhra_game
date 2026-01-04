@@ -33,7 +33,7 @@ def _targets_from_manifest(manifest: dict, key: str) -> list[ImageTarget]:
 
 
 def _run(cmd: list[str]) -> None:
-    subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    subprocess.run(cmd, check=True, capture_output=True, text=True)  # noqa: S603
 
 
 def _render_mermaid_svg(*, src: Path, dest_svg: Path, mermaid_config: Path) -> None:
@@ -121,9 +121,7 @@ def render_bundle_covers(
             _render_graphviz_png(src=dot, dest_png=tmp_png)
         else:
             if strict_sources:
-                raise FileNotFoundError(
-                    f"Missing cover source for bundle {slug}: {mmd} or {dot}"
-                )
+                raise FileNotFoundError(f"Missing cover source for bundle {slug}: {mmd} or {dot}")
             continue
 
         for t in article_targets:
@@ -146,9 +144,7 @@ def main() -> int:
         type=Path,
         default=Path("publications/P4_Outreach_Series/00_series_meta/series_manifest.yaml"),
     )
-    parser.add_argument(
-        "--root", type=Path, default=Path("publications/P4_Outreach_Series")
-    )
+    parser.add_argument("--root", type=Path, default=Path("publications/P4_Outreach_Series"))
     parser.add_argument("--bundle", type=str, default=None, help="Render only a single bundle slug")
     parser.add_argument(
         "--strict-sources",
