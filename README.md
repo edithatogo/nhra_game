@@ -39,8 +39,8 @@ This project implements a "Cognitive Digital Twin" of the Australian health fund
 
 ### Prerequisites
 
-- Python 3.13+
-- [Poetry](https://python-poetry.org/)
+- Python 3.12+ (3.13 recommended)
+- [uv](https://github.com/astral-sh/uv) (Fast package manager)
 - [Just](https://github.com/casey/just) (Command runner)
 
 ### Installation
@@ -48,7 +48,7 @@ This project implements a "Cognitive Digital Twin" of the Australian health fund
 ```bash
 git clone https://github.com/edithatogo/nhra_gt.git
 cd nhra_gt
-poetry install
+just install
 ```
 
 ### OneDrive / Cloud-Sync Folders (Important)
@@ -120,9 +120,9 @@ The model is built on a modular four-layer architecture:
 
 We adhere to high-integrity software engineering standards:
 
-- **Linting/Formatting:** [Ruff](https://github.com/astral-sh/ruff)
-- **Type Checking:** [Mypy](https://mypy-lang.org/) (Strict mode)
-- **Testing:** [Pytest](https://docs.pytest.org/) (>95% coverage requirement)
+- **Linting/Formatting:** [Ruff](https://github.com/astral-sh/ruff) (Strict)
+- **Type Checking:** [Basedpyright](https://docs.basedpyright.com/) (Standard mode baseline)
+- **Testing:** [Pytest](https://docs.pytest.org/) & [Hypothesis](https://hypothesis.readthedocs.io/)
 - **Environment:** [Nox](https://nox.thea.codes/) for multi-version orchestration.
 
 ---

@@ -41,10 +41,10 @@ def plot_risk_pressure(
     fig.update_layout(
         template="simple_white",
         hovermode="x unified",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-        margin=dict(l=40, r=40, t=80, b=40),
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
+        margin={"l": 40, "r": 40, "t": 80, "b": 40},
     )
-    fig.update_traces(line=dict(width=3))
+    fig.update_traces(line={"width": 3})
     return fig
 
 
@@ -69,7 +69,7 @@ def plot_what_if_overlay(
             x=baseline["year"],
             y=baseline[f"{metric}_mean"],
             name="Baseline",
-            line=dict(color="#A9A9A9", width=2, dash="dash"),
+            line={"color": "#A9A9A9", "width": 2, "dash": "dash"},
         )
     )
 
@@ -79,7 +79,7 @@ def plot_what_if_overlay(
             x=scenario["year"],
             y=scenario[f"{metric}_mean"],
             name="Scenario",
-            line=dict(color=config.primary_color, width=4),
+            line={"color": config.primary_color, "width": 4},
         )
     )
 
@@ -92,7 +92,7 @@ def plot_what_if_overlay(
                 fill="toself",
                 fillcolor=config.primary_color,
                 opacity=0.2,
-                line=dict(color="rgba(255,255,255,0)"),
+                line={"color": "rgba(255,255,255,0)"},
                 hoverinfo="skip",
                 showlegend=False,
                 name="Scenario 90% CI",
@@ -177,7 +177,7 @@ def plot_strategic_stability(
             if "solver_residual_mean" in traj.columns
             else [0] * len(traj),
             name="Mean Residual (Stability)",
-            line=dict(color=config.primary_color, width=3),
+            line={"color": config.primary_color, "width": 3},
         ),
         secondary_y=True,
     )
@@ -187,7 +187,7 @@ def plot_strategic_stability(
         template="simple_white",
         hovermode="x unified",
         xaxis_title="Year",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
     )
 
     fig.update_yaxes(title_text="Number of Equilibria", secondary_y=False)
@@ -215,7 +215,7 @@ def plot_patient_choice(
     )
     fig.add_hline(y=0.5, line_dash="dash", line_color="grey")
     fig.update_layout(template="simple_white", yaxis_range=[0, 1])
-    fig.update_traces(line=dict(color=config.primary_color, width=4))
+    fig.update_traces(line={"color": config.primary_color, "width": 4})
 
     return fig
 
@@ -355,7 +355,7 @@ def plot_phase_space(
             x=traj[x_col],
             y=traj[y_col],
             mode="lines",
-            line=dict(color="#D3D3D3", width=2),
+            line={"color": "#D3D3D3", "width": 2},
             name="Trajectory",
             showlegend=False,
             hoverinfo="skip",
@@ -392,7 +392,7 @@ def plot_phase_space(
                     x=mode_data[x_col],
                     y=mode_data[y_col],
                     mode="markers",
-                    marker=dict(size=10, color=color),
+                    marker={"size": 10, "color": color},
                     name=mode.capitalize(),
                     hovertext=mode_data["year"],
                     hovertemplate="Year: %{hovertext}<br>Pressure: %{x:.2f}<br>Occupancy: %{y:.2f}",
@@ -408,7 +408,7 @@ def plot_phase_space(
             name="Start",
             text=["Start"],
             textposition="top center",
-            marker=dict(color="black", size=14, symbol="circle-open", line=dict(width=2)),
+            marker={"color": "black", "size": 14, "symbol": "circle-open", "line": {"width": 2}},
             showlegend=False,
         )
     )
@@ -420,7 +420,7 @@ def plot_phase_space(
             name="End",
             text=["End"],
             textposition="top center",
-            marker=dict(color="black", size=14, symbol="x", line=dict(width=2)),
+            marker={"color": "black", "size": 14, "symbol": "x", "line": {"width": 2}},
             showlegend=False,
         )
     )
@@ -430,7 +430,7 @@ def plot_phase_space(
         template="simple_white",
         xaxis_title="Pressure Index",
         yaxis_title="Occupancy",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
     )
     return fig
 
@@ -463,7 +463,7 @@ def plot_workforce_dynamics(
     )
     fig.add_hline(y=1.0, line_dash="dash", line_color="grey")
     fig.update_layout(template="simple_white", yaxis_range=[0.4, 1.6])
-    fig.update_traces(line=dict(color="#4682B4", width=4))  # SteelBlue
+    fig.update_traces(line={"color": "#4682B4", "width": 4})  # SteelBlue
 
     return fig
 
@@ -488,7 +488,7 @@ def plot_agreement_cycle(
             x=traj["year"],
             y=traj["cth_nominal_mean"],
             name="Nominal Share (alpha)",
-            line=dict(color="#800080", width=4),  # Purple
+            line={"color": "#800080", "width": 4},  # Purple
         ),
         secondary_y=False,
     )
@@ -510,7 +510,7 @@ def plot_agreement_cycle(
         template="simple_white",
         xaxis_title="Year",
         hovermode="x unified",
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        legend={"orientation": "h", "yanchor": "bottom", "y": 1.02, "xanchor": "right", "x": 1},
     )
 
     fig.update_yaxes(title_text="Contribution Share (%)", secondary_y=False)

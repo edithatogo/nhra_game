@@ -25,6 +25,7 @@ class EvidenceEntry(BaseModel):
 
     Contains the value, confidence interval, and NHMRC evidence level.
     """
+
     parameter: str
     mean: float
     lower_ci: float | None = None
@@ -57,6 +58,7 @@ class EvidenceRegistry(BaseModel):
     Handles conflict resolution (choosing the highest quality source) and
     syncing evidence to configuration files.
     """
+
     # Key is parameter name, value is a list of entries
     entries: dict[str, list[EvidenceEntry]] = Field(default_factory=dict)
 

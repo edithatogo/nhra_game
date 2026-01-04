@@ -25,6 +25,7 @@ except ImportError:  # pragma: no cover
 
     class _Struct:
         """Minimal replacement for flax.struct."""
+
         dataclass = staticmethod(dataclass)
 
     struct = _Struct()  # type: ignore[assignment]
@@ -56,6 +57,7 @@ class AgentWeights:
         vfi_disutility: State-level penalty for fiscal imbalance.
         kpi_satisfaction: State-level benefit from LHN performance.
     """
+
     # LHN Weights
     ramping_penalty: float = 10.0
     nwau_utility: float = 1.0

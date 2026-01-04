@@ -13,6 +13,7 @@ class GameDefinition(BaseModel):
     """
     Complete definition of a subgame, including qualitative insights.
     """
+
     id: str
     title: str
     players: list[str]
@@ -29,6 +30,7 @@ class GameRegistry:
     """
     In-memory store for game definitions.
     """
+
     def __init__(self) -> None:
         self._games: dict[str, GameDefinition] = {}
 

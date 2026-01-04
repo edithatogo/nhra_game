@@ -1,14 +1,9 @@
-"""Legacy engine compatibility layer.
-
-Historical modules and the dashboard expect a Pydantic `Params` model and a small
-set of helper functions. The simulation core has since moved to a JAX-first
-implementation in `nhra_gt.engine`.
-"""
-
 """
 Legacy Simulation Engine (Numpy-based).
 
 Maintained for backward compatibility and verification against the JAX core.
+Historical modules and the dashboard expect a Pydantic `Params` model and a small
+set of helper functions.
 """
 
 from __future__ import annotations

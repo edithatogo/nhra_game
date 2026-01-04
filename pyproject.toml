@@ -174,6 +174,8 @@ ignore = [
     "E501",  # Line too long (handled by formatter)
     "N806",  # Variable in function should be lowercase (allow math notation like A, B)
     "F722",  # Syntax error in forward annotation (Jaxtyping compatibility)
+    "T201",  # print found (allowed in research scripts)
+    "PTH",   # Use pathlib (ongoing migration)
 ]
 
 [tool.commitizen]

@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
 
 if TYPE_CHECKING:
-    from typing import TypeAlias
+    pass
 
 import numpy as np
 from numpy.typing import NDArray

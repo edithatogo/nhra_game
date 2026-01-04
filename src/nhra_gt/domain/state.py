@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 
 class SystemModeJax(IntEnum):
     """Enumeration of system-wide operational modes."""
+
     NORMAL = 0
     STRESS = 1
     CRISIS = 2

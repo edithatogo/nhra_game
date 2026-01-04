@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import jax.numpy as jnp
 import numpy as np
-import pytest
-from hypothesis import given, settings, strategies as st
+from hypothesis import given, settings
+from hypothesis import strategies as st
 from hypothesis.extra.numpy import arrays
 
 from nhra_gt.solvers_jax import qre_solver_jax
@@ -49,8 +49,6 @@ def test_wait_time_monotonicity(pressure: float, occupancy: float) -> None:
 
     # High pressure/occupancy should generally lead to higher wait times
     # (Checking basic sanity, not full proof)
-    wait = mm_s_queue_wait_jax(
-        jnp.array(pressure), jnp.array(1.0), jnp.array(10.0 * occupancy)
-    )
+    wait = mm_s_queue_wait_jax(jnp.array(pressure), jnp.array(1.0), jnp.array(10.0 * occupancy))
     assert wait >= 0.0
     assert wait <= 1440.0  # Capped at 24h

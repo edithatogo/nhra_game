@@ -199,3 +199,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [~] Track: Maturity Uplift & Modernization (v26)
 
 *Link: [./conductor/tracks/maturity_uplift_20251230/](./conductor/tracks/maturity_uplift_20251230/)*
+
+## [ ] Track: Legacy Engine Retirement & JAX Consolidation
+
+*Link: [./conductor/tracks/legacy_retirement_20260104/](./conductor/tracks/legacy_retirement_20260104/)*

@@ -13,6 +13,7 @@ from pandera.typing import Series
 
 class AIHWSchema(pa.DataFrameModel):
     """Schema for AIHW hospital performance data."""
+
     Year: Series[int] = pa.Field(ge=2000, le=2100)
     Metric: Series[str] = pa.Field(isin=["Within 4 Hours", "Occupancy", "Handover"])
     Value: Series[float] = pa.Field(ge=0.0, le=120.0)
@@ -27,6 +28,7 @@ class AIHWSchema(pa.DataFrameModel):
 
 class ABSSchema(pa.DataFrameModel):
     """Schema for ABS Wage Price Index (WPI) data."""
+
     State: Series[str] = pa.Field(
         isin=["Australia", "NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"]
     )
@@ -40,6 +42,7 @@ class ABSSchema(pa.DataFrameModel):
 
 class EconomicSpineSchema(pa.DataFrameModel):
     """Schema for the consolidated economic data spine."""
+
     year: Series[int] = pa.Field(ge=2000, le=2100)
     nep_per_nwau: Series[float] = pa.Field(ge=4000, le=10000)
     wpi_health_index: Series[float] = pa.Field(ge=80, le=200)

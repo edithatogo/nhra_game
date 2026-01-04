@@ -4,11 +4,9 @@ from __future__ import annotations
 
 import jax
 import jax.numpy as jnp
-import numpy as np
-import pytest
 
 from nhra_gt.domain.state import BaselineProvider
-from nhra_gt.engine import step_jax, _pad_strategies
+from nhra_gt.engine import _pad_strategies, step_jax
 
 
 def test_step_jax_is_jitable():
@@ -30,6 +28,7 @@ def test_step_jax_is_jitable():
     chex_available = False
     try:
         import chex
+
         chex_available = True
         chex.assert_trees_all_close(next_state, next_state_2)
     except ImportError:
@@ -41,7 +40,7 @@ def test_step_jax_is_jitable():
 
 def test_pad_strategies_purity():
     """Ensure strategy padding works within JIT."""
-    
+
     @jax.jit
     def padded_op(s):
         return _pad_strategies(s)

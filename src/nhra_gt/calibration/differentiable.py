@@ -26,7 +26,7 @@ PARAM_NAMES = [
 ]
 
 
-def map_to_params(values: Float[Array, "n"], base_params: Params) -> Params:
+def map_to_params(values: Float[Array, n], base_params: Params) -> Params:
     """Maps a flat array of values to a Params object."""
     return base_params.replace(
         cost_shifting_intensity=values[0],
@@ -77,8 +77,8 @@ def run_simulation_with_agent_jax(
 
 
 def loss_fn(
-    values: Float[Array, "n"],
-    target_within4: Float[Array, "num_steps"],
+    values: Float[Array, n],
+    target_within4: Float[Array, num_steps],
     init_state: StateJax,
     base_params: Params,
     prng_key: Any,
@@ -100,7 +100,7 @@ def calibrate_jax(
     base_params: Params,
     learning_rate: float = 0.01,
     max_iter: int = 100,
-) -> Float[Array, "n"]:
+) -> Float[Array, n]:
     """Performs differentiable calibration using manual Gradient Descent."""
 
     # Initial guess (from base_params)
@@ -118,7 +118,6 @@ def calibrate_jax(
 
     # JIT the loss and gradient
     grad_fn = jax.jit(jax.grad(loss_fn))
-
 
     for i in range(max_iter):
         grads = grad_fn(x, target_within4, init_state, base_params, prng_key)

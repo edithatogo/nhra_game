@@ -14,12 +14,14 @@ from typing import Any, TypedDict
 
 class ClassInfo(TypedDict):
     """Signature of a Python class, including its methods and bases."""
+
     methods: list[str]
     bases: list[str]
 
 
 class Fingerprint(TypedDict):
     """Complete structural signature of a Python file."""
+
     constants: dict[str, Any]
     functions: dict[str, list[str]]
     classes: dict[str, ClassInfo]

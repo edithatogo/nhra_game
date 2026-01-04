@@ -30,7 +30,6 @@ from nhra_gt.domain.state import (
 )
 from nhra_gt.rules import initialize_rules
 from nhra_gt.subgames.queuing import PatientUtilityParams, solve_queuing_equilibrium_jax
-from nhra_gt.solvers_jax import regret_min_solver_jax
 
 config.update("jax_enable_x64", True)  # type: ignore[no-untyped-call]
 
@@ -44,7 +43,7 @@ SystemMode = SystemModeJax
 # ----------------------------
 
 
-def _pad_strategies(strategies: Float[Array, "..."], width: int = 13) -> Float[Array, "..."]:
+def _pad_strategies(strategies: Float[Array, ...], width: int = 13) -> Float[Array, ...]:
     """
     Ensures strategy vectors have consistent dimensions for JAX batching.
 
@@ -83,7 +82,7 @@ def jax_logistic(x: Float[Array, "*"]) -> Float[Array, "*"]:
 
 
 @beartype
-def jax_softmax(u: Float[Array, "n"], tau: float = 0.25) -> Float[Array, "n"]:
+def jax_softmax(u: Float[Array, n], tau: float = 0.25) -> Float[Array, n]:
     """
     Tau-tempered softmax for equilibrium selection.
 
@@ -505,10 +504,10 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
         u_row, u_col = renegotiation_game_jax(gp)
 
         # Use sequential solver if configured
-        def solve_nash() -> tuple[Float[Array, "m"], Float[Array, "n"]]:
+        def solve_nash() -> tuple[Float[Array, m], Float[Array, n]]:
             return discrete_nash_jax(u_row, u_col)
 
-        def solve_stackelberg() -> tuple[Float[Array, "m"], Float[Array, "n"]]:
+        def solve_stackelberg() -> tuple[Float[Array, m], Float[Array, n]]:
             # Assume Commonwealth (Row) is Leader
             return stackelberg_jax(u_row, u_col)
 
@@ -802,7 +801,7 @@ def update_system_mode_jax(s: StateJax, p: ParamsJax, current_pressure: Float[Ar
 
 @beartype
 def demand_step_jax(
-    s: StateJax, p: ParamsJax, strategies: Float[Array, "13"], noise: Float[Array, ""]
+    s: StateJax, p: ParamsJax, strategies: Float[Array, 13], noise: Float[Array, ""]
 ) -> tuple[Float[Array, ""], Float[Array, ""]]:
     """
     Calculates realized macro demand for the current step.

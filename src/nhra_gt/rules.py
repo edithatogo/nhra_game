@@ -89,6 +89,7 @@ class AuditRule:
 
     def evaluate(self, coding_intensity: float, active_pressure: float) -> float:
         """Calculate the probability of detection or audit penalty."""
+
         # Proportional logic
         def proportional():
             return active_pressure * jnp.maximum(0.0, coding_intensity - 1.0) * 2.0

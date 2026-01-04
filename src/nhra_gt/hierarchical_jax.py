@@ -26,7 +26,7 @@ def hierarchical_step_jax(
     commonwealth_state: StateJax,
     jurisdiction_states: StateJax,  # Batch of 8 states
     params: Params,
-    macro_strategies: Float[Array, "2"],  # e.g. DEF and BARG
+    macro_strategies: Float[Array, 2],  # e.g. DEF and BARG
     prng_key: Any,
 ) -> tuple[StateJax, StateJax]:
     """
@@ -52,6 +52,7 @@ def hierarchical_step_jax(
 
     def _in_axes_for_batch(tree: Any) -> Any:
         """Determines vmap in_axes for a state PyTree batch."""
+
         def axis_for(x: Any) -> int | None:
             try:
                 if hasattr(x, "ndim") and x.ndim > 0 and x.shape[0] == num_jurisdictions:
@@ -105,7 +106,7 @@ def solve_constitutional_game_jax(
     u_state_macro: Float[Array, "m n"],
     micro_game_factory: Any,  # (m, n) -> (u_state_micro, u_lhn)
     lam: float = 5.0,
-) -> tuple[Float[Array, "m"], Float[Array, "n"], Float[Array, "m n"], Float[Array, "m n"]]:
+) -> tuple[Float[Array, m], Float[Array, n], Float[Array, "m n"], Float[Array, "m n"]]:
     """
     Solves the nested Constitutional game using backward induction.
 
