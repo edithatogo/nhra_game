@@ -9,6 +9,13 @@ update:
   uv lock --upgrade
   uv sync --all-groups
 
+# Archive current outputs to a timestamped folder
+archive:
+  @mkdir -p archive/outputs/$(date +%Y%m%d_%H%M%S)
+  @cp -r outputs/* archive/outputs/$(date +%Y%m%d_%H%M%S)/
+  @cp -r data/calibration archive/outputs/$(date +%Y%m%d_%H%M%S)/calibration
+  @echo "Archived to archive/outputs/$(date +%Y%m%d_%H%M%S)"
+
 # Quick pipeline run
 run:
   uv run python scripts/run_baseline.py

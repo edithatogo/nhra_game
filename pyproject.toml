@@ -127,8 +127,11 @@ build-backend = "poetry.core.masonry.api"
 [dependency-groups]
 dev = [
     "basedpyright>=1.36.2",
+    "commitizen>=4.11.0",
     "deptry>=0.24.0",
     "interrogate>=1.7.0",
+    "pip-audit>=2.10.0",
+    "py>=1.11.0",
     "vulture>=2.14",
 ]
 
@@ -172,6 +175,14 @@ ignore = [
     "N806",  # Variable in function should be lowercase (allow math notation like A, B)
     "F722",  # Syntax error in forward annotation (Jaxtyping compatibility)
 ]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver"
+version_provider = "pep621"
+update_changelog_on_bump = true
+major_version_zero = true
 
 [tool.interrogate]
 ignore-init-method = true
