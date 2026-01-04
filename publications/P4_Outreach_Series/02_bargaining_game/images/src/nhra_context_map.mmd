@@ -1,0 +1,30 @@
+flowchart TB
+  subgraph Actors["Who’s in the NHRA bargaining room?"]
+    C[Commonwealth<br/><span style='font-size:12px'>Treasury / Health</span>]
+    S[States & Territories<br/><span style='font-size:12px'>Health departments</span>]
+    COFFR[Council on Federal Financial Relations<br/><span style='font-size:12px'>intergovernmental forum</span>]
+  end
+
+  subgraph Plumbing["Where the money + rules flow"]
+    NHFP[National Health Funding Pool<br/><span style='font-size:12px'>flows + reporting</span>]
+    ABF[ABF / pricing rules<br/><span style='font-size:12px'>signals + incentives</span>]
+  end
+
+  subgraph Frontline["Where the pressure shows up"]
+    H[Hospitals & clinicians]
+    P[Patients + community]
+  end
+
+  C -->|negotiate terms| COFFR
+  S -->|negotiate terms| COFFR
+  COFFR -->|agreement terms| NHFP
+  COFFR -->|pricing / activity settings| ABF
+  NHFP -->|funding| H
+  ABF -->|signals| H
+  H -->|outcomes + stories| P
+  P -->|political pressure| C
+  P -->|political pressure| S
+
+  classDef box fill:#F8FAFC,stroke:#0B1220,stroke-width:2px,color:#0B1220;
+  class Actors,Plumbing,Frontline box;
+  class C,S,COFFR,NHFP,ABF,H,P box;

@@ -1,7 +1,7 @@
 ,mu,mu_star,sigma,mu_star_conf
-discharge_delay_base,0.05594392513028357,0.05594392513028357,0.05897007488720937,0.0373928869392351
 rurality_weight,0.0,0.0,0.0,0.0
 cost_shifting_intensity,0.0,0.0,0.0,0.0
 fragmentation_index,0.0,0.0,0.0,0.0
+discharge_delay_base,0.0,0.0,0.0,0.0
 admin_burden_weight,0.0,0.0,0.0,0.0
 political_salience,0.0,0.0,0.0,0.0

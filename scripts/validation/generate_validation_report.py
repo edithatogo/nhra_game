@@ -51,16 +51,20 @@ def main():
         if "Unnamed: 0" in df_gsa.columns:
             df_gsa = df_gsa.rename(columns={"Unnamed: 0": "parameter"})
 
-        # Determine rank
-        df_gsa["rank"] = df_gsa["mu_star"].rank(ascending=False)
-        top_driver = df_gsa.loc[df_gsa["rank"] == 1, "parameter"].values[0]
+        if not df_gsa.empty:
+            # Determine rank robustly
+            df_gsa = df_gsa.sort_values("mu_star", ascending=False)
+            df_gsa["rank"] = range(1, len(df_gsa) + 1)
+            top_driver = df_gsa.iloc[0]["parameter"]
 
-        report.append(f"Top mechanistic driver (mu_star): **{top_driver}**")
+            report.append(f"Top mechanistic driver (mu_star): **{top_driver}**")
 
-        report.append("\n| Parameter | mu_star | Rank |")
-        report.append("| :--- | :--- | :--- |")
-        for _, row in df_gsa.sort_values("rank").iterrows():
-            report.append(f"| {row['parameter']} | {row['mu_star']:.4f} | {int(row['rank'])} |")
+            report.append("\n| Parameter | mu_star | Rank |")
+            report.append("| :--- | :--- | :--- |")
+            for _, row in df_gsa.iterrows():
+                report.append(f"| {row['parameter']} | {row['mu_star']:.4f} | {int(row['rank'])} |")
+        else:
+            report.append("GSA results are empty.")
     else:
         report.append("GSA results not found.")
 

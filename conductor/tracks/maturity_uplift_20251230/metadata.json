@@ -1,0 +1,8 @@
+{
+  "track_id": "maturity_uplift_20251230",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-01-04T07:45:00Z",
+  "updated_at": "2026-01-04T07:45:00Z",
+  "description": "Comprehensive toolchain modernization (uv, Ruff, Basedpyright), code hardening (interrogate, atheris), and release automation."
+}

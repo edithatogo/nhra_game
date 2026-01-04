@@ -78,6 +78,8 @@ def objective(trial: optuna.Trial, targets: dict[str, float], n_mc: int, seed: i
 
 
 def main() -> None:
+    import os
+
     out_dir = Path("data/calibration")
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -86,8 +88,9 @@ def main() -> None:
 
     study = optuna.create_study(direction="minimize", sampler=optuna.samplers.TPESampler(seed=42))
 
-    print("Starting Multi-Target Stochastic Calibration...")
-    study.optimize(lambda t: objective(t, targets, n_mc=50, seed=42), n_trials=30)
+    n_trials = int(os.environ.get("NHRA_CALIBRATION_TRIALS", 30))
+    print(f"Starting Multi-Target Stochastic Calibration with {n_trials} trials...")
+    study.optimize(lambda t: objective(t, targets, n_mc=50, seed=42), n_trials=n_trials)
 
     # Save best
     best_df = pd.DataFrame([study.best_params])

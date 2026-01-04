@@ -1,0 +1,15 @@
+{
+  "theme": "base",
+  "themeVariables": {
+    "fontFamily": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial",
+    "primaryColor": "#1F6FEB",
+    "primaryTextColor": "#0B1220",
+    "primaryBorderColor": "#0B1220",
+    "lineColor": "#0B1220",
+    "secondaryColor": "#E5E7EB",
+    "tertiaryColor": "#F8FAFC",
+    "noteBkgColor": "#FFF7ED",
+    "noteTextColor": "#0B1220"
+  }
+}
+

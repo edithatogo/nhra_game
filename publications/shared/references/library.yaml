@@ -1,13 +1,142 @@
-- id: BaezHernandez2025
-  title: "Games theory. A valuable instrument in decision-making in public policies"
-  author: "Baez Hernandez, Alexander"
+- id: NHRA_FFR_Page
+  title: "National Health Reform Agreement (NHRA)"
+  author: "Council on Federal Financial Relations"
   year: 2025
-  journal: "Revista de la Facultad de Ciencias Económicas"
-  doi: "10.14409/rfce.v1i1.12345"
-  url: "https://bibliotecavirtual.unl.edu.ar/"
-  type: article-journal
+  url: "https://federalfinancialrelations.gov.au/agreements/national-health-reform-agreement"
+  type: policy-page
+  quality: primary
+  recency: current
+
+- id: NHRA_NationalAgreement_PDF
+  title: "National Health Reform Agreement — National Agreement (PDF)"
+  author: "Council on Federal Financial Relations"
+  year: 2021
+  url: "https://federalfinancialrelations.gov.au/sites/federalfinancialrelations.gov.au/files/2021-08/national-agreement.pdf"
+  type: policy-pdf
+  quality: primary
+  recency: recent
+
+- id: NHRA_2020_25_Addendum_Consolidated_PDF
+  title: "National Health Reform Agreement 2020–25 Addendum (Consolidated) (PDF)"
+  author: "Council on Federal Financial Relations"
+  year: 2021
+  url: "https://federalfinancialrelations.gov.au/sites/federalfinancialrelations.gov.au/files/2021-07/NHRA_2020-25_Addendum_consolidated.pdf"
+  type: policy-pdf
+  quality: primary
+  recency: current
+
+- id: NHRA_Addendum_PDF
+  title: "Addendum to the National Health Reform Agreement (PDF)"
+  author: "Council on Federal Financial Relations"
+  year: 2021
+  url: "https://federalfinancialrelations.gov.au/sites/federalfinancialrelations.gov.au/files/2021-07/Addendum_to_the_National_Health_Reform.pdf"
+  type: policy-pdf
+  quality: primary
+  recency: historical
+
+- id: NHRA_ScheduleK_Addendum_PDF
+  title: "NHRA Addendum — Schedule K (PDF)"
+  author: "Council on Federal Financial Relations"
+  year: 2025
+  url: "https://federalfinancialrelations.gov.au/sites/federalfinancialrelations.gov.au/files/2025-02/nhra-addendum-schedule-k.pdf"
+  type: policy-pdf
+  quality: primary
+  recency: current
+
+- id: FederalFinancialRelationsAct2009
+  title: "Federal Financial Relations Act 2009 (Cth)"
+  author: "Commonwealth of Australia"
+  year: 2009
+  url: "https://www.legislation.gov.au/C2009A00138/latest/text"
+  type: legislation
+  quality: primary
+  recency: historical
+
+- id: IHACPA2024
+  title: "Pricing Framework for Australian Public Hospital Services 2024–25"
+  author: "Independent Health and Aged Care Pricing Authority"
+  year: 2024
+  url: "https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25"
+  type: report
   quality: high
   recency: current
+
+- id: IHACPA_NEP_2024_25
+  title: "National Efficient Price Determination 2024–25"
+  author: "Independent Health and Aged Care Pricing Authority"
+  year: 2024
+  url: "https://www.ihacpa.gov.au/resources/national-efficient-price-determination-2024-25"
+  type: report
+  quality: high
+  recency: current
+
+- id: AIHW2024
+  title: "Hospital resources (data tables / topic hub)"
+  author: "Australian Institute of Health and Welfare"
+  year: 2024
+  url: "https://www.aihw.gov.au/hospitals/topics/hospital-resources"
+  type: report
+  quality: high
+  recency: current
+
+- id: AMA2024
+  title: "Public Hospital Report Card 2024 (PDF)"
+  author: "Australian Medical Association"
+  year: 2024
+  url: "https://www.ama.com.au/sites/default/files/2024-04/2024-public-hospital-report-card.pdf"
+  type: report
+  quality: high
+  recency: current
+
+- id: VicDoH2024
+  title: "Health Services Plan Final Report — Expert Advisory Committee (PDF)"
+  author: "Victorian Department of Health"
+  year: 2024
+  url: "https://www.health.vic.gov.au/sites/default/files/2024-08/health-services-plan-final-report-expert-advisory-committee.pdf"
+  type: report
+  quality: high
+  recency: current
+
+- id: ABS2024
+  title: "Wage Price Index: Health Care and Social Assistance (WPI_HEALTH_KEY 1.THRPEB.7.Q.10.AUS.Q)"
+  author: "Australian Bureau of Statistics"
+  year: 2024
+  url: "https://data.api.abs.gov.au/rest/data/ABS,WPI/1.THRPEB.7.Q.10.AUS.Q"
+  type: dataset
+  quality: high
+  recency: current
+
+- id: Nash1950
+  title: "The Bargaining Problem"
+  author: "Nash, John F."
+  year: 1950
+  journal: "Econometrica"
+  doi: "10.2307/1907266"
+  url: "https://doi.org/10.2307/1907266"
+  type: article-journal
+  quality: seminal
+  recency: historical
+
+- id: Rubinstein1982
+  title: "Perfect equilibrium in a bargaining model"
+  author: "Rubinstein, Ariel"
+  year: 1982
+  journal: "Econometrica"
+  doi: "10.2307/1912531"
+  url: "https://doi.org/10.2307/1912531"
+  type: article-journal
+  quality: seminal
+  recency: historical
+
+- id: OsborneRubinstein1994
+  title: "A Course in Game Theory"
+  author: "Osborne, Martin J. and Rubinstein, Ariel"
+  year: 1994
+  publisher: "MIT Press"
+  url: "https://mitpress.mit.edu/9780262650403/a-course-in-game-theory/"
+  type: book
+  quality: seminal
+  recency: historical
 
 - id: Ostrom2005
   title: "Understanding Institutional Diversity"
@@ -38,7 +167,7 @@
   issue: 1
   pages: "10-25"
   doi: "10.1177/1356389013516053"
-  url: "https://journals.sagepub.com/doi/10.1177/1356389013516053"
+  url: "https://doi.org/10.1177/1356389013516053"
   type: article-journal
   quality: high
   recency: moderate
@@ -49,34 +178,7 @@
   year: 2021
   journal: "Medical Journal of Australia"
   doi: "10.5694/mja2.51016"
-  url: "https://www.mja.com.au/journal/2021/214/8/vicious-cycles-hospital-bed-block-and-national-health-reform-agreement"
+  url: "https://doi.org/10.5694/mja2.51016"
   type: article-journal
   quality: high
   recency: recent
-
-- id: AIHW2024
-  title: "Hospital resources 2022–23: Australian hospital statistics"
-  author: "Australian Institute of Health and Welfare"
-  year: 2024
-  url: "https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23"
-  type: report
-  quality: high
-  recency: current
-
-- id: IHACPA2024
-  title: "Pricing Framework for Australian Public Hospital Services 2024–25"
-  author: "Independent Health and Aged Care Pricing Authority"
-  year: 2024
-  url: "https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25"
-  type: report
-  quality: high
-  recency: current
-
-- id: ABS2024
-  title: "Wage Price Index: Health Care and Social Assistance (WPI_HEALTH_KEY 1.THRPEB.7.Q.10.AUS.Q)"
-  author: "Australian Bureau of Statistics"
-  year: 2024
-  url: "https://data.api.abs.gov.au/rest/data/ABS,WPI/1.THRPEB.7.Q.10.AUS.Q"
-  type: dataset
-  quality: high
-  recency: current

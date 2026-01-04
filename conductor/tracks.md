@@ -22,8 +22,8 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [x] Track: Codebase Maturity & Modernization (v26)
 *Link: [./conductor/tracks/codebase_maturity_v26/](./conductor/tracks/codebase_maturity_v26/)*
 
-## [ ] Track: Cloud & Cognitive Agents (v26) [ON HOLD]
-*Link: [./conductor/tracks/cloud_cognitive_v26/](./conductor/tracks/cloud_cognitive_v26/)*
+## [A] Track: Cloud & Cognitive Agents (v26) [ARCHIVED]
+*Link: [./conductor/archive/cloud_cognitive_v26/](./conductor/archive/cloud_cognitive_v26/)*
 
 ## [x] Track: Multi-Agent Logic Refactor (Constitutional Spec)
 *Link: [./conductor/archive/multi_agent_refactor_20251227/](./conductor/archive/multi_agent_refactor_20251227/)*
@@ -113,7 +113,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [x] Track: Troubleshoot Performance & Fix Deployment
 *Link: [./conductor/tracks/performance_fix_20251229/](./conductor/tracks/performance_fix_20251229/)*
 
-## [~] Track: Pipeline Refactoring & Robustness
+## [x] Track: Pipeline Refactoring & Robustness
 *Link: [./conductor/tracks/pipeline_refactoring_20251230/](./conductor/tracks/pipeline_refactoring_20251230/)*
 
 ## [x] Track: Dashboard E2E Testing Suite
@@ -152,5 +152,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [ ] Track: P4 Outreach Series (NHRA-centred, Game Theory Explained)
-*Link: [./conductor/tracks/p4_outreach_series_20260103/](./conductor/tracks/p4_outreach_series_20260103/)*
+## [~] Track: Maturity Uplift & Modernization (v26)
+*Link: [./conductor/tracks/maturity_uplift_20251230/](./conductor/tracks/maturity_uplift_20251230/)*

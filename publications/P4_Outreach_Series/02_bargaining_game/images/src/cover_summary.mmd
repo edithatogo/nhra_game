@@ -1,0 +1,15 @@
+flowchart LR
+  T["NHRA Bargaining Game<br/><span style='font-size:14px'>Agree now or wait for leverage?</span>"]
+
+  C["Commonwealth<br/><span style='font-size:12px'>wants cost control + certainty</span>"] --> N["Negotiation"]
+  S["States<br/><span style='font-size:12px'>want capacity + flexibility</span>"] --> N
+
+  N --> A["Agree now<br/><span style='font-size:12px'>certainty, but maybe less leverage</span>"]
+  N --> H["Hold out<br/><span style='font-size:12px'>maybe better deal, but delay costs</span>"]
+
+  H --> D["Time passes → the “pie” can shrink<br/><span style='font-size:12px'>(discounting and system pressure)</span>"]
+  A --> P["Policy levers<br/><span style='font-size:12px'>deadlines, default rules, interim funding</span>"]
+  D --> P
+
+  classDef box fill:#F8FAFC,stroke:#0B1220,stroke-width:2px,color:#0B1220;
+  class T,C,S,N,A,H,D,P box;

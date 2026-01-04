@@ -192,3 +192,8 @@ DEP004 = ["nox", "pytest", "hypothesis", "logfire", "mypy", "ruff", "bandit", "d
 [tool.bandit]
 exclude_dirs = ["tests", ".nox", ".gemini", "outputs", "reports", "docs", "archive", "build", "dist"]
 skips = ["B101"]
+
+[tool.mutmut]
+paths_to_mutate = "src/nhra_gt"
+tests_dir = "tests"
+runner = "python -m pytest -q"

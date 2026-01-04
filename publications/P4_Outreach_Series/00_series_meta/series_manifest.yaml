@@ -1,0 +1,228 @@
+# P4 Outreach Series manifest (source of truth)
+#
+# This file is intentionally the single inventory for the outreach series so that
+# scripts can avoid repo-wide scans (important for sync-backed filesystems).
+#
+# Conventions:
+# - `slug` should be filesystem-safe and stable over time.
+# - `code_pointers` are workspace-relative paths and identifiers to ground the narrative in code.
+# - `outputs.required_images` names are logical; render scripts map them to platform targets.
+
+series:
+  id: p4_outreach_series
+  title: "NHRA Game Theory Outreach Series"
+  audience_primary: "interested_public"
+  readability_target: "14yo-friendly"
+
+platform_image_targets:
+  linkedin_article_cover:
+    - { width: 1200, height: 644 }
+    - { width: 2400, height: 1288 }
+  linkedin_post_square:
+    - { width: 1200, height: 1200 }
+    - { width: 2400, height: 2400 }
+
+bundles:
+  - order: 1
+    slug: definition_game
+    title: "Definition Game: What counts as a ‘hospital service’?"
+    nhra_scenario: "How definitions and scope-shifting change who pays and what gets counted."
+    pairing:
+      model_type: "2x2 stage game"
+      solution_concept: "Nash equilibrium (intro), best responses"
+    code_pointers:
+      - path: src/nhra_gt/game_theory/content.py
+        id: definition_game
+      - path: src/nhra_gt/subgames/games.py
+        fn: definition_game
+    outputs:
+      required:
+        - linkedin_article
+        - linkedin_post
+        - x_thread
+      required_images:
+        - nhra_context_map
+        - game_matrix
+        - equilibrium_intuition
+        - cover_summary
+
+  - order: 2
+    slug: bargaining_game
+    title: "Bargaining Game: Agree now or defer for leverage?"
+    nhra_scenario: "Why negotiation timing and ‘waiting for a better deal’ can be rational and risky."
+    pairing:
+      model_type: "2x2 stage game"
+      solution_concept: "Nash equilibrium (simple), discounting intuition"
+    code_pointers:
+      - path: src/nhra_gt/game_theory/content.py
+        id: bargaining_game
+      - path: src/nhra_gt/subgames/games.py
+        fn: bargaining_game
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [nhra_context_map, game_matrix, leverage_timeline, cover_summary]
+
+  - order: 3
+    slug: cost_shifting_game
+    title: "Cost Shifting Game: Invest upstream or shift downstream?"
+    nhra_scenario: "Why split funding streams can incentivise moving costs instead of fixing problems."
+    pairing:
+      model_type: "2x2 stage game"
+      solution_concept: "Nash equilibrium; externalities"
+    code_pointers:
+      - path: src/nhra_gt/game_theory/content.py
+        id: cost_shifting_game
+      - path: src/nhra_gt/subgames/games.py
+        fn: cost_shifting_game
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [nhra_context_map, game_matrix, cost_flow_sankey, cover_summary]
+
+  - order: 4
+    slug: discharge_game
+    title: "Discharge Game: Coordinate or fragment (bed block)?"
+    nhra_scenario: "Why downstream bottlenecks persist even when everyone agrees ‘it’s bad’."
+    pairing:
+      model_type: "coordination / prisoner's-dilemma style"
+      solution_concept: "Nash equilibrium; coordination failure"
+    code_pointers:
+      - path: src/nhra_gt/game_theory/content.py
+        id: discharge_game
+      - path: src/nhra_gt/subgames/games.py
+        fn: discharge_coordination_game
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [nhra_context_map, game_matrix, patient_flow_loop, cover_summary]
+
+  - order: 5
+    slug: governance_game
+    title: "Governance Game: Integrate or separate (principal–agent)?"
+    nhra_scenario: "Why governance structure changes incentives, reporting, and accountability."
+    pairing:
+      model_type: "principal–agent framing"
+      solution_concept: "Nash equilibrium; incentives and monitoring"
+    code_pointers:
+      - path: src/nhra_gt/game_theory/content.py
+        id: governance_game
+      - path: src/nhra_gt/subgames/games.py
+        fn: governance_integration_game
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [nhra_context_map, game_matrix, principal_agent_map, cover_summary]
+
+  - order: 6
+    slug: compliance_game
+    title: "Compliance Game: Audit intensity vs gaming incentives"
+    nhra_scenario: "Why ‘more audit’ isn’t free, and ‘less audit’ isn’t safe."
+    pairing:
+      model_type: "inspection / deterrence game"
+      solution_concept: "mixed strategies (intuition)"
+    code_pointers:
+      - path: src/nhra_gt/game_theory/content.py
+        id: compliance_game
+      - path: src/nhra_gt/subgames/games.py
+        fn: coding_audit_game
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [nhra_context_map, audit_tradeoff, mixed_strategy_intuition, cover_summary]
+
+  - order: 7
+    slug: internal_lhn_competition
+    title: "Internal LHN Competition: When activity signals steer behaviour"
+    nhra_scenario: "Why ABF-like signals can distort internal priorities without safeguards."
+    pairing:
+      model_type: "matrix game"
+      solution_concept: "Nash equilibrium; dominance intuition"
+    code_pointers:
+      - path: src/nhra_gt/game_theory/content.py
+        id: internal_lhn_competition
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [nhra_context_map, payoff_matrix, service_mix_effects, cover_summary]
+
+  - order: 8
+    slug: electoral_game
+    title: "Electoral Game: Salience vs fiscal responsibility"
+    nhra_scenario: "Why health funding debates oscillate, even with stable underlying needs."
+    pairing:
+      model_type: "political economy game"
+      solution_concept: "strategic interaction; equilibrium narratives"
+    code_pointers:
+      - path: src/nhra_gt/game_theory/content.py
+        id: electoral_game
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [nhra_context_map, narrative_payoffs, cycle_diagram, cover_summary]
+
+  - order: 9
+    slug: rubinstein_bargaining
+    title: "Rubinstein Bargaining: Why ‘waiting’ changes outcomes"
+    nhra_scenario: "How bargaining patience (discounting) influences who concedes first."
+    pairing:
+      model_type: "alternating-offers bargaining"
+      solution_concept: "subgame perfect equilibrium (intuition)"
+    code_pointers:
+      - path: src/nhra_gt/subgames/sequential.py
+        fn: rubinstein_solution
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [timeline_offers, discounting_curve, intuition_box, cover_summary]
+
+  - order: 10
+    slug: stackelberg_leadership
+    title: "Stackelberg Leadership: When one side can credibly move first"
+    nhra_scenario: "How commitments and first-mover advantage shift the feasible set."
+    pairing:
+      model_type: "leader–follower game"
+      solution_concept: "Stackelberg equilibrium (intuition)"
+    code_pointers:
+      - path: src/nhra_gt/subgames/sequential.py
+        fn: stackelberg_solution
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [leader_follower_map, best_response_plot, intuition_box, cover_summary]
+
+  - order: 11
+    slug: queuing_equilibrium
+    title: "Queuing Equilibrium: Why ED demand responds to waiting times"
+    nhra_scenario: "How queues and patient choices create feedback loops under capacity constraints."
+    pairing:
+      model_type: "Wardrop / fixed-point equilibrium"
+      solution_concept: "equilibrium as ‘no one can improve by switching’"
+    code_pointers:
+      - path: src/nhra_gt/subgames/queuing.py
+        fn: solve_queuing_equilibrium_jax
+      - path: src/nhra_gt/subgames/queuing.py
+        fn: solve_queuing_equilibrium_legacy
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [queue_loop, fixed_point_diagram, choice_logit_intuition, cover_summary]
+
+  - order: 12
+    slug: hybrid_ensemble
+    title: "Hybrid / Ensemble: When one model isn’t enough"
+    nhra_scenario: "How multiple mechanisms interact (and why ‘single-cause’ explanations fail)."
+    pairing:
+      model_type: "model composition"
+      solution_concept: "ensembles; scenario libraries"
+    code_pointers:
+      - path: src/nhra_gt/rules.py
+      - path: src/nhra_gt/engine.py
+      - path: src/nhra_gt/hierarchical_jax.py
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [model_stack_map, interaction_graph, coverage_map, cover_summary]
+
+  - order: 13
+    slug: streamlit_dashboard
+    title: "Dashboard: How to explore NHRA scenarios (without needing a PhD)"
+    nhra_scenario: "How the dashboard supports policy discussion and sense-making."
+    pairing:
+      model_type: "user-facing interpretation layer"
+      solution_concept: "reading outputs safely; avoiding over-claiming"
+    code_pointers:
+      - path: streamlit_app.py
+    outputs:
+      required: [linkedin_article, linkedin_post, x_thread]
+      required_images: [dashboard_map, how_to_read_outputs, glossary_card, cover_summary]
+

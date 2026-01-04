@@ -248,6 +248,37 @@ def run_sobol_analysis(
     return dict(si)
 
 
+def export_sensitivity_indices(si: dict[str, Any], output_path: Path) -> None:
+    """Exports S1 and ST indices to a CSV file."""
+    df = pd.DataFrame(
+        {
+            "Parameter": si["names"],
+            "S1": si["S1"],
+            "S1_conf": si["S1_conf"],
+            "ST": si["ST"],
+            "ST_conf": si["ST_conf"],
+        }
+    )
+    df.to_csv(output_path, index=False)
+
+
+def export_sobol_s2_to_csv(si: dict[str, Any], output_path: Path) -> None:
+    """Exports the S2 interaction matrix to a CSV file."""
+    if "S2" not in si or si["S2"] is None:
+        return
+
+    names = si["names"]
+    s2 = si["S2"]
+    # S2 is often a 2D array in modern SALib or a dict of pairs
+    # If it's a 2D array, we can directly create a DF
+    if isinstance(s2, np.ndarray) and s2.ndim == 2:
+        df = pd.DataFrame(s2, index=names, columns=names)
+        df.to_csv(output_path)
+    else:
+        # Some versions return it differently, handle basic case
+        pd.DataFrame(str(s2), index=["S2_raw"], columns=["Value"]).to_csv(output_path)
+
+
 def run_psa(
     distributions: dict[str, Callable[[int], np.ndarray[Any, Any]]],
     model_func: Callable[[np.ndarray[Any, Any]], float],

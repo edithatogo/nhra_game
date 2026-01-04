@@ -1,0 +1,37 @@
+digraph G {
+  graph [bgcolor="white", pad="0.2", nodesep="0.4", ranksep="0.4"];
+  node  [shape=plain, fontname="Helvetica", fontsize=12];
+
+  matrix [label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="10">
+      <TR>
+        <TD BGCOLOR="#F1F5F9"><B>Bargaining choice</B></TD>
+        <TD BGCOLOR="#F1F5F9"><B>Commonwealth: Agree now</B></TD>
+        <TD BGCOLOR="#F1F5F9"><B>Commonwealth: Hold out</B></TD>
+      </TR>
+      <TR>
+        <TD BGCOLOR="#F1F5F9"><B>States: Agree now</B></TD>
+        <TD>
+          <B>Stable deal</B><BR/>
+          (medium, medium)
+        </TD>
+        <TD BGCOLOR="#FEF9C3">
+          <B>Cth leverage</B><BR/>
+          (low, high)
+        </TD>
+      </TR>
+      <TR>
+        <TD BGCOLOR="#F1F5F9"><B>States: Hold out</B></TD>
+        <TD BGCOLOR="#FEF9C3">
+          <B>State leverage</B><BR/>
+          (high, low)
+        </TD>
+        <TD BGCOLOR="#FEE2E2">
+          <B>Delay / uncertainty</B><BR/>
+          (low, low)
+        </TD>
+      </TR>
+    </TABLE>
+  >];
+}
+

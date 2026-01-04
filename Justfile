@@ -1,48 +1,61 @@
 set shell := ["bash", "-lc"]
 
-# quick pipeline
+# Install dependencies
+install:
+  uv sync
+
+# Quick pipeline run
 run:
-  PYTHONPATH=src python scripts/run_baseline.py
-  PYTHONPATH=src python scripts/diagrams/render_all.py
-  PYTHONPATH=src python scripts/interactive/make_d3_network.py
+  uv run python scripts/run_baseline.py
+  uv run python scripts/diagrams/render_all.py
+  uv run python scripts/interactive/make_d3_network.py
 
-# build a shareable context pack
+# Build a shareable context pack
 context:
-  python scripts/build_context_pack.py
+  uv run python scripts/build_context_pack.py
 
-# validate public sourcing / justification for every model input
+# Validate public sourcing
 grounded:
-  python scripts/check_parameters_grounded.py
+  uv run python scripts/check_parameters_grounded.py
 
+# Format code
 format:
-  ruff format src tests
-  ruff check src tests --fix
+  uv run ruff format src tests scripts
+  uv run ruff check src tests scripts --fix
 
+# Lint code
 lint:
-  ruff check src tests
-  mypy --strict src/nhra_gt
+  uv run nox -s lint
 
+# Type check
+type:
+  uv run nox -s type
+
+# Run tests
 test:
-  PYTHONPATH=src:. pytest -q
+  uv run nox -s tests
 
+# Build docs
 docs:
-  mkdocs build -q
+  uv run nox -s docs
 
-# run mutation tests to verify test suite quality
+# Run mutation tests
 mutate:
-  mutmut run
+  uv run mutmut run
 
+# Launch dashboard
 dashboard:
-  streamlit run scripts/dashboard.py
+  uv run streamlit run streamlit_app.py
 
+# Validation
 validate:
-  python scripts/validation/validate_mechanism.py
+  uv run python scripts/validation/validate_mechanism.py
 
+# Full check
 all:
   just format
   just lint
-  just grounded
+  just type
   just test
   just run
-  just context
   just docs

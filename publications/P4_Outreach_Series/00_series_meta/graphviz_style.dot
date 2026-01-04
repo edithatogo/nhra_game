@@ -1,0 +1,24 @@
+digraph G {
+  graph [
+    bgcolor="transparent",
+    fontname="Inter",
+    fontsize=16,
+    pad=0.2,
+    ranksep=0.35,
+    nodesep=0.30
+  ];
+  node [
+    shape="box",
+    style="rounded,filled",
+    fontname="Inter",
+    fontsize=14,
+    color="#0B1220",
+    fillcolor="#F8FAFC"
+  ];
+  edge [
+    color="#0B1220",
+    penwidth=1.5,
+    arrowsize=0.8
+  ];
+}
+

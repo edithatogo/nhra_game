@@ -1,0 +1,17 @@
+flowchart LR
+  T0["Now<br/><span style='font-size:12px'>Negotiation starts</span>"] --> T1["Weeks<br/><span style='font-size:12px'>positions harden</span>"] --> T2["Months<br/><span style='font-size:12px'>pressure builds</span>"] --> T3["Later<br/><span style='font-size:12px'>deal (or crisis)</span>"]
+
+  V0["Total value available: high"]:::good --> V1["Total value: lower"]:::mid --> V2["Total value: lower again"]:::mid --> V3["Total value: lowest"]:::bad
+
+  T0 -.-> V0
+  T1 -.-> V1
+  T2 -.-> V2
+  T3 -.-> V3
+
+  Note["Discounting intuition:<br/><span style='font-size:12px'>Waiting can improve your share… but the total can shrink.</span>"]:::box
+  V1 --> Note
+
+  classDef box fill:#F8FAFC,stroke:#0B1220,stroke-width:2px,color:#0B1220;
+  classDef good fill:#DCFCE7,stroke:#14532D,stroke-width:2px,color:#14532D;
+  classDef mid fill:#FEF9C3,stroke:#713F12,stroke-width:2px,color:#713F12;
+  classDef bad fill:#FEE2E2,stroke:#7F1D1D,stroke-width:2px,color:#7F1D1D;

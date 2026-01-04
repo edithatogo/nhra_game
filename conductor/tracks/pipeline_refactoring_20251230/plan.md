@@ -11,6 +11,6 @@
 - [ ] Task: Drift Analysis (Cancelled)
 
 ## Phase 3: Robustness & Integration
-- [~] **Task 3.1: Integration Testing**
-  - [ ] Sub-task: Create end-to-end tests for the refactored pipeline.
-  - [ ] Sub-task: Verify data integrity across all stages.
+- [x] **Task 3.1: Integration Testing**
+  - [x] Sub-task: Create end-to-end tests for the refactored pipeline.
+  - [x] Sub-task: Verify data integrity across all stages.
