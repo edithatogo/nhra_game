@@ -1,5 +1,5 @@
 exclude: >-
-  (^NHRA Analysis - Improve commissioning brief\.pdf$|^docs/diagrams/|^outputs/|^%5C.gemini/)
+  (^NHRA Analysis - Improve commissioning brief\.pdf$|^docs/diagrams/|^outputs/|^\.gemini/)
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
@@ -18,31 +18,20 @@ repos:
         args: ["--unsafe"]
       - id: check-added-large-files
         args: ["--maxkb=5000"]
-  - repo: https://github.com/PyCQA/isort
-    rev: 7.0.0
-    hooks:
-      - id: isort
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.20.0
     hooks:
       - id: markdownlint-cli2
-        files: ^(README\.md|docs/|docs_mkdocs/).*(\.md|\.markdown)$
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.19.1
-    hooks:
-      - id: mypy
-        args: ["--config-file", "mypy.ini", "src"]
-        pass_filenames: false
-        additional_dependencies: [types-requests, types-setuptools, pandas-stubs, pydantic, pandera, types-PyYAML, jax, flax, jaxtyping, beartype]
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.9.2
-    hooks:
-      - id: bandit
-        args: ["-c", "pyproject.toml", "-r", "src"]
-        additional_dependencies: ["bandit[toml]"]
-        exclude: ^tests/
+        files: '^(README\.md|docs/|docs_mkdocs/|conductor/|publications/).*\.(md|markdown)$'
   - repo: local
     hooks:
+      - id: basedpyright
+        name: basedpyright
+        entry: uv run basedpyright
+        language: system
+        types: [python]
+        files: ^src/
+        pass_filenames: false
       - id: deptry
         name: deptry
         entry: deptry
@@ -50,4 +39,4 @@ repos:
         types: [python]
         files: ^pyproject\.toml$|^src/
         pass_filenames: false
-        args: [".
+        args: ["."]

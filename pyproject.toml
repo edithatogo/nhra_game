@@ -156,13 +156,24 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-select = ["E","F","B","UP","SIM","A","C4","N","PT","S","I"]
-ignore = ["E501", "N806", "F722"]
+select = [
+    "E", "F", "B", "UP", "SIM", "A", "C4", "N", "PT", "S", "I",
+    "RUF",  # Ruff-specific
+    "ARG",  # Unused arguments
+    "T20",  # Print statements
+    "PIE",  # Misc lints
+    "PTH",  # Use pathlib
+]
+ignore = [
+    "E501",  # Line too long (handled by formatter)
+    "N806",  # Variable in function should be lowercase (allow math notation like A, B)
+    "F722",  # Syntax error in forward annotation (Jaxtyping compatibility)
+]
 
 [tool.ruff.lint.per-file-ignores]
-"scripts/*" = ["E402"]
-"tests/*" = ["S101", "S105", "PT011", "B017", "E402", "S607", "S603"]
-"src/nhra_gt/agent_logic.py" = ["F821"]
+"scripts/**" = ["E402", "T201", "PTH", "ARG"]
+"tests/**" = ["S101", "S105", "PT011", "B017", "E402", "S607", "S603", "ARG001", "ARG002", "T201", "RUF059"]
+"src/nhra_gt/agent_logic.py" = ["F821", "ARG001"]
 "src/nhra_gt/engine.py" = ["F821", "UP037", "E402"]
 "src/nhra_gt/solvers_jax.py" = ["F821", "UP037"]
 "src/nhra_gt/hierarchical_jax.py" = ["F821", "UP037"]

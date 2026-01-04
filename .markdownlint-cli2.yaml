@@ -1,5 +1,16 @@
 config:
   default: true
-  MD013: false
-  MD033: false
-  MD041: false
+  MD013: false # Line length
+  MD033: false # Inline HTML
+  MD041: false # First line should be h1
+  MD024:
+    siblings_only: true # Allow duplicate headings if not siblings
+
+ignores:
+  - "node_modules"
+  - ".venv"
+  - ".nox"
+  - "outputs"
+  - ".gemini"
+  - "archive"
+  - "temp_blinded_workspace"
