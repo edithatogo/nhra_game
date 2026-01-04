@@ -1,5 +1,7 @@
 set shell := ["bash", "-lc"]
 
+ts := `date +%Y%m%d_%H%M%S`
+
 # Install all dependencies including optional and accelerated groups
 install:
   uv sync --all-groups
@@ -11,10 +13,10 @@ update:
 
 # Archive current outputs to a timestamped folder
 archive:
-  @mkdir -p archive/outputs/$(date +%Y%m%d_%H%M%S)
-  @cp -r outputs/* archive/outputs/$(date +%Y%m%d_%H%M%S)/
-  @cp -r data/calibration archive/outputs/$(date +%Y%m%d_%H%M%S)/calibration
-  @echo "Archived to archive/outputs/$(date +%Y%m%d_%H%M%S)"
+  @mkdir -p archive/outputs/{{ts}}
+  @cp -r outputs/* archive/outputs/{{ts}}/
+  @cp -r data/calibration archive/outputs/{{ts}}/calibration
+  @echo "Archived to archive/outputs/{{ts}}"
 
 # Quick pipeline run
 run:
