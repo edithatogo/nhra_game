@@ -2346,50 +2346,66 @@
 <h2 id="evidence-and-public-only-constraint">Evidence and “public-only” constraint<a class="headerlink" href="#evidence-and-public-only-constraint" title="Permanent link">&para;</a></h2>
 <h3 id="parameter-registry">Parameter registry<a class="headerlink" href="#parameter-registry" title="Permanent link">&para;</a></h3>
 <p><code>context/04_parameter_registry.csv</code> is the single source of truth for parameters.</p>
-<p>Each parameter record includes:
-- value and units,
-- source type (<code>primary</code>, <code>secondary</code>, <code>calibrated</code>, <code>assumed</code>, <code>normalisation</code>),
-- a <strong>public URL</strong> and locator (page/table/section),
-- plausible range (low/high) and distribution (optional),
-- justification (required for assumptions).</p>
+<p>Each parameter record includes:</p>
+<ul>
+<li>value and units,</li>
+<li>source type (<code>primary</code>, <code>secondary</code>, <code>calibrated</code>, <code>assumed</code>, <code>normalisation</code>),</li>
+<li>a <strong>public URL</strong> and locator (page/table/section),</li>
+<li>plausible range (low/high) and distribution (optional),</li>
+<li>justification (required for assumptions).</li>
+</ul>
 <h3 id="enforcement">Enforcement<a class="headerlink" href="#enforcement" title="Permanent link">&para;</a></h3>
-<p><code>scripts/check_parameters_grounded.py</code> fails CI if:
-- a parameter is labelled <code>primary</code> or <code>secondary</code> and lacks a public URL,
-- an URL is not http/https,
-- a parameter is <code>assumed</code> but justification is insufficiently detailed,
-- range bounds are missing.</p>
+<p><code>scripts/check_parameters_grounded.py</code> fails CI if:</p>
+<ul>
+<li>a parameter is labelled <code>primary</code> or <code>secondary</code> and lacks a public URL,</li>
+<li>an URL is not http/https,</li>
+<li>a parameter is <code>assumed</code> but justification is insufficiently detailed,</li>
+<li>range bounds are missing.</li>
+</ul>
 <p>This ensures the model can be audited by external reviewers.</p>
 <h2 id="modelling-approach">Modelling approach<a class="headerlink" href="#modelling-approach" title="Permanent link">&para;</a></h2>
 <h3 id="1-stage-games">1) Stage games<a class="headerlink" href="#1-stage-games" title="Permanent link">&para;</a></h3>
-<p>A small set of two-player stage games represent strategic tensions, e.g.:
-- definition (what counts as “efficient”),
-- bargaining (cap/glide path),
-- cost shifting,
-- discharge coordination,
-- governance integration (UCCs etc),
-- compliance/audit incentives.</p>
-<p>For each game, the code:
-- constructs payoff matrices from state variables (pressure, efficiency gap, discharge delay),
-- solves <strong>all Nash equilibria</strong> (pure + mixed) using enumeration / support methods,
-- selects equilibria for simulation using a configurable rule (e.g., welfare, risk-dominant).</p>
+<p>A small set of two-player stage games represent strategic tensions, e.g.:</p>
+<ul>
+<li>definition (what counts as “efficient”),</li>
+<li>bargaining (cap/glide path),</li>
+<li>cost shifting,</li>
+<li>discharge coordination,</li>
+<li>governance integration (UCCs etc),</li>
+<li>compliance/audit incentives.</li>
+</ul>
+<p>For each game, the code:</p>
+<ul>
+<li>constructs payoff matrices from state variables (pressure, efficiency gap, discharge delay),</li>
+<li>solves <strong>all Nash equilibria</strong> (pure + mixed) using enumeration / support methods,</li>
+<li>selects equilibria for simulation using a configurable rule (e.g., welfare, risk-dominant).</li>
+</ul>
 <h3 id="2-system-dynamics">2) System dynamics<a class="headerlink" href="#2-system-dynamics" title="Permanent link">&para;</a></h3>
-<p>A compact set of state variables evolve annually (or finer if needed), including:
-- NEP index and input-cost index (publicly sourced where available),
-- efficiency gap as cost-per-NWAU relative to NEP,
-- pressure, discharge delay, and flow proxies.</p>
-<p>The dynamics support:
-- stochastic Monte Carlo runs (for robustness),
-- deterministic mean-field and fixed-point checks (equation solving for stability).</p>
+<p>A compact set of state variables evolve annually (or finer if needed), including:</p>
+<ul>
+<li>NEP index and input-cost index (publicly sourced where available),</li>
+<li>efficiency gap as cost-per-NWAU relative to NEP,</li>
+<li>pressure, discharge delay, and flow proxies.</li>
+</ul>
+<p>The dynamics support:</p>
+<ul>
+<li>stochastic Monte Carlo runs (for robustness),</li>
+<li>deterministic mean-field and fixed-point checks (equation solving for stability).</li>
+</ul>
 <h2 id="outputs-and-reporting">Outputs and reporting<a class="headerlink" href="#outputs-and-reporting" title="Permanent link">&para;</a></h2>
 <h3 id="reports">Reports<a class="headerlink" href="#reports" title="Permanent link">&para;</a></h3>
-<p>Reports are built from templates that:
-- introduce each results section in full sentences,
-- provide figure/table titles, captions, and abbreviations,
-- include a synthesis paragraph per section and an overall conclusion.</p>
+<p>Reports are built from templates that:</p>
+<ul>
+<li>introduce each results section in full sentences,</li>
+<li>provide figure/table titles, captions, and abbreviations,</li>
+<li>include a synthesis paragraph per section and an overall conclusion.</li>
+</ul>
 <h3 id="diagrams">Diagrams<a class="headerlink" href="#diagrams" title="Permanent link">&para;</a></h3>
-<p>Diagrams are maintained in source form:
-- <code>diagrams/*.mmd</code> (Mermaid)
-- <code>diagrams/*.dot</code> (Graphviz)</p>
+<p>Diagrams are maintained in source form:</p>
+<ul>
+<li><code>diagrams/*.mmd</code> (Mermaid)</li>
+<li><code>diagrams/*.dot</code> (Graphviz)</li>
+</ul>
 <p>Render scripts generate publication-ready PNG/SVG.</p>
 <h2 id="reproducibility-and-ci">Reproducibility and CI<a class="headerlink" href="#reproducibility-and-ci" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2420,7 +2436,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 30, 2025 12:32:29 UTC"><span class="timeago" datetime="2025-12-30T12:32:29+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 30, 2025 12:32:29 UTC">2025-12-30</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 4, 2026 04:58:33 UTC"><span class="timeago" datetime="2026-01-04T04:58:33+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 4, 2026 04:58:33 UTC">2026-01-04</span>
   </span>
 
     

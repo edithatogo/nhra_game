@@ -2717,13 +2717,15 @@
 </tbody>
 </table>
 <h3 id="expert-mode">Expert Mode<a class="headerlink" href="#expert-mode" title="Permanent link">&para;</a></h3>
-<p>Toggle "🧠 Expert Strategic Mode" to manually override game equilibria:
-- Definition: R (Realism) / E (Strict)
-- Bargaining: A (Agree) / D (Defer)
-- Cost-Shifting: I (Invest) / S (Shift)
-- Discharge: C (Coordinate) / F (Fragment)
-- Governance: I (Integrate) / S (Separate)
-- Compliance: T (Tight) / L (Light)</p>
+<p>Toggle "🧠 Expert Strategic Mode" to manually override game equilibria:</p>
+<ul>
+<li>Definition: R (Realism) / E (Strict)</li>
+<li>Bargaining: A (Agree) / D (Defer)</li>
+<li>Cost-Shifting: I (Invest) / S (Shift)</li>
+<li>Discharge: C (Coordinate) / F (Fragment)</li>
+<li>Governance: I (Integrate) / S (Separate)</li>
+<li>Compliance: T (Tight) / L (Light)</li>
+</ul>
 <hr />
 <h2 id="deploying-to-streamlit-cloud">Deploying to Streamlit Cloud<a class="headerlink" href="#deploying-to-streamlit-cloud" title="Permanent link">&para;</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
@@ -2783,10 +2785,10 @@
 <div class="language-toml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">[api_keys]</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">logfire</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;your-api-key&quot;</span>
 </span></code></pre></div>
-<p>Access in code:
+<p>Access in code:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">streamlit</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">api_key</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;api_keys&quot;</span><span class="p">][</span><span class="s2">&quot;logfire&quot;</span><span class="p">]</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <hr />
 <h2 id="performance-optimization">Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permanent link">&para;</a></h2>
 <h3 id="jax-caching">JAX Caching<a class="headerlink" href="#jax-caching" title="Permanent link">&para;</a></h3>
@@ -2824,19 +2826,17 @@
 </span></code></pre></div>
 <h3 id="adding-new-tabs">Adding New Tabs<a class="headerlink" href="#adding-new-tabs" title="Permanent link">&para;</a></h3>
 <ol>
-<li>
-<p>Add to the tabs list:
+<li>Add to the tabs list:</li>
+</ol>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">tab1</span><span class="p">,</span> <span class="n">tab2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">new_tab</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">tabs</span><span class="p">([</span><span class="o">...</span><span class="p">,</span> <span class="s2">&quot;🆕 New Tab&quot;</span><span class="p">])</span>
-</span></code></pre></div></p>
-</li>
-<li>
-<p>Implement tab content:
+</span></code></pre></div>
+<ol>
+<li>Implement tab content:</li>
+</ol>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">with</span> <span class="n">new_tab</span><span class="p">:</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">st</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s2">&quot;### New Feature&quot;</span><span class="p">)</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="c1"># Your content here</span>
-</span></code></pre></div></p>
-</li>
-</ol>
+</span></code></pre></div>
 <h3 id="adding-new-interventions">Adding New Interventions<a class="headerlink" href="#adding-new-interventions" title="Permanent link">&para;</a></h3>
 <p>Update the <code>rank_interventions</code> function's intervention list:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">interventions</span> <span class="o">=</span> <span class="p">[</span>
@@ -2912,7 +2912,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 27, 2025 14:03:53 UTC"><span class="timeago" datetime="2025-12-27T14:03:53+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 27, 2025 14:03:53 UTC">2025-12-27</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 4, 2026 04:58:33 UTC"><span class="timeago" datetime="2026-01-04T04:58:33+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 4, 2026 04:58:33 UTC">2026-01-04</span>
   </span>
 
     

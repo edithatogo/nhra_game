@@ -2624,9 +2624,11 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Run sensitivity analysis</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/run_sobol_analysis.py<span class="w"> </span>--samples<span class="w"> </span><span class="m">1024</span>
 </span></code></pre></div>
-<p>This produces:
-- First-order indices (S1): Direct effect of each parameter
-- Total-order indices (ST): Total effect including interactions</p>
+<p>This produces:</p>
+<ul>
+<li>First-order indices (S1): Direct effect of each parameter</li>
+<li>Total-order indices (ST): Total effect including interactions</li>
+</ul>
 <h3 id="key-findings">Key Findings<a class="headerlink" href="#key-findings" title="Permanent link">&para;</a></h3>
 <p>Typical sensitivity rankings (parameter importance for system pressure):</p>
 <table>
@@ -2666,11 +2668,13 @@
 <p>The recursive backtest validates model dynamics against historical patterns:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/validation/recursive_backtest.py
 </span></code></pre></div>
-<p>The backtest:
-1. Initialises from historical state (2017)
-2. Runs simulation forward
-3. Compares predicted vs actual trajectories
-4. Uses rolling window validation</p>
+<p>The backtest:</p>
+<ol>
+<li>Initialises from historical state (2017)</li>
+<li>Runs simulation forward</li>
+<li>Compares predicted vs actual trajectories</li>
+<li>Uses rolling window validation</li>
+</ol>
 <h3 id="metrics">Metrics<a class="headerlink" href="#metrics" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2712,14 +2716,16 @@
 </span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">poetry run snakemake --cores 1 run_baseline context_pack --forceall</span>
 </span></code></pre></div>
 <h3 id="validation-gates">Validation Gates<a class="headerlink" href="#validation-gates" title="Permanent link">&para;</a></h3>
-<p>PRs must pass:
-- [x] All unit tests
-- [x] Type checking (mypy strict)
-- [x] Lint/format (ruff)
-- [x] Security scan (bandit)
-- [x] Parameter grounding check
-- [x] Pipeline verification
-- [x] Documentation build</p>
+<p>PRs must pass:</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> All unit tests</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Type checking (mypy strict)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Lint/format (ruff)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Security scan (bandit)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Parameter grounding check</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Pipeline verification</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Documentation build</li>
+</ul>
 <hr />
 <h2 id="running-validation-locally">Running Validation Locally<a class="headerlink" href="#running-validation-locally" title="Permanent link">&para;</a></h2>
 <h3 id="full-validation-suite">Full Validation Suite<a class="headerlink" href="#full-validation-suite" title="Permanent link">&para;</a></h3>
@@ -2765,7 +2771,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 30, 2025 05:32:10 UTC"><span class="timeago" datetime="2025-12-30T05:32:10+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 30, 2025 05:32:10 UTC">2025-12-30</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 4, 2026 04:58:33 UTC"><span class="timeago" datetime="2026-01-04T04:58:33+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 4, 2026 04:58:33 UTC">2026-01-04</span>
   </span>
 
     

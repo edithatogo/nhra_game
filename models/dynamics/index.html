@@ -2097,22 +2097,28 @@
 <div class="arithmatex">\[
 P = 0.8 + 0.2 \left( \frac{W_{wait}}{60} \right) + 0.5 \left( \frac{O - 0.8}{0.1} \right)
 \]</div>
-<p>Where:
-- <span class="arithmatex">\(O\)</span>: Occupancy rate.
-- <span class="arithmatex">\(W_{wait}\)</span>: Queue wait time.</p>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\(O\)</span>: Occupancy rate.</li>
+<li><span class="arithmatex">\(W_{wait}\)</span>: Queue wait time.</li>
+</ul>
 <h2 id="2-capacity-lags">2. Capacity Lags<a class="headerlink" href="#2-capacity-lags" title="Permanent link">&para;</a></h2>
 <p>Capacity does not adjust instantaneously. We model operational inertia using expansion/contraction lags:</p>
 <div class="arithmatex">\[
 C_{t+1} = C_t + \lambda (C_{target} - C_t)
 \]</div>
-<p>Where:
-- <span class="arithmatex">\(\lambda\)</span>: Lag coefficient (Expansion <span class="arithmatex">\(\lambda_{exp}\)</span> &lt; Contraction <span class="arithmatex">\(\lambda_{con}\)</span>).</p>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\(\lambda\)</span>: Lag coefficient (Expansion <span class="arithmatex">\(\lambda_{exp}\)</span> &lt; Contraction <span class="arithmatex">\(\lambda_{con}\)</span>).</li>
+</ul>
 <h2 id="3-system-modes">3. System Modes<a class="headerlink" href="#3-system-modes" title="Permanent link">&para;</a></h2>
-<p>The model operates as a state machine with four modes:
-- <strong>Normal:</strong> Pressure &lt; 1.25
-- <strong>Stress:</strong> 1.25 &lt; Pressure &lt; 1.50
-- <strong>Crisis:</strong> Pressure &gt; 1.50
-- <strong>Recovery:</strong> Transitioning back to Normal.</p>
+<p>The model operates as a state machine with four modes:</p>
+<ul>
+<li><strong>Normal:</strong> Pressure &lt; 1.25</li>
+<li><strong>Stress:</strong> 1.25 &lt; Pressure &lt; 1.50</li>
+<li><strong>Crisis:</strong> Pressure &gt; 1.50</li>
+<li><strong>Recovery:</strong> Transitioning back to Normal.</li>
+</ul>
 <h2 id="4-evidence-grounding">4. Evidence Grounding<a class="headerlink" href="#4-evidence-grounding" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Occupancy:</strong> AIHW 88% efficient threshold.</li>
@@ -2140,7 +2146,7 @@ C_{t+1} = C_t + \lambda (C_{target} - C_t)
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 30, 2025 12:32:29 UTC"><span class="timeago" datetime="2025-12-30T12:32:29+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 30, 2025 12:32:29 UTC">2025-12-30</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 4, 2026 04:58:33 UTC"><span class="timeago" datetime="2026-01-04T04:58:33+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 4, 2026 04:58:33 UTC">2026-01-04</span>
   </span>
 
     

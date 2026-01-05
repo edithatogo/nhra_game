@@ -2100,19 +2100,23 @@ U_{ED} = U_{base, ED} - \left( \frac{W_{ED}}{60} \times V_{time} \right)
 <div class="arithmatex">\[
 U_{GP} = -( \frac{W_{GP}}{60} \times V_{time} ) - C_{OOP}
 \]</div>
-<p>Where:
-- <span class="arithmatex">\(W_{ED}\)</span>: Wait time in ED (minutes), derived from system occupancy.
-- <span class="arithmatex">\(W_{GP}\)</span>: Fixed wait time for a GP appointment.
-- <span class="arithmatex">\(V_{time}\)</span>: Value of patient time ($/hour).
-- <span class="arithmatex">\(C_{OOP}\)</span>: Out-of-pocket cost for GP.</p>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\(W_{ED}\)</span>: Wait time in ED (minutes), derived from system occupancy.</li>
+<li><span class="arithmatex">\(W_{GP}\)</span>: Fixed wait time for a GP appointment.</li>
+<li><span class="arithmatex">\(V_{time}\)</span>: Value of patient time ($/hour).</li>
+<li><span class="arithmatex">\(C_{OOP}\)</span>: Out-of-pocket cost for GP.</li>
+</ul>
 <h2 id="2-queuing-dynamics-mms">2. Queuing Dynamics (M/M/s)<a class="headerlink" href="#2-queuing-dynamics-mms" title="Permanent link">&para;</a></h2>
 <p>The ED wait time <span class="arithmatex">\(W_{ED}\)</span> is approximated using an M/M/s queuing model:</p>
 <div class="arithmatex">\[
 W_{ED} = \frac{\rho^{\sqrt{2(s+1)}-1}}{s(1-\rho)} \times 60
 \]</div>
-<p>Where:
-- <span class="arithmatex">\(\rho\)</span>: System utilization (arrival rate / service rate).
-- <span class="arithmatex">\(s\)</span>: Number of servers (staffed beds).</p>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\(\rho\)</span>: System utilization (arrival rate / service rate).</li>
+<li><span class="arithmatex">\(s\)</span>: Number of servers (staffed beds).</li>
+</ul>
 <h2 id="3-equilibrium-selection">3. Equilibrium Selection<a class="headerlink" href="#3-equilibrium-selection" title="Permanent link">&para;</a></h2>
 <p>We solve for the probability of choosing ED (<span class="arithmatex">\(P_{ED}\)</span>) using a Logit choice model:</p>
 <div class="arithmatex">\[
@@ -2147,7 +2151,7 @@ P_{ED} = \frac{e^{\lambda U_{ED}}}{e^{\lambda U_{ED}} + e^{\lambda U_{GP}} + e^{
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="December 30, 2025 12:32:29 UTC"><span class="timeago" datetime="2025-12-30T12:32:29+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="December 30, 2025 12:32:29 UTC">2025-12-30</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 4, 2026 04:58:33 UTC"><span class="timeago" datetime="2026-01-04T04:58:33+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 4, 2026 04:58:33 UTC">2026-01-04</span>
   </span>
 
     

@@ -22,7 +22,7 @@ class ModuleDoc:
 def _try_import(name: str) -> tuple[bool, str | None, str | None]:
     try:
         importlib.import_module(name)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         summary = f"{type(exc).__name__}: {exc}"
         detail = traceback.format_exc()
         return False, summary, detail
