@@ -137,7 +137,7 @@ def get_salib_problem(
         A dictionary with 'num_vars', 'names', and 'bounds'.
     """
     bounds_override = bounds_override or {}
-    defaults = Params().__dict__
+    defaults = Params().flatten()
 
     problem_names = []
     problem_bounds = []

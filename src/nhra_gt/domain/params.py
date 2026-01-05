@@ -363,6 +363,44 @@ class Params(BaseModel):
 
     model_config = ConfigDict(validate_assignment=True)
 
+    @classmethod
+    def from_flat_dict(cls, data: dict[str, Any]) -> Params:
+        """Creates a Params object from a potentially flat dictionary."""
+        ops_fields = OperationalParams.model_fields.keys()
+        behavior_fields = BehavioralParams.model_fields.keys()
+        policy_fields = PolicyParams.model_fields.keys()
+
+        # Extract nested structures if present as flat keys
+        ops_data = {k: data.pop(k) for k in list(data.keys()) if k in ops_fields}
+        behavior_data = {k: data.pop(k) for k in list(data.keys()) if k in behavior_fields}
+        policy_data = {k: data.pop(k) for k in list(data.keys()) if k in policy_fields}
+
+        # If data already had them as dicts, update with the popped values
+        if "ops" in data and isinstance(data["ops"], dict):
+            data["ops"].update(ops_data)
+        elif ops_data:
+            data["ops"] = ops_data
+
+        if "behavior" in data and isinstance(data["behavior"], dict):
+            data["behavior"].update(behavior_data)
+        elif behavior_data:
+            data["behavior"] = behavior_data
+
+        if "policy" in data and isinstance(data["policy"], dict):
+            data["policy"].update(policy_data)
+        elif policy_data:
+            data["policy"] = policy_data
+
+        return cls(**data)
+
+    def flatten(self) -> dict[str, Any]:
+        """Returns a flat dictionary representation of all parameters."""
+        data = self.model_dump()
+        ops = data.pop("ops", {})
+        behavior = data.pop("behavior", {})
+        policy = data.pop("policy", {})
+        return {**data, **ops, **behavior, **policy}
+
     def to_params_jax(self) -> ParamsJax:
         """Converts Pydantic Params to JAX-native ParamsJax."""
         from .state import BehavioralParamsJax, OperationalParamsJax, PolicyParamsJax

@@ -618,10 +618,10 @@ def main() -> None:
     # Strategic Scenario Analysis
     # Dynamically build parameters from session state to ensure all registry
     # promotions are captured.
-    param_keys = {f.name for f in dataclasses.fields(ParamsJax)}
-    overrides_final = {k: v for k, v in st.session_state.items() if k in param_keys}
+    from nhra_gt.domain.params import Params
 
-    p_game = Params(**overrides_final)
+    overrides_final = {k: v for k, v in st.session_state.items() if isinstance(k, str)}
+    p_game = Params.from_flat_dict(overrides_final)
     from nhra_gt.rules import initialize_rules
 
     p_game = initialize_rules(p_game)
