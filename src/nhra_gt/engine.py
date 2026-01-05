@@ -17,72 +17,35 @@ import numpy as np
 import pandas as pd
 from beartype import beartype
 from jax import config, lax
-from jaxtyping import Array, Float
+from jaxtyping import Array, Float, Int
 
-from nhra_gt.agents.jax import HeuristicAgentJax
+from nhra_gt.domain.params import Params
 from nhra_gt.domain.state import (
+    ConstitutionalStateJax,
     JurisdictionState,
+    JurisdictionStateJax,
     LhnState,
     MetricsJax,
     ParamsJax,
+    State,
     StateJax,
-    SystemModeJax,
 )
+from nhra_gt.agents.jax import HeuristicAgentJax
 from nhra_gt.rules import initialize_rules
 from nhra_gt.subgames.queuing import PatientUtilityParams, solve_queuing_equilibrium_jax
 
-config.update("jax_enable_x64", True)  # type: ignore[no-untyped-call]
-
-# Aliases for compatibility
-Params = ParamsJax
-State = StateJax
-SystemMode = SystemModeJax
-
-# ----------------------------
-# Utilities (JAX versions)
-# ----------------------------
+# Constants for jaxtyping dimensions
+N_STRATS = 13
+N_ACTIONS = 2
 
 
-def _pad_strategies(strategies: Float[Array, ...], width: int = 13) -> Float[Array, ...]:
-    """
-    Ensures strategy vectors have consistent dimensions for JAX batching.
-
-    Args:
-        strategies: Input strategy array.
-        width: Target width (default 13 for standard game set).
-
-    Returns:
-        Padded or truncated array.
-    """
-    arr = jnp.asarray(strategies)
-
-    if arr.ndim == 1:
-        k = int(arr.shape[0])
-        if k == width:
-            return arr
-        if k > width:
-            return arr[:width]
-        return jnp.pad(arr, (0, width - k))
-
-    if arr.ndim == 2:
-        k = int(arr.shape[1])
-        if k == width:
-            return arr
-        if k > width:
-            return arr[:, :width]
-        return jnp.pad(arr, ((0, 0), (0, width - k)))
-
-    return arr
-
-
-@beartype
-def jax_logistic(x: Float[Array, "*"]) -> Float[Array, "*"]:
+def jax_logistic(x: Any) -> Any:
     """Standard logistic sigmoid function in JAX."""
     return 1.0 / (1.0 + jnp.exp(-x))
 
 
 @beartype
-def jax_softmax(u: Float[Array, n], tau: float = 0.25) -> Float[Array, n]:
+def jax_softmax(u: Any, tau: float = 0.25) -> Any:
     """
     Tau-tempered softmax for equilibrium selection.
 
@@ -103,6 +66,7 @@ def mm_s_queue_wait_jax(
     arrival_rate: Float[Array, ""],
     service_rate: Float[Array, ""],
     servers: Float[Array, ""],
+    p: ParamsJax,
 ) -> Float[Array, ""]:
     """
     Approximation of M/M/s queuing wait time in minutes.
@@ -113,6 +77,7 @@ def mm_s_queue_wait_jax(
         arrival_rate: Patients per minute.
         service_rate: Patients per minute per server.
         servers: Number of active servers (e.g. beds/staff).
+        p: Global parameters.
 
     Returns:
         Estimated wait time in minutes.
@@ -122,20 +87,29 @@ def mm_s_queue_wait_jax(
     # Approximation for M/M/s wait time
     def at_capacity(_: Any) -> Float[Array, ""]:
         """Wait time capped at 24h when at or over capacity."""
-        return jnp.asarray(1440.0)
+        return jnp.asarray(p.ops.wait_time_cap)
 
     def below_capacity(_: Any) -> Float[Array, ""]:
         """Calculate wait time using utilization formula."""
         wait = (utilization ** (jnp.sqrt(2 * (servers + 1)) - 1)) / (servers * (1 - utilization))
-        return jnp.clip(wait * 1440.0, 5.0, 1440.0)
+        return jnp.clip(
+            wait * p.ops.minutes_per_hour * p.ops.hours_per_day,
+            p.ops.wait_time_min,
+            p.ops.wait_time_cap,
+        )
 
     return lax.cond(utilization >= 1.0, at_capacity, below_capacity, None)
 
 
 @beartype
-def within4_from_pressure_jax(pidx: Float[Array, ""]) -> Float[Array, ""]:
+def within4_from_pressure_jax(pidx: Float[Array, ""], p: ParamsJax) -> Float[Array, ""]:
     """Maps system pressure index to NEAT 'Within 4 Hours' performance."""
-    return jnp.clip(1.02 - 0.45 * jax_logistic((pidx - 1.0) / 0.20), 0.05, 0.85)
+    return jnp.clip(
+        p.ops.within4_intercept
+        - p.ops.within4_slope * jax_logistic((pidx - 1.0) / p.ops.within4_scale),
+        p.ops.within4_min,
+        p.ops.within4_max,
+    )
 
 
 @beartype
@@ -219,10 +193,10 @@ def baseline_state(start_year: int = 2025, p: ParamsJax | None = None) -> StateJ
         p = ParamsJax()
     p = initialize_rules(p)
 
-    efficiency_gap = 0.10
+    efficiency_gap = p.ops.init_efficiency_gap
     effective_cth_share = p.effective_cth_share_base * (1.0 + efficiency_gap)
     n_jurisdictions = 1
-    n_lhns = 5
+    n_lhns = p.ops.init_n_lhns
 
     def init_lhn(i: Any) -> LhnState:
         return LhnState(id=i)
@@ -251,13 +225,13 @@ def baseline_state(start_year: int = 2025, p: ParamsJax | None = None) -> StateJ
         jurisdiction_id=0,
         system_mode=0,
         workforce_pool=1.0,
-        agreement_clock=5,
+        agreement_clock=p.ops.init_agreement_clock,
         target_capacity=1.0,
         current_capacity=1.0,
         reconciliation_balance=0.0,
         total_block_revenue=0.0,
         lhn_pressure=jnp.full(n_lhns, 1.0),
-        lhn_nwau=jnp.full(n_lhns, 100.0),
+        lhn_nwau=jnp.full(n_lhns, p.ops.init_lhn_nwau_base),
         jurisdictions=jurisdictions,
         lag_buffer_pressure=jnp.full(12, 1.0),
         lag_buffer_occupancy=jnp.full(12, p.occupancy_base),
@@ -268,10 +242,10 @@ def baseline_state(start_year: int = 2025, p: ParamsJax | None = None) -> StateJ
         reported_pressure=1.0,
         reported_occupancy=p.occupancy_base,
         reported_within4=p.within4_base,
-        reported_nwau=500.0,
+        reported_nwau=p.ops.init_lhn_nwau_base * n_lhns,
         reported_efficiency_gap=efficiency_gap,
         reported_coding_intensity=1.0,
-        prob_ed=0.5,
+        prob_ed=p.ops.queuing_init_prob,
         metrics=MetricsJax(),
     )
 
@@ -302,39 +276,63 @@ def lhn_step_jax(
     discharge_delay_target = jnp.asarray(discharge_delay_target)
     workforce_availability = jnp.asarray(workforce_availability)
     wf_intensity = strategies[8]
-    wf_drain = (wf_intensity * 0.2 + (1.0 - wf_intensity) * 0.1) * month_growth_factor
-    wf_drain += strategies[12] * 0.1 * month_growth_factor
+    wf_drain = (
+        wf_intensity * p.ops.wf_drain_max + (1.0 - wf_intensity) * p.ops.wf_drain_min
+    ) * month_growth_factor
+    wf_drain += strategies[12] * p.ops.wf_comp_drain * month_growth_factor
 
-    wf_impact = jnp.exp(0.5 * jnp.maximum(0.0, 1.0 - workforce_availability))
+    wf_impact = jnp.exp(p.ops.wf_impact_weight * jnp.maximum(0.0, 1.0 - workforce_availability))
 
     aged_val, ndis_val, disc_val = strategies[5], strategies[6], strategies[4]
-    aged_effect = aged_val * 0.95 + (1.0 - aged_val) * (1.02 * p.fragmentation_index)
-    ndis_effect = ndis_val * 0.96 + (1.0 - ndis_val) * (1.03 * p.fragmentation_index)
-    disc_effect = disc_val * 0.98 + (1.0 - disc_val) * 1.01
+    aged_effect = aged_val * p.ops.aged_coord_effect + (1.0 - aged_val) * (
+        p.ops.aged_frag_effect * p.fragmentation_index
+    )
+    ndis_effect = ndis_val * p.ops.ndis_coord_effect + (1.0 - ndis_val) * (
+        p.ops.ndis_frag_effect * p.fragmentation_index
+    )
+    disc_effect = disc_val * p.ops.disc_coord_effect + (1.0 - disc_val) * p.ops.disc_frag_effect
 
     discharge = (
         lhn.discharge_delay
         * ((aged_effect * ndis_effect * disc_effect) ** month_growth_factor)
         * wf_impact
     )
-    discharge = jnp.clip(discharge + 0.1 * (discharge_delay_target - discharge), 0.75, 1.50)
+    discharge = jnp.clip(
+        discharge + p.ops.discharge_update_speed * (discharge_delay_target - discharge),
+        p.ops.discharge_clip_min,
+        p.ops.discharge_clip_max,
+    )
 
     is_expanding = lhn.target_capacity > lhn.current_capacity
     active_lag = jnp.where(is_expanding, p.expansion_lag, p.contraction_lag)
     capacity = lhn.current_capacity + active_lag * (lhn.target_capacity - lhn.current_capacity)
 
     wait_min = mm_s_queue_wait_jax(
-        demand, 1.0 / jnp.maximum(1e-9, discharge), jnp.array(capacity * 10.0)
+        demand, 1.0 / jnp.maximum(1e-9, discharge), jnp.array(capacity * p.ops.capacity_scalar), p
     )
-    occ = jnp.clip(lhn.occupancy + 0.015 * (demand - 1.0) + 0.035 * (discharge - 1.0), 0.78, 0.98)
-    off = jnp.clip(lhn.offload_min + 8.0 * (occ - 0.88) + offload_noise, 5.0, 120.0)
-    pidx = 0.8 + 0.2 * (wait_min / 60.0) + 0.5 * (occ - 0.8) / 0.1
+    occ = jnp.clip(
+        lhn.occupancy
+        + p.ops.occ_demand_slope * (demand - 1.0)
+        + p.ops.occ_discharge_slope * (discharge - 1.0),
+        p.ops.occ_clip_min,
+        p.ops.occ_clip_max,
+    )
+    off = jnp.clip(
+        lhn.offload_min + p.ops.offload_occ_slope * (occ - p.ops.offload_occ_base) + offload_noise,
+        p.ops.offload_clip_min,
+        p.ops.offload_clip_max,
+    )
+    pidx = (
+        p.ops.pressure_base
+        + p.ops.pressure_wait_weight * (wait_min / 60.0)
+        + p.ops.pressure_occ_weight * (occ - p.ops.pressure_occ_base) / p.ops.pressure_occ_scale
+    )
 
     return lhn.replace(
         pressure=pidx,
         occupancy=occ,
         offload_min=off,
-        within4=within4_from_pressure_jax(pidx),
+        within4=within4_from_pressure_jax(pidx, p),
         discharge_delay=discharge,
         current_capacity=capacity,
         nwau_actual=occ * 100.0,
@@ -365,7 +363,11 @@ def jurisdiction_step_jax(
     n_lhns = js.lhn_states.id.shape[0]
 
     # State-level target
-    discharge_target = jnp.where(jnp.mean(js.lhn_states.pressure) > 1.1, 0.9, 1.0)
+    discharge_target = jnp.where(
+        jnp.mean(js.lhn_states.pressure) > p.ops.jurisdiction_pressure_threshold,
+        p.ops.jurisdiction_discharge_target,
+        1.0,
+    )
 
     # Vectorized LHN steps
     keys = jax.random.split(k_ops, n_lhns)
@@ -376,13 +378,28 @@ def jurisdiction_step_jax(
             strategies,
             demand_macro,
             mgf,
-            jax.random.normal(k) * (0.8 * jnp.asarray(p.noise_sd) / 0.03),
+            jax.random.normal(k)
+            * (
+                p.ops.jurisdiction_noise_scale
+                * jnp.asarray(p.noise_sd)
+                / p.ops.jurisdiction_noise_base
+            ),
             discharge_target,
             wf_pool,
         )
     )(js.lhn_states, keys)
 
     return js.replace(lhn_states=new_lhns)
+
+
+def _pad_strategies(strategies: jnp.ndarray, width: int = 13) -> jnp.ndarray:
+    """Ensures strategy vectors match the expected simulation width."""
+    if strategies.shape[-1] >= width:
+        return strategies[..., :width]
+    return jnp.pad(
+        strategies,
+        ((0, 0), (0, width - strategies.shape[-1])) if strategies.ndim == 2 else (0, width - strategies.shape[0]),
+    )
 
 
 @beartype
@@ -449,7 +466,7 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
     venue_shift = strategies[10]
     new_jurisdictions = new_jurisdictions.replace(
         total_block_revenue=jnp.full_like(
-            new_jurisdictions.total_block_revenue, venue_shift * 100.0
+            new_jurisdictions.total_block_revenue, venue_shift * p.ops.venue_shift_revenue_scale
         )
     )
 
@@ -466,16 +483,28 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
     coding_strategy = strategies[7]
     coding_signal = jnp.maximum(0.0, jnp.asarray(s.coding_intensity) - 1.0) * coding_strategy
     next_suspicion = jnp.where(
-        coding_strategy > 0.5,
-        jnp.clip(s.auditor_suspicion + 0.03 * coding_signal, 0.0, 1.0),
-        jnp.clip(s.auditor_suspicion * 0.95, 0.0, 1.0),
+        coding_strategy > p.ops.decision_threshold,
+        jnp.clip(s.auditor_suspicion + p.ops.auditor_suspicion_increment * coding_signal, 0.0, 1.0),
+        jnp.clip(s.auditor_suspicion * p.ops.auditor_suspicion_decay, 0.0, 1.0),
     )
-    next_audit_pressure_active = jnp.clip(0.25 + next_suspicion * p.audit_pressure, 0.0, 2.0)
+    next_audit_pressure_active = jnp.clip(
+        p.ops.auditor_pressure_base + next_suspicion * p.audit_pressure, 0.0, 2.0
+    )
 
     # 4. Workforce Update
     wf_intensity = strategies[8]
-    wf_drain = jnp.sum(new_jurisdictions.lhn_states.occupancy * (0.02 + 0.06 * wf_intensity)) * mgf
-    new_wf_pool = jnp.clip(s.workforce_pool - wf_drain + 0.1 * mgf, 0.5, 1.5)
+    wf_drain = (
+        jnp.sum(
+            new_jurisdictions.lhn_states.occupancy
+            * (p.ops.wf_drain_base + p.ops.wf_drain_intensity * wf_intensity)
+        )
+        * mgf
+    )
+    new_wf_pool = jnp.clip(
+        s.workforce_pool - wf_drain + p.ops.wf_recovery_rate * mgf,
+        p.ops.wf_pool_min,
+        p.ops.wf_pool_max,
+    )
 
     # 5. Roll time and buffers
     next_m = jnp.where(s.month == 12, 1, s.month + 1)
@@ -499,31 +528,40 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
             audit_pressure=p.audit_pressure,
             cost_shifting_intensity=p.cost_shifting_intensity,
             political_capital=jnp.mean(jurs.political_capital),
+            behavior=p.behavior,
         )
 
         u_row, u_col = renegotiation_game_jax(gp)
 
         # Use sequential solver if configured
-        def solve_nash() -> tuple[Float[Array, m], Float[Array, n]]:
+        def solve_nash() -> tuple[Float[Array, "N_ACTIONS"], Float[Array, "N_ACTIONS"]]:
             return discrete_nash_jax(u_row, u_col)
 
-        def solve_stackelberg() -> tuple[Float[Array, m], Float[Array, n]]:
+        def solve_stackelberg() -> tuple[Float[Array, "N_ACTIONS"], Float[Array, "N_ACTIONS"]]:
             # Assume Commonwealth (Row) is Leader
             return stackelberg_jax(u_row, u_col)
 
         p_row, q_col = lax.cond(p.use_sequential_bargaining, solve_stackelberg, solve_nash)
 
-        cth_concede = p_row[0] > 0.5
-        state_hold_up = q_col[1] > 0.5
+        cth_concede = p_row[0] > p.ops.decision_threshold
+        state_hold_up = q_col[1] > p.ops.decision_threshold
 
-        base_increase = jnp.where(jnp.asarray(s.occupancy) > 0.95, 0.06, 0.03)
+        base_increase = jnp.where(
+            jnp.asarray(s.occupancy) > p.ops.reneg_occ_threshold,
+            p.ops.reneg_share_inc_high,
+            p.ops.reneg_share_inc_low,
+        )
         increase = jnp.where(
             cth_concede & state_hold_up,
             base_increase,
             jnp.where(cth_concede | state_hold_up, 0.5 * base_increase, 0.0),
         )
 
-        next_share = jnp.clip(p.nominal_cth_share_target + increase, 0.40, 0.70)
+        next_share = jnp.clip(
+            p.nominal_cth_share_target + increase,
+            p.ops.reneg_share_clip_min,
+            p.ops.reneg_share_clip_max,
+        )
         next_share_batched = jnp.full_like(jurs.effective_cth_share, next_share)
         return jurs.replace(effective_cth_share=next_share_batched)
 
@@ -643,7 +681,7 @@ def step(
     next_state = step_jax(state, params, jnp.zeros(13), key)
 
     mgf = 1.0 / 12.0
-    decay = 0.93**mgf
+    decay = params.ops.eff_gap_decay**mgf
     year = int(np.asarray(state.year))
     cost_growth = float(getattr(params, "input_cost_annual_growth", 0.0))
     nep_growth = float(getattr(params, "nep_annual_growth", 0.0))
@@ -784,16 +822,26 @@ def update_system_mode_jax(s: StateJax, p: ParamsJax, current_pressure: Float[Ar
         New SystemModeJax value.
     """
     mode = s.system_mode
-    mode = jnp.where((mode == 0) & (current_pressure > 1.25), 1, mode)
+    mode = jnp.where((mode == 0) & (current_pressure > p.ops.mode_stress_threshold), 1, mode)
 
     def from_stress():
-        return jnp.where(current_pressure > 1.5, 2, jnp.where(current_pressure < 1.05, 0, 1))
+        return jnp.where(
+            current_pressure > p.ops.mode_crisis_threshold,
+            2,
+            jnp.where(current_pressure < p.ops.mode_normal_recovery_threshold, 0, 1),
+        )
 
     mode = jnp.where(mode == 1, from_stress(), mode)
-    mode = jnp.where((mode == 2) & (current_pressure < 1.3), 3, mode)
+    mode = jnp.where(
+        (mode == 2) & (current_pressure < p.ops.mode_recovery_trigger_threshold), 3, mode
+    )
 
     def from_recovery():
-        return jnp.where(current_pressure < 1.1, 0, jnp.where(current_pressure > 1.4, 2, 3))
+        return jnp.where(
+            current_pressure < p.ops.mode_normal_final_threshold,
+            0,
+            jnp.where(current_pressure > p.ops.mode_crisis_relapse_threshold, 2, 3),
+        )
 
     mode = jnp.where(mode == 3, from_recovery(), mode)
     return mode
@@ -801,8 +849,8 @@ def update_system_mode_jax(s: StateJax, p: ParamsJax, current_pressure: Float[Ar
 
 @beartype
 def demand_step_jax(
-    s: StateJax, p: ParamsJax, strategies: Float[Array, 13], noise: Float[Array, ""]
-) -> tuple[Float[Array, ""], Float[Array, ""]]:
+    s: StateJax, p: ParamsJax, strategies: Any, noise: Any
+) -> tuple[Any, Any]:
     """
     Calculates realized macro demand for the current step.
 
@@ -813,19 +861,25 @@ def demand_step_jax(
         A tuple of (realized_demand, probability_of_ed).
     """
     shift_val = strategies[3]
-    demand_factor = shift_val * (1.04 * p.cost_shifting_intensity / 0.35) + (1.0 - shift_val) * 0.96
+    demand_factor = (
+        shift_val * (p.ops.demand_shift_slope * p.cost_shifting_intensity / p.ops.demand_shift_base)
+        + (1.0 - shift_val) * p.ops.demand_invest_base
+    )
     qp = PatientUtilityParams(
         gp_out_of_pocket=p.gp_out_of_pocket,
         gp_wait_time_min=p.gp_wait_time_min,
         patient_time_value_hour=p.patient_time_value_hour,
+        ed_outside_utility=p.ops.queuing_outside_utility,
+        queuing_init_prob=p.ops.queuing_init_prob,
     )
     d_final, prob_ed = solve_queuing_equilibrium_jax(
-        total_base_demand=p.demand_base * demand_factor * 2.0,
+        total_base_demand=p.demand_base * demand_factor * p.ops.demand_scale,
         capacity=s.occupancy,
         discharge_delay=1.0,
         params=qp,
+        p_global=p,
     )
-    return jnp.maximum(0.5, d_final + noise), prob_ed
+    return jnp.maximum(p.ops.decision_threshold, d_final + noise), prob_ed
 
 
 def apply_intervention(p: ParamsJax, name: str) -> ParamsJax:
@@ -849,35 +903,99 @@ def apply_intervention(p: ParamsJax, name: str) -> ParamsJax:
 
     if key in {"pooled_funding", "pooled"}:
         return p.replace(
-            cost_shifting_intensity=float(clamp(p.cost_shifting_intensity * 0.75, 0.05, 0.60))
+            cost_shifting_intensity=float(
+                clamp(
+                    p.cost_shifting_intensity * p.policy.iv_pooled_csi_mult,
+                    p.policy.iv_pooled_csi_min,
+                    p.policy.iv_pooled_csi_max,
+                )
+            )
         )
 
     if key in {"ucc_integration", "integration"}:
-        return p.replace(fragmentation_index=float(clamp(p.fragmentation_index * 0.80, 0.60, 1.50)))
+        return p.replace(
+            fragmentation_index=float(
+                clamp(
+                    p.fragmentation_index * p.policy.iv_ucc_frag_mult,
+                    p.policy.iv_ucc_frag_min,
+                    p.policy.iv_ucc_frag_max,
+                )
+            )
+        )
 
     if key in {"nep_realism", "indexation"}:
         return p.replace(
-            nep_to_cost_ratio_metro=float(clamp(p.nep_to_cost_ratio_metro + 0.03, 0.6, 1.0)),
-            nep_to_cost_ratio_regional=float(clamp(p.nep_to_cost_ratio_regional + 0.04, 0.6, 1.0)),
-            nep_to_cost_ratio_remote=float(clamp(p.nep_to_cost_ratio_remote + 0.05, 0.6, 1.0)),
+            nep_to_cost_ratio_metro=float(
+                clamp(
+                    p.nep_to_cost_ratio_metro + p.policy.iv_nep_realism_inc,
+                    p.policy.iv_nep_realism_min,
+                    p.policy.iv_nep_realism_max,
+                )
+            ),
+            nep_to_cost_ratio_regional=float(
+                clamp(
+                    p.nep_to_cost_ratio_regional + p.policy.iv_nep_realism_regional_inc,
+                    p.policy.iv_nep_realism_min,
+                    p.policy.iv_nep_realism_max,
+                )
+            ),
+            nep_to_cost_ratio_remote=float(
+                clamp(
+                    p.nep_to_cost_ratio_remote + p.policy.iv_nep_realism_remote_inc,
+                    p.policy.iv_nep_realism_min,
+                    p.policy.iv_nep_realism_max,
+                )
+            ),
         )
 
     if key in {"aged_ndis_capacity", "discharge"}:
-        return p.replace(discharge_delay_base=float(clamp(p.discharge_delay_base * 0.90, 0.6, 1.4)))
+        return p.replace(
+            discharge_delay_base=float(
+                clamp(
+                    p.discharge_delay_base * p.policy.iv_aged_ndis_delay_mult,
+                    p.policy.iv_aged_ndis_delay_min,
+                    p.policy.iv_aged_ndis_delay_max,
+                )
+            )
+        )
 
     if key in {"middle_tier", "workforce"}:
         return p.replace(
-            nep_to_cost_ratio_regional=float(clamp(p.nep_to_cost_ratio_regional + 0.03, 0.6, 1.0)),
-            nep_to_cost_ratio_remote=float(clamp(p.nep_to_cost_ratio_remote + 0.04, 0.6, 1.0)),
+            nep_to_cost_ratio_regional=float(
+                clamp(
+                    p.nep_to_cost_ratio_regional + p.policy.iv_nep_realism_inc,
+                    p.policy.iv_nep_realism_min,
+                    p.policy.iv_nep_realism_max,
+                )
+            ),
+            nep_to_cost_ratio_remote=float(
+                clamp(
+                    p.nep_to_cost_ratio_remote + p.policy.iv_nep_realism_regional_inc,
+                    p.policy.iv_nep_realism_min,
+                    p.policy.iv_nep_realism_max,
+                )
+            ),
         )
 
     if key in {"cumulative_cap", "cap"}:
-        return p.replace(has_cumulative_cap=True, cap_growth=0.070)
+        return p.replace(has_cumulative_cap=True, cap_growth=p.policy.iv_cap_cumulative_growth)
 
     if key in {"audit_relief"}:
         return p.replace(
-            audit_pressure=float(clamp(p.audit_pressure * 0.70, 0.05, 1.0)),
-            admin_burden_weight=float(clamp(p.admin_burden_weight * 0.8, 0.05, 0.6)),
+            audit_pressure=float(
+                clamp(
+                    p.audit_pressure * p.policy.iv_audit_relief_audit_mult,
+                    p.policy.iv_audit_relief_audit_min,
+                    p.policy.iv_audit_relief_audit_max,
+                )
+            ),
+            admin_burden_weight=float(
+                clamp(
+                    p.admin_burden_weight * p.policy.iv_audit_relief_burden_mult,
+                    p.policy.iv_audit_relief_burden_min,
+                    p.policy.iv_audit_relief_burden_max,
+                )
+            ),
         )
 
     return p
@@ -885,7 +1003,7 @@ def apply_intervention(p: ParamsJax, name: str) -> ParamsJax:
 
 def run_hybrid(
     years: list[int],
-    p: ParamsJax,
+    p: ParamsJax | Params,
     seed: int = 123,
     n_mc: int = 300,
     recorder: Any | None = None,
@@ -893,21 +1011,11 @@ def run_hybrid(
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Runs a high-fidelity simulation with heuristic agents and Monte Carlo sampling.
-
-    This is the primary entry point for experimental runs and calibration. It
-    returns results as Pandas DataFrames for easy analysis and visualization.
-
-    Args:
-        years: List of years to simulate.
-        p: Parameters.
-        seed: Random seed.
-        n_mc: Number of Monte Carlo samples.
-        recorder: Optional audit recorder.
-        overrides: Dictionary of strategy overrides for specific actions.
-
-    Returns:
-        A tuple of (aggregated_timeseries, strategy_frequencies).
     """
+    # 0. Convert Pydantic to JAX if needed
+    if hasattr(p, "to_params_jax"):
+        p = p.to_params_jax()  # type: ignore[union-attr]
+
     start_year = years[0]
     end_year = years[-1]
     num_years = end_year - start_year + 1
@@ -1092,12 +1200,14 @@ def run_hybrid(
 baseline_state_jax = baseline_state
 
 
-def mm_s_queue_wait(arrival_rate: float, service_rate: float, servers: float) -> float:
+def mm_s_queue_wait(
+    arrival_rate: float, service_rate: float, servers: float, p: ParamsJax
+) -> float:
     utilization = arrival_rate / max(1e-9, (service_rate * servers))
     if utilization >= 1.0:
-        return 1440.0
+        return p.ops.wait_time_cap
     wait = (utilization ** (math.sqrt(2 * (servers + 1)) - 1)) / (servers * (1 - utilization))
-    return max(5.0, min(1440.0, wait * 60.0))
+    return max(p.ops.wait_time_min, min(p.ops.wait_time_cap, wait * p.ops.minutes_per_hour))
 
 
 def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:

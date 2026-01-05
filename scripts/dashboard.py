@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import dataclasses
 import json
 import sys
@@ -37,13 +39,15 @@ from nhra_gt.visualization.sensitivity import plot_sobol_indices as viz_plot_sob
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from nhra_gt import __version__
+from nhra_gt.domain.params import Params
 from nhra_gt.domain.registry import EvidenceRegistry
 from nhra_gt.domain.stability import analyze_cost_shifting_stability
 from nhra_gt.domain.state import ParamsJax
 from nhra_gt.domain.validation import RecursiveResult, aggregate_metrics
-from nhra_gt.engine import Params, apply_intervention, run_hybrid, summarise_outcome
+from nhra_gt.engine import apply_intervention, summarise_outcome
 from nhra_gt.game_theory.content import get_populated_registry
 from nhra_gt.game_theory.ui import render_mechanism_explainer
+from nhra_gt.helpers import run_hybrid
 from nhra_gt.sensitivity import get_parameter_lineage
 from nhra_gt.subgames.games import (
     GameParams,
@@ -1206,7 +1210,7 @@ def main() -> None:
 
     with tab4:
         st.markdown("### ⚖️ Model Validation & Backtesting")
-        st.markdown("Performance of the model against historical NHRA data (2011–2024).")
+        st.markdown("Performance of the model against historical NHRA data (2011-2024).")
 
         # Load Historical
         hist_path = Path("data/calibration/historical_normalized.csv")

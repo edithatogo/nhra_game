@@ -21,7 +21,7 @@ def infer_type(val):
         return "str"
 
 
-def generate_params_code(csv_path, output_path):
+def generate_params_code(csv_path):
     df = pd.read_csv(csv_path)
 
     # Filter out rows that are not scalar parameters
@@ -72,7 +72,7 @@ def main():
     project_root = Path(__file__).parent.parent.parent
     csv_path = project_root / "context/04_parameter_registry.csv"
     output_path = project_root / "src/nhra_gt/domain/params_generated.py"
-    generated = generate_params_code(csv_path, output_path)
+    generated = generate_params_code(csv_path)
     if args.check:
         if output_path.exists():
             with open(output_path) as f:

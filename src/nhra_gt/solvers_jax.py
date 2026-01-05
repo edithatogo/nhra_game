@@ -24,12 +24,12 @@ from jaxtyping import Array, Float
 
 @beartype
 def qre_solver_jax(
-    u_row: Float[Array, "m n"],
-    u_col: Float[Array, "m n"],
+    u_row: Any,
+    u_col: Any,
     lam: float = 5.0,
     max_iter: int = 100,
     tol: float = 1e-6,
-) -> tuple[Float[Array, m], Float[Array, n], Float[Array, ""]]:
+) -> tuple[Any, Any, Any]:
     """
     Solves for the Quantal Response Equilibrium (Logit-equilibrium).
     Uses fixed-point iteration: p = logit(u_row @ q), q = logit(p @ u_col).
@@ -83,11 +83,11 @@ def qre_solver_jax(
 
 @beartype
 def regret_min_solver_jax(
-    u_row: Float[Array, "m n"],
-    u_col: Float[Array, "m n"],
+    u_row: Any,
+    u_col: Any,
     max_iter: int = 500,
     learning_rate: float = 0.05,
-) -> tuple[Float[Array, m], Float[Array, n], Float[Array, ""]]:
+) -> tuple[Any, Any, Any]:
     """Finds approximate Nash equilibrium by minimizing total regret using gradient descent.
 
     Args:
@@ -149,8 +149,8 @@ def regret_min_solver_jax(
 
 @beartype
 def discrete_nash_jax(
-    u_row: Float[Array, "m n"], u_col: Float[Array, "m n"]
-) -> tuple[Float[Array, m], Float[Array, n]]:
+    u_row: Any, u_col: Any
+) -> tuple[Any, Any]:
     """JAX-friendly wrapper for finding a pure Nash equilibrium in a discrete game.
 
     Since pure Nash is non-differentiable, this is used as an Oracle or for comparison.
@@ -195,11 +195,11 @@ def discrete_nash_jax(
 
 
 def solve_hierarchical_game_jax(
-    macro_row_matrix: Float[Array, "m n"],
-    macro_col_matrix: Float[Array, "m n"],
+    macro_row_matrix: Any,
+    macro_col_matrix: Any,
     micro_game_factory: Any,  # Function that takes macro outcome and returns matrices
     lam: float = 5.0,
-) -> tuple[Float[Array, m], Float[Array, n], Float[Array, "m n"]]:
+) -> tuple[Any, Any, Any]:
     """
     Solves a nested hierarchical game using backward induction.
 
@@ -248,12 +248,12 @@ def solve_hierarchical_game_jax(
 @beartype
 def qre_3player_jax(
     u1: Float[Array, "m n k"],  # Payoff for P1 (m actions) given P2 (n) and P3 (k)
-    u2: Float[Array, "m n k"],  # Payoff for P2
-    u3: Float[Array, "m n k"],  # Payoff for P3
+    u2: Any,  # Payoff for P2
+    u3: Any,  # Payoff for P3
     lam: float = 5.0,
     max_iter: int = 100,
     tol: float = 1e-6,
-) -> tuple[Float[Array, m], Float[Array, n], Float[Array, k], Float[Array, ""]]:
+) -> tuple[Any, Any, Any, Any]:
     """
     Solves for QRE in a 3-player normal form game using tensor contractions.
 
@@ -328,8 +328,8 @@ def rubinstein_jax(
 
 @beartype
 def stackelberg_jax(
-    u_leader: Float[Array, "m n"], u_follower: Float[Array, "m n"]
-) -> tuple[Float[Array, m], Float[Array, n]]:
+    u_leader: Any, u_follower: Any
+) -> tuple[Any, Any]:
     """
     JAX implementation of Stackelberg Equilibrium (Row=Leader).
     Returns one-hot strategies.

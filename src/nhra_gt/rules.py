@@ -42,6 +42,7 @@ class CapRule:
     # rule_type: 0 = Hard, 1 = Soft
     rule_type: int = 0
     cap_limit: float = 0.065
+    soft_multiplier: float = 0.5
 
     def apply(self, nwau_growth: float) -> float:
         """Calculate the cap effect on funding share.
@@ -64,7 +65,7 @@ class CapRule:
             overage = jnp.maximum(0.0, nwau_growth - self.cap_limit)
             return jnp.where(
                 nwau_growth > self.cap_limit,
-                (self.cap_limit + 0.5 * overage) / jnp.maximum(1e-9, nwau_growth),
+                (self.cap_limit + self.soft_multiplier * overage) / jnp.maximum(1e-9, nwau_growth),
                 1.0,
             )
 
@@ -86,18 +87,23 @@ class AuditRule:
     rule_type: int = 0
     audit_pressure: float = 0.50
     threshold: float = 1.15
+    prop_multiplier: float = 2.0
+    threshold_penalty_high: float = 3.0
+    threshold_penalty_low: float = 0.1
 
     def evaluate(self, coding_intensity: float, active_pressure: float) -> float:
         """Calculate the probability of detection or audit penalty."""
 
         # Proportional logic
         def proportional():
-            return active_pressure * jnp.maximum(0.0, coding_intensity - 1.0) * 2.0
+            return active_pressure * jnp.maximum(0.0, coding_intensity - 1.0) * self.prop_multiplier
 
         # Threshold logic
         def threshold_rule():
             return jnp.where(
-                coding_intensity > self.threshold, active_pressure * 3.0, active_pressure * 0.1
+                coding_intensity > self.threshold,
+                active_pressure * self.threshold_penalty_high,
+                active_pressure * self.threshold_penalty_low,
             )
 
         if lax is None:
@@ -117,15 +123,17 @@ class EligibilityRule:
     # boundary_type: 0 = Default, 1 = Shifted
     boundary_type: int = 0
     block_funding_base: float = 0.15
+    venue_shift_impact: float = 0.10
+    eligibility_abf_share_min: float = 0.5
 
     def get_abf_share(self, venue_shift_strat: float) -> float:
         """Determines the share of activity that remains in ABF."""
         base_abf_share = 1.0 - self.block_funding_base
         # If strategy is 'Shift' (1.0), we reduce ABF share (moving activity to Block)
         target_abf_share = jnp.where(
-            venue_shift_strat == 1.0, base_abf_share - 0.10, base_abf_share
+            venue_shift_strat == 1.0, base_abf_share - self.venue_shift_impact, base_abf_share
         )
-        return jnp.clip(target_abf_share, 0.5, 1.0)
+        return jnp.clip(target_abf_share, self.eligibility_abf_share_min, 1.0)
 
 
 @struct.dataclass
@@ -139,15 +147,19 @@ class ReconciliationRule:
     # recon_type: 0 = Standard, 1 = Safety Net
     recon_type: int = 0
     safety_net_threshold: float = 1.2  # Pressure threshold for bailout
+    bailout_increment: float = 0.05
+    safety_net_generosity: float = 1.5
 
     def calculate_bailout(self, current_pressure: float, month_growth_factor: float) -> float:
         """Calculates the bailout amount based on system pressure."""
         bail_inc = jnp.where(
-            current_pressure > self.safety_net_threshold, 0.05 * month_growth_factor, 0.0
+            current_pressure > self.safety_net_threshold,
+            self.bailout_increment * month_growth_factor,
+            0.0,
         )
 
         # In 'Safety Net' mode, bailouts are more generous or triggered earlier
-        generosity = jnp.where(self.recon_type == 1, 1.5, 1.0)
+        generosity = jnp.where(self.recon_type == 1, self.safety_net_generosity, 1.0)
         return bail_inc * generosity
 
 
@@ -161,20 +173,37 @@ def initialize_rules(p: Any) -> Any:
         # Handle string types from legacy Params
         if isinstance(rule_type, str):
             rule_type = 1 if rule_type == "soft" else 0
-        updates["cap_rule"] = CapRule(rule_type=rule_type, cap_limit=p.cap_growth)
+        updates["cap_rule"] = CapRule(
+            rule_type=rule_type,
+            cap_limit=p.cap_growth,
+            soft_multiplier=p.policy.cap_soft_multiplier,
+        )
 
     curr_audit = getattr(p, "audit_rule", None)
     if curr_audit is None or isinstance(curr_audit, str):
         rule_type = getattr(p, "audit_rule_type", 0)
         if isinstance(rule_type, str):
             rule_type = 1 if rule_type == "threshold" else 0
-        updates["audit_rule"] = AuditRule(rule_type=rule_type, audit_pressure=p.audit_pressure)
+        updates["audit_rule"] = AuditRule(
+            rule_type=rule_type,
+            audit_pressure=p.audit_pressure,
+            prop_multiplier=p.policy.audit_prop_multiplier,
+            threshold_penalty_high=p.policy.audit_threshold_penalty_high,
+            threshold_penalty_low=p.policy.audit_threshold_penalty_low,
+        )
 
     if getattr(p, "eligibility_rule", None) is None or isinstance(p.eligibility_rule, str):
-        updates["eligibility_rule"] = EligibilityRule(block_funding_base=p.block_funding_base)
+        updates["eligibility_rule"] = EligibilityRule(
+            block_funding_base=p.block_funding_base,
+            venue_shift_impact=p.policy.eligibility_venue_shift_impact,
+            eligibility_abf_share_min=p.policy.eligibility_abf_share_min,
+        )
 
     if getattr(p, "reconciliation_rule", None) is None or isinstance(p.reconciliation_rule, str):
-        updates["reconciliation_rule"] = ReconciliationRule()
+        updates["reconciliation_rule"] = ReconciliationRule(
+            bailout_increment=p.policy.recon_bailout_increment,
+            safety_net_generosity=p.policy.recon_safety_net_generosity,
+        )
 
     if updates:
         return p.replace(**updates) if hasattr(p, "replace") else replace(p, **updates)

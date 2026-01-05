@@ -196,10 +196,10 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Maturity Uplift & Modernization (v26)
+## [x] Track: Codebase Maturity & Modernization (v26)
 
-*Link: [./conductor/tracks/maturity_uplift_20251230/](./conductor/tracks/maturity_uplift_20251230/)*
+*Link: [./conductor/archive/maturity_uplift_20251230/](./conductor/archive/maturity_uplift_20251230/)*
 
-## [ ] Track: Legacy Engine Retirement & JAX Consolidation
+## [x] Track: Comprehensive Parameter Abstraction & Config Externalization
 
-*Link: [./conductor/tracks/legacy_retirement_20260104/](./conductor/tracks/legacy_retirement_20260104/)*
+*Link: [./conductor/tracks/param_abstraction_20260104/](./conductor/tracks/param_abstraction_20260104/)*

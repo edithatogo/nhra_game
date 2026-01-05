@@ -1,23 +1,16 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 
+from nhra_gt.domain.params import BehavioralParams
 from nhra_gt.subgames.nash import TwoPlayerGame
 
 
 @dataclass(frozen=True)
 class GameParams:
-    """Inputs used to parameterise stage games (dimensionless indices).
-
-    Notes:
-        - pressure: system pressure index (>=~0.8 typical)
-        - efficiency_gap: divergence between input costs and NEP indexation (0..~0.6)
-        - discharge_delay: multiplier relative to baseline (1.0 = baseline)
-        - political_salience: higher values favour narrative simplicity and bounded commitment
-        - audit_pressure: higher values increase compliance scrutiny
-    """
+    """Inputs used to parameterise stage games (dimensionless indices)."""
 
     pressure: float
     efficiency_gap: float
@@ -26,41 +19,40 @@ class GameParams:
     audit_pressure: float
     cost_shifting_intensity: float
     political_capital: float
+    cannibalization_beta: float = 0.1
+    behavior: BehavioralParams = field(default_factory=BehavioralParams)
 
 
 def definition_game(gp: GameParams) -> TwoPlayerGame:
-    """Definition game: 'R' realism vs 'E' strict efficient-price framing.
-
-    Row player represents the policy narrative / Commonwealth framing.
-    Column player represents the State insistence / implementation reality.
-
-    Actions:
-        R: realism (acknowledge cost reality; reduce efficiency gap drift)
-        E: strict efficient-price framing (efficiency narrative; gap drifts upward)
-    """
+    """Definition game: 'R' realism vs 'E' strict efficient-price framing."""
     pr = gp.pressure
     eg = gp.efficiency_gap
     ps = gp.political_salience
+    b = gp.behavior
 
     # Realism has fiscal and political costs but stabilises pressure.
-    realism_benefit = 0.5 + 0.8 * eg + 0.4 * (pr - 1.0)
-    realism_cost = 0.25 + 0.35 * ps
+    realism_benefit = (
+        b.def_realism_benefit_base
+        + b.def_realism_eg_weight * eg
+        + b.def_realism_pr_weight * (pr - 1.0)
+    )
+    realism_cost = b.def_realism_cost_base + b.def_realism_ps_weight * ps
 
-    strict_benefit = 0.35 + 0.45 * ps
-    strict_cost = 0.30 + 0.50 * pr
+    strict_benefit = b.def_strict_benefit_base + b.def_strict_ps_weight * ps
+    strict_cost = b.def_strict_cost_base + b.def_strict_pr_weight * pr
 
     # Payoffs (R vs E)
     u_row = np.array(
         [
-            [1.0 + realism_benefit - realism_cost, 1.0 - 0.15 - realism_cost],
-            [1.0 + strict_benefit - strict_cost, 1.0 - 0.45 - strict_cost],
+            [1.0 + realism_benefit - realism_cost, 1.0 - b.def_row_realism_offset - realism_cost],
+            [1.0 + strict_benefit - strict_cost, 1.0 - b.def_row_strict_offset - strict_cost],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
-            [1.0 + realism_benefit - 0.15, 1.0 - 0.20],
-            [1.0 - 0.35, 1.0 - 0.55],
+            [1.0 + realism_benefit - b.def_col_realism_offset, 1.0 - b.def_col_realism_cost],
+            [1.0 - b.def_col_strict_cost_1, 1.0 - b.def_col_strict_cost_2],
         ],
         dtype=float,
     )
@@ -69,32 +61,38 @@ def definition_game(gp: GameParams) -> TwoPlayerGame:
 
 
 def bargaining_game(gp: GameParams) -> TwoPlayerGame:
-    """Bargaining game: 'A' agree to converge vs 'D' defer/escalate.
-
-    Actions:
-        A: agree / converge (moves nominal share toward target)
-        D: defer / escalate (slow movement; higher conflict cost under pressure)
-    """
+    """Bargaining game: 'A' agree to converge vs 'D' defer/escalate."""
     pr = gp.pressure
     ps = gp.political_salience
     pc = gp.political_capital
+    b = gp.behavior
 
-    # Political capital boosts the effectiveness of agreement (v25 re-integration)
-    converge_gain = 0.45 + 0.25 * (pr - 1.0) + 0.20 * pc
-    conflict_cost = 0.55 + 0.90 * pr
-    narrative_gain = 0.25 + 0.50 * ps
+    # Political capital boosts the effectiveness of agreement
+    converge_gain = (
+        b.barg_converge_gain_base
+        + b.barg_converge_pr_weight * (pr - 1.0)
+        + b.barg_converge_pc_weight * pc
+    )
+    conflict_cost = b.barg_conflict_cost_base + b.barg_conflict_pr_weight * pr
+    narrative_gain = b.barg_narrative_gain_base + b.barg_narrative_ps_weight * ps
 
     u_row = np.array(
         [
-            [1.0 + converge_gain - 0.10 * ps, 1.0 - 0.25 - 0.15 * pr],
-            [1.0 + narrative_gain - 0.10 * pr, 1.0 - conflict_cost],
+            [
+                1.0 + converge_gain - b.barg_row_converge_ps_penalty * ps,
+                1.0 - b.barg_row_converge_base_penalty - b.barg_row_converge_pr_penalty * pr,
+            ],
+            [1.0 + narrative_gain - b.barg_row_narrative_pr_penalty * pr, 1.0 - conflict_cost],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
-            [1.0 + converge_gain - 0.05 * ps, 1.0 - 0.30 - 0.20 * pr],
-            [1.0 - 0.20, 1.0 - conflict_cost],
+            [
+                1.0 + converge_gain - b.barg_col_converge_ps_penalty * ps,
+                1.0 - b.barg_col_converge_base_penalty - b.barg_col_converge_pr_penalty * pr,
+            ],
+            [1.0 - b.barg_col_narrative_penalty, 1.0 - conflict_cost],
         ],
         dtype=float,
     )
@@ -107,24 +105,29 @@ def cost_shifting_game(gp: GameParams) -> TwoPlayerGame:
     pr = gp.pressure
     eg = gp.efficiency_gap
     csi = gp.cost_shifting_intensity
+    b = gp.behavior
 
-    coop_gain = 0.55 + 0.45 * (1.0 - eg)
-    # CSI increases the payoff of shifting relative to investing
-    # Boosted to 1.0 to ensure sensitivity visibility
-    shift_gain = 0.35 + 0.75 * eg + 1.0 * csi
-    pr_cost = 0.65 * pr
+    coop_gain = b.shift_coop_gain_base + b.shift_coop_eg_weight * (1.0 - eg)
+    shift_gain = b.shift_gain_base + b.shift_eg_weight * eg + b.shift_csi_weight * csi
+    pr_cost = b.shift_pr_cost_weight * pr
 
     u_row = np.array(
         [
-            [1.0 + coop_gain - pr_cost, 1.0 - 0.25 - pr_cost],
-            [1.0 + shift_gain - 0.35 * pr, 1.0 - 0.60 - 1.00 * pr],
+            [1.0 + coop_gain - pr_cost, 1.0 - b.shift_row_coop_penalty - pr_cost],
+            [
+                1.0 + shift_gain - b.shift_row_shift_pr_penalty * pr,
+                1.0 - b.shift_row_shift_base_penalty - b.shift_row_shift_pr_heavy_penalty * pr,
+            ],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
-            [1.0 + coop_gain - pr_cost, 1.0 + shift_gain - 0.35 * pr],
-            [1.0 - 0.25 - pr_cost, 1.0 - 0.60 - 1.00 * pr],
+            [1.0 + coop_gain - pr_cost, 1.0 + shift_gain - b.shift_row_shift_pr_penalty * pr],
+            [
+                1.0 - b.shift_row_coop_penalty - pr_cost,
+                1.0 - b.shift_row_shift_base_penalty - b.shift_row_shift_pr_heavy_penalty * pr,
+            ],
         ],
         dtype=float,
     )
@@ -135,22 +138,29 @@ def cost_shifting_game(gp: GameParams) -> TwoPlayerGame:
 def discharge_coordination_game(gp: GameParams) -> TwoPlayerGame:
     """Discharge coordination: coordinate 'C' vs fragment 'F'."""
     pr = gp.pressure
+    b = gp.behavior
     d_excess = max(0.0, gp.discharge_delay - 1.0)
-    benefit = 0.70 + 0.80 * d_excess
-    cost = 0.30 + 0.10 * (1.0 - min(1.0, d_excess))
-    pr_penalty = 0.45 * pr
+    benefit = b.disc_benefit_base + b.disc_benefit_slope * d_excess
+    cost = b.disc_cost_base + b.disc_cost_slope * (1.0 - min(1.0, d_excess))
+    pr_penalty = b.disc_pr_penalty_weight * pr
 
     u_row = np.array(
         [
-            [1.0 + benefit - cost - pr_penalty, 1.0 - 0.40 - pr_penalty],
-            [1.0 - 0.25 - pr_penalty, 1.0 - 0.70 - 1.10 * pr],
+            [1.0 + benefit - cost - pr_penalty, 1.0 - b.disc_row_coop_penalty - pr_penalty],
+            [
+                1.0 - b.disc_row_frag_base_penalty - pr_penalty,
+                1.0 - b.disc_row_frag_heavy_penalty - b.disc_row_frag_pr_penalty * pr,
+            ],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
-            [1.0 + benefit - cost - pr_penalty, 1.0 - 0.35 - pr_penalty],
-            [1.0 - 0.25 - pr_penalty, 1.0 - 0.70 - 1.00 * pr],
+            [1.0 + benefit - cost - pr_penalty, 1.0 - b.disc_col_coop_penalty - pr_penalty],
+            [
+                1.0 - b.disc_col_frag_base_penalty - pr_penalty,
+                1.0 - b.disc_col_frag_heavy_penalty - b.disc_col_frag_pr_penalty * pr,
+            ],
         ],
         dtype=float,
     )
@@ -162,22 +172,29 @@ def governance_integration_game(gp: GameParams) -> TwoPlayerGame:
     """Governance integration: integrate 'I' vs separate 'S'."""
     pr = gp.pressure
     ps = gp.political_salience
+    b = gp.behavior
 
-    safety_gain = 0.55 + 0.35 * (pr - 1.0)
-    integration_cost = 0.20 + 0.35 * ps
-    fragmentation_risk = 0.40 + 0.60 * pr
+    safety_gain = b.gov_safety_gain_base + b.gov_safety_gain_slope * (pr - 1.0)
+    integration_cost = b.gov_int_cost_base + b.gov_int_cost_slope * ps
+    fragmentation_risk = b.gov_frag_risk_base + b.gov_frag_risk_slope * pr
 
     u_row = np.array(
         [
-            [1.0 + safety_gain - integration_cost, 1.0 - 0.25 - integration_cost],
-            [1.0 + 0.10 - fragmentation_risk, 1.0 - 0.45 - fragmentation_risk],
+            [
+                1.0 + safety_gain - integration_cost,
+                1.0 - b.gov_row_safety_penalty - integration_cost,
+            ],
+            [
+                1.0 + b.gov_row_frag_bonus - fragmentation_risk,
+                1.0 - b.gov_row_frag_penalty - fragmentation_risk,
+            ],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
-            [1.0 + safety_gain - 0.10, 1.0 - 0.20],
-            [1.0 - 0.35, 1.0 - 0.55],
+            [1.0 + safety_gain - b.gov_col_safety_penalty_1, 1.0 - b.gov_col_safety_penalty_2],
+            [1.0 - b.gov_col_frag_penalty_1, 1.0 - b.gov_col_frag_penalty_2],
         ],
         dtype=float,
     )
@@ -188,9 +205,12 @@ def governance_integration_game(gp: GameParams) -> TwoPlayerGame:
 def aged_care_interface_game(gp: GameParams) -> TwoPlayerGame:
     """Aged Care interface: coordinate 'C' vs fragment 'F'."""
     pr = gp.pressure
+    b = gp.behavior
     # Payoffs influenced by pressure and discharge delay
-    coord_benefit = 0.6 + 0.4 * (gp.discharge_delay - 1.0)
-    frag_cost = 0.5 * pr
+    coord_benefit = b.aged_coord_benefit_base + b.aged_coord_benefit_slope * (
+        gp.discharge_delay - 1.0
+    )
+    frag_cost = b.aged_frag_cost_weight * pr
 
     u_row = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
     u_col = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
@@ -201,8 +221,11 @@ def aged_care_interface_game(gp: GameParams) -> TwoPlayerGame:
 def ndis_interface_game(gp: GameParams) -> TwoPlayerGame:
     """NDIS interface: coordinate 'C' vs fragment 'F'."""
     pr = gp.pressure
-    coord_benefit = 0.5 + 0.5 * (gp.discharge_delay - 1.0)
-    frag_cost = 0.6 * pr
+    b = gp.behavior
+    coord_benefit = b.ndis_coord_benefit_base + b.ndis_coord_benefit_slope * (
+        gp.discharge_delay - 1.0
+    )
+    frag_cost = b.ndis_frag_cost_weight * pr
 
     u_row = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
     u_col = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
@@ -214,11 +237,12 @@ def coding_audit_game(gp: GameParams) -> TwoPlayerGame:
     """Coding/Audit game: Provider Honest 'H' vs Upcode 'U'; Auditor Light 'L' vs Tight 'T'."""
     eg = gp.efficiency_gap
     ap = gp.audit_pressure
+    b = gp.behavior
 
     # Provider payoff (Row)
     # Upcoding gain increases with efficiency gap
-    upcode_gain = 0.3 + 0.7 * eg
-    penalty = 0.8 * ap
+    upcode_gain = b.coding_upcode_gain_base + b.coding_upcode_gain_slope * eg
+    penalty = b.coding_penalty_weight * ap
 
     u_row = np.array(
         [
@@ -229,8 +253,8 @@ def coding_audit_game(gp: GameParams) -> TwoPlayerGame:
 
     # Auditor payoff (Col)
     # Tight audit has cost but catches upcoding
-    audit_cost = 0.2
-    recovery = 0.4 * eg
+    audit_cost = b.coding_audit_cost
+    recovery = b.coding_recovery_weight * eg
 
     u_col = np.array(
         [
@@ -246,22 +270,23 @@ def compliance_game(gp: GameParams) -> TwoPlayerGame:
     """Compliance game: 'T' tight vs 'L' light."""
     ai = gp.audit_pressure
     eg = gp.efficiency_gap
+    b = gp.behavior
 
     # Tight compliance reduces leakage but increases admin cost.
-    leakage = 0.40 + 0.70 * eg
-    admin = 0.18 + 0.45 * ai
+    leakage = b.comp_leakage_base + b.comp_leakage_slope * eg
+    admin = b.comp_admin_base + b.comp_admin_slope * ai
 
     u_row = np.array(
         [
-            [1.0 - admin + 0.15, 1.0 - admin],
-            [1.0 + leakage, 1.0 + leakage - 0.80 * ai],
+            [1.0 - admin + b.comp_row_tight_bonus, 1.0 - admin],
+            [1.0 + leakage, 1.0 + leakage - b.comp_row_light_penalty * ai],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
-            [1.0 - 0.10, 1.0 - 0.35 * ai],
-            [1.0 - leakage, 1.0 - 0.35 * ai + 0.20],
+            [1.0 - b.comp_col_tight_penalty, 1.0 - b.comp_col_tight_ai_penalty * ai],
+            [1.0 - leakage, 1.0 - b.comp_col_tight_ai_penalty * ai + b.comp_col_light_base_bonus],
         ],
         dtype=float,
     )
@@ -273,11 +298,16 @@ def venue_shifting_game(gp: GameParams) -> TwoPlayerGame:
     """Venue shifting game: LHN chooses ABF 'A' vs Block 'B'; Cth chooses Flexible 'F' vs Strict 'S'."""
     pr = gp.pressure
     eg = gp.efficiency_gap
+    b = gp.behavior
 
     # Gain from shifting to Block increases when efficiency gap or pressure is high (cap avoidance)
-    shift_gain = 0.25 + 0.5 * eg + 0.3 * (pr - 1.0)
-    strict_penalty = 0.45
-    enforcement_cost = 0.15
+    shift_gain = (
+        b.venue_shift_gain_base
+        + b.venue_shift_gain_eg_weight * eg
+        + b.venue_shift_gain_pr_weight * (pr - 1.0)
+    )
+    strict_penalty = b.venue_strict_penalty
+    enforcement_cost = b.venue_enforce_cost
 
     u_row = np.array(
         [
@@ -290,8 +320,8 @@ def venue_shifting_game(gp: GameParams) -> TwoPlayerGame:
         [
             [1.0, 1.0 - enforcement_cost],  # Flexible
             [
-                1.0 - 0.15 * shift_gain,
-                1.0 - enforcement_cost + 0.10,
+                1.0 - b.venue_col_strict_penalty_weight * shift_gain,
+                1.0 - enforcement_cost + b.venue_col_strict_base_bonus,
             ],  # Strict (Reduces 'leakage' gain)
         ]
     )
@@ -299,7 +329,7 @@ def venue_shifting_game(gp: GameParams) -> TwoPlayerGame:
     return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("A", "B"), col_actions=("F", "S"))
 
 
-def competition_game(gp: GameParams, cannibalization_beta: float = 0.1) -> TwoPlayerGame:
+def competition_game(gp: GameParams) -> TwoPlayerGame:
     """
     Competition game between two neighboring LHNs.
     They compete for a fixed pool of workforce (locums) and elective volume.
@@ -309,10 +339,11 @@ def competition_game(gp: GameParams, cannibalization_beta: float = 0.1) -> TwoPl
         A: Aggressive (Aggressive hiring/marketing to capture volume)
     """
     pr = gp.pressure
+    b = gp.behavior
 
     # Aggressive move captures volume but increases costs and drains neighbor
-    capture_gain = 0.4 + 0.6 * cannibalization_beta
-    cost_of_aggression = 0.3 + 0.2 * pr
+    capture_gain = b.comp_capture_base + b.comp_capture_slope * gp.cannibalization_beta
+    cost_of_aggression = b.comp_cost_base + b.comp_cost_slope * pr
 
     # (M, M): Baseline stability
     # (A, M): LHN 1 drains LHN 2
@@ -352,10 +383,11 @@ def renegotiation_game(gp: GameParams, clock: int) -> TwoPlayerGame:
         H: Hold-Up (Threaten walk-away/service failure)
     """
     pr = gp.pressure
+    b = gp.behavior
 
     # Commonwealth wants to minimize share but avoid political fallout of a 'Crisis'
-    cth_fallout_cost = 0.8 * pr
-    state_failure_cost = 0.6 * pr
+    cth_fallout_cost = b.reneg_cth_fallout_weight * pr
+    state_failure_cost = b.reneg_state_failure_weight * pr
 
     # (Enforce, Agree): Status Quo / Commonwealth Win
     # (Concede, Agree): Smooth Transition / Moderate Share Increase
@@ -365,8 +397,8 @@ def renegotiation_game(gp: GameParams, clock: int) -> TwoPlayerGame:
     u_row = np.array(
         [
             [
-                1.0 - 0.1,
-                1.0 - 0.3,
+                1.0 - b.reneg_concede_agree_cost,
+                1.0 - b.reneg_concede_holdup_cost,
             ],  # Concede: low cost if agree, higher cost if state still holds up
             [
                 1.0,
@@ -378,8 +410,8 @@ def renegotiation_game(gp: GameParams, clock: int) -> TwoPlayerGame:
     u_col = np.array(
         [
             [
-                1.0 + 0.2,
-                1.0 + 0.5,
+                1.0 + b.reneg_concede_agree_gain,
+                1.0 + b.reneg_concede_holdup_gain,
             ],  # Concede: Gain share if agree, MAX gain if hold-up forces even more
             [
                 1.0,

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Build a single, shareable context pack for local development.
 
 This concatenates key project documentation and `context/` files into one
@@ -12,6 +10,8 @@ Usage:
 Outputs:
     context/CONTEXT_PACK.md
 """
+
+from __future__ import annotations
 
 from datetime import date
 from pathlib import Path

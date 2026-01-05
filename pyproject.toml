@@ -172,6 +172,7 @@ select = [
 ]
 ignore = [
     "E501",  # Line too long (handled by formatter)
+    "UP037", # Remove quotes from type annotation (Jaxtyping compatibility)
     "N806",  # Variable in function should be lowercase (allow math notation like A, B)
     "F722",  # Syntax error in forward annotation (Jaxtyping compatibility)
     "T201",  # print found (allowed in research scripts)

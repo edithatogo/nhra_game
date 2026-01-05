@@ -1,5 +1,5 @@
-from nhra_gt.legacy_engine import (
-    Params,
+from nhra_gt.domain.params import Params
+from nhra_gt.helpers import (
     one_way_sensitivity,
     probabilistic_sensitivity,
     run_hybrid,

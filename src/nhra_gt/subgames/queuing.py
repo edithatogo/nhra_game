@@ -10,7 +10,10 @@ demand levels.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    pass
 
 import numpy as np
 
@@ -48,6 +51,7 @@ class PatientUtilityParams:
         patient_time_value_hour: Shadow price of patient time ($/hr).
         ed_base_utility: Intrinsic utility of ED (e.g. equipment access).
         logit_sensitivity: Rationality parameter for logit choice.
+        ed_outside_utility: Utility of not seeking care.
     """
 
     gp_out_of_pocket: float = 40.0
@@ -55,18 +59,27 @@ class PatientUtilityParams:
     patient_time_value_hour: float = 25.0
     ed_base_utility: float = 0.0  # ED is "free" but has other disutilities (travel, etc.)
     logit_sensitivity: float = 0.1
+    ed_outside_utility: float = -100.0
+    queuing_init_prob: float = 0.5
 
 
 @beartype
-def calculate_patient_utilities(ed_wait_min: Any, p: PatientUtilityParams) -> tuple[Any, Any]:
+def calculate_patient_utilities(
+    ed_wait_min: Any, p: PatientUtilityParams, p_global: Any
+) -> tuple[Any, Any]:
     """
     Calculates utilities for choosing ED vs GP.
 
     Returns:
         Tuple of (utility_ed, utility_gp).
     """
-    u_ed = p.ed_base_utility - (ed_wait_min / 60.0 * p.patient_time_value_hour)
-    u_gp = jnp.array(-(p.gp_wait_time_min / 60.0 * p.patient_time_value_hour) - p.gp_out_of_pocket)
+    u_ed = p.ed_base_utility - (
+        ed_wait_min / p_global.ops.minutes_per_hour * p.patient_time_value_hour
+    )
+    u_gp = jnp.array(
+        -(p.gp_wait_time_min / p_global.ops.minutes_per_hour * p.patient_time_value_hour)
+        - p.gp_out_of_pocket
+    )
     return u_ed, u_gp
 
 
@@ -76,6 +89,7 @@ def solve_queuing_equilibrium_jax(
     capacity: Any,
     discharge_delay: Any,
     params: PatientUtilityParams,
+    p_global: Any,
     max_iter: int = 5,
 ) -> tuple[Any, Any]:
     """
@@ -92,14 +106,17 @@ def solve_queuing_equilibrium_jax(
         d_curr, _ = state
         # 1. Calculate resulting wait time at current demand
         wait_min = mm_s_queue_wait_jax(
-            d_curr, 1.0 / jnp.maximum(1e-9, discharge_delay), jnp.array(capacity * 10.0)
+            d_curr,
+            1.0 / jnp.maximum(1e-9, discharge_delay),
+            jnp.array(capacity * p_global.ops.capacity_scalar),
+            p_global,
         )
 
         # 2. Calculate utilities
-        u_ed, u_gp = calculate_patient_utilities(wait_min, params)
+        u_ed, u_gp = calculate_patient_utilities(wait_min, params, p_global)
 
         # 3. Logit choice (ED vs GP vs Outside Option)
-        u_outside = -100.0  # Unattractive outside option
+        u_outside = params.ed_outside_utility
         logits = jnp.array([u_ed, u_gp, u_outside])
         prob_ed = jax.nn.softmax(logits * params.logit_sensitivity)[0]
 
@@ -108,7 +125,7 @@ def solve_queuing_equilibrium_jax(
 
     # JIT-friendly loop
     d_final, p_final = lax.fori_loop(
-        0, max_iter, body_fun, (jnp.array(total_base_demand), jnp.array(0.5))
+        0, max_iter, body_fun, (jnp.array(total_base_demand), jnp.array(params.queuing_init_prob))
     )
 
     return d_final, p_final
@@ -119,23 +136,25 @@ def solve_queuing_equilibrium_legacy(
     capacity: float,
     discharge_delay: float,
     params: PatientUtilityParams,
+    p_global: Any,
     max_iter: int = 5,
 ) -> tuple[float, float]:
     """Legacy version of the queuing solver. Returns (demand_ed, prob_ed)."""
     from nhra_gt.engine import mm_s_queue_wait
 
-    p_final = 0.5
+    p_final = params.queuing_init_prob
     d_final = total_base_demand
     for _ in range(max_iter):
-        wait_min = mm_s_queue_wait(d_final, 1.0 / max(1e-9, discharge_delay), capacity * 10.0)
+        wait_min = mm_s_queue_wait(
+            d_final,
+            1.0 / max(1e-9, discharge_delay),
+            capacity * p_global.ops.capacity_scalar,
+            p_global,
+        )
 
         # Utilities
-        u_ed = params.ed_base_utility - (wait_min / 60.0 * params.patient_time_value_hour)
-        u_gp = (
-            -(params.gp_wait_time_min / 60.0 * params.patient_time_value_hour)
-            - params.gp_out_of_pocket
-        )
-        u_outside = -100.0
+        u_ed, u_gp = calculate_patient_utilities(wait_min, params, p_global)
+        u_outside = params.ed_outside_utility
 
         # Logit
         e_ed = np.exp(u_ed * params.logit_sensitivity)

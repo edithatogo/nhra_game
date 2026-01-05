@@ -1,3 +1,4 @@
+import contextlib
 import time
 from pathlib import Path
 
@@ -26,15 +27,13 @@ def capture_screenshots():
             print("Waiting for app to load...")
 
             # Check for "Wake up" button
-            try:
+            with contextlib.suppress(Exception):
                 wake_up_btn = page.get_by_role("button", name="Yes, get this app back up!")
                 if wake_up_btn.is_visible(timeout=5000):
                     print("App is sleeping. Waking it up...")
                     wake_up_btn.click()
                     print("Clicked wake up button. Waiting for boot...")
                     page.wait_for_load_state("networkidle", timeout=120000)
-            except Exception:
-                pass
 
             # Wait for the main streamlit container
             # It's inside an iframe
@@ -105,7 +104,7 @@ def capture_screenshots():
                 # For frame locators, we can't easily count without waiting or using strict mode
                 # So we just try to click likely candidates
 
-                try:
+                with contextlib.suppress(Exception):
                     tab_locator.first.click(timeout=2000)
                     time.sleep(5)
 
@@ -116,8 +115,6 @@ def capture_screenshots():
                     page.screenshot(path=screenshot_path, full_page=True)
                     print(f"Saved {screenshot_path}")
                     continue
-                except:
-                    pass
 
                 print(f"⚠️ Could not click tab: {tab_name}")
 

@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """Public-only grounding check for model inputs.
 
 This enforces that every parameter used by the model is documented in
@@ -19,6 +17,8 @@ Rules:
 Usage:
     python scripts/check_parameters_grounded.py
 """
+
+from __future__ import annotations
 
 import csv
 import sys

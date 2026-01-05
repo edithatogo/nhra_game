@@ -12,7 +12,7 @@ from SALib.analyze import sobol as sobol_analyzer
 from SALib.sample import morris as morris_sampler
 from SALib.sample import saltelli as sobol_sampler
 
-from nhra_gt.legacy_engine import Params
+from nhra_gt.domain.params import Params
 
 
 def generate_sensitivity_summary(morris_path: Path, sobol_path: Path, output_path: Path) -> None:
