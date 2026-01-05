@@ -20,36 +20,36 @@ jobs:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: ${{ matrix.python-version }}
-          cache: pip
-      - name: Install Poetry
-        run: pip install "poetry==${{ env.POETRY_VERSION }}"
-      - name: Install
-        run: poetry install --with dev
+          enable-cache: true
+      - name: Set up Python
+        run: uv python install ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: uv pip install -e '.[dev,opt]'
       - name: Lint
         run: |
-          poetry run ruff check src tests
-          poetry run ruff format src tests --check
+          uv run ruff check src tests
+          uv run ruff format src tests --check
       - name: Type check
-        run: poetry run mypy --strict src/nhra_gt
+        run: uv run basedpyright src
       - name: Security scan (Bandit)
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
-        run: poetry run bandit -c pyproject.toml -r src
+        run: uv run bandit -c pyproject.toml -r src
       - name: Dependency hygiene (deptry)
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
-        run: poetry run deptry .
+        run: uv run deptry .
       - name: Input traceability (public sources or justification)
-        run: poetry run python scripts/check_parameters_grounded.py
+        run: uv run python scripts/check_parameters_grounded.py
       - name: Build context pack
-        run: poetry run python scripts/build_context_pack.py
+        run: uv run python scripts/build_context_pack.py
       - name: Tests
-        run: poetry run pytest -q
+        run: uv run pytest -q
       - name: Verify Pipeline (Snakemake)
-        run: poetry run snakemake --cores 1 run_baseline context_pack --forceall
+        run: uv run snakemake --cores 1 run_baseline context_pack --forceall
       - name: Build docs
-        run: poetry run mkdocs build -q
+        run: uv run mkdocs build -q
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2.7.0
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
