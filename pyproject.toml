@@ -1,6 +1,6 @@
 [project]
 name = "nhra_gt"
-version = "26.0.1"
+version = "26.0.2"
 description = "Stylised game-theory mechanism models for NHRA negotiations and downstream system pressure"
 authors = [
     { name = "Dylan A Mordaunt", email = "15080672+edithatogo@users.noreply.github.com" }
