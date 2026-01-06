@@ -2,6 +2,13 @@
 
 **Goal:** Expand the system dynamics analysis by enhancing phase-space visualizations and implementing quantitative metrics for hysteresis (tipping points and recovery paths).
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Enhanced Visualization
 
 - [x] Task: Update `plot_phase_space` in `interactive.py` to color the trajectory by `SystemMode`.

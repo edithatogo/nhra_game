@@ -1,11 +1,13 @@
+"""Generates the ParamsGenerated class from the parameter registry CSV."""
+
 import argparse
-import sys
 from pathlib import Path
 
 import pandas as pd
 
 
 def infer_type(val):
+    """Infer Python type from a string value."""
     s = str(val).lower()
     if s in ["true", "false"]:
         return "bool"
@@ -22,6 +24,7 @@ def infer_type(val):
 
 
 def generate_params_code(csv_path):
+    """Generate Python source code for the ParamsGenerated class."""
     df = pd.read_csv(csv_path)
 
     # Filter out rows that are not scalar parameters
@@ -65,7 +68,8 @@ def generate_params_code(csv_path):
     return content
 
 
-def main():
+def main() -> None:
+    """Run the parameter generation script."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()

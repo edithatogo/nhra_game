@@ -1,4 +1,4 @@
-from __future__ import annotations
+"""Generates a Markdown index for the outreach series."""
 
 from pathlib import Path
 
@@ -9,9 +9,13 @@ def generate_index(
     manifest_path: Path = Path(
         "publications/P4_Outreach_Series/00_series_meta/series_manifest.yaml"
     ),
-    root_dir: Path = Path("publications/P4_Outreach_Series"),
-    output_path: Path = Path("publications/P4_Outreach_Series/00_series_meta/series_index.md"),
+    output_path: Path = Path("publications/P4_Outreach_Series/INDEX.md"),
 ) -> None:
+    """Read the manifest and generate a linked Markdown index file."""
+    if not manifest_path.exists():
+        return
+
+    root_dir = output_path.parent
     manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
     bundles = manifest.get("bundles") or []
     bundles.sort(key=lambda x: x["order"])

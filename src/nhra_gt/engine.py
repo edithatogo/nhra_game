@@ -1,5 +1,4 @@
-"""
-Core NHRA Simulation Engine (JAX-accelerated).
+"""Core NHRA Simulation Engine (JAX-accelerated).
 
 This module contains the primary simulation loop and transition logic for the
 National Health Reform Agreement (NHRA) game-theoretic model. It uses JAX for
@@ -16,27 +15,39 @@ import jax.numpy as jnp
 import numpy as np
 import pandas as pd
 from beartype import beartype
-from jax import config, lax
-from jaxtyping import Array, Float, Int
+from jax import lax
+from jaxtyping import Array, Float
 
+from nhra_gt.agents.jax import HeuristicAgentJax
 from nhra_gt.domain.params import Params
 from nhra_gt.domain.state import (
-    ConstitutionalStateJax,
     JurisdictionState,
-    JurisdictionStateJax,
     LhnState,
     MetricsJax,
     ParamsJax,
-    State,
     StateJax,
 )
-from nhra_gt.agents.jax import HeuristicAgentJax
 from nhra_gt.rules import initialize_rules
 from nhra_gt.subgames.queuing import PatientUtilityParams, solve_queuing_equilibrium_jax
 
 # Constants for jaxtyping dimensions
 N_STRATS = 13
 N_ACTIONS = 2
+
+__all__ = [
+    "Params",
+    "ParamsJax",
+    "State",
+    "StateJax",
+    "apply_intervention",
+    "baseline_state",
+    "mm_s_queue_wait",
+    "run_hybrid",
+    "run_simulation",
+    "run_simulation_jax",
+    "step_jax",
+    "summarise_outcome",
+]
 
 
 def jax_logistic(x: Any) -> Any:
@@ -46,8 +57,7 @@ def jax_logistic(x: Any) -> Any:
 
 @beartype
 def jax_softmax(u: Any, tau: float = 0.25) -> Any:
-    """
-    Tau-tempered softmax for equilibrium selection.
+    """Tau-tempered softmax for equilibrium selection.
 
     Args:
         u: Utility vector.
@@ -68,8 +78,7 @@ def mm_s_queue_wait_jax(
     servers: Float[Array, ""],
     p: ParamsJax,
 ) -> Float[Array, ""]:
-    """
-    Approximation of M/M/s queuing wait time in minutes.
+    """Approximation of M/M/s queuing wait time in minutes.
 
     Uses Kingman's formula variant for JAX compatibility.
 
@@ -136,8 +145,7 @@ def update_lag_buffers(
     Float[Array, ""],
     Float[Array, ""],
 ]:
-    """
-    Rolls the lag buffers and extracts reported values based on configured lags.
+    """Rolls the lag buffers and extracts reported values based on configured lags.
 
     This ensures that agents make decisions based on delayed information,
     simulating real-world reporting cycles in the Australian health system.
@@ -179,8 +187,7 @@ def update_lag_buffers(
 
 
 def baseline_state(start_year: int = 2025, p: ParamsJax | None = None) -> StateJax:
-    """
-    Initializes the simulation state at a stable baseline.
+    """Initializes the simulation state at a stable baseline.
 
     Args:
         start_year: Year to start the simulation.
@@ -261,8 +268,7 @@ def lhn_step_jax(
     discharge_delay_target: Any,
     workforce_availability: Any,
 ) -> LhnState:
-    """
-    Operational step for a single LHN agent.
+    """Operational step for a single LHN agent.
 
     Handles localized demand, capacity constraints, discharge delays, and workforce
     attrition for a Local Health Network (LHN).
@@ -350,8 +356,7 @@ def jurisdiction_step_jax(
     prng_key: Any,
     wf_pool: Float[Array, ""],
 ) -> JurisdictionState:
-    """
-    Step for a single jurisdiction and its batch of LHNs.
+    """Step for a single jurisdiction and its batch of LHNs.
 
     Handles jurisdictional policy targets and vmaps over child LHNs.
 
@@ -398,7 +403,9 @@ def _pad_strategies(strategies: jnp.ndarray, width: int = 13) -> jnp.ndarray:
         return strategies[..., :width]
     return jnp.pad(
         strategies,
-        ((0, 0), (0, width - strategies.shape[-1])) if strategies.ndim == 2 else (0, width - strategies.shape[0]),
+        ((0, 0), (0, width - strategies.shape[-1]))
+        if strategies.ndim == 2
+        else (0, width - strategies.shape[0]),
     )
 
 
@@ -534,10 +541,10 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
         u_row, u_col = renegotiation_game_jax(gp)
 
         # Use sequential solver if configured
-        def solve_nash() -> tuple[Float[Array, "N_ACTIONS"], Float[Array, "N_ACTIONS"]]:
+        def solve_nash() -> tuple[Float[Array, N_ACTIONS], Float[Array, N_ACTIONS]]:
             return discrete_nash_jax(u_row, u_col)
 
-        def solve_stackelberg() -> tuple[Float[Array, "N_ACTIONS"], Float[Array, "N_ACTIONS"]]:
+        def solve_stackelberg() -> tuple[Float[Array, N_ACTIONS], Float[Array, N_ACTIONS]]:
             # Assume Commonwealth (Row) is Leader
             return stackelberg_jax(u_row, u_col)
 
@@ -674,7 +681,6 @@ def step(
     optional metadata and advance the system using a neutral (zero) strategy
     vector, with stochasticity driven by `rng`.
     """
-
     seed = int(rng.integers(0, 2**31 - 1))
     key = jax.random.PRNGKey(seed)
     _ = strategies
@@ -725,7 +731,6 @@ def decide_strategies(
     rng: np.random.Generator,
 ) -> dict[str, Any]:
     """Legacy strategy helper used by the dashboard/test suite."""
-
     _ = state
     _ = params
     _ = rng
@@ -750,7 +755,6 @@ def run_simulation(
     Returns a dict of numpy arrays. For `n_samples == 1`, arrays are shaped
     `[num_steps]`. For `n_samples > 1`, arrays are shaped `[n_samples, num_steps]`.
     """
-
     if params is None:
         params = ParamsJax()
 
@@ -813,8 +817,7 @@ def run_simulation(
 
 @beartype
 def update_system_mode_jax(s: StateJax, p: ParamsJax, current_pressure: Float[Array, ""]) -> Any:
-    """
-    Updates the operational mode based on current system pressure.
+    """Updates the operational mode based on current system pressure.
 
     Modes: Normal -> Stress -> Crisis -> Recovery.
 
@@ -848,11 +851,8 @@ def update_system_mode_jax(s: StateJax, p: ParamsJax, current_pressure: Float[Ar
 
 
 @beartype
-def demand_step_jax(
-    s: StateJax, p: ParamsJax, strategies: Any, noise: Any
-) -> tuple[Any, Any]:
-    """
-    Calculates realized macro demand for the current step.
+def demand_step_jax(s: StateJax, p: ParamsJax, strategies: Any, noise: Any) -> tuple[Any, Any]:
+    """Calculates realized macro demand for the current step.
 
     Demand is influenced by cost-shifting strategies and patient queuing choice
     between GP and ED.
@@ -883,8 +883,7 @@ def demand_step_jax(
 
 
 def apply_intervention(p: ParamsJax, name: str) -> ParamsJax:
-    """
-    Applies a named policy intervention to a parameter set.
+    """Applies a named policy intervention to a parameter set.
 
     Supported interventions: pooled_funding, ucc_integration, nep_realism,
     aged_ndis_capacity, middle_tier, cumulative_cap, audit_relief.
@@ -1009,9 +1008,7 @@ def run_hybrid(
     recorder: Any | None = None,
     overrides: dict[str, Any] | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """
-    Runs a high-fidelity simulation with heuristic agents and Monte Carlo sampling.
-    """
+    """Runs a high-fidelity simulation with heuristic agents and Monte Carlo sampling."""
     # 0. Convert Pydantic to JAX if needed
     if hasattr(p, "to_params_jax"):
         p = p.to_params_jax()  # type: ignore[union-attr]
@@ -1203,6 +1200,7 @@ baseline_state_jax = baseline_state
 def mm_s_queue_wait(
     arrival_rate: float, service_rate: float, servers: float, p: ParamsJax
 ) -> float:
+    """Calculate M/M/s wait time using Kingman's approximation (NumPy version)."""
     utilization = arrival_rate / max(1e-9, (service_rate * servers))
     if utilization >= 1.0:
         return p.ops.wait_time_cap
@@ -1211,6 +1209,7 @@ def mm_s_queue_wait(
 
 
 def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
+    """Calculate key performance indicators from simulation results."""
     from nhra_gt.domain.stability import calculate_hysteresis_area, calculate_recovery_metrics
 
     last = agg.sort_values("year").iloc[-1]
@@ -1260,7 +1259,6 @@ def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
 
 def nep_series(*, years: list[int], p: ParamsJax) -> pd.DataFrame:
     """Return an annual NEP series for the requested years."""
-
     if getattr(p, "spine", None) is not None:
         spine = p.spine
         if spine is None:
@@ -1284,7 +1282,6 @@ def nep_series(*, years: list[int], p: ParamsJax) -> pd.DataFrame:
 
 def nep_vs_cost_series(years: list[int], p: ParamsJax) -> pd.DataFrame:
     """Return a simple NEP vs input-cost index series (base=1.0 at start year)."""
-
     y0 = int(years[0])
     nep_g = float(getattr(p, "nep_annual_growth", 0.0))
     cost_g = float(getattr(p, "input_cost_annual_growth", 0.0))

@@ -2,6 +2,13 @@
 
 **Goal:** Refactor and expand the simulation's rules engine to be modular, pluggable, and consistent across both Legacy and JAX implementations. This aligns with the audit recommendation to separate "Rules" from "Agents" and "World".
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: JAX-Compatible Rule Abstractions
 
 - [x] Task: Refactor `src/nhra_gt/rules.py` to use `flax.struct.dataclass` for rules to ensure JAX compatibility (PyTree registration).

@@ -1,5 +1,4 @@
-"""
-JAX-native Heuristic Agents.
+"""JAX-native Heuristic Agents.
 
 Optimized implementations of agent logic for use inside JIT-compiled loops.
 """
@@ -14,15 +13,15 @@ from nhra_gt.domain.state import Params, StateJax
 
 @struct.dataclass
 class HeuristicAgentJax:
-    """
-    JAX-compatible heuristic agent that produces a continuous strategy vector.
+    """JAX-compatible heuristic agent that produces a continuous strategy vector.
+
     Mirrors the logic of HeuristicAgent but in a differentiable/vectorized form.
     """
 
     def decide(self, state: StateJax, params: Params) -> jnp.ndarray:
-        """
-        Choose strategy vector based on current state.
-        Output: jnp.ndarray of shape (13,)
+        """Choose strategy vector based on current state.
+
+        Output: jnp.ndarray of shape (13,).
         """
         obs_pressure = state.reported_pressure
         obs_eff_gap = state.reported_efficiency_gap
@@ -32,43 +31,75 @@ class HeuristicAgentJax:
             return 1.0 / (1.0 + jnp.exp(-x))
 
         # 0: COMP (Compliance) - Tight vs Light
-        comp = prob(0.9 * params.audit_pressure - 0.7 * obs_eff_gap)
+        comp = prob(
+            params.behavior.h_comp_audit_weight * params.audit_pressure
+            - params.behavior.h_comp_eff_gap_weight * obs_eff_gap
+        )
 
         # 1: DEF (Framing) - Realism vs Strict
-        def_framing = prob(1.3 * (obs_eff_gap - 0.25) + 0.9 * (obs_pressure - 1.0))
+        def_framing = prob(
+            params.behavior.h_def_eff_gap_weight
+            * (obs_eff_gap - params.behavior.h_def_eff_gap_offset)
+            + params.behavior.h_def_pressure_weight
+            * (obs_pressure - params.behavior.h_def_pressure_offset)
+        )
 
         # 2: BARG (Bargaining) - Agree vs Defer
-        barg = prob(0.6 * (1.2 - obs_pressure) + state.bailout_expectation)
+        barg = prob(
+            params.behavior.h_barg_pressure_weight
+            * (params.behavior.h_barg_pressure_offset - obs_pressure)
+            + state.bailout_expectation
+        )
 
         # 3: SHIFT (Cost Shifting) - Invest vs Shift
-        shift = prob(-1.1 * (obs_pressure - 1.0) - 1.0 * obs_eff_gap)
+        shift = prob(
+            -params.behavior.h_shift_pressure_weight
+            * (obs_pressure - params.behavior.h_shift_pressure_offset)
+            - params.behavior.h_shift_eff_gap_weight * obs_eff_gap
+        )
 
         # 4: DISC (Discharge Coordination) - Coordinate vs Fragment
-        disc = 0.7  # Heuristic from legacy
+        disc = params.behavior.h_disc_base
 
         # 5: AGED (Aged Care) - Coordinate vs Fragment
-        aged = 0.6
+        aged = params.behavior.h_aged_base
 
         # 6: NDIS (NDIS) - Coordinate vs Fragment
-        ndis = 0.6
+        ndis = params.behavior.h_ndis_base
 
         # 7: CODING (Coding Intensity) - Upcode vs Honest
-        coding = prob(1.5 * (obs_pressure - 1.1) + 1.2 * obs_eff_gap)
+        coding = prob(
+            params.behavior.h_coding_pressure_weight
+            * (obs_pressure - params.behavior.h_coding_pressure_offset)
+            + params.behavior.h_coding_eff_gap_weight * obs_eff_gap
+        )
 
         # 8: WORKFORCE (Workforce Intensity)
-        wf = 0.5 + 0.2 * (obs_pressure - 1.0)
+        wf = params.behavior.h_wf_base + params.behavior.h_wf_pressure_weight * (
+            obs_pressure - params.behavior.h_wf_pressure_offset
+        )
 
         # 9: SIGNAL (Signalling)
-        signal = 0.9
+        signal = params.behavior.h_signal_base
 
         # 10: VENUE_SHIFT (Venue Shift) - Block vs ABF
-        venue = prob(1.2 * (obs_pressure - 1.1) + 0.8 * obs_eff_gap)
+        venue = prob(
+            params.behavior.h_venue_pressure_weight
+            * (obs_pressure - params.behavior.h_venue_pressure_offset)
+            + params.behavior.h_venue_eff_gap_weight * obs_eff_gap
+        )
 
         # 11: CAP (Capacity Move)
-        cap = 0.05 * (obs_pressure - 1.0)
+        cap = params.behavior.h_cap_pressure_weight * (
+            obs_pressure - params.behavior.h_cap_pressure_offset
+        )
 
         # 12: COMPETITION (Competition Mode)
-        comp_mode = prob(1.1 * (obs_pressure - 1.0) + 0.5 * params.cannibalization_beta)
+        comp_mode = prob(
+            params.behavior.h_comp_mode_pressure_weight
+            * (obs_pressure - params.behavior.h_comp_mode_pressure_offset)
+            + params.behavior.h_comp_mode_cannibal_weight * params.cannibalization_beta
+        )
 
         return jnp.array(
             [

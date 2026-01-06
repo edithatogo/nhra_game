@@ -4,29 +4,29 @@ nep_to_cost_ratio_regional,Model parameter,0.83,unitless,assumed,,,0.66,1.0,Styl
 nep_to_cost_ratio_remote,Model parameter,0.75,unitless,assumed,,,0.6,0.9,Stylised mechanism parameter,Funding
 rurality_weight,Model parameter,0.35,unitless,assumed,,,0.28,0.42,Stylised mechanism parameter,Funding
 remote_weight,Model parameter,0.07,unitless,assumed,,,0.05,0.09,Stylised mechanism parameter,Funding
-nominal_cth_share_target,Model parameter,0.45,fraction,secondary,https://www.publichospitalfunding.gov.au/,NHRA Agreement,0.3,0.6,Stylised mechanism parameter,Funding
-effective_cth_share_base,Model parameter,0.38,fraction,secondary,https://www.publichospitalfunding.gov.au/,NHRA Agreement,0.3,0.46,Stylised mechanism parameter,Funding
+nominal_cth_share_target,Model parameter,0.45,fraction,secondary,nhra2020agreement,NHRA Agreement,0.3,0.6,Stylised mechanism parameter,Funding
+effective_cth_share_base,Model parameter,0.38,fraction,secondary,nhra2020agreement,NHRA Agreement,0.3,0.46,Stylised mechanism parameter,Funding
 cap_growth,Model parameter,0.065,fraction/year,assumed,,,0.05,0.08,Stylised mechanism parameter,Funding
 has_cumulative_cap,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter,Funding
 use_equilibrium_bargaining,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter,Behavioural
 use_stage_game_equilibria,Model parameter,True,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter,Behavioural
 equilibrium_selection_rule,Model parameter,payoff_dominant,unitless,assumed,,,,,Stylised mechanism parameter,Behavioural
 nep_per_nwau_start,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter,Pricing
-nep_annual_growth,Model parameter,0.03,fraction/year,primary,https://www.ihacpa.gov.au/resources/national-efficient-price-determination-2025-26,NEP Indexation,0.01,0.08,Stylised mechanism parameter,Pricing
+nep_annual_growth,Model parameter,0.038,fraction/year,calculated,ihacpa2025nep,NEP Indexation (2015-2025 CAGR),0.01,0.08,Calculated from official determination series,Pricing
 representative_nwau,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter,Pricing
 input_cost_per_nwau_start,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter,Pricing
-input_cost_annual_growth,Model parameter,0.04,fraction/year,primary,https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/wage-price-index-australia,WPI Health,0.01,0.08,Stylised mechanism parameter,Pricing
+input_cost_annual_growth,Model parameter,0.038,fraction/year,calculated,abs2025wpi,WPI Health (2021-2025 CAGR),0.01,0.08,Calculated from ABS WPI data,Pricing
 demand_base,Model parameter,1.0,unitless,assumed,,,0.8,1.2,Stylised mechanism parameter,Operations
-avoidable_ed_share,Model parameter,0.18,fraction,secondary,https://www.publichospitalfunding.gov.au/,NHRA Agreement,0.1,0.3,Stylised mechanism parameter,Operations
+avoidable_ed_share,Model parameter,0.18,fraction,secondary,nhra2020agreement,NHRA Agreement,0.1,0.3,Stylised mechanism parameter,Operations
 discharge_delay_base,Model parameter,1.0,unitless,assumed,,,0.5,2.0,Stylised mechanism parameter,Operations
 bed_capacity_index,Model parameter,1.0,unitless,assumed,,,0.7,1.3,Stylised mechanism parameter,Operations
 cost_shifting_intensity,Model parameter,0.35,unitless,assumed,,,0.05,0.8,Stylised mechanism parameter,Policy
 fragmentation_index,Model parameter,1.0,unitless,assumed,,,0.6,1.5,Stylised mechanism parameter,Policy
 audit_pressure,Model parameter,0.5,unitless,assumed,,,0.05,1.0,Stylised mechanism parameter,Policy
 admin_burden_weight,Model parameter,0.25,unitless,assumed,,,0.05,0.6,Stylised mechanism parameter,Policy
-occupancy_base,Model parameter,0.88,unitless,assumed,,,0.7,1.0,Stylised mechanism parameter,Clinical
-offload_base_min,Model parameter,18.0,unitless,assumed,,,5.0,60.0,Stylised mechanism parameter,Clinical
-within4_base,Model parameter,0.53,unitless,assumed,,,0.3,0.8,Stylised mechanism parameter,Clinical
+occupancy_base,Model parameter,0.92,unitless,primary,aihw2025myhospitals,AIHW Historical (2024),0.7,1.0,Extracted from AIHW ED data,Clinical
+offload_base_min,Model parameter,29.7,minutes,calculated,data/raw/v8_interventions_by_jurisdiction.csv,Baseline Metro Mean,20.0,40.0,Derived from intervention baseline models,Clinical
+within4_base,Model parameter,0.53,unitless,primary,aihw2025myhospitals,AIHW MyHospitals (2025),0.3,0.8,Extracted from AIHW API data,Clinical
 rr_beta_pressure,Model parameter,0.35,unitless,assumed,,,0.1,0.6,Stylised mechanism parameter,Clinical
 rr_beta_offload,Model parameter,0.015,unitless,assumed,,,0.0,0.05,Stylised mechanism parameter,Clinical
 offload_threshold_min,Model parameter,20.0,unitless,assumed,,,10.0,40.0,Stylised mechanism parameter,Clinical
@@ -56,9 +56,9 @@ expansion_lag,Model parameter,0.1,unitless,assumed,,,0.05,0.3,Stylised mechanism
 contraction_lag,Model parameter,0.2,unitless,assumed,,,0.05,0.5,Stylised mechanism parameter,Operations
 use_sequential_bargaining,Model parameter,False,unitless,assumed,,,0.0,0.0,Stylised mechanism parameter,Behavioural
 discount_rate,Model parameter,0.9,unitless,assumed,,,0.5,1.0,Stylised mechanism parameter,Behavioural
-economic_spine,Historical NEP and WPI series,(DataFrame),unitless,calibrated,https://www.ihacpa.gov.au/,,,Ingested from official sources,Pricing
+economic_spine,Historical NEP and WPI series,(DataFrame),unitless,calibrated,ihacpa2025nep,,,Ingested from official sources,Pricing
 cap_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime rule object,Policy
 audit_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime rule object,Policy
 eligibility_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime rule object,Policy
 reconciliation_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime rule object,Policy
-spine,Economic spine time series,(EconomicSpineJax|None),unitless,calibrated,https://www.ihacpa.gov.au/,,,Economic inputs,Pricing
+spine,Economic spine time series,(EconomicSpineJax|None),unitless,calibrated,ihacpa2025nep,,,Economic inputs,Pricing

@@ -1,5 +1,12 @@
 # Implementation Plan - Dashboard E2E Testing Suite
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Environment & Setup
 
 - [x] Task: Install Playwright & pytest-playwright
@@ -30,3 +37,4 @@
 
 - [x] Task: Create specific GitHub Actions workflow `e2e-tests.yml` (N/A - used existing CI or running locally is sufficient for now)
 - [x] Task: Run full regression suite locally and verify all pass
+- [x] Task: Add a remote Streamlit Cloud smoke path for E2E (env/secret-gated) to validate deployed flows.

@@ -1,5 +1,4 @@
-"""
-Negotiation and Debate Loop logic.
+"""Negotiation and Debate Loop logic.
 
 Models multi-round interactions between agents to reach consensus or deadlock.
 """
@@ -14,19 +13,16 @@ if TYPE_CHECKING:
 
 
 class DebateLoop:
-    """
-    Manages a structured negotiation between two agents.
-    """
+    """Manages a structured negotiation between two agents."""
 
     def __init__(self, agent_a: Agent, agent_b: Agent, max_rounds: int = 3):
+        """Initialize the debate loop with two competing agents."""
         self.agent_a = agent_a
         self.agent_b = agent_b
         self.max_rounds = max_rounds
 
     def negotiate(self, state: State, params: Params, rng: Any) -> tuple[dict[str, Any], list[str]]:
-        """
-        Runs the debate loop and returns final strategies and the transcript.
-        """
+        """Runs the debate loop and returns final strategies and the transcript."""
         transcript = []
         transcript.append("--- BEGIN NEGOTIATION ---")
 

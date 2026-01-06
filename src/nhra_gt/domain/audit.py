@@ -1,3 +1,5 @@
+"""Records structured audit trails and manages versioned artifacts for experiments."""
+
 from __future__ import annotations
 
 import json
@@ -13,6 +15,7 @@ class Recorder:
     """Records structured audit trails and manages versioned artifacts for experiments."""
 
     def __init__(self, base_output_dir: str | Path = "outputs/experiments"):
+        """Initialize the audit logger with a base output directory."""
         self.base_output_dir = Path(base_output_dir)
         self.current_experiment: dict[str, Any] | None = None
         self.experiment_dir: Path | None = None

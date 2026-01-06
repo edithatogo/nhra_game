@@ -37,3 +37,11 @@ This track refactors the monolithic JAX simulation into a hierarchical Multi-Age
 - Successful execution of a 1:8:10 simulation (1 Cth, 8 States, 10 LHNs each).
 - Visualization of "Intra-State Variance": Showing how different LHNs within the same State react to the same policy change.
 - Demonstration of the "Ramping Signal" as a result of LHN strategic trade-offs.
+
+## Acceptance Checklist (Evaluation)
+
+- [ ] Requirements and scope validated against this spec
+- [ ] Acceptance criteria evaluated and recorded (pass/fail)
+- [ ] CI green and key workflows verified
+- [ ] Deployment/runtime checks complete (if applicable)
+- [ ] Deviations or follow-ups documented

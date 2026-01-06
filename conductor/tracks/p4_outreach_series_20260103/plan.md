@@ -1,5 +1,12 @@
 # Implementation Plan: P4 Outreach Series (NHRA-centred, Public-first)
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Foundations (Manifest, Scaffold, Templates, Rendering, Validators)
 
 - [x] Task: Define authoritative series manifest (`series_manifest.yaml`)
@@ -30,7 +37,9 @@
 - [x] Task: References workflow (hybrid)
   - [x] Curate recurring “core” references into `publications/shared/references/library.yaml`
   - [x] Define per-bundle “Evidence / Further reading” format (inline links + core IDs)
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundations (Manifest, Scaffold, Templates, Rendering, Validators)' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Foundations (Manifest, Scaffold, Templates, Rendering, Validators)' (Protocol in workflow.md)
+- [x] Phase Gate: Recheck Phase 1 deliverables against tasks before testing.
+- [x] Phase Gate: Run CI-relevant tests for outreach tooling; fix failures before Phase 2.
 
 ## Phase 2: Full-cycle iteration (first 3 bundles; multi-round feedback) [checkpoint: 3223376]
 
@@ -39,6 +48,8 @@
 - [x] Task: Bundle 02 — v1 → iterate to v2/v3 until “public + 14yo” pass
 - [x] Task: Bundle 03 — v1 → iterate to v2/v3 until “public + 14yo” pass (1b461ec)
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Full-cycle Iteration (First 3 Bundles)' (Protocol in workflow.md)
+- [x] Phase Gate: Recheck Phase 2 deliverables against tasks before testing.
+- [x] Phase Gate: Run CI-relevant tests for bundle outputs; fix failures before Phase 3.
 
 ## Phase 3: Remaining scenario bundles (single feedback cycle each) [checkpoint: 5764810]
 
@@ -51,12 +62,16 @@
 - [x] Task: Bundle 10 (Stackelberg) — v1 → feedback/consensus → v2 (run validators)
 - [x] Task: Bundle 11 (Queuing equilibrium) — v1 → feedback/consensus → v2 (run validators)
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Remaining Scenario Bundles (Single-cycle Each)' (Protocol in workflow.md)
+- [x] Phase Gate: Recheck Phase 3 deliverables against tasks before testing.
+- [x] Phase Gate: Run CI-relevant tests for bundle outputs; fix failures before Phase 4.
 
 ## Phase 4: Hybrid/Ensemble + Streamlit dashboard bundles [checkpoint: d289b84]
 
 - [x] Task: Bundle 12 (Hybrid/Ensemble) — v1 → feedback/consensus → v2 (run validators)
 - [x] Task: Bundle 13 (Streamlit dashboard) — v1 → feedback/consensus → v2 (run validators)
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Hybrid/Ensemble + Dashboard Bundles' (Protocol in workflow.md)
+- [x] Phase Gate: Recheck Phase 4 deliverables against tasks before testing.
+- [x] Phase Gate: Run CI-relevant tests for bundle outputs; fix failures before Phase 5.
 
 ## Phase 5: Series QA, index, and link validation [checkpoint: 6918417]
 
@@ -65,3 +80,8 @@
 - [x] Task: Run online link validation for all referenced URLs (requires network approval) and fix broken/unstable links
 - [x] Task: Final consistency pass (tone, humour, accessibility, policy implications, evidence)
 - [x] Task: Conductor - User Manual Verification 'Phase 5: Series QA, Index, Link Validation' (Protocol in workflow.md)
+- [x] Phase Gate: Recheck Phase 5 deliverables against tasks before testing.
+- [x] Track Gate: Run full CI; monitor GitHub Actions with `gh` until green; fix any failures.
+- [x] Track Gate: Verify Streamlit Cloud deployment health and key flows after CI passes.
+- [x] Track Gate: Reconcile completed work against `spec.md` and record any deviations.
+- [x] Track Gate: Evaluate the `spec.md` acceptance checklist and record pass/fail.

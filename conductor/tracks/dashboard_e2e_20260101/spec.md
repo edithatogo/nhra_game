@@ -36,3 +36,11 @@ The E2E suite must automate the following scenarios:
 - Validating the exact numerical correctness of the downloaded CSV/JSON files (content validation is a separate data integrity task).
 - Testing on mobile viewports (desktop focus for this iteration).
 - Visual regression testing (pixel comparison) for dynamic charts.
+
+## Acceptance Checklist (Evaluation)
+
+- [ ] Requirements and scope validated against this spec
+- [ ] Acceptance criteria evaluated and recorded (pass/fail)
+- [ ] CI green and key workflows verified
+- [ ] Deployment/runtime checks complete (if applicable)
+- [ ] Deviations or follow-ups documented

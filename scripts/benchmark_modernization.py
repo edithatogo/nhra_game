@@ -1,21 +1,20 @@
-from __future__ import annotations
+"""Benchmarks performance of the JAX simulation engine."""
 
-import sys
 import time
-from pathlib import Path
 
 import jax
 import jax.numpy as jnp
 
-# Add src
-sys.path.append("src")
+from nhra_gt.domain.state import ParamsJax
+from nhra_gt.engine import (
+    baseline_state,
+    run_hybrid,
+    run_simulation_jax,
+)
 
-from nhra_gt.engine import Params, baseline_state, run_simulation_jax
-from nhra_gt.engine import Params as ParamsNp
-from nhra_gt.engine import run_hybrid as run_hybrid_np
 
-
-def benchmark():
+def benchmark() -> None:
+    """Execute performance benchmarks comparing NumPy and JAX."""
     years = list(range(2025, 2031))
     num_months = len(years) * 12
     n_mc = 1000
@@ -24,16 +23,18 @@ def benchmark():
     print("-" * 50)
 
     # 1. NumPy Baseline
-    p_np = ParamsNp()
+    from nhra_gt.domain.params import Params as ParamsNP
+
+    p_np = ParamsNP()
     start = time.perf_counter()
-    run_hybrid_np(years, p_np, n_mc=n_mc, seed=42)
+    run_hybrid(years, p_np, n_mc=n_mc, seed=42)
     duration_np = time.perf_counter() - start
     print(f"NumPy (Baseline): {duration_np:.4f}s")
 
     # 2. JAX CPU (Single Rollout)
-    pj = Params()
-    sj = baseline_state(start_year=2025, p=pj)
-    strat = jnp.zeros((num_months, 10))
+    pj = ParamsJax()
+    sj = baseline_state(2025, pj)
+    strat = jnp.zeros((num_months, 13))
     key = jax.random.PRNGKey(42)
 
     # Warmup
@@ -45,10 +46,14 @@ def benchmark():
     print(f"JAX CPU (Single Rollout): {duration_jax_single:.4f}s")
 
     # 3. JAX CPU (Parallelized vmap)
-    # vmap over keys for different rollouts
     keys = jax.random.split(key, n_mc)
 
-    vmap_run = jax.jit(jax.vmap(lambda k: run_simulation_jax(sj, pj, strat, k, num_months)))
+    @jax.jit
+    def vmap_run(ks):
+        def _one(k):
+            return run_simulation_jax(sj, pj, strat, k, num_months)
+
+        return jax.vmap(_one)(ks)
 
     # Warmup
     vmap_run(keys)
@@ -64,24 +69,17 @@ def benchmark():
     print(f"✅ Total Speedup: {speedup:.1f}x")
 
     # Save results
-    report_path = Path("reports/performance_modernization.md")
-    report_path.parent.mkdir(parents=True, exist_ok=True)
-    report_path.write_text(
-        f"""# Performance Modernization Report
+    report = f"""# Performance Modernization Report
 Date: 2025-12-27
 
-| Engine | Method | Time (s) | Speedup |
+| Engine | Mode | Duration (s) | Speedup |
 | :--- | :--- | :--- | :--- |
 | NumPy | Sequential | {duration_np:.4f} | 1.0x |
 | JAX | Single Rollout (jit) | {duration_jax_single:.4f} | {duration_np / duration_jax_single:.1f}x |
 | JAX | Parallel (jit + vmap) | {duration_jax_vmap:.4f} | {speedup:.1f}x |
-
-**Benchmark configuration:**
-- MC Samples: {n_mc}
-- Years: {len(years)}
-- Platform: {jax.devices()[0].platform}
 """
-    )
+    with open("reports/performance_modernization.md", "w") as f:
+        f.write(report)
 
 
 if __name__ == "__main__":

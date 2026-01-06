@@ -1,5 +1,4 @@
-"""
-Evidence Types and Reliability Schemas.
+"""Evidence Types and Reliability Schemas.
 
 Defines the structure of evidence entries used in the registry.
 """
@@ -11,12 +10,14 @@ from enum import Enum, auto
 
 
 class EvidenceType(Enum):
+    """Categorization of evidence sources."""
+
     EMPIRICAL = auto()
     THEORETICAL = auto()
-    EXPERT_OPINION = auto()
     ANECDOTAL = auto()
 
     def reliability_score(self) -> float:
+        """Return a base reliability score for this evidence type."""
         scores = {
             EvidenceType.EMPIRICAL: 0.95,
             EvidenceType.THEORETICAL: 0.80,

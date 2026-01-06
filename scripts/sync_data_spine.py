@@ -1,17 +1,13 @@
-from __future__ import annotations
+"""Synchronizes data spine from registry to model configuration."""
 
-import sys
 from pathlib import Path
-
-# Add src
-sys.path.append("src")
 
 from nhra_gt.domain.registry import EvidenceRegistry
 from nhra_gt.domain.state import BaselineProvider
 
 
 def sync_all():
-    """Main orchestration for the data spine."""
+    """Main orchestration for the data spine synchronization."""
     print("🔄 Synchronizing Data Spine...")
 
     # 1. Load Registry

@@ -1,3 +1,5 @@
+"""Pydantic schemas for dashboard components."""
+
 from pathlib import Path
 
 import pandas as pd

@@ -2,6 +2,13 @@
 
 **Goal:** Ground the model in real IHACPA/ABS time series, resolve mechanism validation failures, and implement robust stability analysis.
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Automated Empirical Data Integration [checkpoint: 5b260fb]
 
 - [x] **Task 1.1: Automated Economic Data Ingestion (TDD)**

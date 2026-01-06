@@ -1,3 +1,5 @@
+"""Optimizes model parameters using Optuna Bayesian search."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -10,6 +12,7 @@ from nhra_gt.engine import Params, run_hybrid
 
 
 def load_targets(path: Path) -> dict[str, float]:
+    """Load calibration targets from CSV."""
     df = pd.read_csv(path)
     targets = {}
     for _, row in df.iterrows():
@@ -29,6 +32,7 @@ def stochastic_objective(
 
 
 def objective(trial: optuna.Trial, targets: dict[str, float], n_mc: int, seed: int) -> float:
+    """Optuna objective function for parameter optimization."""
     # Granular parameter set
     p = Params(
         cost_shifting_intensity=trial.suggest_float("cost_shifting_intensity", 0.05, 0.8),
@@ -78,6 +82,7 @@ def objective(trial: optuna.Trial, targets: dict[str, float], n_mc: int, seed: i
 
 
 def main() -> None:
+    """Run the multi-target calibration optimization."""
     import os
 
     out_dir = Path("data/calibration")

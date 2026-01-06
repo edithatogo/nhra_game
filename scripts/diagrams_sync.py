@@ -22,9 +22,9 @@ MM_FROM_GV_DIR = ROOT / "diagrams" / "mermaid_from_graphviz"
 
 
 EDGE_PAT = re.compile(
-    r"^\s*([A-Za-z0-9_]+)(\[[^\]]+\]|\([^\)]+\)|\{[^\}]+\}|\[\"[^\"]+\"\])?\s*([-.=]+>)\s*([A-Za-z0-9_]+)(\[[^\]]+\]|\([^\)]+\)|\{[^\}]+\}|\[\"[^\"]+\"\])?\s*$"
+    r"^\s*([A-Za-z0-9_]+)(\[[^\]]+\]|\([^)]+\)|\{[^}]+\}|\[\"[^\"]+\" \])?\s*([-.=]+>)\s*([A-Za-z0-9_]+)(\[[^\]]+\]|\([^)]+\)|\{[^}]+\}|\[\"[^\"]+\" \])?\s*$"
 )
-NODE_LABEL_PAT = re.compile(r"^([A-Za-z0-9_]+)\s*(?:\[\"?(.*?)\"?\]|\((.*?)\)|\{(.*?)\})$")
+NODE_LABEL_PAT = re.compile(r"^([A-Za-z0-9_]+)\s*(?:[\"']?(.*?[\"']?)?[\"']?|\((.*?)\)|\{(.*?)\})")
 
 
 def _parse_node(token: str) -> tuple[str, str | None]:
@@ -38,6 +38,7 @@ def _parse_node(token: str) -> tuple[str, str | None]:
 
 
 def mermaid_to_dot(mmd_text: str, name: str) -> str:
+    """Convert a Mermaid graph to a Graphviz DOT string."""
     nodes: dict[str, str] = {}
     edges: list[tuple[str, str, str]] = []
 
@@ -78,7 +79,7 @@ def mermaid_to_dot(mmd_text: str, name: str) -> str:
     def edge_style(arrow: str) -> str:
         if arrow.startswith("=="):
             return "bold"
-        if "-.->" in arrow:
+        if "-.-" in arrow:
             return "dashed"
         return "solid"
 
@@ -87,7 +88,7 @@ def mermaid_to_dot(mmd_text: str, name: str) -> str:
     out.append("  rankdir=LR;")
     out.append('  node [shape=box, style="rounded"];')
     for nid, lab in sorted(nodes.items()):
-        safe = lab.replace('"', '"')
+        safe = str(lab).replace('"', '"')
         out.append(f'  {nid} [label="{safe}"];')
     for u, v, a in edges:
         style = edge_style(a)
@@ -100,6 +101,7 @@ DOT_EDGE_PAT = re.compile(r"^\s*([A-Za-z0-9_]+)\s*->\s*([A-Za-z0-9_]+)")
 
 
 def dot_to_mermaid(dot_text: str, name: str) -> str:
+    """Convert a Graphviz DOT graph to a Mermaid string."""
     edges: list[tuple[str, str]] = []
     labels: dict[str, str] = {}
     for raw in dot_text.splitlines():
@@ -122,6 +124,7 @@ def dot_to_mermaid(dot_text: str, name: str) -> str:
 
 
 def main() -> None:
+    """Run the synchronisation process for all diagram directories."""
     GV_DIR.mkdir(parents=True, exist_ok=True)
     MM_FROM_GV_DIR.mkdir(parents=True, exist_ok=True)
 

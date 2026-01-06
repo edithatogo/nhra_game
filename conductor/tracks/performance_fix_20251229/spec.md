@@ -28,3 +28,11 @@ This track addresses three distinct issues:
 ## 5. Out of Scope
 
 * Major refactoring of the dashboard logic (beyond fixing the import).
+
+## Acceptance Checklist (Evaluation)
+
+- [ ] Requirements and scope validated against this spec
+- [ ] Acceptance criteria evaluated and recorded (pass/fail)
+- [ ] CI green and key workflows verified
+- [ ] Deployment/runtime checks complete (if applicable)
+- [ ] Deviations or follow-ups documented

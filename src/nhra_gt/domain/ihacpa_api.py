@@ -1,5 +1,4 @@
-"""
-IHACPA API Client and Data Ingestion.
+"""IHACPA API Client and Data Ingestion.
 
 Handles fetching and parsing National Efficient Price (NEP) series data.
 """
@@ -21,12 +20,13 @@ logger = logging.getLogger(__name__)
 
 
 class IHACPAClient:
-    """
-    Simulated client for IHACPA data.
+    """Simulated client for IHACPA data.
+
     Actually parses local NWAU calculators (Excel .xlsb) to extract NEP values.
     """
 
     def __init__(self, raw_dir: Path | str = "data/raw"):
+        """Initialize the IHACPA client with a directory for raw Excel files."""
         self.raw_dir = Path(raw_dir)
 
     def extract_nep_from_file(self, file_path: Path) -> float | None:
@@ -55,8 +55,7 @@ class IHACPAClient:
         return None
 
     def fetch_nep_series(self) -> pd.DataFrame:
-        """
-        Scans raw_dir for calculators and builds the NEP series.
+        """Scans raw_dir for calculators and builds the NEP series.
 
         Returns:
             DataFrame with columns ['year', 'nep_per_nwau'].

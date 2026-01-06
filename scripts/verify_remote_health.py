@@ -1,3 +1,5 @@
+"""Polls the remote Streamlit deployment to verify health."""
+
 import argparse
 import sys
 import time
@@ -6,9 +8,7 @@ import requests
 
 
 def verify_health(url: str, timeout: int = 60, interval: int = 5):
-    """
-    Polls the Streamlit health endpoint or main page to verify deployment.
-    """
+    """Polls the Streamlit health endpoint or main page to verify deployment."""
     print(f"Checking health for: {url}")
     start_time = time.time()
 

@@ -1,5 +1,4 @@
-"""
-Patient Queuing Game and Wardrop Equilibrium Solver.
+"""Patient Queuing Game and Wardrop Equilibrium Solver.
 
 This module models the choice patients make between attending an Emergency
 Department (ED) or a General Practitioner (GP), based on expected wait times
@@ -42,8 +41,7 @@ def beartype(fn):  # type: ignore[no-untyped-def]
 
 @dataclass(frozen=True)
 class PatientUtilityParams:
-    """
-    Parameters defining patient choice utility.
+    """Parameters defining patient choice utility.
 
     Attributes:
         gp_out_of_pocket: Financial cost of GP visit ($).
@@ -67,8 +65,7 @@ class PatientUtilityParams:
 def calculate_patient_utilities(
     ed_wait_min: Any, p: PatientUtilityParams, p_global: Any
 ) -> tuple[Any, Any]:
-    """
-    Calculates utilities for choosing ED vs GP.
+    """Calculates utilities for choosing ED vs GP.
 
     Returns:
         Tuple of (utility_ed, utility_gp).
@@ -83,17 +80,16 @@ def calculate_patient_utilities(
     return u_ed, u_gp
 
 
-@beartype
 def solve_queuing_equilibrium_jax(
     total_base_demand: Any,
     capacity: Any,
     discharge_delay: Any,
     params: PatientUtilityParams,
-    p_global: Any,
+    p_global: ParamsJax,
     max_iter: int = 5,
 ) -> tuple[Any, Any]:
-    """
-    Finds the Wardrop Equilibrium for patient demand using fixed-point iteration.
+    """Finds the Wardrop Equilibrium for patient demand using fixed-point iteration.
+
     Returns (demand_ed, prob_ed).
     """
     if jax is None:  # pragma: no cover
@@ -102,7 +98,7 @@ def solve_queuing_equilibrium_jax(
 
     from nhra_gt.engine import mm_s_queue_wait_jax
 
-    def body_fun(i, state):
+    def body_fun(_i, state):
         d_curr, _ = state
         # 1. Calculate resulting wait time at current demand
         wait_min = mm_s_queue_wait_jax(
@@ -116,16 +112,19 @@ def solve_queuing_equilibrium_jax(
         u_ed, u_gp = calculate_patient_utilities(wait_min, params, p_global)
 
         # 3. Logit choice (ED vs GP vs Outside Option)
-        u_outside = params.ed_outside_utility
+        u_outside = p_global.ops.queuing_outside_utility
         logits = jnp.array([u_ed, u_gp, u_outside])
-        prob_ed = jax.nn.softmax(logits * params.logit_sensitivity)[0]
+        prob_ed = jax.nn.softmax(logits * p_global.ops.queuing_logit_sensitivity)[0]
 
         # 4. Resulting demand
         return total_base_demand * prob_ed, prob_ed
 
     # JIT-friendly loop
     d_final, p_final = lax.fori_loop(
-        0, max_iter, body_fun, (jnp.array(total_base_demand), jnp.array(params.queuing_init_prob))
+        0,
+        max_iter,
+        body_fun,
+        (jnp.array(total_base_demand), jnp.array(p_global.ops.queuing_init_prob)),
     )
 
     return d_final, p_final
@@ -142,7 +141,7 @@ def solve_queuing_equilibrium_legacy(
     """Legacy version of the queuing solver. Returns (demand_ed, prob_ed)."""
     from nhra_gt.engine import mm_s_queue_wait
 
-    p_final = params.queuing_init_prob
+    p_final = p_global.ops.queuing_init_prob
     d_final = total_base_demand
     for _ in range(max_iter):
         wait_min = mm_s_queue_wait(
@@ -154,12 +153,12 @@ def solve_queuing_equilibrium_legacy(
 
         # Utilities
         u_ed, u_gp = calculate_patient_utilities(wait_min, params, p_global)
-        u_outside = params.ed_outside_utility
+        u_outside = p_global.ops.queuing_outside_utility
 
         # Logit
-        e_ed = np.exp(u_ed * params.logit_sensitivity)
-        e_gp = np.exp(u_gp * params.logit_sensitivity)
-        e_out = np.exp(u_outside * params.logit_sensitivity)
+        e_ed = np.exp(u_ed * p_global.ops.queuing_logit_sensitivity)
+        e_gp = np.exp(u_gp * p_global.ops.queuing_logit_sensitivity)
+        e_out = np.exp(u_outside * p_global.ops.queuing_logit_sensitivity)
 
         prob_ed = e_ed / (e_ed + e_gp + e_out)
         d_final = total_base_demand * float(prob_ed)

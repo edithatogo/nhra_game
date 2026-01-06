@@ -2,6 +2,13 @@
 
 **Goal:** Implement information asymmetry and reporting delays ("Measurement Lags") to improve simulation realism, reflecting how policy and strategic decisions are often based on stale data.
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: State & Parameter Infrastructure
 
 - [x] Task: Add `signal_lag_months` and `claims_lag_months` to `ParamsJax`.

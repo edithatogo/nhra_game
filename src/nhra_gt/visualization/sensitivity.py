@@ -1,5 +1,4 @@
-"""
-Sensitivity Analysis Visualizations.
+"""Sensitivity Analysis Visualizations.
 
 Sobol indices, Morris screening, and tornado plots.
 """
@@ -26,8 +25,7 @@ def plot_sobol_indices(
     total_order: bool = True,
     path: str | Path | None = None,
 ) -> Figure:
-    """
-    Generates Sobol sensitivity bar chart (S1 or ST).
+    """Generates Sobol sensitivity bar chart (S1 or ST).
 
     Args:
         si: Dictionary containing 'names', 'S1', 'ST', 'S1_conf', 'ST_conf'.
@@ -106,9 +104,7 @@ def plot_sobol_interaction_bars(
     path: str | Path | None = None,
     config: PlotConfig | None = None,
 ) -> Figure | None:
-    """
-    Plots the top second-order interactions (S2) as a bar chart.
-    """
+    """Plots the top second-order interactions (S2) as a bar chart."""
     if "S2" not in si or si["S2"] is None:
         return None
 

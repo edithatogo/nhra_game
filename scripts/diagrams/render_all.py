@@ -1,7 +1,4 @@
-from __future__ import annotations
-
-"""
-Render and cross-convert diagrams.
+"""Orchestrates the rendering of all diagrams (DOT and Mermaid) to PNG.
 
 - For each Mermaid file in diagrams/mermaid_user and diagrams/mermaid_generated:
   - create a DOT counterpart in diagrams/graphviz_from_mermaid
@@ -14,6 +11,8 @@ Render and cross-convert diagrams.
 This is best-effort: complex Mermaid features may not convert perfectly.
 """
 
+from __future__ import annotations
+
 import shutil
 import subprocess  # nosec B404
 from pathlib import Path
@@ -23,6 +22,7 @@ from convert_mermaid_to_dot import mermaid_to_dot
 
 
 def render_dot(dot_path: Path, out_dir: Path) -> None:
+    """Render a DOT file to PNG and SVG using Graphviz."""
     out_dir.mkdir(parents=True, exist_ok=True)
     dot_exe = shutil.which("dot")
     if dot_exe is None:
@@ -40,6 +40,7 @@ def render_dot(dot_path: Path, out_dir: Path) -> None:
 
 
 def main() -> None:
+    """Scan diagram directories and perform conversions/rendering."""
     repo = Path(__file__).resolve().parents[2]
     diagrams = repo / "diagrams"
     out_dir = repo / "outputs" / "diagrams"

@@ -2,6 +2,13 @@
 
 **Goal:** Polish the codebase for publication, recover lost features via forensic audit, and create high-impact visualizations (animations).
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Core Refactoring & JAX Foundation
 
 - [x] **Task 1.0: Benchmark Baseline**

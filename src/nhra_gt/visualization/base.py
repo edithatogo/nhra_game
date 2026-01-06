@@ -1,3 +1,5 @@
+"""Base protocols and shared utilities for visualization modules."""
+
 from __future__ import annotations
 
 import logging
@@ -12,6 +14,8 @@ from .config import PlotConfig
 
 logger = logging.getLogger(__name__)
 
+__all__ = ["Figure", "PlotConfig", "Plotter", "save_figure"]
+
 
 @runtime_checkable
 class Plotter(Protocol):
@@ -19,7 +23,9 @@ class Plotter(Protocol):
 
     def __call__(
         self, data: pd.DataFrame, config: PlotConfig | None = None, **kwargs: Any
-    ) -> Figure: ...
+    ) -> Figure:
+        """Standard interface for plotting functions."""
+        ...
 
 
 def save_figure(
@@ -28,8 +34,7 @@ def save_figure(
     config: PlotConfig | None = None,
     formats: list[str] | None = None,
 ) -> None:
-    """
-    Saves a matplotlib figure in multiple formats defined by PlotConfig.
+    """Saves a matplotlib figure in multiple formats defined by PlotConfig.
 
     Args:
         fig: The matplotlib Figure object.

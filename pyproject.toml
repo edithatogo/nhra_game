@@ -42,6 +42,7 @@ dependencies = [
     "flax>=0.8",
     "jaxtyping>=0.2",
     "spacy>=3.7",
+    "attrs>=23.2.0,<24.0.0",
 ]
 
 [project.optional-dependencies]
@@ -49,52 +50,6 @@ opt = ["optuna>=3.6"]
 accel = ["chex>=0.1", "numpyro>=0.13", "polars>=0.20"]
 observability = ["logfire>=0.46"]
 
-[tool.poetry]
-# Legacy section for build-backend and packages
-packages = [
-    {include = "nhra_gt", from = "src"},
-    {include = "scripts"}
-]
-
-[tool.poetry.group.dev.dependencies]
-pytest = ">=7.4"
-pytest-benchmark = "*"
-hypothesis = ">=6.100"
-hypothesis-auto = "*"
-icontract = "*"
-locust = "*"
-atheris = {version = "*", markers = "sys_platform == 'linux'"}
-ruff = ">=0.8"
-mypy = ">=1.10"
-types-requests = "*"
-types-PyYAML = "*"
-types-setuptools = "*"
-pandas-stubs = "*"
-pre-commit = ">=3.7"
-nox = ">=2024.0"
-isort = ">=5.13"
-mkdocs = ">=1.6"
-mkdocs-material = ">=9.5"
-pytest-mock = "*"
-pytest-cov = "*"
-scalene = ">=1.5"
-deptry = "*"
-bandit = "^1.9.2"
-pyright = "*"
-typeguard = "*"
-mkdocstrings-python = "^2.0.1"
-mkdocs-gen-files = "^0.6.0"
-mkdocs-git-revision-date-localized-plugin = "^1.5.0"
-mkdocs-literate-nav = "*"
-mkdocs-section-index = "*"
-mkdocs-jupyter = "*"
-mike = "*"
-pytest-mpl = "^0.18.0"
-kaleido = "^1.2.0"
-reportlab = "^4.4.7"
-playwright = "^1.57.0"
-pytest-playwright = "^0.7.2"
-vcrpy = "^7.0.0"
 
 [tool.coverage.run]
 omit = ["tests/*", "scripts/*", ".nox/*", ".gemini/*", "*/__init__.py"]
@@ -121,11 +76,48 @@ exclude_lines = [
 directory = "htmlcov"
 
 [build-system]
-requires = ["poetry-core>=2.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "pytest>=7.4",
+    "pytest-benchmark",
+    "hypothesis>=6.100",
+    "hypothesis-auto",
+    "icontract",
+    "locust",
+    "atheris; sys_platform == 'linux'",
+    "ruff>=0.8",
+    "mypy>=1.10",
+    "types-requests",
+    "types-PyYAML",
+    "types-setuptools",
+    "pandas-stubs",
+    "pre-commit>=3.7",
+    "nox>=2024.0",
+    "isort>=5.13",
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
+    "pytest-mock",
+    "pytest-cov",
+    "scalene>=1.5",
+    "bandit>=1.9.2",
+    "pyright",
+    "typeguard",
+    "mkdocstrings-python>=2.0.1",
+    "mkdocs-gen-files>=0.6.0",
+    "mkdocs-git-revision-date-localized-plugin>=1.5.0",
+    "mkdocs-literate-nav",
+    "mkdocs-section-index",
+    "mkdocs-jupyter",
+    "mike",
+    "pytest-mpl>=0.18.0",
+    "kaleido>=1.2.0",
+    "reportlab>=4.4.7",
+    "playwright>=1.57.0",
+    "pytest-playwright>=0.7.2",
+    "vcrpy>=7.0.0",
     "basedpyright>=1.36.2",
     "commitizen>=4.11.0",
     "deptry>=0.24.0",
@@ -133,6 +125,8 @@ dev = [
     "pip-audit>=2.10.0",
     "py>=1.11.0",
     "vulture>=2.14",
+    "velin>=0.0.1",
+    "codespell>=2.2.6",
 ]
 
 [tool.ruff]
@@ -164,6 +158,7 @@ exclude = [
 [tool.ruff.lint]
 select = [
     "E", "F", "B", "UP", "SIM", "A", "C4", "N", "PT", "S", "I",
+    "D",    # pydocstyle
     "RUF",  # Ruff-specific
     "ARG",  # Unused arguments
     "T20",  # Print statements
@@ -180,48 +175,14 @@ ignore = [
     "PTH",   # Use pathlib (ongoing migration)
 ]
 
-[tool.commitizen]
-name = "cz_conventional_commits"
-tag_format = "v$version"
-version_scheme = "semver"
-version_provider = "pep621"
-update_changelog_on_bump = true
-major_version_zero = true
-
-[tool.interrogate]
-ignore-init-method = true
-ignore-init-module = false
-ignore-magic = false
-ignore-semiprivate = false
-ignore-private = false
-ignore-property-decorators = false
-ignore-module = false
-ignore-nested-functions = false
-ignore-nested-classes = true
-ignore-setters = false
-fail-under = 80
-exclude = ["setup.py", "docs", "build", "dist", ".nox", ".venv", ".git", "__pycache__", "tests"]
-ignore-regex = ["^get$", "^mock_.*", ".*Base$"]
-verbose = 0
-quiet = false
-color = true
-"scripts/**" = ["E402", "T201", "PTH", "ARG"]
-"tests/**" = ["S101", "S105", "PT011", "B017", "E402", "S607", "S603", "ARG001", "ARG002", "T201", "RUF059"]
-"src/nhra_gt/agent_logic.py" = ["F821", "ARG001"]
-"src/nhra_gt/engine.py" = ["F821", "UP037", "E402"]
-"src/nhra_gt/solvers_jax.py" = ["F821", "UP037"]
-"src/nhra_gt/hierarchical_jax.py" = ["F821", "UP037"]
-"src/nhra_gt/calibration/differentiable.py" = ["F821", "UP037"]
-"src/nhra_gt/audit/*" = ["S110", "S112"]
-"src/nhra_gt/domain/audit.py" = ["S607", "S603"]
-"src/nhra_gt/interfaces/protocols.py" = ["F401"]
-"src/nhra_gt/sensitivity.py" = ["E402"]
-"src/nhra_gt/visualization/interactive.py" = ["C408"]
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 line-ending = "lf"
+docstring-code-format = true
 
 [tool.deptry]
 ignore_notebooks = true
@@ -230,7 +191,7 @@ known_first_party = ["nhra_gt", "scripts"]
 
 [tool.deptry.per_rule_ignores]
 DEP001 = ["nhra_gt", "scripts"]
-DEP002 = ["scipy", "snakemake", "jaxlib", "jaxtyping", "polars", "seaborn", "pydantic-settings", "pandera", "networkx", "streamlit", "optuna", "chex", "reportlab", "kaleido"]
+DEP002 = ["scipy", "snakemake", "jaxlib", "jaxtyping", "polars", "seaborn", "pydantic-settings", "pandera", "networkx", "streamlit", "optuna", "chex", "reportlab", "kaleido", "attrs"]
 DEP003 = ["yaml", "pyxlsb"]
 DEP004 = ["nox", "pytest", "hypothesis", "logfire", "mypy", "ruff", "bandit", "deptry", "jaxopt"]
 
@@ -242,6 +203,16 @@ skips = ["B101"]
 paths_to_mutate = "src/nhra_gt"
 tests_dir = "tests"
 runner = "python -m pytest -q"
+
+[tool.vulture]
+exclude = ["tests", "scripts", ".nox", ".gemini"]
+ignore_decorators = ["@task", "@pytest.fixture"]
+ignore_names = ["visit_*", "do_*", "tol", "discount_rate", "action", "actions", "Int"]
+make_whitelist = true
+min_confidence = 100
+paths = ["src"]
+sort_by_size = true
+verbose = false
 
 [tool.basedpyright]
 typeCheckingMode = "basic"

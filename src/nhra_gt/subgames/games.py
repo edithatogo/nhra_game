@@ -1,3 +1,5 @@
+"""Payoff matrix generators for NHRA strategic subgames."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -44,15 +46,24 @@ def definition_game(gp: GameParams) -> TwoPlayerGame:
     # Payoffs (R vs E)
     u_row = np.array(
         [
-            [1.0 + realism_benefit - realism_cost, 1.0 - b.def_row_realism_offset - realism_cost],
-            [1.0 + strict_benefit - strict_cost, 1.0 - b.def_row_strict_offset - strict_cost],
+            [
+                b.base_payoff + realism_benefit - realism_cost,
+                b.base_payoff - b.def_row_realism_offset - realism_cost,
+            ],
+            [
+                b.base_payoff + strict_benefit - strict_cost,
+                b.base_payoff - b.def_row_strict_offset - strict_cost,
+            ],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
-            [1.0 + realism_benefit - b.def_col_realism_offset, 1.0 - b.def_col_realism_cost],
-            [1.0 - b.def_col_strict_cost_1, 1.0 - b.def_col_strict_cost_2],
+            [
+                b.base_payoff + realism_benefit - b.def_col_realism_offset,
+                b.base_payoff - b.def_col_realism_cost,
+            ],
+            [b.base_payoff - b.def_col_strict_cost_1, b.base_payoff - b.def_col_strict_cost_2],
         ],
         dtype=float,
     )
@@ -70,7 +81,7 @@ def bargaining_game(gp: GameParams) -> TwoPlayerGame:
     # Political capital boosts the effectiveness of agreement
     converge_gain = (
         b.barg_converge_gain_base
-        + b.barg_converge_pr_weight * (pr - 1.0)
+        + b.barg_converge_pr_weight * (pr - b.base_payoff)
         + b.barg_converge_pc_weight * pc
     )
     conflict_cost = b.barg_conflict_cost_base + b.barg_conflict_pr_weight * pr
@@ -79,20 +90,27 @@ def bargaining_game(gp: GameParams) -> TwoPlayerGame:
     u_row = np.array(
         [
             [
-                1.0 + converge_gain - b.barg_row_converge_ps_penalty * ps,
-                1.0 - b.barg_row_converge_base_penalty - b.barg_row_converge_pr_penalty * pr,
+                b.base_payoff + converge_gain - b.barg_row_converge_ps_penalty * ps,
+                b.base_payoff
+                - b.barg_row_converge_base_penalty
+                - b.barg_row_converge_pr_penalty * pr,
             ],
-            [1.0 + narrative_gain - b.barg_row_narrative_pr_penalty * pr, 1.0 - conflict_cost],
+            [
+                b.base_payoff + narrative_gain - b.barg_row_narrative_pr_penalty * pr,
+                b.base_payoff - conflict_cost,
+            ],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
             [
-                1.0 + converge_gain - b.barg_col_converge_ps_penalty * ps,
-                1.0 - b.barg_col_converge_base_penalty - b.barg_col_converge_pr_penalty * pr,
+                b.base_payoff + converge_gain - b.barg_col_converge_ps_penalty * ps,
+                b.base_payoff
+                - b.barg_col_converge_base_penalty
+                - b.barg_col_converge_pr_penalty * pr,
             ],
-            [1.0 - b.barg_col_narrative_penalty, 1.0 - conflict_cost],
+            [b.base_payoff - b.barg_col_narrative_penalty, b.base_payoff - conflict_cost],
         ],
         dtype=float,
     )
@@ -107,26 +125,36 @@ def cost_shifting_game(gp: GameParams) -> TwoPlayerGame:
     csi = gp.cost_shifting_intensity
     b = gp.behavior
 
-    coop_gain = b.shift_coop_gain_base + b.shift_coop_eg_weight * (1.0 - eg)
+    coop_gain = b.shift_coop_gain_base + b.shift_coop_eg_weight * (b.base_payoff - eg)
     shift_gain = b.shift_gain_base + b.shift_eg_weight * eg + b.shift_csi_weight * csi
     pr_cost = b.shift_pr_cost_weight * pr
 
     u_row = np.array(
         [
-            [1.0 + coop_gain - pr_cost, 1.0 - b.shift_row_coop_penalty - pr_cost],
             [
-                1.0 + shift_gain - b.shift_row_shift_pr_penalty * pr,
-                1.0 - b.shift_row_shift_base_penalty - b.shift_row_shift_pr_heavy_penalty * pr,
+                b.base_payoff + coop_gain - pr_cost,
+                b.base_payoff - b.shift_row_coop_penalty - pr_cost,
+            ],
+            [
+                b.base_payoff + shift_gain - b.shift_row_shift_pr_penalty * pr,
+                b.base_payoff
+                - b.shift_row_shift_base_penalty
+                - b.shift_row_shift_pr_heavy_penalty * pr,
             ],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
-            [1.0 + coop_gain - pr_cost, 1.0 + shift_gain - b.shift_row_shift_pr_penalty * pr],
             [
-                1.0 - b.shift_row_coop_penalty - pr_cost,
-                1.0 - b.shift_row_shift_base_penalty - b.shift_row_shift_pr_heavy_penalty * pr,
+                b.base_payoff + coop_gain - pr_cost,
+                b.base_payoff + shift_gain - b.shift_row_shift_pr_penalty * pr,
+            ],
+            [
+                b.base_payoff - b.shift_row_coop_penalty - pr_cost,
+                b.base_payoff
+                - b.shift_row_shift_base_penalty
+                - b.shift_row_shift_pr_heavy_penalty * pr,
             ],
         ],
         dtype=float,
@@ -139,27 +167,33 @@ def discharge_coordination_game(gp: GameParams) -> TwoPlayerGame:
     """Discharge coordination: coordinate 'C' vs fragment 'F'."""
     pr = gp.pressure
     b = gp.behavior
-    d_excess = max(0.0, gp.discharge_delay - 1.0)
+    d_excess = max(0.0, gp.discharge_delay - b.base_payoff)
     benefit = b.disc_benefit_base + b.disc_benefit_slope * d_excess
-    cost = b.disc_cost_base + b.disc_cost_slope * (1.0 - min(1.0, d_excess))
+    cost = b.disc_cost_base + b.disc_cost_slope * (b.base_payoff - min(b.base_payoff, d_excess))
     pr_penalty = b.disc_pr_penalty_weight * pr
 
     u_row = np.array(
         [
-            [1.0 + benefit - cost - pr_penalty, 1.0 - b.disc_row_coop_penalty - pr_penalty],
             [
-                1.0 - b.disc_row_frag_base_penalty - pr_penalty,
-                1.0 - b.disc_row_frag_heavy_penalty - b.disc_row_frag_pr_penalty * pr,
+                b.base_payoff + benefit - cost - pr_penalty,
+                b.base_payoff - b.disc_row_coop_penalty - pr_penalty,
+            ],
+            [
+                b.base_payoff - b.disc_row_frag_base_penalty - pr_penalty,
+                b.base_payoff - b.disc_row_frag_heavy_penalty - b.disc_row_frag_pr_penalty * pr,
             ],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
-            [1.0 + benefit - cost - pr_penalty, 1.0 - b.disc_col_coop_penalty - pr_penalty],
             [
-                1.0 - b.disc_col_frag_base_penalty - pr_penalty,
-                1.0 - b.disc_col_frag_heavy_penalty - b.disc_col_frag_pr_penalty * pr,
+                b.base_payoff + benefit - cost - pr_penalty,
+                b.base_payoff - b.disc_col_coop_penalty - pr_penalty,
+            ],
+            [
+                b.base_payoff - b.disc_col_frag_base_penalty - pr_penalty,
+                b.base_payoff - b.disc_col_frag_heavy_penalty - b.disc_col_frag_pr_penalty * pr,
             ],
         ],
         dtype=float,
@@ -174,27 +208,30 @@ def governance_integration_game(gp: GameParams) -> TwoPlayerGame:
     ps = gp.political_salience
     b = gp.behavior
 
-    safety_gain = b.gov_safety_gain_base + b.gov_safety_gain_slope * (pr - 1.0)
+    safety_gain = b.gov_safety_gain_base + b.gov_safety_gain_slope * (pr - b.base_payoff)
     integration_cost = b.gov_int_cost_base + b.gov_int_cost_slope * ps
     fragmentation_risk = b.gov_frag_risk_base + b.gov_frag_risk_slope * pr
 
     u_row = np.array(
         [
             [
-                1.0 + safety_gain - integration_cost,
-                1.0 - b.gov_row_safety_penalty - integration_cost,
+                b.base_payoff + safety_gain - integration_cost,
+                b.base_payoff - b.gov_row_safety_penalty - integration_cost,
             ],
             [
-                1.0 + b.gov_row_frag_bonus - fragmentation_risk,
-                1.0 - b.gov_row_frag_penalty - fragmentation_risk,
+                b.base_payoff + b.gov_row_frag_bonus - fragmentation_risk,
+                b.base_payoff - b.gov_row_frag_penalty - fragmentation_risk,
             ],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
-            [1.0 + safety_gain - b.gov_col_safety_penalty_1, 1.0 - b.gov_col_safety_penalty_2],
-            [1.0 - b.gov_col_frag_penalty_1, 1.0 - b.gov_col_frag_penalty_2],
+            [
+                b.base_payoff + safety_gain - b.gov_col_safety_penalty_1,
+                b.base_payoff - b.gov_col_safety_penalty_2,
+            ],
+            [b.base_payoff - b.gov_col_frag_penalty_1, b.base_payoff - b.gov_col_frag_penalty_2],
         ],
         dtype=float,
     )
@@ -208,12 +245,16 @@ def aged_care_interface_game(gp: GameParams) -> TwoPlayerGame:
     b = gp.behavior
     # Payoffs influenced by pressure and discharge delay
     coord_benefit = b.aged_coord_benefit_base + b.aged_coord_benefit_slope * (
-        gp.discharge_delay - 1.0
+        gp.discharge_delay - b.base_payoff
     )
     frag_cost = b.aged_frag_cost_weight * pr
 
-    u_row = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
-    u_col = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
+    u_row = np.array(
+        [[b.base_payoff + coord_benefit, b.base_payoff], [b.base_payoff, b.base_payoff - frag_cost]]
+    )
+    u_col = np.array(
+        [[b.base_payoff + coord_benefit, b.base_payoff], [b.base_payoff, b.base_payoff - frag_cost]]
+    )
 
     return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("C", "F"), col_actions=("C", "F"))
 
@@ -223,12 +264,16 @@ def ndis_interface_game(gp: GameParams) -> TwoPlayerGame:
     pr = gp.pressure
     b = gp.behavior
     coord_benefit = b.ndis_coord_benefit_base + b.ndis_coord_benefit_slope * (
-        gp.discharge_delay - 1.0
+        gp.discharge_delay - b.base_payoff
     )
     frag_cost = b.ndis_frag_cost_weight * pr
 
-    u_row = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
-    u_col = np.array([[1.0 + coord_benefit, 1.0], [1.0, 1.0 - frag_cost]])
+    u_row = np.array(
+        [[b.base_payoff + coord_benefit, b.base_payoff], [b.base_payoff, b.base_payoff - frag_cost]]
+    )
+    u_col = np.array(
+        [[b.base_payoff + coord_benefit, b.base_payoff], [b.base_payoff, b.base_payoff - frag_cost]]
+    )
 
     return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("C", "F"), col_actions=("C", "F"))
 
@@ -246,8 +291,8 @@ def coding_audit_game(gp: GameParams) -> TwoPlayerGame:
 
     u_row = np.array(
         [
-            [1.0, 1.0],  # Honest
-            [1.0 + upcode_gain, 1.0 + upcode_gain - penalty],  # Upcode
+            [b.base_payoff, b.base_payoff],  # Honest
+            [b.base_payoff + upcode_gain, b.base_payoff + upcode_gain - penalty],  # Upcode
         ]
     )
 
@@ -258,8 +303,8 @@ def coding_audit_game(gp: GameParams) -> TwoPlayerGame:
 
     u_col = np.array(
         [
-            [1.0, 1.0 - audit_cost],  # Light
-            [1.0, 1.0 - audit_cost + recovery],  # Tight
+            [b.base_payoff, b.base_payoff - audit_cost],  # Light
+            [b.base_payoff, b.base_payoff - audit_cost + recovery],  # Tight
         ]
     )
 
@@ -278,15 +323,21 @@ def compliance_game(gp: GameParams) -> TwoPlayerGame:
 
     u_row = np.array(
         [
-            [1.0 - admin + b.comp_row_tight_bonus, 1.0 - admin],
-            [1.0 + leakage, 1.0 + leakage - b.comp_row_light_penalty * ai],
+            [b.base_payoff - admin + b.comp_row_tight_bonus, b.base_payoff - admin],
+            [b.base_payoff + leakage, b.base_payoff + leakage - b.comp_row_light_penalty * ai],
         ],
         dtype=float,
     )
     u_col = np.array(
         [
-            [1.0 - b.comp_col_tight_penalty, 1.0 - b.comp_col_tight_ai_penalty * ai],
-            [1.0 - leakage, 1.0 - b.comp_col_tight_ai_penalty * ai + b.comp_col_light_base_bonus],
+            [
+                b.base_payoff - b.comp_col_tight_penalty,
+                b.base_payoff - b.comp_col_tight_ai_penalty * ai,
+            ],
+            [
+                b.base_payoff - leakage,
+                b.base_payoff - b.comp_col_tight_ai_penalty * ai + b.comp_col_light_base_bonus,
+            ],
         ],
         dtype=float,
     )
@@ -304,24 +355,24 @@ def venue_shifting_game(gp: GameParams) -> TwoPlayerGame:
     shift_gain = (
         b.venue_shift_gain_base
         + b.venue_shift_gain_eg_weight * eg
-        + b.venue_shift_gain_pr_weight * (pr - 1.0)
+        + b.venue_shift_gain_pr_weight * (pr - b.base_payoff)
     )
     strict_penalty = b.venue_strict_penalty
     enforcement_cost = b.venue_enforce_cost
 
     u_row = np.array(
         [
-            [1.0, 1.0],  # ABF (Baseline)
-            [1.0 + shift_gain, 1.0 + shift_gain - strict_penalty],  # Block
+            [b.base_payoff, b.base_payoff],  # ABF (Baseline)
+            [b.base_payoff + shift_gain, b.base_payoff + shift_gain - strict_penalty],  # Block
         ]
     )
 
     u_col = np.array(
         [
-            [1.0, 1.0 - enforcement_cost],  # Flexible
+            [b.base_payoff, b.base_payoff - enforcement_cost],  # Flexible
             [
-                1.0 - b.venue_col_strict_penalty_weight * shift_gain,
-                1.0 - enforcement_cost + b.venue_col_strict_base_bonus,
+                b.base_payoff - b.venue_col_strict_penalty_weight * shift_gain,
+                b.base_payoff - enforcement_cost + b.venue_col_strict_base_bonus,
             ],  # Strict (Reduces 'leakage' gain)
         ]
     )
@@ -330,8 +381,8 @@ def venue_shifting_game(gp: GameParams) -> TwoPlayerGame:
 
 
 def competition_game(gp: GameParams) -> TwoPlayerGame:
-    """
-    Competition game between two neighboring LHNs.
+    """Competition game between two neighboring LHNs.
+
     They compete for a fixed pool of workforce (locums) and elective volume.
 
     Actions:
@@ -352,24 +403,23 @@ def competition_game(gp: GameParams) -> TwoPlayerGame:
 
     u_row = np.array(
         [
-            [1.0, 1.0 - capture_gain],
-            [1.0 + capture_gain - cost_of_aggression, 1.0 - cost_of_aggression],
+            [b.base_payoff, b.base_payoff - capture_gain],
+            [b.base_payoff + capture_gain - cost_of_aggression, b.base_payoff - cost_of_aggression],
         ]
     )
 
     u_col = np.array(
         [
-            [1.0, 1.0 + capture_gain - cost_of_aggression],
-            [1.0 - capture_gain, 1.0 - cost_of_aggression],
+            [b.base_payoff, b.base_payoff + capture_gain - cost_of_aggression],
+            [b.base_payoff - capture_gain, b.base_payoff - cost_of_aggression],
         ]
     )
 
     return TwoPlayerGame(u_row=u_row, u_col=u_col, row_actions=("M", "A"), col_actions=("M", "A"))
 
 
-def renegotiation_game(gp: GameParams, clock: int) -> TwoPlayerGame:
-    """
-    High-stakes Hold-Up game at the 5-year Agreement expiry.
+def renegotiation_game(gp: GameParams, _clock: int) -> TwoPlayerGame:
+    """High-stakes Hold-Up game at the 5-year Agreement expiry.
 
     Players:
         Row: Commonwealth (Policy Principal)
@@ -397,12 +447,12 @@ def renegotiation_game(gp: GameParams, clock: int) -> TwoPlayerGame:
     u_row = np.array(
         [
             [
-                1.0 - b.reneg_concede_agree_cost,
-                1.0 - b.reneg_concede_holdup_cost,
+                b.base_payoff - b.reneg_concede_agree_cost,
+                b.base_payoff - b.reneg_concede_holdup_cost,
             ],  # Concede: low cost if agree, higher cost if state still holds up
             [
-                1.0,
-                1.0 - cth_fallout_cost,
+                b.base_payoff,
+                b.base_payoff - cth_fallout_cost,
             ],  # Enforce: zero cost if agree, MAX cost if hold-up triggers fallout
         ]
     )
@@ -410,12 +460,12 @@ def renegotiation_game(gp: GameParams, clock: int) -> TwoPlayerGame:
     u_col = np.array(
         [
             [
-                1.0 + b.reneg_concede_agree_gain,
-                1.0 + b.reneg_concede_holdup_gain,
+                b.base_payoff + b.reneg_concede_agree_gain,
+                b.base_payoff + b.reneg_concede_holdup_gain,
             ],  # Concede: Gain share if agree, MAX gain if hold-up forces even more
             [
-                1.0,
-                1.0 - state_failure_cost,
+                b.base_payoff,
+                b.base_payoff - state_failure_cost,
             ],  # Enforce: Neutral if agree, BAD if hold-up leads to failure
         ]
     )

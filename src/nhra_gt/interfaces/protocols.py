@@ -1,3 +1,5 @@
+"""Runtime protocols and type definitions for simulation interfaces."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
@@ -50,8 +52,7 @@ class NormalFormGame(Protocol):
         ...
 
     def payoffs(self, actions: IntArray) -> FloatArray:  # pragma: no cover
-        """
-        Calculate payoffs for all players given an action profile.
+        """Calculate payoffs for all players given an action profile.
 
         Args:
             actions: An array of actions, one for each player.
@@ -66,6 +67,14 @@ class NormalFormGame(Protocol):
 class ExtensiveFormGame(Protocol):
     """Protocol for an extensive-form (tree) game."""
 
-    def is_terminal(self, state: Any) -> bool: ...  # pragma: no cover
-    def get_payoffs(self, state: Any) -> FloatArray: ...  # pragma: no cover
-    def get_legal_actions(self, state: Any) -> list[Any]: ...  # pragma: no cover
+    def is_terminal(self, state: Any) -> bool:
+        """Check if the current state is terminal."""
+        ...  # pragma: no cover
+
+    def get_payoffs(self, state: Any) -> FloatArray:
+        """Return payoffs for all players in the terminal state."""
+        ...  # pragma: no cover
+
+    def get_legal_actions(self, state: Any) -> list[Any]:
+        """Return a list of legal actions from the current state."""
+        ...  # pragma: no cover

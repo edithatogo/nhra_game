@@ -121,6 +121,7 @@ The model is built on a modular four-layer architecture:
 We adhere to high-integrity software engineering standards:
 
 - **Linting/Formatting:** [Ruff](https://github.com/astral-sh/ruff) (Strict)
+- **Dead Code/Dependencies:** [Vulture](https://github.com/jendrikseipp/vulture) and [Deptry](https://github.com/fpgmaas/deptry)
 - **Type Checking:** [Basedpyright](https://docs.basedpyright.com/) (Standard mode baseline)
 - **Testing:** [Pytest](https://docs.pytest.org/) & [Hypothesis](https://hypothesis.readthedocs.io/)
 - **Environment:** [Nox](https://nox.thea.codes/) for multi-version orchestration.

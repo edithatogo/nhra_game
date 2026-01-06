@@ -2,6 +2,13 @@
 
 **Goal:** Align the project with pyOpenSci standards, automate documentation deployment, and prepare for JAX-based acceleration.
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Community & Documentation (pyOpenSci)
 
 - [x] **Task 1.1: Community Health Files**

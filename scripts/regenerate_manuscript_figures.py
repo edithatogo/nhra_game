@@ -1,3 +1,7 @@
+"""Regenerates all figures for the research manuscript."""
+
+from __future__ import annotations
+
 from pathlib import Path
 
 import numpy as np
@@ -14,6 +18,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def load_scenarios():
+    """Load counterfactual scenarios from configuration."""
     with open("configs/scenarios.yaml") as f:
         data = yaml.safe_load(f)
     return data["scenarios"]
@@ -21,7 +26,6 @@ def load_scenarios():
 
 def run_scenario(name, params_dict, base_params, years=6):
     """Run a single scenario and return the trajectory DataFrame."""
-
     # Create scenario-specific params
     # Filter params_dict to only include keys that are in ParamsJax fields
     valid_keys = ParamsJax.__dataclass_fields__.keys()
@@ -58,6 +62,7 @@ def run_scenario(name, params_dict, base_params, years=6):
 
 
 def generate_figures():
+    """Generate all manuscript figures for all scenarios."""
     print("Loading configuration...")
     scenarios_config = load_scenarios()
 

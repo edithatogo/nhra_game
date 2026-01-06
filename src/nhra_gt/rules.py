@@ -1,5 +1,4 @@
-"""
-Modular Rules Engine for NHRA simulation.
+"""Modular Rules Engine for NHRA simulation.
 
 This module defines the policy rules (caps, audits, eligibility, reconciliation)
 as JAX-compatible PyTrees. This allows rules to be swapped dynamically and
@@ -33,8 +32,7 @@ if TYPE_CHECKING:
 
 @struct.dataclass
 class CapRule:
-    """
-    Handles growth cap logic for Commonwealth funding.
+    """Handles growth cap logic for Commonwealth funding.
 
     Supports both 'Hard' (strict limit) and 'Soft' (marginal reduction) caps.
     """
@@ -77,8 +75,7 @@ class CapRule:
 
 @struct.dataclass
 class AuditRule:
-    """
-    Handles integrity and audit pressure logic.
+    """Handles integrity and audit pressure logic.
 
     Defines how coding intensity translates into detection risk or financial penalties.
     """
@@ -114,8 +111,7 @@ class AuditRule:
 
 @struct.dataclass
 class EligibilityRule:
-    """
-    Determines NWAU eligibility and activity stream partitioning.
+    """Determines NWAU eligibility and activity stream partitioning.
 
     Defines the boundary between Activity Based Funding (ABF) and Block funding.
     """
@@ -138,8 +134,7 @@ class EligibilityRule:
 
 @struct.dataclass
 class ReconciliationRule:
-    """
-    Handles annual financial true-ups and emergency transfers.
+    """Handles annual financial true-ups and emergency transfers.
 
     Simulates the "Safety Net" or bailout mechanisms triggered by system pressure.
     """

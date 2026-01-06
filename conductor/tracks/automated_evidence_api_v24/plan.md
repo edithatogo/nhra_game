@@ -2,6 +2,13 @@
 
 **Goal:** Transition to API-driven data ingestion and establish a professional academic bibliography management system.
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: AIHW MyHospitals API Ingestion [checkpoint: 6e45873]
 
 - [x] **Task 1.1: AIHW API Client Implementation (TDD)**

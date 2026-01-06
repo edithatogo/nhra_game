@@ -1,0 +1,55 @@
+2026-01-06 21:56:23,536 [ERROR] Test failed: test_page_load
+2026-01-06 21:56:23,537 [ERROR] Error details: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator("[data-testid='stSidebar']") to be visible
+
+2026-01-06 21:57:26,552 [ERROR] Test failed: test_no_critical_errors
+2026-01-06 21:57:26,552 [ERROR] Error details: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator("[data-testid='stAppViewContainer']") to be visible
+
+2026-01-06 21:57:36,291 [ERROR] Test failed: test_sidebar_visible
+2026-01-06 21:57:36,291 [ERROR] Error details: Locator expected to be visible
+Actual value: <element(s) not found>
+Call log:
+  - Expect "to_be_visible" with timeout 5000ms
+  - waiting for locator("[data-testid='stSidebar']")
+
+2026-01-06 21:58:39,962 [ERROR] Test failed: test_navigation_smoke
+2026-01-06 21:58:39,962 [ERROR] Error details: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator("[data-testid='stSidebarNav']") to be visible
+
+2026-01-06 22:07:01,041 [ERROR] Test failed: test_page_load
+2026-01-06 22:07:01,042 [ERROR] Error details: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator("[data-testid='stSidebar']") to be visible
+
+2026-01-06 22:08:04,297 [ERROR] Test failed: test_no_critical_errors
+2026-01-06 22:08:04,298 [ERROR] Error details: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator("[data-testid='stAppViewContainer']") to be visible
+
+2026-01-06 22:08:13,145 [ERROR] Test failed: test_sidebar_visible
+2026-01-06 22:08:13,145 [ERROR] Error details: Locator expected to be visible
+Actual value: <element(s) not found>
+Call log:
+  - Expect "to_be_visible" with timeout 5000ms
+  - waiting for locator("[data-testid='stSidebar']")
+
+2026-01-06 22:09:16,327 [ERROR] Test failed: test_navigation_smoke
+2026-01-06 22:09:16,327 [ERROR] Error details: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator("[data-testid='stSidebarNav']") to be visible
+
+2026-01-06 23:37:03,462 [ERROR] Test failed: test_remote_smoke_load
+2026-01-06 23:37:03,463 [ERROR] Error details: Locator expected to contain text 'NHRA Strategic Scenario'
+Actual value: <element(s) not found>
+Call log:
+  - Expect "to_contain_text" with timeout 60000ms
+  - waiting for get_by_role("heading", level=1).filter(has_text="Analysis")
+
+2026-01-06 23:38:45,625 [ERROR] Test failed: test_remote_smoke_load
+2026-01-06 23:38:45,625 [ERROR] Error details: Page.wait_for_selector: Timeout 60000ms exceeded.
+Call log:
+  - waiting for locator("[data-testid='stAppViewContainer']") to be visible

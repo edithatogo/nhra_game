@@ -36,3 +36,11 @@ The NHRA game theory model contains numerous hardcoded coefficients and "magic n
 - [ ] All existing tests pass (parity check).
 - [ ] A calibration smoke test demonstrates that the JAX optimizer can now "tune" a previously hardcoded coefficient.
 - [ ] **Final Verification:** The `codebase_investigator` agent confirms no significant hardcoded parameters remain.
+
+## Acceptance Checklist (Evaluation)
+
+- [ ] Requirements and scope validated against this spec
+- [ ] Acceptance criteria evaluated and recorded (pass/fail)
+- [ ] CI green and key workflows verified
+- [ ] Deployment/runtime checks complete (if applicable)
+- [ ] Deviations or follow-ups documented

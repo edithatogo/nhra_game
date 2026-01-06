@@ -1,86 +1,60 @@
-from __future__ import annotations
-
-"""
-Graphviz DOT to Mermaid (.mmd) best-effort conversion.
-
-Supported:
-- node [label="..."]
-- edges like: A -> B [label="..."]
-
-Limitations:
-- clusters/subgraphs are ignored
-- styling is ignored
-"""
+"""Converts Graphviz DOT files to Mermaid format."""
 
 import re
 from pathlib import Path
 
-NODE_LABEL = re.compile(r'^\s*(?P<id>[A-Za-z0-9_]+)\s*\[.*label="(?P<label>[^"]*)".*\];\s*$')
-EDGE = re.compile(
-    r"^\s*(?P<src>[A-Za-z0-9_]+)\s*->\s*(?P<dst>[A-Za-z0-9_]+)\s*(?:\[(?P<attrs>[^\]]+)\])?;\s*$"
-)
-ATTR_LABEL = re.compile(r'label="([^"]*)"')
-
 
 def dot_to_mermaid(dot_text: str, direction: str = "LR") -> str:
+    """Convert DOT syntax to Mermaid graph syntax."""
     labels: dict[str, str] = {}
     edges: list[tuple[str, str, str | None]] = []
 
-    for raw in dot_text.splitlines():
-        line = raw.strip()
-        if (
-            not line
-            or line.startswith(("//", "digraph", "graph", "node", "edge"))
-            or line in ("{", "}")
-        ):
-            continue
+    # Node label mapping
+    NODE_LABEL = re.compile(r'^\s*(?P<id>[A-Za-z0-9_]+)\s*\[.*label="(?P<label>[^"]*)".*\];\s*$')
+    for line in dot_text.splitlines():
         m = NODE_LABEL.match(line)
         if m:
-            labels[m.group("id")] = m.group("label").replace("\\n", "\n")
-            continue
+            labels[m.group("id")] = m.group("label")
+
+    # Edge extraction
+    EDGE = re.compile(
+        r'^\s*(?P<u1>[A-Za-z0-9_]+)\s*->\s*(?P<v1>[A-Za-z0-9_]+)\s*(?:[.*label="(?P<label>[^"]*)".*])? ;\s*$'
+    )
+    for line in dot_text.splitlines():
         m = EDGE.match(line)
         if m:
-            lab = None
-            attrs = m.group("attrs") or ""
-            ml = ATTR_LABEL.search(attrs)
-            if ml:
-                lab = ml.group(1)
-            edges.append((m.group("src"), m.group("dst"), lab))
+            edges.append((m.group("u1"), m.group("v1"), m.group("label")))
 
-    for s, d, _ in edges:
-        labels.setdefault(s, s)
-        labels.setdefault(d, d)
+    mmd = [f"graph {direction}"]
+    # Add nodes with labels
+    for nid, lab in labels.items():
+        mmd.append(f'    {nid}["{lab}"]')
 
-    out = []
-    out.append(
-        '%%{init: {"theme":"base","flowchart":{"curve":"basis","nodeSpacing":55,"rankSpacing":75},"themeVariables":{"fontFamily":"Inter, Arial, sans-serif","fontSize":"14px","lineColor":"#444444"}}}%%'
-    )
-    out.append(f"flowchart {direction}")
-    for nid, lab in sorted(labels.items()):
-        lab = lab.replace('"', '"')
-        lab = lab.replace("\n", "<br/>")
-        out.append(f'  {nid}["{lab}"]')
-    out.append("")
-    for s, d, lab in edges:
-        if lab:
-            out.append(f"  {s} -->|{lab}| {d}")
+    # Add edges
+    for u, v, l in edges:
+        if l:
+            mmd.append(f'    {u} -- "{l}" --> {v}')
         else:
-            out.append(f"  {s} --> {d}")
-    return "\n".join(out)
+            mmd.append(f"    {u} --> {v}")
+
+    return "\n".join(mmd)
 
 
 def main() -> None:
+    """Run CLI for DOT to Mermaid conversion."""
     import argparse
 
-    ap = argparse.ArgumentParser()
-    ap.add_argument("dot", type=Path)
-    ap.add_argument("--out", type=Path, required=True)
-    ap.add_argument("--dir", type=str, default="LR")
-    args = ap.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input", type=Path)
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
 
-    text = args.dot.read_text(encoding="utf-8")
-    mmd = dot_to_mermaid(text, direction=args.dir)
-    args.out.write_text(mmd, encoding="utf-8")
+    txt = args.input.read_text(encoding="utf-8")
+    out = dot_to_mermaid(txt)
+    if args.output:
+        args.output.write_text(out, encoding="utf-8")
+    else:
+        print(out)
 
 
 if __name__ == "__main__":

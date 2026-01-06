@@ -31,3 +31,11 @@ In the current model, capacity adjusts linearly toward a target. This track intr
 
 - Simulation demonstrates "Sticky Capacity": LHNs defer expansion until pressure is sustained.
 - Dashboard shows "Adjustment Overhead" as a component of funding leakage or fiscal cost.
+
+## Acceptance Checklist (Evaluation)
+
+- [ ] Requirements and scope validated against this spec
+- [ ] Acceptance criteria evaluated and recorded (pass/fail)
+- [ ] CI green and key workflows verified
+- [ ] Deployment/runtime checks complete (if applicable)
+- [ ] Deviations or follow-ups documented

@@ -51,3 +51,17 @@ To modernize the NHRA Game simulation pipeline by modularizing the workflow orch
 2. SpaCy pipeline correctly extracts entities from sample policy text.
 3. PM4PY generates at least one DFG and one Drift plot from simulation output.
 4. End-to-end integration test passes in < 5 minutes.
+
+## Acceptance Checklist (Evaluation)
+
+- [x] Requirements and scope validated against this spec
+- [x] Acceptance criteria evaluated and recorded (pass/fail)
+  - PASS: Modular Snakemake (Phase 1)
+  - PASS: NLP SpaCy integration (Phase 1)
+  - PASS: Integration testing (Phase 3)
+  - FAIL/CANCELLED: PM4PY (Phase 2 cancelled to prioritize pipeline robustness)
+- [x] CI green and key workflows verified
+- [x] Deployment/runtime checks complete (if applicable)
+- [x] Deviations or follow-ups documented
+  - **Deviation:** Advanced Process Mining (PM4PY) was cancelled to focus resources on pipeline modularity and error reconciliation.
+  - **Follow-up:** Re-evaluate Process Mining for a future specialized track if needed.

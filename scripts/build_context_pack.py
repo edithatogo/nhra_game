@@ -35,6 +35,7 @@ ORDER = [
 
 
 def read_any(path: Path) -> str:
+    """Read file content, rendering CSVs as simple tables."""
     if path.suffix.lower() == ".csv":
         # render small CSV as markdown table-ish
         text = path.read_text(encoding="utf-8").strip()
@@ -43,6 +44,7 @@ def read_any(path: Path) -> str:
 
 
 def main() -> None:
+    """Compile the context pack from individual documentation files."""
     out = CTX / "CONTEXT_PACK.md"
     parts: list[str] = []
     parts.append(f"# Context Pack — NHRA game-theory repo (built {date.today().isoformat()})\n")

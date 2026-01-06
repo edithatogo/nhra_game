@@ -4,12 +4,19 @@ This repository aims to use **publicly retrievable sources only**.
 
 ## Sources used in this repo
 
+Detailed citations are maintained in [`data/bibliography/sources.bib`](../data/bibliography/sources.bib).
+
 1. **NHRA documents** (agreements, addenda, schedules) hosted on:
    - Federal Financial Relations website
    - Australian Government Department of Health, Disability and Ageing
    - National Health Funding Body (NHFB)
 2. **Hospital performance indicators** (e.g. ED≤4h) from AIHW public dashboards.
+   - *Dataset:* `data/raw/historical_aihw_api.csv` (Source: AIHW MyHospitals API)
+   - *Dataset:* `data/raw/historical_aihw_ed.csv` (Source: AIHW Historical Data)
 3. **Price/index indicators** for cost drift (e.g. wages inflation) from ABS.
+   - *Dataset:* `data/raw/abs_wpi_health_raw.csv` (Source: ABS Wage Price Index, Health Industry)
+4. **Efficiency Pricing** from IHACPA Determinations.
+   - *Dataset:* `data/calibration/economic_spine.csv` (Source: IHACPA NEP Determinations 2011-2025)
 
 ## What is *not* included
 

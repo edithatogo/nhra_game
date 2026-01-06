@@ -1,3 +1,5 @@
+"""Configuration utilities for the NHRA model."""
+
 from __future__ import annotations
 
 from pathlib import Path

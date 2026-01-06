@@ -1,3 +1,5 @@
+"""Streamlit UI components for exploring game theoretic concepts."""
+
 import streamlit as st
 
 from nhra_gt.game_theory.registry import GameRegistry
@@ -5,9 +7,7 @@ from nhra_gt.game_theory.visualization import generate_payoff_matrix_figure
 
 
 def render_game_encyclopedia(registry: GameRegistry) -> None:
-    """
-    Renders the Game Theoretic Encyclopedia UI component.
-    """
+    """Renders the Game Theoretic Encyclopedia UI component."""
     st.markdown("## Game Theoretic Encyclopedia")
     st.markdown("Explore the strategic interactions governing the NHRA ecosystem.")
 
@@ -55,9 +55,7 @@ def render_game_encyclopedia(registry: GameRegistry) -> None:
 def render_mechanism_explainer(
     game_id: str, registry: GameRegistry, expanded: bool = False
 ) -> None:
-    """
-    Renders a collapsible explainer for a specific game, designed for contextual embedding.
-    """
+    """Renders a collapsible explainer for a specific game, designed for contextual embedding."""
     game = registry.get(game_id)
     if not game:
         st.warning(f"Game '{game_id}' not found.")

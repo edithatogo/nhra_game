@@ -1,11 +1,13 @@
+"""Visualization logic for game theoretic structures (payoff matrices)."""
+
 import plotly.graph_objects as go
 
 from nhra_gt.game_theory.registry import GameDefinition
 
 
 def generate_payoff_matrix_figure(game: GameDefinition) -> go.Figure:
-    """
-    Generates a Plotly figure representing the 2x2 payoff matrix of the game.
+    """Generates a Plotly figure representing the 2x2 payoff matrix of the game.
+
     Expects game.payoffs to have 'p1_strategies', 'p2_strategies', and 'matrix'.
     """
     payoffs = game.payoffs

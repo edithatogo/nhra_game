@@ -1,5 +1,4 @@
-"""
-Policy Optimization and Parameter Search.
+"""Policy Optimization and Parameter Search.
 
 Utilities for finding optimal policy levers using JAX-accelerated objective functions.
 """
@@ -27,8 +26,7 @@ def optimize_policy_jax(
     bounds: tuple[float, float],
     objective_fn: Callable[[StateJax, PyTree], float],  # (final_state, trajectory) -> scalar
 ) -> dict[str, Any]:
-    """
-    Optimizes a single parameter to minimize a given objective.
+    """Optimizes a single parameter to minimize a given objective.
 
     Args:
         init_state: Starting state.

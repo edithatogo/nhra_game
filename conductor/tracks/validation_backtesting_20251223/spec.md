@@ -38,3 +38,11 @@ This track implements an advanced econometric validation framework to evaluate a
 - The "Blind Reveal" test results are documented, with error rates (MAPE) meeting pre-defined scientific thresholds.
 - The Dashboard "Ghost Overlay" accurately aligns historical timestamps with model trajectory years.
 - All mechanism validation tests confirm that model drivers (e.g., Access Block) are logically consistent with RoGS historical data.
+
+## Acceptance Checklist (Evaluation)
+
+- [ ] Requirements and scope validated against this spec
+- [ ] Acceptance criteria evaluated and recorded (pass/fail)
+- [ ] CI green and key workflows verified
+- [ ] Deployment/runtime checks complete (if applicable)
+- [ ] Deviations or follow-ups documented

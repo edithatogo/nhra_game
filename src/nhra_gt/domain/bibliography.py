@@ -1,5 +1,4 @@
-"""
-Bibliography and Citation Management.
+"""Bibliography and Citation Management.
 
 Handles parsing and exporting references in multiple formats (RIS, BibTeX, ENW).
 """
@@ -57,9 +56,11 @@ class BibliographyManager:
     """Manages a collection of academic references and exports to various formats."""
 
     def __init__(self) -> None:
+        """Initialize an empty bibliography manager."""
         self.references: dict[int, Reference] = {}
 
     def add_reference(self, ref: Reference) -> None:
+        """Add a reference to the collection."""
         self.references[ref.record_number] = ref
 
     def to_ris(self) -> str:

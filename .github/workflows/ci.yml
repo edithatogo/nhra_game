@@ -7,9 +7,6 @@ on:
 permissions:
   contents: read
 
-env:
-  POETRY_VERSION: "2.2.1"
-
 jobs:
   test:
     runs-on: ${{ matrix.os }}
@@ -27,7 +24,7 @@ jobs:
       - name: Set up Python
         run: uv python install ${{ matrix.python-version }}
       - name: Install dependencies
-        run: uv pip install -e '.[dev,opt]'
+        run: uv sync --all-extras --dev
       - name: Lint
         run: |
           uv run ruff check src tests

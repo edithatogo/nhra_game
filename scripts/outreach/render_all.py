@@ -1,3 +1,5 @@
+"""Renders outreach series cover images for LinkedIn and other platforms."""
+
 from __future__ import annotations
 
 import argparse
@@ -12,11 +14,14 @@ from PIL import Image, ImageOps
 
 @dataclass(frozen=True)
 class ImageTarget:
+    """Required dimensions for an image target."""
+
     width: int
     height: int
 
 
 def _bundle_dirs_from_manifest(manifest: dict) -> list[tuple[int, str, list[str]]]:
+    """Extract bundle information from the series manifest."""
     parsed: list[tuple[int, str, list[str]]] = []
     for b in manifest.get("bundles") or []:
         order = int(b["order"])
@@ -28,15 +33,18 @@ def _bundle_dirs_from_manifest(manifest: dict) -> list[tuple[int, str, list[str]
 
 
 def _targets_from_manifest(manifest: dict, key: str) -> list[ImageTarget]:
+    """Extract image dimension targets from the manifest."""
     raw = (manifest.get("platform_image_targets") or {}).get(key) or []
     return [ImageTarget(int(t["width"]), int(t["height"])) for t in raw]
 
 
 def _run(cmd: list[str]) -> None:
+    """Execute a shell command with error checking."""
     subprocess.run(cmd, check=True, capture_output=True, text=True)  # noqa: S603
 
 
 def _render_mermaid_svg(*, src: Path, dest_svg: Path, mermaid_config: Path) -> None:
+    """Render a Mermaid diagram to SVG."""
     puppeteer_config = mermaid_config.parent / "puppeteer-config.json"
     cmd = ["mmdc", "-i", str(src), "-o", str(dest_svg), "-c", str(mermaid_config)]
     if puppeteer_config.exists():
@@ -45,6 +53,7 @@ def _render_mermaid_svg(*, src: Path, dest_svg: Path, mermaid_config: Path) -> N
 
 
 def _render_mermaid_png(*, src: Path, dest_png: Path, mermaid_config: Path) -> None:
+    """Render a Mermaid diagram to PNG."""
     puppeteer_config = mermaid_config.parent / "puppeteer-config.json"
     cmd = ["mmdc", "-i", str(src), "-o", str(dest_png), "-c", str(mermaid_config)]
     if puppeteer_config.exists():
@@ -53,14 +62,17 @@ def _render_mermaid_png(*, src: Path, dest_png: Path, mermaid_config: Path) -> N
 
 
 def _render_graphviz_svg(*, src: Path, dest_svg: Path) -> None:
+    """Render a Graphviz diagram to SVG."""
     _run(["dot", "-Tsvg", str(src), "-o", str(dest_svg)])
 
 
 def _render_graphviz_png(*, src: Path, dest_png: Path) -> None:
+    """Render a Graphviz diagram to PNG."""
     _run(["dot", "-Tpng", str(src), "-o", str(dest_png)])
 
 
 def _pad_to_exact_size(*, src_png: Path, dest_png: Path, width: int, height: int) -> None:
+    """Pad an image to exact dimensions with a white background."""
     with Image.open(src_png) as img:
         img_rgba = img.convert("RGBA")
         padded = ImageOps.pad(
@@ -80,6 +92,7 @@ def render_bundle_covers(
     bundle_slug: str | None = None,
     strict_sources: bool = False,
 ) -> None:
+    """Render and resize cover images for outreach bundles."""
     manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
     bundles = _bundle_dirs_from_manifest(manifest)
 
@@ -136,6 +149,7 @@ def render_bundle_covers(
 
 
 def main() -> int:
+    """Run the CLI outreach image rendering pipeline."""
     parser = argparse.ArgumentParser(
         description="Render outreach series images (currently: cover_summary LinkedIn targets)."
     )

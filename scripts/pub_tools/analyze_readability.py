@@ -1,3 +1,5 @@
+"""Analyzes the readability of academic Markdown files."""
+
 import os
 import sys
 
@@ -5,6 +7,7 @@ import textstat
 
 
 def analyze_file(file_path):
+    """Compute readability indices for a single file."""
     if not os.path.exists(file_path):
         print(f"File not found: {file_path}")
         return

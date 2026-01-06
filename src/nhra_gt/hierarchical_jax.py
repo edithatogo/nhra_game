@@ -1,5 +1,4 @@
-"""
-Hierarchical Simulation and Constitutional Game Solvers.
+"""Hierarchical Simulation and Constitutional Game Solvers.
 
 This module handles the interaction between different levels of the health
 system (Commonwealth, Jurisdiction, LHN) using vectorized JAX operations.
@@ -14,7 +13,6 @@ from typing import Any
 import jax
 import jax.numpy as jnp
 from beartype import beartype
-from jaxtyping import Array, Float
 
 from nhra_gt.domain.state import Params, StateJax
 from nhra_gt.engine import step_jax
@@ -29,8 +27,7 @@ def hierarchical_step_jax(
     macro_strategies: Any,  # e.g. DEF and BARG
     prng_key: Any,
 ) -> tuple[StateJax, StateJax]:
-    """
-    Executes a single step in a hierarchical (Macro-Micro) simulation.
+    """Executes a single step in a hierarchical (Macro-Micro) simulation.
 
     Args:
         commonwealth_state: The global/macro state.
@@ -107,8 +104,7 @@ def solve_constitutional_game_jax(
     micro_game_factory: Any,  # (m, n) -> (u_state_micro, u_lhn)
     lam: float = 5.0,
 ) -> tuple[Any, Any, Any, Any]:
-    """
-    Solves the nested Constitutional game using backward induction.
+    """Solves the nested Constitutional game using backward induction.
 
     1. Commonwealth vs State (Macro)
     2. State vs LHN (Micro)

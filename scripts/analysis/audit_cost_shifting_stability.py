@@ -1,3 +1,5 @@
+"""Audits the stability of the cost shifting game under varying intensities."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -7,7 +9,8 @@ from nhra_gt.subgames.games import GameParams, cost_shifting_game
 from nhra_gt.subgames.nash import all_nash, select_equilibrium
 
 
-def main():
+def main() -> None:
+    """Run the cost shifting stability audit."""
     # Grid search
     intensities = np.linspace(0.0, 1.0, 21)
     pressures = np.linspace(0.8, 1.5, 21)

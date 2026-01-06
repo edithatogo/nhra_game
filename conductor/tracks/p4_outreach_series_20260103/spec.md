@@ -155,3 +155,11 @@ Provide automation to validate:
 - Actually publishing/scheduling content on LinkedIn/X.
 - Legal advice or definitive claims about intent beyond cited evidence.
 - Guaranteeing platform specs beyond what’s documented and validated at implementation time.
+
+## Acceptance Checklist (Evaluation)
+
+- [ ] Requirements and scope validated against this spec
+- [ ] Acceptance criteria evaluated and recorded (pass/fail)
+- [ ] CI green and key workflows verified
+- [ ] Deployment/runtime checks complete (if applicable)
+- [ ] Deviations or follow-ups documented

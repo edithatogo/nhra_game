@@ -54,3 +54,11 @@ This track focuses on finalizing the repository for a robust public release. It 
 
 * New feature development (coding logic changes unrelated to CI/Docs/Release).
 * Major architectural refactoring of the core application logic.
+
+## Acceptance Checklist (Evaluation)
+
+- [ ] Requirements and scope validated against this spec
+- [ ] Acceptance criteria evaluated and recorded (pass/fail)
+- [ ] CI green and key workflows verified
+- [ ] Deployment/runtime checks complete (if applicable)
+- [ ] Deviations or follow-ups documented

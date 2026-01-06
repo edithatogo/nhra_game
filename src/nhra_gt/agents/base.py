@@ -1,5 +1,4 @@
-"""
-Base classes and orchestrators for NHRA strategic agents.
+"""Base classes and orchestrators for NHRA strategic agents.
 
 This module defines the interfaces for strategic actors in the simulation,
 including heuristic models and LLM-driven agents. It also provides utilities
@@ -43,7 +42,7 @@ class BriefGenerator:
     """Converts simulation state into a textual narrative for LLM consumption."""
 
     @staticmethod
-    def generate(state: State, params: Params, role: str) -> str:
+    def generate(state: State, _params: Params, role: str) -> str:
         """Generate a policy brief for a specific role (Commonwealth/State/Provider)."""
         mode_desc = {
             "normal": "The system is currently stable.",
@@ -96,12 +95,12 @@ You must choose strategies for the current period.
 
 
 class AuditorValidator:
-    """
-    Evaluates agent strategic traces from an 'Auditor' perspective.
+    """Evaluates agent strategic traces from an 'Auditor' perspective.
+
     Scores realism and detects unlikely gaming behavior.
     """
 
-    def validate(self, trace: list[dict[str, Any]]) -> dict[str, Any]:
+    def validate(self, _trace: list[dict[str, Any]]) -> dict[str, Any]:
         """Evaluates agent strategic traces from an 'Auditor' perspective.
 
         Scores realism and detects unlikely gaming behavior.
@@ -121,18 +120,17 @@ class AuditorValidator:
 
 
 class LLMAgent(Agent):
-    """
-    An agent that uses a Large Language Model to make strategic decisions.
-    """
+    """An agent that uses a Large Language Model to make strategic decisions."""
 
     def __init__(self, role: str, model_name: str = "gemini-pro"):
+        """Initialize the LLM agent with a specific role and model."""
         self.role = role
         self.model_name = model_name
         self.brief_gen = BriefGenerator()
 
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
-        """
-        Generates a brief, calls the LLM, and parses the strategic response.
+        """Generates a brief, calls the LLM, and parses the strategic response.
+
         Note: Actual LLM call is stubbed/delegated to the environment.
         """
         self.brief_gen.generate(state, params, self.role)
@@ -155,8 +153,7 @@ class LLMAgent(Agent):
 
 
 class CommonwealthAgent(Agent):
-    """
-    The Principal (Federal Govt) setting price and compliance rules.
+    """The Principal (Federal Govt) setting price and compliance rules.
 
     Focuses on fiscal sustainability, compliance targets, and framing the NEP.
     """
@@ -170,19 +167,26 @@ class CommonwealthAgent(Agent):
         results = {}
 
         # 1. Compliance Strategy (COMP)
-        comp_prob = logistic(0.9 * params.audit_pressure - 0.7 * obs_efficiency_gap)
+        comp_prob = logistic(
+            params.behavior.h_comp_audit_weight * params.audit_pressure
+            - params.behavior.h_comp_eff_gap_weight * obs_efficiency_gap
+        )
         results["COMP"] = "T" if rng.random() < comp_prob else "L"
 
         # 2. Framing Strategy (DEF)
-        def_prob = logistic(1.3 * (obs_efficiency_gap - 0.25) + 0.9 * (obs_pressure - 1.0))
+        def_prob = logistic(
+            params.behavior.h_def_eff_gap_weight
+            * (obs_efficiency_gap - params.behavior.h_def_eff_gap_offset)
+            + params.behavior.h_def_pressure_weight
+            * (obs_pressure - params.behavior.h_def_pressure_offset)
+        )
         results["DEF"] = "R" if rng.random() < def_prob else "E"
 
         return results
 
 
 class JurisdictionAgent(Agent):
-    """
-    The Intermediary (State/Territory Govt) managing the Agreement.
+    """The Intermediary (State/Territory Govt) managing the Agreement.
 
     Focuses on budget reconciliation, political capital, and cost-shifting.
     """
@@ -203,23 +207,34 @@ class JurisdictionAgent(Agent):
         results = {}
 
         # 1. Bargaining Strategy (BARG)
-        barg_prob = logistic(0.6 * (1.2 - obs_pressure) + bailout_exp)
+        barg_prob = logistic(
+            params.behavior.h_barg_pressure_weight
+            * (params.behavior.h_barg_pressure_offset - obs_pressure)
+            + bailout_exp
+        )
         results["BARG"] = "A" if rng.random() < barg_prob else "D"
 
         # 2. Cost Shifting (SHIFT)
-        shift_prob = logistic(-1.1 * (obs_pressure - 1.0) - 1.0 * obs_efficiency_gap)
+        shift_prob = logistic(
+            -params.behavior.h_shift_pressure_weight
+            * (obs_pressure - params.behavior.h_shift_pressure_offset)
+            - params.behavior.h_shift_eff_gap_weight * obs_efficiency_gap
+        )
         results["SHIFT"] = "I" if rng.random() < shift_prob else "S"
 
         # 3. Governance (GOV)
-        gov_prob = logistic(-0.8 * (obs_pressure - 1.0) - 0.7 * params.political_salience)
+        gov_prob = logistic(
+            -params.behavior.h_venue_pressure_weight
+            * (obs_pressure - params.behavior.h_venue_pressure_offset)
+            - params.behavior.h_venue_eff_gap_weight * params.political_salience
+        )
         results["GOV"] = "I" if rng.random() < gov_prob else "S"
 
         return results
 
 
 class LHNAgent(Agent):
-    """
-    The Operator (Hospital/LHN) managing clinical demand and revenue.
+    """The Operator (Hospital/LHN) managing clinical demand and revenue.
 
     Focuses on upcoding, venue shifting, and coordination with aged care/NDIS.
     """
@@ -233,38 +248,49 @@ class LHNAgent(Agent):
         results = {}
 
         # 1. Revenue Strategy (CODING)
-        coding_prob = logistic(1.5 * (obs_pressure - 1.1) + 1.2 * obs_efficiency_gap)
+        coding_prob = logistic(
+            params.behavior.h_coding_pressure_weight
+            * (obs_pressure - params.behavior.h_coding_pressure_offset)
+            + params.behavior.h_coding_eff_gap_weight * obs_efficiency_gap
+        )
         results["CODING"] = "U" if rng.random() < coding_prob else "H"
 
         # 2. Venue Selection (VENUE_SHIFT)
-        venue_prob = logistic(1.2 * (obs_pressure - 1.1) + 0.8 * obs_efficiency_gap)
+        venue_prob = logistic(
+            params.behavior.h_venue_pressure_weight
+            * (obs_pressure - params.behavior.h_venue_pressure_offset)
+            + params.behavior.h_venue_eff_gap_weight * obs_efficiency_gap
+        )
         results["VENUE_SHIFT"] = "B" if rng.random() < venue_prob else "A"
 
         # 3. Operations Coordination (DISC, AGED, NDIS)
-        results["DISC"] = "C" if rng.random() < 0.7 else "F"
-        results["AGED"] = "C" if rng.random() < 0.6 else "F"
-        results["NDIS"] = "C" if rng.random() < 0.6 else "F"
+        results["DISC"] = "C" if rng.random() < params.behavior.h_disc_base else "F"
+        results["AGED"] = "C" if rng.random() < params.behavior.h_aged_base else "F"
+        results["NDIS"] = "C" if rng.random() < params.behavior.h_ndis_base else "F"
 
         # 4. Competition Strategy
-        comp_prob = logistic(1.1 * (obs_pressure - 1.0) + 0.5 * params.cannibalization_beta)
+        comp_prob = logistic(
+            params.behavior.h_comp_mode_pressure_weight
+            * (obs_pressure - params.behavior.h_comp_mode_pressure_offset)
+            + params.behavior.h_comp_mode_cannibal_weight * params.cannibalization_beta
+        )
         results["COMPETITION"] = "A" if rng.random() < comp_prob else "M"
 
         return results
 
 
 class HeuristicAgent(Agent):
-    """
-    Orchestrator that delegates to distinct Commonwealth, State, and LHN agents.
-    """
+    """Orchestrator that delegates to distinct Commonwealth, State, and LHN agents."""
 
     def decide(self, state: State, params: Params, rng: np.random.Generator) -> dict[str, Any]:
+        """Delegate decision making to Commonwealth, State, and LHN sub-agents."""
         cw = CommonwealthAgent()
         jr = JurisdictionAgent()
         lhn = LHNAgent()
 
         results = {
             "SIGNAL": "L",
-            "SIGNAL_QUALITY": 0.9,
+            "SIGNAL_QUALITY": params.behavior.h_signal_base,
         }
 
         # Aggregate decisions from all levels

@@ -139,6 +139,25 @@ All tasks follow a strict lifecycle:
 
 10. **Announce Completion:** Inform the user that the phase is complete and the checkpoint has been created, with the detailed verification report attached as a git note.
 
+### Phase Gate: CI-Relevant Verification
+
+**Trigger:** Any plan item labeled "Phase Gate".
+
+1. **Recheck Phase Outputs:** Review the completed phase tasks in `plan.md` and confirm the implementation matches the intended scope.
+2. **Select CI-Relevant Tests:** Identify the smallest set of CI-equivalent checks that cover the phase changes (from existing CI workflows or local equivalents).
+3. **Run Tests:** Execute the selected commands and fix failures before advancing to the next phase.
+4. **Record Outcomes:** Note the commands and results in the track plan or notes if required.
+
+### Track Completion Verification and Spec Reconciliation
+
+**Trigger:** Any plan item labeled "Track Gate".
+
+1. **Recheck Track Outputs:** Review the completed tasks and confirm each deliverable matches the task intent.
+2. **Spec Reconciliation:** Read `spec.md` for the track and verify each requirement is satisfied; list any deviations or follow-ups.
+3. **Acceptance Checklist Evaluation:** If `spec.md` contains an acceptance checklist, explicitly evaluate each item and record pass/fail.
+4. **Full CI + Remote Monitoring:** Run full CI locally where possible, then monitor GitHub Actions with `gh` until green; fix any failures.
+5. **Remote Runtime Verification:** Verify Streamlit Cloud health and critical flows (and remote E2E smoke checks if configured).
+
 ### Quality Gates
 
 Before marking any task complete, verify:

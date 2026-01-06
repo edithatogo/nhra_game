@@ -1,20 +1,24 @@
-from __future__ import annotations
+"""Ingests structured data from government health and economic reports."""
 
 from pathlib import Path
 
+from nhra_gt.domain.evidence import EvidenceEntry
+
 try:
     import polars as pl
-except ImportError:  # pragma: no cover
-    pl = None  # type: ignore[assignment]
-
-from nhra_gt.domain.registry import EvidenceEntry
+except ImportError:
+    pl = None
 
 
 class AIHWIngestor:
+    """Extractor for AIHW hospital performance data."""
+
     def __init__(self, source_path: Path):
+        """Initialize the AIHW ingestor with a source file path."""
         self.source_path = source_path
 
     def extract_entries(self) -> list[EvidenceEntry]:
+        """Extract evidence entries from the AIHW source."""
         if pl is None:
             import pandas as pd
 
@@ -47,10 +51,14 @@ class AIHWIngestor:
 
 
 class ABSIngestor:
+    """Extractor for ABS economic and workforce data."""
+
     def __init__(self, source_path: Path):
+        """Initialize the ABS ingestor with a source file path."""
         self.source_path = source_path
 
     def extract_entries(self) -> list[EvidenceEntry]:
+        """Extract evidence entries from the ABS source."""
         if pl is None:
             import pandas as pd
 

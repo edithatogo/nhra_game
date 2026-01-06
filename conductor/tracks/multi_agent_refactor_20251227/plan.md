@@ -1,5 +1,12 @@
 # Implementation Plan: Multi-Agent Logic Refactor
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Agent Class & Utility Foundations [checkpoint: d76ceaa]
 
 - [x] Task: Implement `AgentState` and `AgentParams` Pytrees in `src/nhra_gt/domain/state.py`.

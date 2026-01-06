@@ -1,5 +1,4 @@
-"""
-Logical Utility Functions for NHRA Agents.
+"""Logical Utility Functions for NHRA Agents.
 
 This module defines the utility functions used by LHNs and Jurisdictions to
 evaluate their strategic choices. These functions are designed to be
@@ -45,8 +44,7 @@ def beartype(fn):  # type: ignore[no-untyped-def]
 
 @struct.dataclass
 class AgentWeights:
-    """
-    Preference weights for agent utility functions.
+    """Preference weights for agent utility functions.
 
     Attributes:
         ramping_penalty: Weight on ED pressure/ramping.
@@ -79,8 +77,8 @@ def lhn_utility(
     delta_target_capacity: Any,
     weights: AgentWeights,
 ) -> Any:
-    """
-    Utility for the LHN Agent.
+    """Utility for the LHN Agent.
+
     Prioritizes minimizing ramping (pressure) and maximizing net revenue.
     Ramping penalty is non-linear (squared) to reflect political sensitivity.
     Inertia penalty discourages rapid target oscillations.
@@ -98,8 +96,8 @@ def state_utility(
     lhn_performance: Any,  # Mean LHN utility or KPI satisfaction
     weights: AgentWeights,
 ) -> Any:
-    """
-    Utility for the State Agent.
+    """Utility for the State Agent.
+
     Focuses on minimizing fiscal gaps (VFI) and maintaining LHN performance.
     """
     vfi_cost = weights.vfi_disutility * jnp.square(jnp.maximum(0, fiscal_gap))

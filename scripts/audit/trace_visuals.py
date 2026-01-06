@@ -1,16 +1,14 @@
-from __future__ import annotations
+"""Extracts influence edges from Mermaid diagrams for trace analysis."""
 
 import json
 from pathlib import Path
 
-from src.nhra_gt.audit.visual_trace import extract_edges
-
-from scripts.audit.inventory_sources import discover_sources
+from nhra_gt.audit.visual_trace import extract_visual_trace
 
 
-def trace_all_visuals() -> None:
-    """Discover all diagrams and extract strategic edges."""
-    sources = discover_sources()
+def main() -> None:
+    """Trace all visual edges in the diagrams directory."""
+    sources = {"diagrams": list(Path("diagrams").rglob("*.mmd"))}
     all_edges = {}
 
     print(f"Processing {len(sources['diagrams'])} diagram files...")
@@ -18,8 +16,7 @@ def trace_all_visuals() -> None:
         print(f"  Tracing {diag_path}...")
         try:
             content = diag_path.read_text(encoding="utf-8")
-            fmt = "mermaid" if diag_path.suffix == ".mmd" else "graphviz"
-            edges = extract_edges(content, fmt)
+            edges = extract_visual_trace(content)
             all_edges[str(diag_path)] = edges
         except Exception as e:
             print(f"    Error tracing {diag_path}: {e}")
@@ -35,4 +32,4 @@ def trace_all_visuals() -> None:
 
 
 if __name__ == "__main__":
-    trace_all_visuals()
+    main()

@@ -1,5 +1,4 @@
-"""
-System Stability and Hysteresis Metrics.
+"""System Stability and Hysteresis Metrics.
 
 Utilities for calculating phase space area and recovery times.
 """

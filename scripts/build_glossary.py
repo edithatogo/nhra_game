@@ -1,28 +1,24 @@
-from __future__ import annotations
+"""Compiles the project glossary from context documentation."""
 
-import re
 from pathlib import Path
 
 
-def build_glossary():
+def build_glossary() -> None:
+    """Parse glossary markdown and generate documentation."""
     source_path = Path("context/08_glossary_abbreviations.md")
     target_path = Path("docs_mkdocs/guides/glossary.md")
-
     if not source_path.exists():
         print("Glossary source not found.")
         return
 
-    content = source_path.read_text()
+    content = source_path.read_text(encoding="utf-8")
 
-    # Extract terms using regex: "- **TERM**: Description"
-    terms = re.findall(r"- \*\*(.*?)\*\*: (.*)", content)
+    # Simple transformation for now
+    output = "# Glossary and Abbreviations\n\n"
+    output += "This glossary is compiled from the project context files.\n\n"
+    output += content
 
-    output = "# Glossary & Abbreviations\n\n"
-    output += "Definitions for key terms and acronyms used in the NHRA Game model.\n\n"
-
-    for term, desc in terms:
-        output += f"{term}\n: {desc}\n\n"
-
+    target_path.parent.mkdir(parents=True, exist_ok=True)
     target_path.write_text(output)
     print(f"Glossary built: {target_path}")
 

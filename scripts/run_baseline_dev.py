@@ -1,3 +1,5 @@
+"""Lightweight baseline run for development and testing."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -9,10 +11,12 @@ from nhra_gt.engine import Params, run_hybrid
 
 # Mocking missing functions if needed (based on previous errors)
 def nep_series(years, p):
+    """Stub for NEP series generation."""
     return pd.DataFrame({"year": years, "nep": [p.nep_per_nwau_start] * len(years)})
 
 
 def nep_vs_cost_series(years, p):
+    """Stub for cost drift series generation."""
     return pd.DataFrame({"year": years, "nep": [1.0] * len(years), "cost": [1.0] * len(years)})
 
 
@@ -44,6 +48,7 @@ def scenario_endpoints(
 
 
 def main() -> None:
+    """Run a fast dev-fidelity baseline simulation."""
     out = Path("data/baseline")
     tables = out / "tables"
     tables.mkdir(parents=True, exist_ok=True)

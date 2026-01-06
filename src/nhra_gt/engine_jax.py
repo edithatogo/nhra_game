@@ -11,6 +11,7 @@ from nhra_gt.engine import baseline_state, lhn_step_jax, run_simulation_jax, ste
 
 
 def baseline_state_jax(start_year: int = 2025, p: ParamsJax | None = None) -> StateJax:
+    """Return the JAX baseline state for simulation initialization."""
     return baseline_state(start_year=start_year, p=p)
 
 

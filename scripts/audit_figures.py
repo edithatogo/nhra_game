@@ -1,3 +1,5 @@
+"""Audits Python files for figure generation calls."""
+
 import ast
 import os
 from pathlib import Path
@@ -28,6 +30,7 @@ def get_plotting_imports(tree: ast.AST) -> set[str]:
 
 
 def audit_file(filepath: Path) -> list[dict]:
+    """Audit a single Python file for figure generation calls."""
     try:
         with open(filepath, encoding="utf-8") as f:
             content = f.read()
@@ -77,7 +80,8 @@ def audit_file(filepath: Path) -> list[dict]:
     return findings
 
 
-def main():
+def main() -> None:
+    """Run the figure audit across the codebase."""
     root_dir = Path()
     relevant_files = []
 

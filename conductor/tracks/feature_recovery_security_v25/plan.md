@@ -2,6 +2,13 @@
 
 **Goal:** Forensic audit of legacy versions to recover lost mechanics and hardening of the codebase for public release.
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Forensic Feature Audit [checkpoint: 4e4ec2c]
 
 - [x] **Task 1.1: Semantic Logic Gap Analysis (AST)**

@@ -2,6 +2,13 @@
 
 **Goal:** Automate the ingestion of ABS Wage Price Index (WPI) data for the Health care and social assistance sector, replacing hardcoded synthetic values.
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Research & API Discovery
 
 - [x] Task: Identify the exact SDMX Dataflow ID and Query Parameters for "WPI - Health care and social assistance". (ID: `ABS,WPI`, Key: `1.THRPEB.7.Q.10.AUS.Q`)

@@ -1,5 +1,4 @@
-"""
-Streamlit Cloud Entrypoint
+"""Streamlit Cloud Entrypoint
 
 This file serves as the entry point for Streamlit Cloud deployment.
 It imports and runs the main dashboard from scripts/dashboard.py.
@@ -11,7 +10,7 @@ from pathlib import Path
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-# Import and run the dashboard (v26.0.2)
+# Import and run the dashboard (v26.0.2 - Reboot 2026-01-05)
 from scripts.dashboard import main
 
 if __name__ == "__main__":

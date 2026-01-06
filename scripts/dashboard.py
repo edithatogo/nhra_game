@@ -1,3 +1,12 @@
+"""Interactive Streamlit Dashboard for NHRA War Gaming.
+
+Provides a unified interface for:
+- Scenario Analysis
+- Strategic Network Visualization
+- Game Theoretic Encyclopedia
+- Evidence Management
+"""
+
 from __future__ import annotations
 
 import dataclasses
@@ -61,6 +70,7 @@ from nhra_gt.subgames.games import (
 
 
 def load_scenario_library() -> dict:
+    """Load predefined scenarios from YAML."""
     path = Path("configs/scenarios.yaml")
     if path.exists():
         with open(path) as f:
@@ -288,19 +298,29 @@ def st_traffic_light(status: str, label: str):
     st.markdown(f"{icon} **{label}** ({status})")
 
 
-def safe_get_col(
+def get_fallback_column(
     df: pd.DataFrame, primary_col: str, backup_col: str = "pressure_mean", label: str = "Metric"
 ) -> tuple[str, str, bool]:
-    """
-    Safely retrieves a column name, falling back to a proxy if missing.
-    Returns: (actual_col_name, display_label, is_fallback)
+    """Safely retrieves a column name, falling back to a proxy if missing.
+
+    Returns: (actual_col_name, display_label, is_fallback).
     """
     if primary_col in df.columns:
         return primary_col, label, False
     return backup_col, f"{label} (Proxy)", True
 
 
+def safe_get_col(df: pd.DataFrame, target: str, fallback: str, label: str) -> tuple[str, str, bool]:
+    """Safely retrieves a column name, falling back to a proxy if missing."""
+    if target in df.columns:
+        return target, label, False
+    return fallback, f"{label} (Fallback: {fallback})", True
+
+
 def main() -> None:
+    """Run the Streamlit dashboard application."""
+    from nhra_gt.domain.params import Params
+
     st.set_page_config(
         page_title="NHRA Strategic Scenario Dashboard", page_icon="🏥", layout="wide"
     )
@@ -618,7 +638,6 @@ def main() -> None:
     # Strategic Scenario Analysis
     # Dynamically build parameters from session state to ensure all registry
     # promotions are captured.
-    from nhra_gt.domain.params import Params
 
     overrides_final = {k: v for k, v in st.session_state.items() if isinstance(k, str)}
     p_game = Params.from_flat_dict(overrides_final)

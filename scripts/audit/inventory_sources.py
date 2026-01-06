@@ -1,4 +1,4 @@
-from __future__ import annotations
+"""Inventories and verifies the integrity of data sources (zips and diagrams)."""
 
 import zipfile
 from pathlib import Path
@@ -6,6 +6,8 @@ from typing import TypedDict
 
 
 class IntegrityReport(TypedDict):
+    """Report structure for source integrity check."""
+
     valid_zips: list[Path]
     corrupt_zips: dict[Path, str]
 

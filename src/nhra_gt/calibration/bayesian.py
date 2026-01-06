@@ -1,5 +1,4 @@
-"""
-Bayesian Calibration using NumPyro.
+"""Bayesian Calibration using NumPyro.
 
 Performs probabilistic inference to estimate model parameters from observed data.
 """
@@ -16,7 +15,6 @@ import numpyro.distributions as dist
 
 def nhra_model(years: jnp.ndarray, observed_data: dict[str, jnp.ndarray] | None = None) -> None:
     """NumPyro implementation of the NHRA simulation for Bayesian inference."""
-
     # --- Priors ---
     cost_shifting_intensity = numpyro.sample("cost_shifting_intensity", dist.Uniform(0.05, 0.80))  # noqa: F841
     fragmentation_index = numpyro.sample("fragmentation_index", dist.Uniform(0.60, 1.50))  # noqa: F841

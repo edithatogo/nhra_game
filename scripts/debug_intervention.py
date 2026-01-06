@@ -1,4 +1,6 @@
-from nhra_gt.engine import Params, apply_intervention
+"""Debug script to test intervention logic application."""
+
+from nhra_gt.domain.params import Params
 
 p = Params()
 print(f"Original: {p.cost_shifting_intensity}")

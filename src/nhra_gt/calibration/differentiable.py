@@ -1,5 +1,4 @@
-"""
-Differentiable Calibration using JAX.
+"""Differentiable Calibration using JAX.
 
 Uses gradient-based optimization to minimize prediction error against targets.
 """
@@ -12,10 +11,8 @@ import jax
 import jax.numpy as jnp
 from beartype import beartype
 from jax import lax
-from jaxtyping import Array, Float
 
-from nhra_gt.domain.params import Params
-from nhra_gt.domain.state import StateJax
+from nhra_gt.domain.state import ParamsJax, StateJax
 from nhra_gt.engine import step_jax
 
 # Define which parameters we want to calibrate and their typical bounds
@@ -28,7 +25,7 @@ PARAM_NAMES = [
 
 
 @beartype
-def map_to_params(values: Any, base_params: Params) -> Params:
+def map_to_params(values: Any, base_params: ParamsJax) -> ParamsJax:
     """Maps a flat array of values to a Params object."""
     return base_params.replace(
         cost_shifting_intensity=values[0],
@@ -41,13 +38,11 @@ def map_to_params(values: Any, base_params: Params) -> Params:
 @beartype
 def run_simulation_with_agent_jax(
     init_state: StateJax,
-    params: Params,
+    params: ParamsJax,
     prng_key: Any,
     num_steps: int,
 ) -> tuple[StateJax, Any]:
-    """
-    Differentiable simulation that includes heuristic agent choices inside the loop.
-    """
+    """Differentiable simulation that includes heuristic agent choices inside the loop."""
 
     def body_func(carry_state, key):
         # Heuristic decision making (replaces full optimization for speed/gradients)
@@ -66,7 +61,7 @@ def loss_fn(
     values: Any,
     target_within4: Any,
     init_state: StateJax,
-    base_params: Params,
+    base_params: ParamsJax,
     prng_key: Any,
 ) -> Any:
     """Calculates MSE between simulated and target within4 trajectories."""
@@ -83,12 +78,11 @@ def loss_fn(
 def calibrate_jax(
     target_data: dict[str, jnp.ndarray],
     init_state: StateJax,
-    base_params: Params,
+    base_params: ParamsJax,
     learning_rate: float = 0.01,
     max_iter: int = 100,
 ) -> Any:
     """Performs differentiable calibration using manual Gradient Descent."""
-
     # 1. Map initial params to flat array
     x = jnp.array(
         [
@@ -110,6 +104,6 @@ def calibrate_jax(
         x_next = x_curr - learning_rate * grads
         return x_next, val
 
-    final_x, losses = lax.scan(scan_body, x, jnp.arange(max_iter))
+    final_x, _losses = lax.scan(scan_body, x, jnp.arange(max_iter))
 
     return final_x

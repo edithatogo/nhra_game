@@ -1,3 +1,5 @@
+"""Checks codebase for usage of glossary terms."""
+
 import sys
 from pathlib import Path
 
@@ -47,7 +49,8 @@ def check_code_usage(root_dir, variables):
     return found
 
 
-def main():
+def main() -> None:
+    """Scan src/ for glossary variables."""
     project_root = Path(__file__).parent.parent
     glossary_path = project_root / "context/08_glossary_abbreviations.md"
 

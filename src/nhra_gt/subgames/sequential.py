@@ -1,5 +1,4 @@
-"""
-Sequential and Alternating-Offer Bargaining Solvers.
+"""Sequential and Alternating-Offer Bargaining Solvers.
 
 Includes Rubinstein infinite-horizon bargaining and Stackelberg leader-follower
 equilibrium solvers.
@@ -15,8 +14,8 @@ import numpy as np
 def rubinstein_solution(
     pie_size: float = 1.0, delta_1: float = 0.9, delta_2: float = 0.9, first_mover: int = 0
 ) -> float:
-    """
-    Calculates the Subgame Perfect Equilibrium share for the first mover
+    """Calculates the Subgame Perfect Equilibrium share for the first mover.
+
     in an infinite-horizon alternating offers bargaining game.
 
     Formula: share = (1 - delta_2) / (1 - delta_1 * delta_2)
@@ -41,8 +40,7 @@ def rubinstein_solution(
 def stackelberg_solution(
     u_leader: np.ndarray[Any, Any], u_follower: np.ndarray[Any, Any]
 ) -> tuple[int, int]:
-    """
-    Solves for the Stackelberg Equilibrium where Row is Leader and Col is Follower.
+    """Solves for the Stackelberg Equilibrium where Row is Leader and Col is Follower.
 
     Args:
         u_leader: Payoff matrix for Leader (Row player).

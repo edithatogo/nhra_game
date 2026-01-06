@@ -1,37 +1,16 @@
+"""Runs Probabilistic Sensitivity Analysis (PSA) on the NHRA model."""
+
 from __future__ import annotations
 
-import sys
-from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
 
-# Add src
-sys.path.append("src")
-
-from nhra_gt.engine import Params, run_hybrid, summarise_outcome
-from nhra_gt.sensitivity import run_psa
-
-# Define PSA Parameters
-PSA_PARAMS = [
-    "cost_shifting_intensity",
-    "discharge_delay_base",
-    "fragmentation_index",
-    "political_salience",
-]
-PSA_YEARS = list(range(2025, 2031))
+from nhra_gt.visualization.base import save_figure
 
 
-def model_wrapper(param_values: np.ndarray) -> float:
-    """Wrapper for PSA execution."""
-    p_dict = dict(zip(PSA_PARAMS, param_values, strict=False))
-    p = replace(Params(), **p_dict)
-    # Use fewer MC runs for speed in PSA loop (we rely on many parameter samples)
-    traj, _ = run_hybrid(PSA_YEARS, p, seed=None, n_mc=20)
-    return float(summarise_outcome(traj)["pressure_2030"])
-
-
-def main():
+def main() -> None:
+    """Execute the PSA workflow and save results."""
     print("Starting Probabilistic Sensitivity Analysis (PSA)...")
 
     # Define Distributions
@@ -52,7 +31,7 @@ def main():
     print(f"PSA results saved to {out_dir / 'psa_results.csv'}")
 
     # Plotting
-    from nhra_gt.visualization.base import PlotConfig, save_figure
+    from nhra_gt.visualization.base import PlotConfig
     from nhra_gt.visualization.distributional import plot_distributions
 
     config = PlotConfig()

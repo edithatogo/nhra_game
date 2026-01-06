@@ -1,5 +1,4 @@
-"""
-Helper functions for simulation analysis and legacy compatibility.
+"""Helper functions for simulation analysis and legacy compatibility.
 
 This module contains utility functions for running sensitivity analyses,
 scenario summaries, and risk calculations, wrapping the core JAX engine.

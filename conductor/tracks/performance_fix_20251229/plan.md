@@ -1,5 +1,12 @@
 # Plan: Troubleshoot Performance & Fix Deployment
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Fix Streamlit Deployment
 
 - [x] Task: TDD - Create a test script to verify `nhra_gt` package imports without optional dependencies (simulating a clean environment)

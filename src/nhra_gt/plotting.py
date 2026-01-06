@@ -1,3 +1,5 @@
+"""Standardized plotting utilities using Matplotlib and Plotly (Deprecated)."""
+
 from __future__ import annotations
 
 import warnings

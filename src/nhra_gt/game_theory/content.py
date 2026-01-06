@@ -1,5 +1,4 @@
-"""
-Populated Game Content for the NHRA Encyclopedia.
+"""Populated Game Content for the NHRA Encyclopedia.
 
 This module initializes the central registry with definitions for all subgames
 modeled in the simulation.
@@ -9,9 +8,7 @@ from nhra_gt.game_theory.registry import GameDefinition, GameRegistry
 
 
 def get_populated_registry() -> GameRegistry:
-    """
-    Returns a fully populated GameRegistry with all subgame definitions.
-    """
+    """Returns a fully populated GameRegistry with all subgame definitions."""
     # Trigger redeployment for matrix fix
     registry = GameRegistry()
 

@@ -44,20 +44,24 @@ REQUIRED_COLS = [
 
 
 def die(msg: str) -> None:
+    """Print error message and exit with status code 2."""
     print(f"ERROR: {msg}", file=sys.stderr)
     raise SystemExit(2)
 
 
 def is_public_url(s: str) -> bool:
+    """Check if string starts with a known public URL prefix."""
     s = (s or "").strip()
     return s.startswith(URL_PREFIXES)
 
 
 def is_boolish(v: str) -> bool:
+    """Check if string represents a boolean value."""
     return v.strip().lower() in {"true", "false"}
 
 
 def is_numeric(v: str) -> bool:
+    """Check if string represents a numeric value."""
     if is_boolish(v):
         return False
     try:
@@ -68,6 +72,7 @@ def is_numeric(v: str) -> bool:
 
 
 def main() -> None:
+    """Verify that all parameters in the registry have valid evidence."""
     root = Path(__file__).resolve().parents[1]
     reg_path = root / "context" / "04_parameter_registry.csv"
     if not reg_path.exists():

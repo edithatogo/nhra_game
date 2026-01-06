@@ -1,5 +1,4 @@
-"""
-Interactive Plotly Visualizations for the Dashboard.
+"""Interactive Plotly Visualizations for the Dashboard.
 
 Dynamic charts for risk, pressure, stability, and workforce dynamics.
 """
@@ -20,9 +19,7 @@ def plot_risk_pressure(
     ylabel: str,
     config: PlotConfig | None = None,
 ) -> go.Figure:
-    """
-    Plots a dual-line comparison (usually Baseline vs Scenario) for risk or pressure.
-    """
+    """Plots a dual-line comparison (usually Baseline vs Scenario) for risk or pressure."""
     if config is None:
         config = PlotConfig()
 
@@ -55,9 +52,7 @@ def plot_what_if_overlay(
     title: str,
     config: PlotConfig | None = None,
 ) -> go.Figure:
-    """
-    Standardizes what-if overlays with shaded confidence intervals if available.
-    """
+    """Standardizes what-if overlays with shaded confidence intervals if available."""
     if config is None:
         config = PlotConfig()
 
@@ -114,9 +109,7 @@ def plot_share_drift(
     threshold: float,
     config: PlotConfig | None = None,
 ) -> go.Figure:
-    """
-    Plots Nominal vs Effective Commonwealth Share with a threshold line.
-    """
+    """Plots Nominal vs Effective Commonwealth Share with a threshold line."""
     if config is None:
         config = PlotConfig()
 
@@ -145,9 +138,7 @@ def plot_strategic_stability(
     traj: pd.DataFrame,
     config: PlotConfig | None = None,
 ) -> go.Figure:
-    """
-    Plots solver stability telemetry (Strategic Ambiguity vs. Convergence).
-    """
+    """Plots solver stability telemetry (Strategic Ambiguity vs. Convergence)."""
     if config is None:
         config = PlotConfig()
 
@@ -200,9 +191,7 @@ def plot_patient_choice(
     traj: pd.DataFrame,
     config: PlotConfig | None = None,
 ) -> go.Figure:
-    """
-    Plots the endogenous demand split (Probability of choosing ED over GP).
-    """
+    """Plots the endogenous demand split (Probability of choosing ED over GP)."""
     if config is None:
         config = PlotConfig()
 
@@ -225,9 +214,7 @@ def plot_ghost_overlay(
     metric_name: str,
     config: PlotConfig | None = None,
 ) -> go.Figure:
-    """
-    Plots historical data vs model backtest predictions.
-    """
+    """Plots historical data vs model backtest predictions."""
     if config is None:
         config = PlotConfig()
 
@@ -250,9 +237,7 @@ def plot_stability_heatmap(
     pivot_table: pd.DataFrame,
     config: PlotConfig | None = None,
 ) -> go.Figure:
-    """
-    Plots a heatmap of Nash Equilibrium stability regions.
-    """
+    """Plots a heatmap of Nash Equilibrium stability regions."""
     if config is None:
         config = PlotConfig()
 
@@ -283,9 +268,7 @@ def plot_vfi_waterfall(
     title: str = "VFI Funding Leakage (Waterfall)",
     config: PlotConfig | None = None,
 ) -> go.Figure:
-    """
-    Visualises the 'leakage' from nominal funding to effective share.
-    """
+    """Visualises the 'leakage' from nominal funding to effective share."""
     if config is None:
         config = PlotConfig()
 
@@ -336,9 +319,7 @@ def plot_phase_space(
     y_col: str = "occupancy_mean",
     title: str = "System Phase-Space (Hysteresis Loop)",
 ) -> go.Figure:
-    """
-    Plots a 2D phase-space trajectory of the system state, colored by System Mode.
-    """
+    """Plots a 2D phase-space trajectory of the system state, colored by System Mode."""
     # Color mapping for system modes
     mode_colors = {
         "normal": "#2E8B57",  # SeaGreen
@@ -439,9 +420,7 @@ def plot_workforce_dynamics(
     traj: pd.DataFrame,
     config: PlotConfig | None = None,
 ) -> go.Figure:
-    """
-    Plots the average workforce pool availability over time.
-    """
+    """Plots the average workforce pool availability over time."""
     if config is None:
         config = PlotConfig()
 
@@ -472,9 +451,7 @@ def plot_agreement_cycle(
     traj: pd.DataFrame,
     config: PlotConfig | None = None,
 ) -> go.Figure:
-    """
-    Plots the 5-year Agreement cycle dynamics (Contribution Share vs. Clock).
-    """
+    """Plots the 5-year Agreement cycle dynamics (Contribution Share vs. Clock)."""
     if config is None:
         config = PlotConfig()
 

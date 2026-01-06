@@ -1,3 +1,5 @@
+"""Compares AST structure between current and legacy code versions."""
+
 import ast
 import os
 from pathlib import Path
@@ -57,7 +59,8 @@ def compare_logic(legacy_path, current_path):
     return missing
 
 
-def main():
+def main() -> None:
+    """Compare ASTs of v9 (current) vs legacy roots."""
     current_v9 = "src/nhra_gt/v9.py"
     legacy_roots = [
         ".gemini/tmp/audit/v1",

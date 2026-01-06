@@ -1,4 +1,4 @@
-from __future__ import annotations
+"""Builds a summary report from calibration results."""
 
 from pathlib import Path
 
@@ -7,6 +7,7 @@ import pandas as pd
 
 
 def main() -> None:
+    """Generate the calibration summary Markdown report."""
     post_path = Path("data/calibration/calibration_trials_posterior.csv")
     out_dir = Path("data/calibration/reports")
     out_dir.mkdir(parents=True, exist_ok=True)

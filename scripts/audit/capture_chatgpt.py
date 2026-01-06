@@ -1,11 +1,12 @@
-from __future__ import annotations
+"""Captures content from ChatGPT for origin verification using Playwright."""
 
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
 
-def main():
+def main() -> None:
+    """Launch browser to capture ChatGPT context."""
     with sync_playwright() as p:
         # Launch headful browser so the user can interact
         browser = p.chromium.launch(headless=False)

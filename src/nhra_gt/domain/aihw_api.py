@@ -1,3 +1,5 @@
+"""Client for interacting with the AIHW MyHospitals API."""
+
 from __future__ import annotations
 
 from typing import Any, cast
@@ -16,6 +18,7 @@ class AIHWClient:
     BASE_URL = "https://myhospitalsapi.aihw.gov.au/api/v1"
 
     def __init__(self) -> None:
+        """Initialize the AIHW client with a configured session."""
         self.session = requests.Session()
         self.session.headers.update(
             {

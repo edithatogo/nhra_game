@@ -1,16 +1,14 @@
-from __future__ import annotations
+"""Generates fingerprints for all archived ZIP files."""
 
 import json
 from pathlib import Path
 
-from src.nhra_gt.audit.fingerprint import fingerprint_zip
-
-from scripts.audit.inventory_sources import discover_sources
+from nhra_gt.audit.fingerprint import fingerprint_zip
 
 
-def fingerprint_all() -> None:
-    """Discover all zips and fingerprint their contents."""
-    sources = discover_sources()
+def main() -> None:
+    """Run fingerprinting on all zip files in data/."""
+    sources = {"zips": list(Path("data/raw").glob("*.zip"))}
     all_fingerprints = {}
 
     print(f"Processing {len(sources['zips'])} zip files...")
@@ -29,4 +27,4 @@ def fingerprint_all() -> None:
 
 
 if __name__ == "__main__":
-    fingerprint_all()
+    main()

@@ -1,5 +1,4 @@
-"""
-Domain model for Simulation Parameters (Pydantic).
+"""Domain model for Simulation Parameters (Pydantic).
 
 This module defines the validation schema for simulation parameters using Pydantic,
 serving as the user-facing API for configuration and tooling. It includes logic
@@ -7,6 +6,8 @@ to convert these validated parameters into JAX-compatible structures.
 """
 
 from __future__ import annotations
+
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -116,6 +117,12 @@ class OperationalParams(BaseModel):
     wait_time_cap: float = 1440.0
     wait_time_min: float = 5.0
 
+    # Queuing Utility
+    queuing_logit_sensitivity: float = 0.1
+    queuing_ed_base_utility: float = 0.0
+
+    # Auditor
+
 
 class BehavioralParams(BaseModel):
     """Hidden coefficients for subgame payoffs."""
@@ -220,7 +227,40 @@ class BehavioralParams(BaseModel):
     ndis_coord_benefit_slope: float = 0.5
     ndis_frag_cost_weight: float = 0.6
 
-    # Coding Audit
+    # Heuristic Coefficients
+    h_comp_audit_weight: float = 0.9
+    h_comp_eff_gap_weight: float = 0.7
+    h_def_eff_gap_weight: float = 1.3
+    h_def_eff_gap_offset: float = 0.25
+    h_def_pressure_weight: float = 0.9
+    h_def_pressure_offset: float = 1.0
+    h_barg_pressure_offset: float = 1.2
+    h_barg_pressure_weight: float = 0.6
+    h_shift_pressure_weight: float = 1.1
+    h_shift_pressure_offset: float = 1.0
+    h_shift_eff_gap_weight: float = 1.0
+    h_disc_base: float = 0.7
+    h_aged_base: float = 0.6
+    h_ndis_base: float = 0.6
+    h_coding_pressure_weight: float = 1.5
+    h_coding_pressure_offset: float = 1.1
+    h_coding_eff_gap_weight: float = 1.2
+    h_wf_base: float = 0.5
+    h_wf_pressure_weight: float = 0.2
+    h_wf_pressure_offset: float = 1.0
+    h_signal_base: float = 0.9
+    h_venue_pressure_weight: float = 1.2
+    h_venue_pressure_offset: float = 1.1
+    h_venue_eff_gap_weight: float = 0.8
+    h_cap_pressure_weight: float = 0.05
+    h_cap_pressure_offset: float = 1.0
+    h_comp_mode_pressure_weight: float = 1.1
+    h_comp_mode_pressure_offset: float = 1.0
+    h_comp_mode_cannibal_weight: float = 0.5
+
+    base_payoff: float = 1.0
+
+    # Definition Matrix Offsets
     coding_upcode_gain_base: float = 0.3
     coding_upcode_gain_slope: float = 0.7
     coding_penalty_weight: float = 0.8
@@ -366,6 +406,29 @@ class Params(BaseModel):
     @classmethod
     def from_flat_dict(cls, data: dict[str, Any]) -> Params:
         """Creates a Params object from a potentially flat dictionary."""
+        # Pre-clean data: handle non-dict nested structures and NaN values
+        # (Session state sometimes contains JAX dataclasses which Pydantic can't use directly)
+        for k in ["ops", "behavior", "policy"]:
+            if k in data and not isinstance(data[k], dict):
+                data.pop(k)
+
+        # Handle NaNs (common in CSV ingestions or uninitialized sliders)
+        import math
+
+        for k, v in list(data.items()):
+            if isinstance(v, float) and math.isnan(v):
+                data[k] = None
+
+        # Map string rule types to integers
+        mappings = {
+            "cap_rule_type": {"hard": 0, "soft": 1},
+            "audit_rule_type": {"proportional": 0, "fixed": 1},
+            "orchestration_mode": {"simultaneous": 0, "sequential": 1},
+        }
+        for key, mapping in mappings.items():
+            if key in data and isinstance(data[key], str):
+                data[key] = mapping.get(data[key].lower(), 0)
+
         ops_fields = OperationalParams.model_fields.keys()
         behavior_fields = BehavioralParams.model_fields.keys()
         policy_fields = PolicyParams.model_fields.keys()
@@ -419,6 +482,8 @@ class Params(BaseModel):
         )
 
     def replace(self, **kwargs: Any) -> Params:
-        """Pydantic-compatible field replacement."""
-        return self.model_copy(update=kwargs)
-
+        """Robust replacement handling nested fields via from_flat_dict."""
+        # Flatten existing data, update with kwargs, then rebuild
+        flat = self.flatten()
+        flat.update(kwargs)
+        return Params.from_flat_dict(flat)

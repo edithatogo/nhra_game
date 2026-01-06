@@ -24,3 +24,11 @@
 - [ ] `python scripts/verify_deployment.py` returns 200 OK from the remote Streamlit URL.
 - [ ] Deployment build logs show < 5 minute runtime.
 - [ ] `dashboard.py` displays the correct version hash.
+
+## Acceptance Checklist (Evaluation)
+
+- [ ] Requirements and scope validated against this spec
+- [ ] Acceptance criteria evaluated and recorded (pass/fail)
+- [ ] CI green and key workflows verified
+- [ ] Deployment/runtime checks complete (if applicable)
+- [ ] Deviations or follow-ups documented

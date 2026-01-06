@@ -1,10 +1,13 @@
+"""Generates a Markdown inventory of all registered figures."""
+
 import json
 from pathlib import Path
 
 import pandas as pd
 
 
-def main():
+def main() -> None:
+    """Read registry and generate inventory report."""
     registry_path = Path("docs/reports/figure_registry.json")
     output_path = Path("docs/reports/figure_inventory.md")
 

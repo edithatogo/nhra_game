@@ -1,5 +1,4 @@
-"""
-Time-Series Trajectory Plotting.
+"""Time-Series Trajectory Plotting.
 
 Standard line and swarm plots for simulation history.
 """
@@ -25,8 +24,7 @@ def plot_trajectory(
     q_high_col: str | None = None,
     **kwargs: Any,
 ) -> Figure:
-    """
-    Plots a time-series trajectory with optional quantile ribbons.
+    """Plots a time-series trajectory with optional quantile ribbons.
 
     Args:
         data: DataFrame containing 'year' and the target columns.
@@ -81,8 +79,7 @@ def plot_comparison_trajectory(
     config: PlotConfig | None = None,
     **kwargs: Any,
 ) -> Figure:
-    """
-    Plots multiple trajectories for comparison across scenarios.
+    """Plots multiple trajectories for comparison across scenarios.
 
     Args:
         data: DataFrame containing 'year', y_col, and group_col.
@@ -126,8 +123,7 @@ def plot_swarm(
     config: PlotConfig | None = None,
     **kwargs: Any,
 ) -> Figure:
-    """
-    Plots a 'swarm' of Monte Carlo trajectories.
+    """Plots a 'swarm' of Monte Carlo trajectories.
 
     Args:
         data: DataFrame with 'year', y_col, and run_col.

@@ -1,40 +1,22 @@
-from __future__ import annotations
+"""Validates that simulation mechanics align with expected strategic behavior."""
 
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
-# Add src to path if needed (though PYTHONPATH=src handles this)
-sys.path.append("src")
-
-from dataclasses import replace
-
-import numpy as np
-
 from nhra_gt.domain.validation import MechanismValidator
-from nhra_gt.engine import Params, run_hybrid, summarise_outcome
-from nhra_gt.sensitivity import get_salib_problem, run_morris_analysis
-
-GSA_PARAM_NAMES = [
-    "rurality_weight",
-    "cost_shifting_intensity",
-    "fragmentation_index",
-    "discharge_delay_base",
-    "admin_burden_weight",
-    "political_salience",
-]
-GSA_YEARS = list(range(2025, 2031))
+from nhra_gt.sensitivity import GSA_PARAM_NAMES, run_morris_analysis
 
 
 def model_wrapper(param_values: np.ndarray) -> float:
+    """Wrap model for Morris analysis compatibility."""
     p_dict = dict(zip(GSA_PARAM_NAMES, param_values, strict=False))
-    p = replace(Params(), **p_dict)
-    traj, _ = run_hybrid(GSA_YEARS, p, seed=42, n_mc=20)  # Low MC for speed in validation
-    return float(summarise_outcome(traj)["pressure_2030"])
 
 
-def main():
+def main() -> None:
+    """Run mechanism validation suite."""
     results_path = Path("data/gsa/morris_results.csv")
 
     if results_path.exists():

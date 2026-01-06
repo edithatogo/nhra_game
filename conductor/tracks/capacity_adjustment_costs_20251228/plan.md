@@ -1,5 +1,12 @@
 # Implementation Plan: Capacity Adjustment Costs & Friction
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Engine Physics
 
 - [x] Task: Update `ParamsJax` with `expansion_lag`, `contraction_lag`, and `adjustment_cost_beta`.

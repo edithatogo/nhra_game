@@ -1,5 +1,4 @@
-"""
-Nash Equilibrium Solvers for 2-Player Normal-Form Games.
+"""Nash Equilibrium Solvers for 2-Player Normal-Form Games.
 
 This module provides standard game-theoretic solvers for computing Pure and Mixed
 Nash Equilibria, as well as Stackelberg and Rubinstein bargaining solutions.
@@ -19,8 +18,7 @@ from nhra_gt.subgames.sequential import stackelberg_solution
 
 @dataclass(frozen=True)
 class NashEquilibrium:
-    """
-    A Nash equilibrium for a finite 2-player game.
+    """A Nash equilibrium for a finite 2-player game.
 
     Represents a steady state where no player can benefit by changing their
     strategy while the other players keep theirs unchanged.
@@ -33,8 +31,7 @@ class NashEquilibrium:
 
 @dataclass(frozen=True)
 class EquilibriumSelection:
-    """
-    Result of an equilibrium selection process.
+    """Result of an equilibrium selection process.
 
     Wraps a chosen equilibrium and the total count of equilibria found,
     providing a backwards-compatible interface for callers.
@@ -63,8 +60,7 @@ class EquilibriumSelection:
 
 @dataclass(frozen=True)
 class TwoPlayerGame:
-    """
-    Represents a 2-player normal-form game.
+    """Represents a 2-player normal-form game.
 
     Includes payoff matrices and action labels for both players.
     """
@@ -170,8 +166,7 @@ def _best_responses_col(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
 
 
 def pure_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
-    """
-    Finds all Pure Strategy Nash Equilibria.
+    """Finds all Pure Strategy Nash Equilibria.
 
     An action profile is a PNE if no player can unilaterally improve their payoff
     by switching to a different pure action.
@@ -192,8 +187,7 @@ def pure_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
 
 
 def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
-    """
-    Solve mixed Nash for 2x2 games using the indifference principle.
+    """Solve mixed Nash for 2x2 games using the indifference principle.
 
     Returns None if the game is degenerate or has only pure equilibria.
     """

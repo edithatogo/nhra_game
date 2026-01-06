@@ -1,5 +1,12 @@
 # Track Plan: Model Validation & Backtesting (SOTA)
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 0: Infrastructure Rigor (Quality Baseline)
 
 - [x] **Task 0.1: Pydantic V2 Refactor (TDD)** 8e0aaaf

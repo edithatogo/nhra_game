@@ -2,6 +2,13 @@
 
 **Goal:** Enhance the dashboard with negotiation-specific visualizations (Effective Share Drift) and generate publication-ready methods documentation.
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Negotiation Dashboard Enhancements [checkpoint: 2e35b70]
 
 - [x] **Task 1.1: Effective Share Drift Threshold Plot**

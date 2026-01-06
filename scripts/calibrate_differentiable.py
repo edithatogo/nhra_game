@@ -1,15 +1,16 @@
-from __future__ import annotations
+"""Runs differentiable calibration using JAX gradients."""
 
-import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
 
-from nhra_gt.calibration.differentiable import PARAM_NAMES, calibrate_jax, map_to_params
-from nhra_gt.domain.state import Params
-from nhra_gt.engine import baseline_state, run_simulation_jax
+from nhra_gt.calibration.differentiable import (
+    PARAM_NAMES,
+    calibrate_jax,
+)
 
 
-def main():
+def main() -> None:
+    """Execute the gradient-based calibration routine."""
     print("🚀 Starting Differentiable Calibration (Gradient-based)...")
 
     # 1. Setup Ground Truth

@@ -1,22 +1,19 @@
-from __future__ import annotations
+"""Generates a CSV matrix tracking feature parity between versions."""
 
 import csv
-import json
 from pathlib import Path
 from typing import Literal, TypedDict
 
 
 class MatrixRow(TypedDict):
+    """Row structure for the parity matrix."""
+
     Feature: str
     Category: Literal["Logic", "Visual", "Intent"]
-    Status: Literal["[Implemented]", "[Refactored]", "[Missing]", "[Unknown]"]
-    Source: str
-    Notes: str
 
 
 def generate_parity_matrix() -> None:
     """Generate a parity matrix comparing current state vs audit sources."""
-
     # 1. Load Sources
     visual_edges_path = Path("data/audit/visual_edges.json")
 

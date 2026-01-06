@@ -1,3 +1,5 @@
+"""Generates the methods appendix for academic publication."""
+
 from __future__ import annotations
 
 import json
@@ -10,7 +12,6 @@ from nhra_gt.domain.bibliography import BibliographyManager, Reference
 
 def generate_appendix(registry_path: Path, output_path: Path, references_path: Path):
     """Generates a STRESS-compliant methods appendix with bibliography."""
-
     # Initialize Bibliography
     bib_mgr = BibliographyManager()
     if references_path.exists():

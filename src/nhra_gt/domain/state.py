@@ -1,5 +1,4 @@
-"""
-JAX-compatible state definitions for the NHRA simulation.
+"""JAX-compatible state definitions for the NHRA simulation.
 
 This module defines the data structures used to represent the state of the system
 at various levels of granularity (LHN, Jurisdiction, Global). It uses
@@ -65,6 +64,7 @@ class MetricsJax:
     mean_solver_residual: float = 0.0
 
     def replace(self, **kwargs: Any) -> MetricsJax:
+        """Create a new instance with updated fields."""
         return struct.replace(self, **kwargs)
 
 
@@ -136,14 +136,20 @@ class OperationalParamsJax:
     mode_recovery_trigger_threshold: float = 1.3
     mode_normal_final_threshold: float = 1.1
     mode_crisis_relapse_threshold: float = 1.4
-    queuing_outside_utility: float = -100.0
-    queuing_init_prob: float = 0.5
     demand_shift_slope: float = 1.04
     demand_shift_base: float = 0.35
     demand_invest_base: float = 0.96
     demand_scale: float = 2.0
     wait_time_cap: float = 1440.0
     wait_time_min: float = 5.0
+
+    # Queuing Utility
+    queuing_outside_utility: float = -100.0
+    queuing_init_prob: float = 0.5
+    queuing_logit_sensitivity: float = 0.1
+    queuing_ed_base_utility: float = 0.0
+
+    # Auditor
 
 
 @struct.dataclass
@@ -199,6 +205,41 @@ class BehavioralParamsJax:
     barg_col_converge_base_penalty: float = 0.30
     barg_col_converge_pr_penalty: float = 0.20
     barg_col_narrative_penalty: float = 0.20
+
+    # Heuristic Coefficients
+    h_comp_audit_weight: float = 0.9
+    h_comp_eff_gap_weight: float = 0.7
+    h_def_eff_gap_weight: float = 1.3
+    h_def_eff_gap_offset: float = 0.25
+    h_def_pressure_weight: float = 0.9
+    h_def_pressure_offset: float = 1.0
+    h_barg_pressure_offset: float = 1.2
+    h_barg_pressure_weight: float = 0.6
+    h_shift_pressure_weight: float = 1.1
+    h_shift_pressure_offset: float = 1.0
+    h_shift_eff_gap_weight: float = 1.0
+    h_disc_base: float = 0.7
+    h_aged_base: float = 0.6
+    h_ndis_base: float = 0.6
+    h_coding_pressure_weight: float = 1.5
+    h_coding_pressure_offset: float = 1.1
+    h_coding_eff_gap_weight: float = 1.2
+    h_wf_base: float = 0.5
+    h_wf_pressure_weight: float = 0.2
+    h_wf_pressure_offset: float = 1.0
+    h_signal_base: float = 0.9
+    h_venue_pressure_weight: float = 1.2
+    h_venue_pressure_offset: float = 1.1
+    h_venue_eff_gap_weight: float = 0.8
+    h_cap_pressure_weight: float = 0.05
+    h_cap_pressure_offset: float = 1.0
+    h_comp_mode_pressure_weight: float = 1.1
+    h_comp_mode_pressure_offset: float = 1.0
+    h_comp_mode_cannibal_weight: float = 0.5
+
+    base_payoff: float = 1.0
+
+    # Cost Shifting Matrix Offsets
     shift_row_coop_penalty: float = 0.25
     shift_row_shift_pr_penalty: float = 0.35
     shift_row_shift_base_penalty: float = 0.60
@@ -343,7 +384,7 @@ class ParamsJax(ParamsGenerated):
                 flat_data[k] = v
 
         # 2. Use Pydantic to validate and handle nesting
-        p_pydantic = Params(**flat_data)
+        p_pydantic = Params.from_flat_dict(flat_data)
         return p_pydantic.to_params_jax()
 
 
@@ -352,8 +393,7 @@ Params = ParamsJax
 
 
 class BaselineProvider:
-    """
-    Manages loading of the automated data spine and baseline parameters.
+    """Manages loading of the automated data spine and baseline parameters.
 
     Provides a centralized interface for synchronizing empirical data into
     the JAX simulation environment.
@@ -363,8 +403,7 @@ class BaselineProvider:
     def load_spine(
         path: Path | str = "data/calibration/historical_normalized.csv",
     ) -> EconomicSpineJax:
-        """
-        Loads the economic spine (NEP, WPI) from a CSV file.
+        """Loads the economic spine (NEP, WPI) from a CSV file.
 
         Uses Polars if available, otherwise falls back to Pandas.
         """
@@ -394,9 +433,7 @@ class BaselineProvider:
 
     @classmethod
     def get_baseline(cls, config_path: str = "configs/defaults.yaml") -> tuple[ParamsJax, StateJax]:
-        """
-        Retrieves baseline parameters and state for a new simulation run.
-        """
+        """Retrieves baseline parameters and state for a new simulation run."""
         from nhra_gt.engine_jax import baseline_state_jax
 
         params = ParamsJax.from_yaml(config_path)
@@ -416,8 +453,7 @@ class BaselineProvider:
 
 @struct.dataclass
 class LhnState:
-    """
-    Granular state for a single Local Hospital Network (LHN).
+    """Granular state for a single Local Hospital Network (LHN).
 
     Represents the operational and strategic status of a hospital cluster,
     including its pressure, occupancy, and internal choices.
@@ -443,8 +479,7 @@ class LhnState:
 
 @struct.dataclass
 class JurisdictionState:
-    """
-    Granular state for a single Jurisdiction (State/Territory).
+    """Granular state for a single Jurisdiction (State/Territory).
 
     Aggregates LHNs and manages jurisdictional-level fiscal and political state.
     """
@@ -467,24 +502,8 @@ class JurisdictionState:
 
 
 @struct.dataclass
-class JurisdictionStateJax:
-    """JAX-native jurisdiction state."""
-
-    id: Any
-    reconciliation_balance: Any = 0.0
-    bailout_expectation: Any = 0.0
-    political_capital: Any = 1.0
-    effective_cth_share: Any = 0.38
-    efficiency_gap: Any = 0.10
-    equity_index: Any = 1.0
-    total_block_revenue: Any = 0.0
-    lhn_states: Any = None  # Vectorized
-
-
-@struct.dataclass
 class StateJax:
-    """
-    JAX-compatible simulation state (Global Orchestrator).
+    """JAX-compatible simulation state (Global Orchestrator).
 
     The root PyTree for the entire simulation state. It contains both global
     aggregates and hierarchical jurisdictional/LHN states.
@@ -564,5 +583,5 @@ class StateJax:
 # Aliases for hierarchical modeling
 State = StateJax
 ConstitutionalStateJax = StateJax
-JurisdictionState = JurisdictionStateJax
+JurisdictionStateJax = JurisdictionState
 LhnStateJax = LhnState

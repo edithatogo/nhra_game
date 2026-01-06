@@ -1,5 +1,12 @@
 # Implementation Plan: Parameter Abstraction (Exhaustive)
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Schema Extension
 - [x] **Task 1.1: Define Nested Pydantic Models**
   - Update `src/nhra_gt/domain/params.py` to include `OperationalParams`, `BehavioralParams`, and `PolicyParams`.

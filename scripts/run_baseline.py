@@ -1,3 +1,5 @@
+"""Runs the baseline simulation and generates standard tables."""
+
 from __future__ import annotations
 
 from dataclasses import replace
@@ -127,6 +129,7 @@ def scenario_endpoints(
 
 
 def main() -> None:
+    """Execute the standard baseline simulation and save results."""
     out = Path("data/baseline")
     tables = out / "tables"
     tables.mkdir(parents=True, exist_ok=True)

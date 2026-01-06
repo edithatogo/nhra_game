@@ -2,6 +2,13 @@
 
 **Goal:** Achieve a "best practice" repository state with error-free workflows, live documentation, and PyPI-ready distribution artifacts.
 
+## CI-Relevant Commands
+
+- `just lint`
+- `just type`
+- `just test`
+- `just docs`
+
 ## Phase 1: Local Workflow Validation & Hardening
 
 - [~] **Task 1.1: Local CI Simulation (act)** (Skipped by user request)

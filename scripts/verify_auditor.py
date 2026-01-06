@@ -1,5 +1,5 @@
-"""
-Verification script for Auditor Agent integration.
+"""Verification script for Auditor Agent integration.
+
 Ensures the AuditorValidator can process simulation traces.
 """
 
@@ -8,19 +8,19 @@ from nhra_gt.engine import run_simulation
 
 
 def verify_auditor_logic():
+    """Ensures the AuditorValidator can process simulation traces."""
     # Run a short simulation
     results = run_simulation(years=2, n_samples=1)
 
-    # Construct a mock trace from results
+    # Convert results to a simple trace format
     trace = []
-    n_steps = len(results["year"])
-    for i in range(n_steps):
-        step_data = {
-            "pressure": results["pressure"][i],
-            "coding_intensity": 1.0,  # Placeholder as it's not fully exposed in all outputs
-            "strategy": {"CODING": "U" if i % 2 == 0 else "H"},
-        }
-        trace.append(step_data)
+    for i in range(len(results["year"])):
+        trace.append(
+            {
+                "pressure": float(results["pressure"][i]),
+                "occupancy": float(results["occupancy"][i]),
+            }
+        )
 
     validator = AuditorValidator()
     report = validator.validate(trace)

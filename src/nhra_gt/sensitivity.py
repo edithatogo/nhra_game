@@ -1,3 +1,5 @@
+"""Global Sensitivity Analysis (GSA) and Probabilistic Sensitivity Analysis (PSA) utilities."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -191,6 +193,13 @@ def run_morris_analysis(
 ) -> pd.DataFrame:  # pragma: no cover
     """Performs Morris analysis (Elementary Effects screening).
 
+    Args:
+        problem: SALib problem dictionary.
+        model_func: Function taking param array -> scalar outcome.
+        n_trajectories: Number of trajectories.
+        n_procs: Parallel processes.
+        seed: Random seed.
+
     Returns:
         A pandas DataFrame with mu_star and sigma indices.
     """
@@ -226,7 +235,11 @@ def run_sobol_analysis(
     """Performs Sobol variance-based sensitivity analysis.
 
     Args:
+        problem: SALib problem dictionary.
+        model_func: Model wrapper function.
         n_samples: The number of samples to generate (must be a power of 2).
+        n_procs: Parallel processes.
+        seed: Random seed.
 
     Returns:
         A dictionary containing S1, ST, and S2 indices.
@@ -291,6 +304,7 @@ def run_psa(
         distributions: Dict mapping param name to a sampler function (takes N, returns array).
         model_func: Function taking param array (in order of dict keys) -> scalar result.
         n_samples: Number of MC samples.
+        n_procs: Parallel processes.
 
     Returns:
         DataFrame with parameters and outcome.

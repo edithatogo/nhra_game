@@ -1,5 +1,4 @@
-"""
-Evidence Registry for NHRA Simulation.
+"""Evidence Registry for NHRA Simulation.
 
 This module manages the collection, grading, and promotion of empirical evidence
 to simulation parameters. It ensures that the model is grounded in real-world
@@ -20,8 +19,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class EvidenceEntry(BaseModel):
-    """
-    A single piece of empirical evidence for a parameter.
+    """A single piece of empirical evidence for a parameter.
 
     Contains the value, confidence interval, and NHMRC evidence level.
     """
@@ -52,8 +50,7 @@ class EvidenceEntry(BaseModel):
 
 
 class EvidenceRegistry(BaseModel):
-    """
-    Registry for managing multiple evidence sources.
+    """Registry for managing multiple evidence sources.
 
     Handles conflict resolution (choosing the highest quality source) and
     syncing evidence to configuration files.

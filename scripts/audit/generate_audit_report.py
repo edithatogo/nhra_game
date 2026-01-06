@@ -1,3 +1,5 @@
+"""Generates a forensic parity audit report comparing current vs legacy engines."""
+
 from __future__ import annotations
 
 import csv
@@ -7,7 +9,6 @@ from pathlib import Path
 
 def generate_audit_report() -> None:
     """Generate the final comprehensive audit report."""
-
     matrix_path = Path("reports/parity_matrix.csv")
     orphans_path = Path("reports/orphaned_logic.json")
 

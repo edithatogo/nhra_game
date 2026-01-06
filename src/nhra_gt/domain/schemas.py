@@ -1,5 +1,4 @@
-"""
-Pandera Schemas for Data Validation.
+"""Pandera Schemas for Data Validation.
 
 Defines the expected structure and constraints for external data sources
 (AIHW, ABS) and internal simulation results.
@@ -22,6 +21,8 @@ class AIHWSchema(pa.DataFrameModel):
     Source: Series[str] | None = pa.Field(nullable=True)
 
     class Config:
+        """Configuration for Pandera validation."""
+
         strict = True
         coerce = True
 
@@ -36,6 +37,8 @@ class ABSSchema(pa.DataFrameModel):
     Growth_Rate: Series[float] = pa.Field(ge=-0.1, le=0.1)
 
     class Config:
+        """Configuration for Pandera validation."""
+
         strict = True
         coerce = True
 
@@ -48,5 +51,7 @@ class EconomicSpineSchema(pa.DataFrameModel):
     wpi_health_index: Series[float] = pa.Field(ge=80, le=200)
 
     class Config:
+        """Configuration for Pandera validation."""
+
         strict = True
         coerce = True

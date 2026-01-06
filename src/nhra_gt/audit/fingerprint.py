@@ -1,5 +1,4 @@
-"""
-Codebase Fingerprinting for Auditability.
+"""Codebase Fingerprinting for Auditability.
 
 Extracts structural signatures from Python files to detect drift or lost features.
 """

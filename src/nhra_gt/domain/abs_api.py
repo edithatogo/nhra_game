@@ -1,5 +1,4 @@
-"""
-ABS Data API Client.
+"""ABS Data API Client.
 
 Handles fetching and parsing Wage Price Index (WPI) data for the health sector.
 """
@@ -25,12 +24,12 @@ class ABSApiClient:
     """Client for fetching data from the Australian Bureau of Statistics Data API."""
 
     def __init__(self, cache_dir: Path | str = "data/raw"):
+        """Initialize the ABS client with a cache directory."""
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
 
     def fetch_wpi_health(self, use_cache: bool = True) -> pd.DataFrame:
-        """
-        Fetches the WPI for Health Care and Social Assistance.
+        """Fetches the WPI for Health Care and Social Assistance.
 
         Returns:
             DataFrame with columns ['year', 'wpi_health_index'] normalized to 2011=100.

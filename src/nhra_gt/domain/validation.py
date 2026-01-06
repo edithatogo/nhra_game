@@ -1,5 +1,8 @@
+"""Validation and backtesting logic for the simulation."""
+
 from __future__ import annotations
 
+import json
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Any, cast
@@ -88,6 +91,7 @@ class MechanismValidator:
     """Verifies that model sensitivity aligns with mechanistic/historical narratives."""
 
     def __init__(self, gsa_results: pd.DataFrame):
+        """Initialize validator with sensitivity analysis results."""
         self.results = gsa_results.set_index("parameter")
 
     def verify_rank(self, parameter: str, expected_rank: int) -> bool:
@@ -141,6 +145,7 @@ class RecursiveBacktest:
         test_window: int = 1,
         seed: int = 42,
     ):
+        """Initialize the backtesting engine."""
         self.historical_data = historical_data.sort_values("year")
         self.train_window = train_window
         self.test_window = test_window
@@ -199,16 +204,15 @@ class RecursiveBacktest:
     def save_results(self, results: list[RecursiveResult], path: str | Path) -> None:
         """Save backtest results to a JSON file."""
         data = [r.model_dump() for r in results]
+
+        # Handle non-serializable objects (like Params) by converting to dict
+        class EnhancedJSONEncoder(json.JSONEncoder):
+            def default(self, o: Any) -> Any:
+                if hasattr(o, "__dict__"):
+                    return o.__dict__
+                return super().default(o)
+
         with open(path, "w") as f:
-            import json
-
-            # Handle non-serializable objects (like Params) by converting to dict
-            class EnhancedJSONEncoder(json.JSONEncoder):
-                def default(self, o: Any) -> Any:
-                    if hasattr(o, "__dict__"):
-                        return o.__dict__
-                    return super().default(o)
-
             json.dump(data, f, indent=2, cls=EnhancedJSONEncoder)
 
 
@@ -239,6 +243,7 @@ class BlindReveal:
     """Performs blind holdout validation (e.g., train on <2024, test on 2024-2025)."""
 
     def __init__(self, historical_data: pd.DataFrame, holdout_years: list[int], seed: int = 42):
+        """Initialize the blind reveal validator."""
         self.historical_data = historical_data.sort_values("year")
         self.holdout_years = sorted(holdout_years)
         self.seed = seed

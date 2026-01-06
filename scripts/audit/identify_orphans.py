@@ -1,9 +1,12 @@
+"""Identifies orphaned logic references in the dashboard script."""
+
 import json
 import re
 from pathlib import Path
 
 
-def check_orphans():
+def check_orphans() -> None:
+    """Scan dashboard.py for references to missing legacy modules."""
     dash_path = Path("scripts/dashboard.py")
     content = dash_path.read_text()
 
