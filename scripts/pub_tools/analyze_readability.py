@@ -10,7 +10,7 @@ def analyze_file(file_path):
     """Compute readability indices for a single file."""
     if not os.path.exists(file_path):
         print(f"File not found: {file_path}")
-        return
+        return None
 
     with open(file_path, encoding="utf-8") as f:
         text = f.read()

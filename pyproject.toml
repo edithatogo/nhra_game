@@ -164,6 +164,12 @@ select = [
     "T20",  # Print statements
     "PIE",  # Misc lints
     "PTH",  # Use pathlib
+    "RET",  # Return statements
+    "PL",   # Pylint
+    "ERA",  # Commented out code
+    "TRY",  # Tryceratops
+    "PERF", # Perflint
+    "FURB", # Refurb
 ]
 ignore = [
     "E501",  # Line too long (handled by formatter)

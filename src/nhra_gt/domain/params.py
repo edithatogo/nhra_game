@@ -7,11 +7,17 @@ to convert these validated parameters into JAX-compatible structures.
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from nhra_gt.domain.state import ParamsJax
+from nhra_gt.domain.state import (
+    BehavioralParamsJax,
+    OperationalParamsJax,
+    ParamsJax,
+    PolicyParamsJax,
+)
 
 
 class OperationalParams(BaseModel):
@@ -413,8 +419,6 @@ class Params(BaseModel):
                 data.pop(k)
 
         # Handle NaNs (common in CSV ingestions or uninitialized sliders)
-        import math
-
         for k, v in list(data.items()):
             if isinstance(v, float) and math.isnan(v):
                 data[k] = None
@@ -466,8 +470,6 @@ class Params(BaseModel):
 
     def to_params_jax(self) -> ParamsJax:
         """Converts Pydantic Params to JAX-native ParamsJax."""
-        from .state import BehavioralParamsJax, OperationalParamsJax, PolicyParamsJax
-
         data = self.model_dump()
         # Handle nested groups
         ops_data = data.pop("ops", {})

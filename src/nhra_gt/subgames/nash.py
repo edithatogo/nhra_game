@@ -108,7 +108,7 @@ def solve_game(
         eq = NashEquilibrium("pure", row_strat, col_strat)
         return EquilibriumSelection(eq, 1)
 
-    elif mechanism == "rubinstein":
+    if mechanism == "rubinstein":
         # Assumes 2x2 bargaining game over a pie.
         # This is tricky because TwoPlayerGame is arbitrary matrix.
         # Rubinstein applies to "splitting a pie".

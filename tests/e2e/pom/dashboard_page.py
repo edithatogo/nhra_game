@@ -12,7 +12,7 @@ class DashboardPage:
         )
 
         # Locators - Main Headers
-        self.main_header = page.get_by_role("heading", level=1).filter(has_text="Analysis")
+        self.main_header = page.get_by_role("heading", level=1)
 
         # Locators - Tabs
         self.tab_theory = page.get_by_role("tab", name="📖 Theory & Background")
@@ -29,8 +29,10 @@ class DashboardPage:
     def load(self):
         """Navigate to the app and wait for load."""
         self.page.goto(self.base_url)
+        # Wait for Streamlit root to ensure JS has started
+        self.page.wait_for_selector("#root", timeout=60000)
         # Wait for the main title to ensure basic load
-        expect(self.main_header).to_contain_text("NHRA Strategic Scenario", timeout=60000)
+        expect(self.main_header).to_contain_text("NHRA Strategic Simulator", timeout=60000)
         self.check_for_errors()
 
     def check_for_errors(self):

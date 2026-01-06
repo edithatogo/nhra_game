@@ -14,6 +14,8 @@ from pathlib import Path
 from typing import Any
 
 import jax.numpy as jnp
+import pandas as pd
+import yaml
 from flax import struct
 
 from .params_generated import ParamsGenerated
@@ -368,8 +370,6 @@ class ParamsJax(ParamsGenerated):
     @classmethod
     def from_yaml(cls, path: Path | str) -> ParamsJax:
         """Loads parameters from a YAML file via Pydantic for validation."""
-        import yaml
-
         from .params import Params
 
         with open(path) as f:
@@ -409,8 +409,6 @@ class BaselineProvider:
         """
         required = {"year", "nep_per_nwau", "wpi_health_index"}
         if pl is None:
-            import pandas as pd
-
             df_pd = pd.read_csv(path)
             missing = required - set(df_pd.columns)
             if missing:

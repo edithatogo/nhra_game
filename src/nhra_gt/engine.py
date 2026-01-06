@@ -27,7 +27,14 @@ from nhra_gt.domain.state import (
     ParamsJax,
     StateJax,
 )
+
+# Aliases
+State = StateJax
+
+from nhra_gt.domain.stability import calculate_hysteresis_area, calculate_recovery_metrics
 from nhra_gt.rules import initialize_rules
+from nhra_gt.solvers_jax import discrete_nash_jax, stackelberg_jax
+from nhra_gt.subgames.games_jax import GameParamsJax, renegotiation_game_jax
 from nhra_gt.subgames.queuing import PatientUtilityParams, solve_queuing_equilibrium_jax
 
 # Constants for jaxtyping dimensions
@@ -523,9 +530,6 @@ def step_jax(s: StateJax, p: ParamsJax, strategies: Any, prng_key: Any) -> State
     )
 
     def _renegotiate(jurs: JurisdictionState) -> JurisdictionState:
-        from nhra_gt.solvers_jax import discrete_nash_jax, stackelberg_jax
-        from nhra_gt.subgames.games_jax import GameParamsJax, renegotiation_game_jax
-
         # Aggregate params for game
         gp = GameParamsJax(
             pressure=avg_pidx,
@@ -1018,7 +1022,9 @@ def run_hybrid(
     num_years = end_year - start_year + 1
     num_months = num_years * 12
 
-    agent = HeuristicAgentJax()
+    # Initialize agent with strategic mode if requested
+    is_strategic = overrides.get("STRATEGIC_MODE", False) if overrides else False
+    agent = HeuristicAgentJax(solve_nash=is_strategic)
 
     def step_with_agent(state, key):
         strat = agent.decide(state, p)
@@ -1210,8 +1216,6 @@ def mm_s_queue_wait(
 
 def summarise_outcome(agg: pd.DataFrame) -> dict[str, float]:
     """Calculate key performance indicators from simulation results."""
-    from nhra_gt.domain.stability import calculate_hysteresis_area, calculate_recovery_metrics
-
     last = agg.sort_values("year").iloc[-1]
     summary: dict[str, float] = {
         "pressure_2030": float(last["pressure_mean"]),

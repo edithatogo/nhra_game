@@ -1,0 +1,61 @@
+2026-01-07 02:36:39,214 [ERROR] Test failed: test_baseline_load
+2026-01-07 02:36:39,214 [ERROR] Error details: Locator expected to contain text 'NHRA Strategic Scenario'
+Actual value: <element(s) not found>
+Call log:
+  - Expect "to_contain_text" with timeout 5000ms
+  - waiting for get_by_role("heading", level=1).filter(has_text="Analysis")
+
+2026-01-07 02:37:20,363 [ERROR] Test failed: test_baseline_load
+2026-01-07 02:37:20,364 [ERROR] Error details: Locator expected to contain text 'NHRA Strategic Simulator'
+Actual value: <element(s) not found>
+Call log:
+  - Expect "to_contain_text" with timeout 5000ms
+  - waiting for get_by_role("heading", level=1).filter(has_text="Analysis")
+
+2026-01-07 02:38:08,880 [ERROR] Test failed: test_baseline_load
+2026-01-07 02:38:08,880 [ERROR] Error details: Locator expected to contain text 'NHRA Strategic Simulator'
+Actual value: <element(s) not found>
+Call log:
+  - Expect "to_contain_text" with timeout 5000ms
+  - waiting for get_by_role("heading", level=1)
+
+2026-01-07 02:39:10,300 [INFO] Starting local Streamlit server...
+2026-01-07 02:39:12,331 [INFO] Local Streamlit server ready.
+2026-01-07 02:39:17,634 [ERROR] Test failed: test_baseline_load
+2026-01-07 02:39:17,634 [ERROR] Error details: Locator expected to contain text 'NHRA Strategic Simulator'
+Actual value: <element(s) not found>
+Call log:
+  - Expect "to_contain_text" with timeout 5000ms
+  - waiting for get_by_role("heading", level=1)
+
+2026-01-07 02:39:17,659 [INFO] Stopping local Streamlit server...
+2026-01-07 02:40:21,838 [INFO] Starting local Streamlit server...
+2026-01-07 02:40:23,002 [INFO] Local Streamlit server ready.
+2026-01-07 02:40:38,313 [ERROR] Test failed: test_baseline_load
+2026-01-07 02:40:38,313 [ERROR] Error details: Locator expected to contain text 'NHRA Strategic Simulator'
+Actual value: <element(s) not found>
+Call log:
+  - Expect "to_contain_text" with timeout 15000ms
+  - waiting for get_by_role("heading", level=1)
+
+2026-01-07 02:40:38,333 [INFO] Stopping local Streamlit server...
+2026-01-07 02:41:59,020 [INFO] Starting local Streamlit server...
+2026-01-07 02:42:00,273 [INFO] Local Streamlit server ready.
+2026-01-07 02:42:15,584 [ERROR] Test failed: test_baseline_load
+2026-01-07 02:42:15,584 [ERROR] Error details: Locator expected to contain text 'NHRA Strategic Simulator'
+Actual value: <element(s) not found>
+Call log:
+  - Expect "to_contain_text" with timeout 15000ms
+  - waiting for get_by_role("heading", level=1)
+
+2026-01-07 02:42:15,603 [INFO] Stopping local Streamlit server...
+2026-01-07 02:43:19,901 [INFO] Starting local Streamlit server...
+2026-01-07 02:43:21,080 [INFO] Local Streamlit server ready.
+2026-01-07 02:43:36,392 [ERROR] Test failed: test_baseline_load
+2026-01-07 02:43:36,392 [ERROR] Error details: Locator expected to contain text 'NHRA Strategic Simulator'
+Actual value: <element(s) not found>
+Call log:
+  - Expect "to_contain_text" with timeout 15000ms
+  - waiting for get_by_role("heading", level=1)
+
+2026-01-07 02:43:36,411 [INFO] Stopping local Streamlit server...

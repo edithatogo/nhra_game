@@ -1,4 +1,4 @@
-"""JAX-native Heuristic Agents.
+"""JAX-native Heuristic and Strategic Agents.
 
 Optimized implementations of agent logic for use inside JIT-compiled loops.
 """
@@ -8,17 +8,28 @@ from __future__ import annotations
 import jax.numpy as jnp
 from flax import struct
 
-from nhra_gt.domain.state import Params, StateJax
+from nhra_gt.domain.state import ParamsJax, StateJax
+from nhra_gt.solvers_jax import qre_solver_jax
+from nhra_gt.subgames.games_jax import (
+    GameParamsJax,
+    bargaining_game_jax,
+    cost_shifting_game_jax,
+    definition_game_jax,
+)
 
 
 @struct.dataclass
 class HeuristicAgentJax:
-    """JAX-compatible heuristic agent that produces a continuous strategy vector.
+    """JAX-compatible agent that produces a strategy vector.
 
-    Mirrors the logic of HeuristicAgent but in a differentiable/vectorized form.
+    Can operate in 'Heuristic' mode (smooth logistic rules) or 'Strategic' mode
+    (Nash/QRE solving for key subgames).
     """
 
-    def decide(self, state: StateJax, params: Params) -> jnp.ndarray:
+    solve_nash: bool = False
+    lambda_qre: float = 5.0
+
+    def decide(self, state: StateJax, params: ParamsJax) -> jnp.ndarray:
         """Choose strategy vector based on current state.
 
         Output: jnp.ndarray of shape (13,).
@@ -26,17 +37,15 @@ class HeuristicAgentJax:
         obs_pressure = state.reported_pressure
         obs_eff_gap = state.reported_efficiency_gap
 
-        # Helper for logistic-like probability mapping
+        # 1. Base Heuristic Logic
         def prob(x):
             return 1.0 / (1.0 + jnp.exp(-x))
 
-        # 0: COMP (Compliance) - Tight vs Light
         comp = prob(
             params.behavior.h_comp_audit_weight * params.audit_pressure
             - params.behavior.h_comp_eff_gap_weight * obs_eff_gap
         )
 
-        # 1: DEF (Framing) - Realism vs Strict
         def_framing = prob(
             params.behavior.h_def_eff_gap_weight
             * (obs_eff_gap - params.behavior.h_def_eff_gap_offset)
@@ -44,64 +53,46 @@ class HeuristicAgentJax:
             * (obs_pressure - params.behavior.h_def_pressure_offset)
         )
 
-        # 2: BARG (Bargaining) - Agree vs Defer
         barg = prob(
             params.behavior.h_barg_pressure_weight
             * (params.behavior.h_barg_pressure_offset - obs_pressure)
             + state.bailout_expectation
         )
 
-        # 3: SHIFT (Cost Shifting) - Invest vs Shift
         shift = prob(
             -params.behavior.h_shift_pressure_weight
             * (obs_pressure - params.behavior.h_shift_pressure_offset)
             - params.behavior.h_shift_eff_gap_weight * obs_eff_gap
         )
 
-        # 4: DISC (Discharge Coordination) - Coordinate vs Fragment
+        # Static/Base heuristics
         disc = params.behavior.h_disc_base
-
-        # 5: AGED (Aged Care) - Coordinate vs Fragment
         aged = params.behavior.h_aged_base
-
-        # 6: NDIS (NDIS) - Coordinate vs Fragment
         ndis = params.behavior.h_ndis_base
-
-        # 7: CODING (Coding Intensity) - Upcode vs Honest
         coding = prob(
             params.behavior.h_coding_pressure_weight
             * (obs_pressure - params.behavior.h_coding_pressure_offset)
             + params.behavior.h_coding_eff_gap_weight * obs_eff_gap
         )
-
-        # 8: WORKFORCE (Workforce Intensity)
         wf = params.behavior.h_wf_base + params.behavior.h_wf_pressure_weight * (
             obs_pressure - params.behavior.h_wf_pressure_offset
         )
-
-        # 9: SIGNAL (Signalling)
         signal = params.behavior.h_signal_base
-
-        # 10: VENUE_SHIFT (Venue Shift) - Block vs ABF
         venue = prob(
             params.behavior.h_venue_pressure_weight
             * (obs_pressure - params.behavior.h_venue_pressure_offset)
             + params.behavior.h_venue_eff_gap_weight * obs_eff_gap
         )
-
-        # 11: CAP (Capacity Move)
         cap = params.behavior.h_cap_pressure_weight * (
             obs_pressure - params.behavior.h_cap_pressure_offset
         )
-
-        # 12: COMPETITION (Competition Mode)
         comp_mode = prob(
             params.behavior.h_comp_mode_pressure_weight
             * (obs_pressure - params.behavior.h_comp_mode_pressure_offset)
             + params.behavior.h_comp_mode_cannibal_weight * params.cannibalization_beta
         )
 
-        return jnp.array(
+        h_vector = jnp.array(
             [
                 comp,
                 def_framing,
@@ -118,3 +109,36 @@ class HeuristicAgentJax:
                 comp_mode,
             ]
         )
+
+        # 2. Strategic Overrides (if enabled)
+        if self.solve_nash:
+            gp = GameParamsJax(
+                pressure=obs_pressure,
+                efficiency_gap=obs_eff_gap,
+                discharge_delay=state.reported_discharge_delay
+                if hasattr(state, "reported_discharge_delay")
+                else 1.0,
+                political_salience=params.political_salience,
+                audit_pressure=params.audit_pressure,
+                cost_shifting_intensity=params.cost_shifting_intensity,
+                political_capital=state.political_capital,
+                behavior=params.behavior,
+            )
+
+            # --- Definition Game ---
+            u_row_def, u_col_def = definition_game_jax(gp)
+            p_def, _q_def, _ = qre_solver_jax(u_row_def, u_col_def, lam=self.lambda_qre)
+            # Use probability of action 0 (Realism) as the continuous strategy
+            h_vector = h_vector.at[1].set(p_def[0])
+
+            # --- Bargaining Game ---
+            u_row_barg, u_col_barg = bargaining_game_jax(gp)
+            p_barg, _q_barg, _ = qre_solver_jax(u_row_barg, u_col_barg, lam=self.lambda_qre)
+            h_vector = h_vector.at[2].set(p_barg[0])
+
+            # --- Cost Shifting Game ---
+            u_row_shift, u_col_shift = cost_shifting_game_jax(gp)
+            p_shift, _q_shift, _ = qre_solver_jax(u_row_shift, u_col_shift, lam=self.lambda_qre)
+            h_vector = h_vector.at[3].set(p_shift[0])
+
+        return h_vector

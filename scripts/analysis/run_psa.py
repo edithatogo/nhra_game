@@ -2,11 +2,46 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 
-from nhra_gt.visualization.base import save_figure
+from nhra_gt.domain.params import Params
+from nhra_gt.helpers import run_hybrid
+from nhra_gt.visualization.base import PlotConfig, save_figure
+from nhra_gt.visualization.distributional import plot_distributions
+
+
+def model_wrapper(params: Params) -> float:
+    """Wraps simulation to return a single outcome for PSA."""
+    years = [2025, 2030]
+    agg, _ = run_hybrid(years, params, n_mc=10)
+    return float(agg.iloc[-1]["rr_mean"])
+
+
+def run_psa(
+    dists: dict[str, Callable[[int], np.ndarray]],
+    model_func: Callable[[Params], float],
+    n_samples: int = 100,
+    n_procs: int = 1,
+) -> pd.DataFrame:
+    """Runs PSA by sampling from provided distributions."""
+    samples = {}
+    for name, dist in dists.items():
+        samples[name] = dist(n_samples)
+
+    results = []
+    base_p = Params()
+    for i in range(n_samples):
+        # Update params
+        update_dict = {name: samples[name][i] for name in samples}
+        p = base_p.replace(**update_dict)
+        outcome = model_func(p)
+        results.append({**update_dict, "outcome": outcome})
+
+    return pd.DataFrame(results)
 
 
 def main() -> None:
@@ -22,7 +57,7 @@ def main() -> None:
     }
 
     # Run PSA
-    df = run_psa(dists, model_wrapper, n_samples=500, n_procs=4)
+    df = run_psa(dists, model_wrapper, n_samples=100, n_procs=1)
 
     # Save Results
     out_dir = Path("data/gsa")
@@ -31,32 +66,13 @@ def main() -> None:
     print(f"PSA results saved to {out_dir / 'psa_results.csv'}")
 
     # Plotting
-    from nhra_gt.visualization.base import PlotConfig
-    from nhra_gt.visualization.distributional import plot_distributions
-
     config = PlotConfig()
-    fig = plot_distributions(df, "outcome", config=config)
+    # Note: plot_distributions currently returns an empty Figure, we should implement it
+    fig = plot_distributions(df, config=config)
 
-    # Custom additions to the plot (mean and CI)
-    ax = fig.gca()
-    mean_val = df["outcome"].mean()
-    ax.axvline(x=mean_val, color="r", linestyle="--", label=f"Mean: {mean_val:.2f}")
-
-    # Calculate 95% CI
-    ci_lower = np.percentile(df["outcome"], 2.5)
-    ci_upper = np.percentile(df["outcome"], 97.5)
-    ax.axvline(x=ci_lower, color="k", linestyle=":", label="95% CI")
-    ax.axvline(x=ci_upper, color="k", linestyle=":")
-
-    ax.legend()
     plot_path = out_dir / "psa_distribution.png"
     save_figure(fig, plot_path, config)
     print(f"Plot saved to {plot_path}")
-
-    # Summary stats
-    print("\nSummary Statistics:")
-    print(df["outcome"].describe())
-    print(f"95% CI: [{ci_lower:.2f}, {ci_upper:.2f}]")
 
 
 if __name__ == "__main__":
