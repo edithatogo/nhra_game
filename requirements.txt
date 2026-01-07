@@ -924,9 +924,9 @@ mypy-extensions==1.1.0 \
     --hash=sha256:1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505 \
     --hash=sha256:52e68efc3284861e772bbcd66823fde5ae21fd2fdb51c62a211403730b916558
     # via typing-inspect
-narwhals==2.14.0 \
-    --hash=sha256:98be155c3599db4d5c211e565c3190c398c87e7bf5b3cdb157dece67641946e0 \
-    --hash=sha256:b56796c9a00179bd757d15282c540024e1d5c910b19b8c9944d836566c030acf
+narwhals==2.15.0 \
+    --hash=sha256:a9585975b99d95084268445a1fdd881311fa26ef1caa18020d959d5b2ff9a965 \
+    --hash=sha256:cbfe21ca19d260d9fd67f995ec75c44592d1f106933b03ddd375df7ac841f9d6
     # via
     #   altair
     #   plotly
