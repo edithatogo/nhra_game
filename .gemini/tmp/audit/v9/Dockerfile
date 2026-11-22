@@ -1,5 +1,5 @@
 # Minimal reproducible environment for NHRA mechanism models
-FROM python:3.10-slim
+FROM python:3.10-slim@sha256:6ff506466f8b1e981719b468cc0023b8ef000b983cdec0eafe119d01f379e31d
 
 # System deps for graphviz + build tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
