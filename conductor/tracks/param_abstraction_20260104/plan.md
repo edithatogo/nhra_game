@@ -48,3 +48,26 @@
 - [x] **Task 5.4: Iterative Verification**
   - [x] Run `codebase_investigator` to verify abstraction completeness.
   - [x] If issues found, repeat abstraction tasks until investigator approves.
+
+## Policy follow-up — 22 November 2026
+
+- [x] Register UOGTO semantic ownership and Paignia reusable game ownership in
+  the agent and contributor instructions; verify the documentation locally.
+
+Base: `3fe4aaa08521d103ddffbedd58eaa9d7d5256a55`.
+Allowed files: `AGENTS.md`, `CONTRIBUTING.md` and this plan.
+The [intake rule](../../../CONTRIBUTING.md#game-capability-intake) requires
+separate dispositions using each provider's canonical vocabulary, including
+explicit pending states; mapping evidence and executable support remain distinct.
+Game-specific parameters and payoff construction remain in this application.
+
+This is a bounded policy step. Existing parameter-abstraction receipts remain
+unchanged; no solver migration, ontology extension or numerical acceptance is
+claimed. Local documentation checks and publication status are recorded below.
+
+Local verification: the standard-library documentation check validated all five
+new local links/anchors, both canonical upstream pointers and both sets of
+dispositions. Scoped `git diff --check` and staged `git diff --cached --check`
+passed. No runtime tests were run for these documentation-only changes.
+Remote publication, upstream-document availability and hosted checks remain
+pending integration; this receipt covers the local policy files only.
