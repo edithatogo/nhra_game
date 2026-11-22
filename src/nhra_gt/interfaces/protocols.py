@@ -12,9 +12,9 @@ from numpy.typing import NDArray
 
 # --- Numeric Typing Aliases ---
 # Standard numpy-based float array
-FloatArray: Any = NDArray[np.float64]
+FloatArray = NDArray[np.float64]
 # Standard numpy-based int array
-IntArray: Any = NDArray[np.int_]
+IntArray = NDArray[np.int_]
 
 # Optional: jaxtyping support if available
 try:

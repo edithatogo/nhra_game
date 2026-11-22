@@ -133,3 +133,13 @@ We adhere to high-integrity software engineering standards:
 If you use this model in your research, please cite:
 
 > Mordaunt, D. A. (2025). *NHRA Game Theory: A Cognitive Digital Twin Framework for Mechanism Design*. <https://github.com/edithatogo/nhra_gt>
+
+## Security
+
+Follow the [security policy](https://github.com/edithatogo/.github/blob/main/SECURITY.md) to report vulnerabilities
+privately. Keep credentials and sensitive data out of public issues and pull requests.
+
+## License
+
+See [LICENSE](LICENSE) for this repository's licensing terms. Retain the
+licences and attribution that accompany third-party material.
