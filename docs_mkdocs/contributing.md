@@ -9,7 +9,7 @@ Thank you for your interest in contributing to the NHRA Game Theory toolkit! Thi
 ### Prerequisites
 
 - Python 3.10, 3.11, 3.12, or 3.13
-- [Poetry](https://python-poetry.org/) for dependency management
+- [uv](https://docs.astral.sh/uv/) for dependency management
 - Git
 
 ### Initial Setup
@@ -20,10 +20,10 @@ git clone https://github.com/edithatogo/nhra_game.git
 cd nhra_game
 
 # Install dependencies (including dev tools)
-poetry install --with dev
+uv sync --locked --dev
 
 # Activate the virtual environment
-poetry shell
+source .venv/bin/activate
 
 # Install pre-commit hooks
 pre-commit install
@@ -39,30 +39,30 @@ We enforce strict code quality standards. All contributions must pass:
 
 ```bash
 # Run ruff linter
-poetry run ruff check src tests
+uv run ruff check src tests
 
 # Run ruff formatter
-poetry run ruff format src tests
+uv run ruff format src tests
 
 # Auto-fix issues
-poetry run ruff check src tests --fix
+uv run ruff check src tests --fix
 ```
 
 ### Type Checking
 
 ```bash
 # Run mypy in strict mode
-poetry run mypy --strict src/nhra_gt
+uv run mypy --strict src/nhra_gt
 ```
 
 ### Testing
 
 ```bash
 # Run all tests
-poetry run pytest
+uv run pytest
 
 # Run with coverage
-poetry run pytest --cov=src/nhra_gt --cov-report=html
+uv run pytest --cov=src/nhra_gt --cov-report=html
 ```
 
 ### Pre-commit

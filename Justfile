@@ -4,7 +4,7 @@ ts := `date +%Y%m%d_%H%M%S`
 
 # Install all dependencies including optional and accelerated groups
 install:
-  uv sync --all-groups
+  uv sync --locked --all-groups --all-extras
 
 # Update dependencies locally (local equivalent of dependabot)
 update:

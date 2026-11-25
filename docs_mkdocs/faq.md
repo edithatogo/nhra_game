@@ -34,8 +34,8 @@ Python 3.10+ with NumPy, Pandas, and optional JAX acceleration.
 # Using Poetry (recommended)
 git clone https://github.com/edithatogo/nhra_game.git
 cd nhra_game
-poetry install
-poetry shell
+uv sync --locked
+source .venv/bin/activate
 ```
 
 See the [Usage Guide](guides/usage.md) for more details.

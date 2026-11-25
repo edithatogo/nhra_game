@@ -6,8 +6,8 @@ Optimized implementations of agent logic for use inside JIT-compiled loops.
 from __future__ import annotations
 
 import jax.numpy as jnp
-from flax import struct
 
+from nhra_gt._pytree import PytreeRecord, pytree_dataclass
 from nhra_gt.domain.state import ParamsJax, StateJax
 from nhra_gt.solvers_jax import qre_solver_jax
 from nhra_gt.subgames.games_jax import (
@@ -18,8 +18,8 @@ from nhra_gt.subgames.games_jax import (
 )
 
 
-@struct.dataclass
-class HeuristicAgentJax:
+@pytree_dataclass
+class HeuristicAgentJax(PytreeRecord):
     """JAX-compatible agent that produces a strategy vector.
 
     Can operate in 'Heuristic' mode (smooth logistic rules) or 'Strategic' mode

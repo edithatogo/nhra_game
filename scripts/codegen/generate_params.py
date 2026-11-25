@@ -33,10 +33,10 @@ def generate_params_code(csv_path):
     content = "# AUTO-GENERATED FILE. DO NOT EDIT.\n"
     content += "from __future__ import annotations\n"
     content += "from typing import Any\n"
-    content += "from flax import struct\n"
+    content += "from dataclasses import field\nfrom nhra_gt._pytree import PytreeRecord, pytree_dataclass\n"
     content += "import jax.numpy as jnp\n\n"
-    content += "@struct.dataclass\n"
-    content += "class ParamsGenerated:\n"
+    content += "@pytree_dataclass\n"
+    content += "class ParamsGenerated(PytreeRecord):\n"
     content += '    """Auto-generated parameter container from registry CSV."""\n'
 
     for _, row in scalar_df.iterrows():
@@ -49,13 +49,13 @@ def generate_params_code(csv_path):
 
         if py_type == "str":
             val_code = f'"{val}"'
-            field_def = f"struct.field(default={val_code}, pytree_node=False)"
+            field_def = f"field(default={val_code}, metadata={{'static': True}})"
         elif py_type == "bool":
             val_code = str(val).capitalize()
             field_def = val_code
         elif py_type == "Any":
             val_code = "None"
-            field_def = f"struct.field(default={val_code}, pytree_node=False)"
+            field_def = f"field(default={val_code}, metadata={{'static': True}})"
         elif py_type == "int":
             val_code = str(int(float(val)))
             field_def = val_code

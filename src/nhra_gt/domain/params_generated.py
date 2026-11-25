@@ -6,13 +6,14 @@ DO NOT EDIT MANUALLY.
 
 from __future__ import annotations
 
+from dataclasses import field
 from typing import Any
 
-from flax import struct
+from nhra_gt._pytree import PytreeRecord, pytree_dataclass
 
 
-@struct.dataclass
-class ParamsGenerated:
+@pytree_dataclass
+class ParamsGenerated(PytreeRecord):
     """Auto-generated parameter container from registry CSV."""
 
     nep_to_cost_ratio_metro: float = 0.9  # Model parameter (unitless)
@@ -26,8 +27,8 @@ class ParamsGenerated:
     has_cumulative_cap: bool = False  # Model parameter (unitless)
     use_equilibrium_bargaining: bool = False  # Model parameter (unitless)
     use_stage_game_equilibria: bool = True  # Model parameter (unitless)
-    equilibrium_selection_rule: str = struct.field(
-        default="payoff_dominant", pytree_node=False
+    equilibrium_selection_rule: str = field(
+        default="payoff_dominant", metadata={"static": True}
     )  # Model parameter (unitless)
     nep_per_nwau_start: int = 1  # Model parameter (unitless)
     nep_annual_growth: float = 0.03  # Model parameter (fraction/year)
@@ -57,15 +58,17 @@ class ParamsGenerated:
     burden_to_throughput_beta: float = 0.06  # Model parameter (unitless)
     noise_sd: float = 0.03  # Model parameter (unitless)
     capacity_lag: float = 0.15  # Model parameter (unitless)
-    orchestration_mode: str = struct.field(
-        default="simultaneous", pytree_node=False
+    orchestration_mode: str = field(
+        default="simultaneous", metadata={"static": True}
     )  # Model parameter (unitless)
-    isolated_game: Any = struct.field(default=None, pytree_node=False)  # Model parameter (unitless)
-    cap_rule_type: str = struct.field(
-        default="hard", pytree_node=False
+    isolated_game: Any = field(
+        default=None, metadata={"static": True}
     )  # Model parameter (unitless)
-    audit_rule_type: str = struct.field(
-        default="proportional", pytree_node=False
+    cap_rule_type: str = field(
+        default="hard", metadata={"static": True}
+    )  # Model parameter (unitless)
+    audit_rule_type: str = field(
+        default="proportional", metadata={"static": True}
     )  # Model parameter (unitless)
     adjustment_cost_beta: int = 5  # Model parameter (unitless)
     cannibalization_beta: float = 0.1  # Model parameter (unitless)

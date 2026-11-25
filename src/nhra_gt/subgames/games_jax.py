@@ -5,18 +5,19 @@ Optimized versions of subgame matrices for use in differentiable rollouts.
 
 from __future__ import annotations
 
+from dataclasses import field
 from typing import Any
 
 import jax.numpy as jnp
 from beartype import beartype
-from flax import struct
 from jaxtyping import Array, Float
 
+from nhra_gt._pytree import PytreeRecord, pytree_dataclass
 from nhra_gt.domain.state import BehavioralParamsJax
 
 
-@struct.dataclass
-class GameParamsJax:
+@pytree_dataclass
+class GameParamsJax(PytreeRecord):
     """Parameters passed to JAX-native subgame matrix generators."""
 
     pressure: Any
@@ -26,7 +27,7 @@ class GameParamsJax:
     audit_pressure: Any
     cost_shifting_intensity: Any
     political_capital: Any
-    behavior: BehavioralParamsJax = struct.field(default_factory=BehavioralParamsJax)
+    behavior: BehavioralParamsJax = field(default_factory=BehavioralParamsJax)
 
 
 @beartype

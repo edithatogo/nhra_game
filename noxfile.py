@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 import nox
 
 nox.options.sessions = ["lint", "type", "tests"]
 nox.options.default_venv_backend = "uv"
+PYTHON = Path(__file__).with_name(".python-version").read_text().strip()
 
 # Ensure PYTHONPATH includes src and root for script discovery
 # Force Agg backend for matplotlib to avoid UI issues
@@ -15,14 +17,14 @@ ENV = {
 }
 
 
-@nox.session(python=["3.10", "3.11", "3.12", "3.13"])
+@nox.session(python=PYTHON)
 def tests(session: nox.Session) -> None:
-    """Run the test suite across multiple Python versions."""
-    session.install("-e", ".[dev,opt]")
+    """Run the test suite on the supported Python interpreter."""
+    session.install("--group", "dev", "-e", ".[opt]")
     session.run("pytest", *session.posargs, env=ENV)
 
 
-@nox.session
+@nox.session(python=PYTHON)
 def lint(session: nox.Session) -> None:
     """Run linting checks using ruff."""
     session.install("ruff")
@@ -30,15 +32,15 @@ def lint(session: nox.Session) -> None:
     session.run("ruff", "format", "src", "scripts", "tests", "--check")
 
 
-@nox.session(name="type")
+@nox.session(python=PYTHON, name="type")
 def type_check(session: nox.Session) -> None:
     """Run static type checking using basedpyright."""
-    session.install("-e", ".[dev,opt]")
+    session.install("--group", "dev", "-e", ".[opt]")
     session.install("basedpyright")
     session.run("basedpyright", "src", env=ENV)
 
 
-@nox.session
+@nox.session(python=PYTHON)
 def security(session: nox.Session) -> None:
     """Run security checks using bandit and safety."""
     session.install("bandit", "safety")
@@ -46,10 +48,10 @@ def security(session: nox.Session) -> None:
     # session.run("safety", "check") # Uncomment when safety is configured
 
 
-@nox.session
+@nox.session(python=PYTHON)
 def coverage(session: nox.Session) -> None:
     """Run tests and generate coverage report."""
-    session.install("-e", ".[dev,opt]")
+    session.install("--group", "dev", "-e", ".[opt]")
     session.run(
         "pytest",
         "--cov=src",
@@ -62,41 +64,41 @@ def coverage(session: nox.Session) -> None:
     )
 
 
-@nox.session
+@nox.session(python=PYTHON)
 def docs(session: nox.Session) -> None:
     """Build the documentation."""
-    session.install(".[dev]")
+    session.install("--group", "dev", ".")
     session.run("mkdocs", "build")
 
 
-@nox.session
+@nox.session(python=PYTHON)
 def bench(session: nox.Session) -> None:
     """Run benchmarks using pytest-benchmark."""
-    session.install(".[dev]")
+    session.install("--group", "dev", ".")
     session.run("pytest", "benchmarks", "--benchmark-only", *session.posargs, env=ENV)
 
 
-@nox.session(name="type_runtime")
+@nox.session(python=PYTHON, name="type_runtime")
 def type_runtime(session: nox.Session) -> None:
     """Run tests with runtime type checking enabled."""
-    session.install(".[dev,opt]")
+    session.install("--group", "dev", ".[opt]")
     session.install("beartype", "typeguard")
     session.run("pytest", "tests/test_runtime_typecheck_smoke.py", env=ENV)
 
 
-@nox.session
+@nox.session(python=PYTHON)
 def fuzz(session: nox.Session) -> None:
     """Run fuzz testing using Atheris."""
-    session.install(".[dev]")
+    session.install("--group", "dev", ".")
     session.install("atheris")
     # Expecting fuzz targets in tests/fuzz/
     # session.run("python", "tests/fuzz/fuzz_target.py", *session.posargs, env=ENV)
 
 
-@nox.session
+@nox.session(python=PYTHON)
 def load(session: nox.Session) -> None:
     """Run load testing using Locust."""
-    session.install(".[dev]")
+    session.install("--group", "dev", ".")
     session.install("locust")
     session.run(
         "locust", "-f", "tests/load/locustfile.py", "--headless", "--run-time", "1m", env=ENV

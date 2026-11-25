@@ -7,8 +7,9 @@ JAX-compatible and differentiable.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Any
+
+from nhra_gt._pytree import PytreeRecord, pytree_dataclass
 
 try:
     import jax.numpy as jnp
@@ -17,17 +18,6 @@ except ImportError:  # pragma: no cover
     import numpy as jnp  # type: ignore[no-redef]
 
     lax = None
-
-try:
-    from flax import struct
-except ImportError:  # pragma: no cover
-
-    class _Struct:
-        """Minimal replacement for flax.struct."""
-
-        dataclass = staticmethod(dataclass)
-
-    struct = _Struct()  # type: ignore[assignment]
 
 try:
     from beartype import beartype as _beartype
@@ -42,8 +32,8 @@ def beartype(fn):  # type: ignore[no-untyped-def]
     return _beartype(fn)
 
 
-@struct.dataclass
-class AgentWeights:
+@pytree_dataclass
+class AgentWeights(PytreeRecord):
     """Preference weights for agent utility functions.
 
     Attributes:

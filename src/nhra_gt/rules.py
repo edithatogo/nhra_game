@@ -7,22 +7,18 @@ for gradients to flow through rule logic during optimization.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import replace
 from typing import TYPE_CHECKING, Any
+
+from nhra_gt._pytree import PytreeRecord, pytree_dataclass
 
 try:
     import jax.numpy as jnp
-    from flax import struct
     from jax import lax
 except ImportError:  # pragma: no cover
     import numpy as jnp  # type: ignore[no-redef]
 
     lax = None
-
-    class _Struct:  # minimal replacement for `flax.struct`
-        dataclass = staticmethod(dataclass)
-
-    struct = _Struct()
 
 if TYPE_CHECKING:
     # Use Any or a Protocol if needed to avoid circular imports during JIT
@@ -30,8 +26,8 @@ if TYPE_CHECKING:
     State = Any
 
 
-@struct.dataclass
-class CapRule:
+@pytree_dataclass
+class CapRule(PytreeRecord):
     """Handles growth cap logic for Commonwealth funding.
 
     Supports both 'Hard' (strict limit) and 'Soft' (marginal reduction) caps.
@@ -73,8 +69,8 @@ class CapRule:
         return lax.cond(self.rule_type == 0, hard_cap, soft_cap)
 
 
-@struct.dataclass
-class AuditRule:
+@pytree_dataclass
+class AuditRule(PytreeRecord):
     """Handles integrity and audit pressure logic.
 
     Defines how coding intensity translates into detection risk or financial penalties.
@@ -109,8 +105,8 @@ class AuditRule:
         return lax.cond(self.rule_type == 0, proportional, threshold_rule)
 
 
-@struct.dataclass
-class EligibilityRule:
+@pytree_dataclass
+class EligibilityRule(PytreeRecord):
     """Determines NWAU eligibility and activity stream partitioning.
 
     Defines the boundary between Activity Based Funding (ABF) and Block funding.
@@ -132,8 +128,8 @@ class EligibilityRule:
         return jnp.clip(target_abf_share, self.eligibility_abf_share_min, 1.0)
 
 
-@struct.dataclass
-class ReconciliationRule:
+@pytree_dataclass
+class ReconciliationRule(PytreeRecord):
     """Handles annual financial true-ups and emergency transfers.
 
     Simulates the "Safety Net" or bailout mechanisms triggered by system pressure.

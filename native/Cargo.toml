@@ -1,0 +1,18 @@
+[package]
+name = "nhra-paignia"
+version = "26.0.2"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+
+[lib]
+name = "_paignia"
+crate-type = ["cdylib"]
+
+[dependencies]
+paignia-core = { git = "https://github.com/edithatogo/paignia.git", rev = "9f23f8a09d4657e33d641c2b13e0826939acafa9" }
+paignia-solve = { git = "https://github.com/edithatogo/paignia.git", rev = "9f23f8a09d4657e33d641c2b13e0826939acafa9" }
+pyo3 = "=0.30.1"
+
+[lints.rust]
+unsafe_code = "forbid"

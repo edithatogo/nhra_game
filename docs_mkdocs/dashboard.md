@@ -10,7 +10,7 @@ This page covers running, customizing, and deploying the NHRA Strategic Scenario
 
 ```bash
 # Activate environment
-poetry shell
+source .venv/bin/activate
 
 # Run the dashboard
 streamlit run scripts/dashboard.py
@@ -71,7 +71,7 @@ Toggle "🧠 Expert Strategic Mode" to manually override game equilibria:
 Streamlit Cloud uses pip, not Poetry. Create a requirements file:
 
 ```bash
-poetry export -f requirements.txt --without-hashes > requirements.txt
+uv export --locked --no-dev --no-hashes > requirements.txt
 ```
 
 ### Step 2: Create `.streamlit/config.toml`

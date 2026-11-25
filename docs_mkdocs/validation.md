@@ -38,13 +38,13 @@ Tests are located in `tests/` and run with pytest:
 
 ```bash
 # Run all tests
-poetry run pytest
+uv run pytest
 
 # Run with verbose output
-poetry run pytest -v
+uv run pytest -v
 
 # Run specific test file
-poetry run pytest tests/test_games.py
+uv run pytest tests/test_games.py
 ```
 
 ### Coverage Requirements
@@ -52,7 +52,7 @@ poetry run pytest tests/test_games.py
 Coverage is enforced at **95%** minimum:
 
 ```bash
-poetry run pytest --cov=src/nhra_gt --cov-report=html --cov-fail-under=95
+uv run pytest --cov=src/nhra_gt --cov-report=html --cov-fail-under=95
 ```
 
 ### Property-Based Testing
@@ -126,7 +126,7 @@ We use [SALib](https://salib.readthedocs.io/) for Sobol sensitivity analysis:
 
 ```bash
 # Run sensitivity analysis
-poetry run python scripts/run_sobol_analysis.py --samples 1024
+uv run python scripts/run_sobol_analysis.py --samples 1024
 ```
 
 This produces:
@@ -154,7 +154,7 @@ Typical sensitivity rankings (parameter importance for system pressure):
 The recursive backtest validates model dynamics against historical patterns:
 
 ```bash
-poetry run python scripts/validation/recursive_backtest.py
+uv run python scripts/validation/recursive_backtest.py
 ```
 
 The backtest:
@@ -181,13 +181,13 @@ All validation runs automatically in GitHub Actions:
 ```yaml
 # Extract from .github/workflows/ci.yml
 - name: Tests
-  run: poetry run pytest -q
+  run: uv run pytest -q
 
 - name: Input traceability
-  run: poetry run python scripts/check_parameters_grounded.py
+  run: uv run python scripts/check_parameters_grounded.py
 
 - name: Verify Pipeline
-  run: poetry run snakemake --cores 1 run_baseline context_pack --forceall
+  run: uv run snakemake --cores 1 run_baseline context_pack --forceall
 ```
 
 ### Validation Gates
@@ -210,20 +210,20 @@ PRs must pass:
 
 ```bash
 # Run complete validation
-poetry run snakemake --cores 4 all
+uv run snakemake --cores 4 all
 
 # Or individually:
-poetry run pytest                           # Unit tests
-poetry run mypy --strict src/nhra_gt        # Type check
-poetry run python scripts/run_sobol_analysis.py  # Sensitivity
-poetry run python scripts/validation/recursive_backtest.py  # Backtest
+uv run pytest                           # Unit tests
+uv run mypy --strict src/nhra_gt        # Type check
+uv run python scripts/run_sobol_analysis.py  # Sensitivity
+uv run python scripts/validation/recursive_backtest.py  # Backtest
 ```
 
 ### Quick Smoke Test
 
 ```bash
 # Fast validation (< 1 minute)
-poetry run pytest tests/test_smoke.py -v
+uv run pytest tests/test_smoke.py -v
 ```
 
 ---
