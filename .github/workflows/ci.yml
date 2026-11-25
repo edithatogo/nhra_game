@@ -26,8 +26,8 @@ jobs:
         run: cargo --version
       - name: Install dependencies
         run: uv sync --locked --all-extras --dev
-      - name: Paignia pure Nash and agreement-cycle parity
-        run: uv run --locked pytest -q tests/test_subgames_nash.py tests/test_agreement_cycles.py
+      - name: Paignia pure Nash and application game controls
+        run: uv run --locked pytest -q tests/test_subgames_nash.py tests/test_agreement_cycles.py tests/test_queuing_game.py
       - name: Lint
         run: |
           uv run ruff check src tests
