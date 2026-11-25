@@ -10,8 +10,8 @@ name = "_paignia"
 crate-type = ["cdylib"]
 
 [dependencies]
-paignia-core = { git = "https://github.com/edithatogo/paignia.git", rev = "9f23f8a09d4657e33d641c2b13e0826939acafa9" }
-paignia-solve = { git = "https://github.com/edithatogo/paignia.git", rev = "9f23f8a09d4657e33d641c2b13e0826939acafa9" }
+paignia-core = { git = "https://github.com/edithatogo/paignia.git", rev = "cb35688c096a2200f51c0fc1dc8c079a7ffa50c9" }
+paignia-solve = { git = "https://github.com/edithatogo/paignia.git", rev = "cb35688c096a2200f51c0fc1dc8c079a7ffa50c9" }
 pyo3 = "=0.30.1"
 
 [lints.rust]
