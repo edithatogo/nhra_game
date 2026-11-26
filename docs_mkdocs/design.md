@@ -114,6 +114,16 @@ uses an infinite horizon. Its equal split at perfect patience is a
 historical endpoint convention. The `rubinstein` dispatch name in `solve_game`
 remains a legacy alias for simultaneous Nash.
 
+For three-player logit QRE, call
+`solve_three_player_qre((payoffs_1, payoffs_2, payoffs_3))` from
+`nhra_gt.solvers_jax` at the Python boundary. It reports the solver's residual
+as a scalar. The result has status `converged` and carries the three strategy
+vectors in seat order when the residual is between zero and `tol`, inclusive.
+The default bound is `1e-6`. Other residuals, including nonfinite values, give
+`nonconverged` with `strategies=None`. A caller can retain the residual for
+diagnosis. Use `qre_3player_jax` inside JAX transformations to get the final
+iterate and its residual.
+
 ### 2) System dynamics
 
 A compact set of state variables evolve annually (or finer if needed), including:

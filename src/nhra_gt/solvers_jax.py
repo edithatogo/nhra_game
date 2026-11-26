@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from math import isfinite
+from typing import Any, Literal
 
 import jax
 import jax.numpy as jnp
@@ -133,7 +134,7 @@ class _ThreePlayerQreOptions:
 def qre_3player_jax(
     u1: Float[Array, "m n k"], u2: Any, u3: Any, *options: Any, **named_options: Any
 ) -> tuple[Any, Any, Any, Any]:
-    """Solves for QRE in a 3-player normal form game using tensor contractions.
+    """Run fixed-budget logit response iteration for a three-player game.
 
     Args:
         u1: Payoff for player 1.
@@ -143,10 +144,10 @@ def qre_3player_jax(
         **named_options: The same values by keyword.
         lam: Rationality parameter.
         max_iter: Max iterations.
-        tol: Tolerance.
+        tol: Legacy tolerance argument. Use solve_three_player_qre to qualify the result.
 
     Returns:
-        Strategies for all three players and their summed maximum response errors.
+        The final three strategy vectors and their summed maximum response errors.
     """
     settings = _ThreePlayerQreOptions(*options, **named_options)
     lam = settings.lam
@@ -180,6 +181,40 @@ def qre_3player_jax(
         + jnp.max(jnp.abs(response3 - p3))
     )
     return p1, p2, p3, residual
+
+
+@dataclass(frozen=True)
+class ThreePlayerQreResult:
+    """Convergence status, measured response error and any qualified strategies."""
+
+    status: Literal["converged", "nonconverged"]
+    residual: float
+    strategies: tuple[Array, Array, Array] | None
+
+
+def solve_three_player_qre(
+    payoffs: tuple[Array, Array, Array],
+    *,
+    lam: float = _ThreePlayerQreOptions.lam,
+    max_iter: int = _ThreePlayerQreOptions.max_iter,
+    tol: float = _ThreePlayerQreOptions.tol,
+) -> ThreePlayerQreResult:
+    """Qualify the fixed-budget result at the Python boundary.
+
+    Supply one payoff tensor per player in seat order. A residual in
+    [0, tol] qualifies the corresponding strategies. Other residuals are
+    reported as nonconverged with no strategies. Use qre_3player_jax inside
+    JAX transformations.
+    """
+    if not isfinite(tol) or tol < 0.0:
+        message = "QRE tolerance must be finite and nonnegative"
+        raise ValueError(message)
+
+    p1, p2, p3, residual = qre_3player_jax(*payoffs, lam=lam, max_iter=max_iter)
+    error = float(residual)
+    if 0.0 <= error <= tol:
+        return ThreePlayerQreResult("converged", error, (p1, p2, p3))
+    return ThreePlayerQreResult("nonconverged", error, None)
 
 
 @beartype
