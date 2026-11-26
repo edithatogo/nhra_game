@@ -62,3 +62,5 @@ audit_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime rule objec
 eligibility_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime rule object,Policy
 reconciliation_rule,Runtime rule object,(runtime),unitless,assumed,,,,,Runtime rule object,Policy
 spine,Economic spine time series,(EconomicSpineJax|None),unitless,calibrated,ihacpa2025nep,,,Economic inputs,Pricing
+minutes_per_hour,Minutes in one hour,60,min/h,primary,https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf/2d2b50bf-f2b4-9661-f402-5f9d66e4b507?version=7.0,"SI Brochure 9th edition version 4.01, section 4, table 8, time units",60,60,Fixed conversion in mm_s_queue_wait_jax from daily to minute-scale wait times.,Operations
+hours_per_day,Hours in one day,24,h/d,primary,https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf/2d2b50bf-f2b4-9661-f402-5f9d66e4b507?version=7.0,"SI Brochure 9th edition version 4.01, section 4, table 8, time units",24,24,Fixed conversion in mm_s_queue_wait_jax for the model day of 1440 minutes.,Operations

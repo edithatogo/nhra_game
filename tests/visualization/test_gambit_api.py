@@ -2,6 +2,8 @@
 
 import pygambit as gambit
 
+_LEAF_COUNT = 4
+
 
 def test_api():
     """Check API."""
@@ -20,11 +22,14 @@ def test_api():
     print("Testing g.append_move(list(g.root.children), p2, ['B1', 'B2'])...")
     g.append_move(list(g.root.children), p2, ["B1", "B2"])
 
-    # Set payoffs
-    for node in g.nodes:
-        if node.is_leaf:
-            node.payoffs[p1] = 1.0
-            node.payoffs[p2] = 2.0
+    row_payoff, column_payoff = 1, 2
+    outcome = g.add_outcome("Terminal", [row_payoff, column_payoff])
+    terminal_nodes = [node for node in g.nodes if node.is_terminal]
+    assert len(terminal_nodes) == _LEAF_COUNT
+    for node in terminal_nodes:
+        g.set_outcome(node, outcome)
+        assert node.outcome[p1] == row_payoff
+        assert node.outcome[p2] == column_payoff
 
     print("Game structure built.")
 

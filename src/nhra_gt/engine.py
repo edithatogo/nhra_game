@@ -748,6 +748,14 @@ def step(
     nep_growth = float(getattr(params, "nep_annual_growth", 0.0))
 
     econ_spine = getattr(params, "economic_spine", None)
+    if isinstance(params, ParamsJax) and params.spine is not None:
+        econ_spine = pd.DataFrame(
+            {
+                "year": np.asarray(params.spine.years),
+                "nep_per_nwau": np.asarray(params.spine.nep_per_nwau),
+                "wpi_health_index": np.asarray(params.spine.wpi_health_index),
+            }
+        )
     if econ_spine is not None and isinstance(econ_spine, pd.DataFrame):
         required = {"year", "nep_per_nwau", "wpi_health_index"}
         if required.issubset(econ_spine.columns):

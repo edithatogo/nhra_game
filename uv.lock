@@ -905,6 +905,14 @@ wheels = [
 ]
 
 [[package]]
+name = "en-core-web-sm"
+version = "3.8.0"
+source = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl" }
+wheels = [
+    { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl", hash = "sha256:1932429db727d4bff3deed6b34cfc05df17794f4a52eeb26cf8928f7c1a0fb85" },
+]
+
+[[package]]
 name = "executing"
 version = "2.3.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2427,6 +2435,7 @@ dev = [
     { name = "codespell" },
     { name = "commitizen" },
     { name = "deptry" },
+    { name = "en-core-web-sm" },
     { name = "hypothesis" },
     { name = "hypothesis-auto" },
     { name = "icontract" },
@@ -2512,6 +2521,7 @@ dev = [
     { name = "codespell", specifier = ">=2.2.6" },
     { name = "commitizen", specifier = ">=4.11.0" },
     { name = "deptry", specifier = ">=0.24.0" },
+    { name = "en-core-web-sm", url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl" },
     { name = "hypothesis", specifier = ">=6.100" },
     { name = "hypothesis-auto" },
     { name = "icontract" },

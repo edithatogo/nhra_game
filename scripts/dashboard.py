@@ -80,11 +80,7 @@ def initialize_slider_state(scenarios: dict) -> None:
         if key not in st.session_state:
             val = scenario_params.get(key, csv_defaults.get(key))
             if val is None:
-                val = (
-                    field.default
-                    if not isinstance(field.default, dataclasses._MISSING_TYPE)
-                    else 0.0
-                )
+                val = field.default if field.default is not dataclasses.MISSING else 0.0
             st.session_state[key] = val
 
 

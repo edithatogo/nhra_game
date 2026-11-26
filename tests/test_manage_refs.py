@@ -73,8 +73,8 @@ def valid_yaml(tmp_path):
     """Write a reference that satisfies the required metadata schema."""
     f = tmp_path / "valid.yaml"
     data = [
-        {"id": "ref1", "doi": "10.1000/1", "url": "http://example.com/1"},
-        {"id": "ref2", "doi": "10.1000/2", "url": "http://example.com/2"},
+        {"id": "ref1", "title": "Example 1", "doi": "10.1000/1", "url": "http://example.com/1"},
+        {"id": "ref2", "title": "Example 2", "doi": "10.1000/2", "url": "http://example.com/2"},
     ]
     with open(f, "w") as file:
         yaml.dump(data, file)

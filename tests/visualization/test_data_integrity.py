@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pandas as pd
 import pytest
-from pandera.errors import SchemaError
+from pandera.errors import SchemaError, SchemaErrors
 
 from nhra_gt.visualization.distributional import plot_strategy_heatmap
 from nhra_gt.visualization.trajectories import plot_trajectory
@@ -22,9 +22,8 @@ def test_plot_trajectory_wrong_type():
     """Check plot trajectory wrong type."""
     invalid_data = pd.DataFrame({"year": ["abc"], "metric": [1.0]})
 
-    # Pandera should try to coerce, but "abc" will fail
-
-    with pytest.raises(SchemaError):
+    # Require the coercion failure for the year column.
+    with pytest.raises((SchemaError, SchemaErrors), match="year"):
         plot_trajectory(invalid_data, "metric", "Y")
 
 

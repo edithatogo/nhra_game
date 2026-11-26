@@ -1,23 +1,153 @@
-"""Global Sensitivity Analysis Suite for NHRA model."""
+"""Run the NHRA Morris and Sobol analyses against the hybrid model."""
 
 from __future__ import annotations
 
 import argparse
+import os
+from pathlib import Path
 
 import numpy as np
 
+from nhra_gt.engine import Params, run_hybrid, summarise_outcome
+from nhra_gt.sensitivity import (
+    evaluate_parallel,
+    export_sensitivity_indices,
+    export_sobol_s2_to_csv,
+    generate_sensitivity_summary,
+    get_salib_problem,
+    run_morris_analysis,
+    run_sobol_analysis,
+)
+from nhra_gt.visualization.config import PlotConfig
+from nhra_gt.visualization.sensitivity import (
+    plot_morris_tornado,
+    plot_sobol_heatmap,
+    plot_sobol_indices,
+)
 
-def mock_func(x):
-    """Simple additive mock model for testing."""
+
+def model_wrapper(param_values: np.ndarray, names: list[str], years: list[int]) -> float:
+    """Wraps the hybrid model for SALib evaluation.
+
+    Returns a single scalar outcome (e.g., pressure_2030).
+    """
+    # Create Params object
+    p = Params().replace(**dict(zip(names, map(float, param_values), strict=True)))
+
+    # Run simulation
+    # Using a fixed seed for the internal MC logic to ensure stability per parameter set
+    traj, _ = run_hybrid(years, p, seed=42, n_mc=50)
+
+    # Extract summary
+    summary = summarise_outcome(traj)
+    return summary["pressure_2030"]
+
+
+def model_func_for_salib(param_values: np.ndarray) -> float:
+    """Global wrapper for multiprocessing pickling."""
+    return model_wrapper(param_values, GSA_PARAM_NAMES, GSA_YEARS)
+
+
+# Globals for multiprocessing pickling
+GSA_PARAM_NAMES = [
+    "rurality_weight",
+    "cost_shifting_intensity",
+    "fragmentation_index",
+    "discharge_delay_base",
+    "admin_burden_weight",
+    "political_salience",
+]
+GSA_YEARS = list(range(2025, 2031))
+
+
+def mock_func(x: np.ndarray) -> float:
+    """Return the sum used to check the process pool."""
     return float(np.sum(x))
 
 
 def main() -> None:
-    """Execute the GSA workflow."""
+    """Run the selected analysis and write its outputs."""
     parser = argparse.ArgumentParser(description="Global Sensitivity Analysis Suite")
     parser.add_argument("--method", type=str, choices=["morris", "sobol", "mock"], default="morris")
+    parser.add_argument(
+        "--samples", type=int, default=10, help="N samples (or trajectories for Morris)"
+    )
+    parser.add_argument("--procs", type=int, default=os.process_cpu_count() or 1)
+    parser.add_argument("--output", type=Path, default=Path("data/gsa/raw_results.csv"))
+
     args = parser.parse_args()
-    print(f"Running {args.method} analysis...")
+
+    # Ensure output dir exists
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+
+    problem = get_salib_problem(GSA_PARAM_NAMES)
+
+    if args.method == "mock":
+        print(f"Running mock parallelism test with {args.procs} processes...")
+        param_values = np.random.rand(args.samples, len(GSA_PARAM_NAMES))
+        results = evaluate_parallel(mock_func, param_values, n_procs=args.procs)
+        print(f"Collected {len(results)} mock results.")
+        return
+
+    if args.method == "morris":
+        print(f"Running Morris Analysis (N={args.samples}, Procs={args.procs})...")
+        df = run_morris_analysis(
+            problem, model_func_for_salib, n_trajectories=args.samples, n_procs=args.procs
+        )
+        df.to_csv(args.output, index_label="parameter")
+
+        # Generate plot
+        plot_path = args.output.parent / "morris_tornado"
+        plot_morris_tornado(df, config=PlotConfig(), path=plot_path)
+
+        print(f"Morris results saved to {args.output}")
+        print(f"Morris plot saved to {plot_path}.png/.svg/.pdf")
+        print("\nTop influential parameters (mu_star):")
+        print(df.head(10))
+        return
+
+    if args.method == "sobol":
+        print(f"Running Sobol Analysis (N={args.samples}, Procs={args.procs})...")
+        # Ensure N is power of 2 for Sobol
+        if not (args.samples > 0 and (args.samples & (args.samples - 1)) == 0):
+            print("Warning: Sobol N should be a power of 2. Results may be sub-optimal.")
+
+        si = run_sobol_analysis(
+            problem, model_func_for_salib, n_samples=args.samples, n_procs=args.procs
+        )
+
+        # Export indices
+        export_sensitivity_indices(si, args.output)
+
+        # Export S2 interaction matrix
+        s2_path = args.output.parent / "sobol_s2.csv"
+        export_sobol_s2_to_csv(si, s2_path)
+
+        # Generate plots
+        config = PlotConfig()
+        plot_sobol_indices(
+            si, config=config, total_order=False, path=args.output.parent / "sobol_indices_s1"
+        )
+        plot_sobol_indices(
+            si, config=config, total_order=True, path=args.output.parent / "sobol_indices_st"
+        )
+        plot_sobol_heatmap(si, config=config, path=args.output.parent / "sobol_heatmap")
+
+        print(f"Sobol results saved to {args.output}")
+        print(f"S2 matrix saved to {s2_path}")
+        print(f"Sobol plots saved to {args.output.parent}/sobol_*.png/.svg/.pdf")
+
+        # Generate summary (requires both to exist for best result)
+        summary_path = args.output.parent / "sensitivity_summary.md"
+        generate_sensitivity_summary(
+            args.output.parent / "morris_results.csv",
+            args.output,
+            summary_path,
+        )
+        print(f"Summary report generated: {summary_path}")
+        return
+
+    print(f"Method {args.method} sampling not yet implemented.")
 
 
 if __name__ == "__main__":
