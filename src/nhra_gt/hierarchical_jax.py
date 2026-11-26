@@ -8,15 +8,18 @@ affect micro-level incentives.
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from typing import Any
 
 import jax
 import jax.numpy as jnp
 from beartype import beartype
+from jax import Array
 
+from nhra_gt._pytree import PytreeRecord, pytree_dataclass
 from nhra_gt.domain.state import Params, StateJax
 from nhra_gt.engine import step_jax
-from nhra_gt.solvers_jax import qre_solver_jax
+from nhra_gt.solvers_jax import QreDiagnostics, QreStatus, solve_qualified_two_player_qre
 
 
 @beartype
@@ -73,7 +76,7 @@ def hierarchical_step_jax(
         # 8: COMP (Micro), 9: SIGNAL_QUALITY (Macro), 10: VENUE_SHIFT, 11: CAPACITY,
         # 12: COMPETITION
 
-        # Mocking micro-choice for now (can use qre_solver_jax here)
+        # Mocking micro-choice for now (can use the QRE solver here)
         # In a full implementation, we'd solve the subgames here.
         micro_strats = jnp.zeros(13)
         micro_strats = micro_strats.at[1].set(macro_strategies[0])  # DEF
@@ -97,13 +100,42 @@ def hierarchical_step_jax(
     return new_commonwealth_state, new_jurisdiction_states
 
 
+@pytree_dataclass
+class ConstitutionalQreResult(PytreeRecord):
+    """Four legacy arrays with compiled macro and per-cell micro diagnostics."""
+
+    row: Array
+    column: Array
+    state_micro_utils: Array
+    lhn_micro_utils: Array
+    micro: QreDiagnostics
+    macro: QreDiagnostics
+
+    @property
+    def qualified(self) -> Array:
+        """Tell whether every required QRE was qualified."""
+        return self.macro.qualified
+
+    def __iter__(self) -> Iterator[Array]:
+        """Support unpacking the original four arrays."""
+        return iter(self[:])
+
+    def __getitem__(self, index: int | slice) -> Any:
+        """Index the original four arrays."""
+        return (self.row, self.column, self.state_micro_utils, self.lhn_micro_utils)[index]
+
+    def __len__(self) -> int:
+        """Count the unpackable arrays."""
+        return 4
+
+
 @beartype
 def solve_constitutional_game_jax(
     u_cth: Any,
     u_state_macro: Any,
     micro_game_factory: Any,  # (m, n) -> (u_state_micro, u_lhn)
     lam: float = 5.0,
-) -> tuple[Any, Any, Any, Any]:
+) -> ConstitutionalQreResult:
     """Solves the nested Constitutional game using backward induction.
 
     1. Commonwealth vs State (Macro)
@@ -112,28 +144,43 @@ def solve_constitutional_game_jax(
     The State's macro payoff is its own payoff from (1) PLUS its equilibrium
     payoff from (2).
 
-    Returns:
-        Tuple of (p_cth, q_state, state_micro_utils, lhn_micro_utils).
+    The result still unpacks as (p_cth, q_state, state_micro_utils, lhn_micro_utils).
+    Diagnostic fields expose the original residuals. An unqualified microgame
+    withholds the constitutional solution and skips the macro solve.
     """
     m, n = u_cth.shape
 
     def get_micro_equilibria(i, j):
         """Helper to resolve micro-game equilibria for each macro outcome."""
         u_state_micro, u_lhn = micro_game_factory(i, j)
-        p_micro, q_micro, _ = qre_solver_jax(u_state_micro, u_lhn, lam=lam)
+        p_micro, q_micro, diagnostics = solve_qualified_two_player_qre(
+            u_state_micro, u_lhn, lam=lam
+        )
         # Return State and LHN utilities from micro game
-        return p_micro @ u_state_micro @ q_micro, p_micro @ u_lhn @ q_micro
+        return p_micro @ u_state_micro @ q_micro, p_micro @ u_lhn @ q_micro, diagnostics
 
     # Vmap over all possible macro outcomes
     row_indices = jnp.repeat(jnp.arange(m), n)
     col_indices = jnp.tile(jnp.arange(n), m)
 
-    state_micro_utils, lhn_micro_utils = jax.vmap(get_micro_equilibria)(row_indices, col_indices)
+    state_utils, lhn_utils, micro = jax.vmap(get_micro_equilibria)(row_indices, col_indices)
+    state_utils, lhn_utils = state_utils.reshape(m, n), lhn_utils.reshape(m, n)
+    micro = jax.tree.map(lambda values: values.reshape(m, n), micro)
 
-    # Effective State payoffs for the macro game
-    effective_u_state = u_state_macro + state_micro_utils.reshape(m, n)
+    def solve_macro():
+        return solve_qualified_two_player_qre(u_cth, u_state_macro + state_utils, lam=lam)
 
-    # Solve Macro Game
-    p_cth, q_state, _ = qre_solver_jax(u_cth, effective_u_state, lam=lam)
+    def skip_macro():
+        missing = jnp.asarray(jnp.nan, dtype=state_utils.dtype)
+        diagnostics = QreDiagnostics(missing, jnp.asarray(QreStatus.SKIPPED, dtype=jnp.int32))
+        return jnp.broadcast_to(missing, (m,)), jnp.broadcast_to(missing, (n,)), diagnostics
 
-    return p_cth, q_state, state_micro_utils.reshape(m, n), lhn_micro_utils.reshape(m, n)
+    p_cth, q_state, macro = jax.lax.cond(jnp.all(micro.qualified), solve_macro, skip_macro)
+    return ConstitutionalQreResult(
+        p_cth,
+        q_state,
+        jnp.where(macro.qualified, state_utils, jnp.nan),
+        jnp.where(macro.qualified, lhn_utils, jnp.nan),
+        micro,
+        macro,
+    )

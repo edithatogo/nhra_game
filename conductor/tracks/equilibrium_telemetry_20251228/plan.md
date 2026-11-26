@@ -57,6 +57,19 @@
 The historical occupancy hold and the signed-consumer and external validation
 gates remain open in [NHRA #39](https://github.com/edithatogo/nhra_game/issues/39).
 
+## Compiled two-player QRE caller acceptance
+
+- [x] Preserve the fixed-budget solver, residual and `1e-6` admission tolerance.
+  Use the uniquely certified equilibrium at the requested rationality and
+  report ambiguity separately from nonconvergence.
+- [x] Compare the admissible asymmetric and rectangular cases with Gambit 16.7.0.
+  Cover a converged multiple-equilibrium control, the compiled derivative,
+  and the prior cost-shifting and nested nonconvergence cases.
+- [x] Discard unqualified strategy vectors and nested continuation payoffs.
+  Preserve per-game residuals and reject a failed strategic rollout before
+  aggregation. Keep the occupancy, signed-consumer and external validation
+  gates in [NHRA #39](https://github.com/edithatogo/nhra_game/issues/39).
+
 ---
 **Track Status:** PENDING 2025-12-28
 Track initialized to track solver performance and strategic ambiguity.

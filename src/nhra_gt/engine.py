@@ -19,7 +19,7 @@ from beartype import beartype
 from jax import lax
 from jaxtyping import Array, Float
 
-from nhra_gt.agents.jax import HeuristicAgentJax
+from nhra_gt.agents.jax import STRATEGIC_QRE_GAMES, HeuristicAgentJax
 from nhra_gt.domain.params import Params
 from nhra_gt.domain.stability import calculate_hysteresis_area, calculate_recovery_metrics
 from nhra_gt.domain.state import (
@@ -31,7 +31,7 @@ from nhra_gt.domain.state import (
     SystemModeJax,
 )
 from nhra_gt.rules import initialize_rules
-from nhra_gt.solvers_jax import discrete_nash_jax, stackelberg_jax
+from nhra_gt.solvers_jax import QreStatus, discrete_nash_jax, stackelberg_jax
 from nhra_gt.subgames.games_jax import GameParamsJax, renegotiation_game_jax
 from nhra_gt.subgames.queuing import (
     PatientUtilityParams,
@@ -1205,7 +1205,7 @@ def run_hybrid(
     agent = HeuristicAgentJax(solve_nash=is_strategic)
 
     def step_with_agent(state, key):
-        strat = agent.decide(state, p)
+        strat, diagnostics = agent.decide_with_diagnostics(state, p)
         if overrides:
             for name, value in overrides.items():
                 index = _STRATEGY_INDICES.get(name, name)
@@ -1213,13 +1213,23 @@ def run_hybrid(
                     code = _STRATEGY_CODES.get(value, value) if isinstance(value, str) else value
                     strat = strat.at[index].set(code)
 
-        next_s = step_jax(state, p, strat, key)
-        return next_s, next_s
+        if diagnostics is None:
+            next_s = step_jax(state, p, strat, key)
+        else:
+            next_s = lax.cond(
+                jnp.all(diagnostics.qualified),
+                lambda: step_jax(state, p, strat, key),
+                lambda: state,
+            )
+        return next_s, (next_s, diagnostics)
 
     @jax.jit
     def multi_rollout(keys):
         def single_rollout(key):
             init_s = baseline_state(start_year, p)
+            if is_strategic:
+                # A rejected step keeps the state in the transition's floating dtype.
+                init_s = init_s.replace(discharge_delay=init_s.discharge_delay * 1.0)
             months_keys = jax.random.split(key, num_months)
             _, trajectory = jax.lax.scan(step_with_agent, init_s, months_keys)
             return trajectory
@@ -1229,7 +1239,20 @@ def run_hybrid(
     rng_key = jax.random.PRNGKey(seed)
     mc_keys = jax.random.split(rng_key, n_mc)
 
-    all_trajectories = multi_rollout(mc_keys)
+    all_trajectories, diagnostics = multi_rollout(mc_keys)
+    if diagnostics is not None:
+        statuses = np.asarray(diagnostics.status)
+        rejected = np.argwhere(statuses != QreStatus.QUALIFIED)
+        if rejected.size:
+            trial, month, game = rejected[0]
+            status = QreStatus(statuses[trial, month, game]).name.lower()
+            residual = float(diagnostics.residual[trial, month, game])
+            year, month = start_year + month // _MONTHS_PER_YEAR, month % _MONTHS_PER_YEAR + 1
+            message = (
+                f"Strategic QRE {status} for {STRATEGIC_QRE_GAMES[game]} "
+                f"in rollout {trial + 1}, {year}-{month:02d}. Residual {residual:.17g}"
+            )
+            raise RuntimeError(message)
 
     agg_yearly = _aggregate_rollouts(all_trajectories, end_year, n_mc)
 

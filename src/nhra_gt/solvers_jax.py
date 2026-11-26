@@ -3,14 +3,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import IntEnum
 from math import isfinite
-from typing import Any, Literal
+from typing import Any, Literal, NamedTuple
 
 import jax
 import jax.numpy as jnp
 from beartype import beartype
 from jax import lax
 from jaxtyping import Array, Float
+
+_TWO_PLAYER_QRE_TOLERANCE = 1e-6
+_BINARY_ACTIONS = 2
 
 
 @beartype
@@ -19,7 +23,7 @@ def qre_solver_jax(
     u_col: Float[Array, "m n"],
     lam: float = 5.0,
     max_iter: int = 100,
-    tol: float = 1e-6,
+    tol: float = _TWO_PLAYER_QRE_TOLERANCE,
 ) -> tuple[Any, Any, Any]:
     """Solves for the Quantal Response Equilibrium (Logit-equilibrium).
 
@@ -58,6 +62,83 @@ def qre_solver_jax(
     res_final = jnp.max(jnp.abs(p_response - p_final)) + jnp.max(jnp.abs(q_response - q_final))
 
     return p_final, q_final, jnp.maximum(res_final, jnp.asarray(1e-12, dtype=res_final.dtype))
+
+
+class QreStatus(IntEnum):
+    """Disposition of a compiled logit QRE attempt."""
+
+    SKIPPED = 0
+    QUALIFIED = 1
+    NONCONVERGED = 2
+    BRANCH_UNQUALIFIED = 3
+
+
+class QreDiagnostics(NamedTuple):
+    """Residual and disposition stored in arrays for JAX transformations."""
+
+    residual: Array
+    status: Array
+
+    @property
+    def qualified(self) -> Array:
+        """Tell whether the associated equilibrium can be used."""
+        return self.status == QreStatus.QUALIFIED
+
+
+def _log_response_bound(payoffs: Array, lam: float) -> Array:
+    """Bound a logit response in total variation and store the bound in log space."""
+    if payoffs.shape[0] == _BINARY_ACTIONS:
+        gains = lam * (payoffs[1] - payoffs[0])
+        low, high = jnp.min(gains), jnp.max(gains)
+        closest_to_zero = jnp.maximum(0.0, jnp.maximum(low, -high))
+        return (
+            jnp.log(high - low)
+            + jax.nn.log_sigmoid(closest_to_zero)
+            + jax.nn.log_sigmoid(-closest_to_zero)
+        )
+    # The softmax probability of any subset has derivative bounded by one
+    # quarter of the utility perturbation's range across own actions.
+    differences = payoffs[:, None, :] - payoffs[None, :, :]
+    return jnp.log(0.25 * abs(lam)) + jnp.log(jnp.max(jnp.ptp(differences, axis=-1)))
+
+
+def _unique_logit_branch(u_row: Array, u_col: Array, lam: float) -> Array:
+    log_bound = _log_response_bound(u_row, lam) + _log_response_bound(u_col.T, lam)
+    # Leave room for rounding near the strict contraction boundary.
+    unique = log_bound < jnp.log1p(-8 * jnp.finfo(log_bound.dtype).eps)
+    if u_row.shape == (_BINARY_ACTIONS, _BINARY_ACTIONS):
+        # Oppositely directed binary responses compose to a decreasing map.
+        row_gains = u_row[1] - u_row[0]
+        col_gains = u_col[:, 1] - u_col[:, 0]
+        row_direction = jnp.sign(row_gains[1] - row_gains[0])
+        col_direction = jnp.sign(col_gains[1] - col_gains[0])
+        unique = unique | (row_direction * col_direction < 0)
+    return unique
+
+
+def solve_qualified_two_player_qre(
+    u_row: Array, u_col: Array, lam: float = 5.0
+) -> tuple[Array, Array, QreDiagnostics]:
+    """Admit a converged two-player result on a provably unique logit branch.
+
+    Use a contraction bound on the composed responses or, for binary games,
+    opposite response monotonicity. Withhold strategies when convergence or
+    uniqueness cannot be established and preserve the solver's exact residual.
+    """
+    p, q, residual = qre_solver_jax(u_row, u_col, lam=lam)
+    converged = (residual >= 0.0) & (residual <= _TWO_PLAYER_QRE_TOLERANCE)
+    branch_qualified = _unique_logit_branch(u_row, u_col, lam)
+    status = jnp.where(
+        converged,
+        jnp.where(branch_qualified, QreStatus.QUALIFIED, QreStatus.BRANCH_UNQUALIFIED),
+        QreStatus.NONCONVERGED,
+    ).astype(jnp.int32)
+    diagnostics = QreDiagnostics(residual, status)
+    return (
+        jnp.where(diagnostics.qualified, p, jnp.nan),
+        jnp.where(diagnostics.qualified, q, jnp.nan),
+        diagnostics,
+    )
 
 
 @beartype

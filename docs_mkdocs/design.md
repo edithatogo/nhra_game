@@ -114,6 +114,32 @@ uses an infinite horizon. Its equal split at perfect patience is a
 historical endpoint convention. The `rubinstein` dispatch name in `solve_game`
 remains a legacy alias for simultaneous Nash.
 
+#### Two-player QRE admission
+
+The compiled NHRA callers use the existing 100 updates from uniform play and
+the inclusive `1e-6` residual tolerance. A profile is usable only when its
+residual qualifies and the logit equilibrium at the requested rationality is
+unique. The code proves uniqueness using a strict contraction bound on the
+composed responses or, for binary games, responses with opposite directions.
+If uniqueness cannot be established, the caller reports `BRANCH_UNQUALIFIED`.
+This includes multiple-equilibrium games even when the returned iterate has a
+small residual. Gambit continuation verifies the qualified branch in the
+synthetic comparisons. [Gambit method](https://gambitproject.readthedocs.io/en/v16.7.0/algorithms.html#logit)
+
+`HeuristicAgentJax.decide_with_diagnostics` returns the strategy vector and
+residuals and statuses for definition, bargaining and cost shifting in that
+order. The array-only `decide` keeps its shape. A rejected strategy vector
+contains NaNs. A strategic `run_hybrid` run reports the first failed game,
+rollout, month, status and residual before aggregating any trajectories.
+
+`solve_constitutional_game_jax` still supports unpacking its four arrays and
+now exposes per-cell `micro` and scalar `macro` diagnostics. A failed
+microgame leaves the macro solve `SKIPPED`. Any unqualified constitutional
+solution withholds all four arrays as NaNs. A skipped macro residual is NaN.
+An attempted solve always reports its original residual.
+
+#### Three-player QRE admission
+
 For three-player logit QRE, call
 `solve_three_player_qre((payoffs_1, payoffs_2, payoffs_3))` from
 `nhra_gt.solvers_jax` at the Python boundary. It reports the solver's residual
