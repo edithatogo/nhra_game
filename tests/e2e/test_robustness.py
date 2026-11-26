@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 _FIRST_SCENARIO_YEAR = 2020
 _LAST_SCENARIO_YEAR = 2040
@@ -113,12 +115,31 @@ def test_pipeline_baseline_integrity():
         assert (df["occupancy_mean"] < _MAX_OCCUPANCY).all()
 
 
-def test_pipeline_generate_report():
-    """Verify that the validation report can be generated."""
-    # This rule depends on others, snakemake will run them if needed.
-    # We might want to ensure they run or at least that the report is produced.
-    out_path = Path("reports/validation_report.md")
-    out_path.unlink(missing_ok=True)
+@pytest.mark.parametrize("include_occupancy", [True, False], ids=["complete", "missing-occupancy"])
+def test_pipeline_generate_report(tmp_path, include_occupancy):
+    """Exercise the real report workflow with controlled synthetic observations."""
+    source = Path(__file__).resolve().parents[2]
+    shutil.copy2(source / "Snakefile", tmp_path)
+    for directory in ("src", "workflow", "scripts"):
+        shutil.copytree(
+            source / directory, tmp_path / directory, ignore=shutil.ignore_patterns("__pycache__")
+        )
+
+    raw = tmp_path / "data/raw"
+    raw.mkdir(parents=True)
+    rows = []
+    for offset in range(6):
+        rows.append((2010 + offset, "Within 4 Hours", 0.62 + 0.009 * offset))
+        if include_occupancy:
+            rows.append((2010 + offset, "Occupancy", 0.85 - 0.002 * offset))
+    pd.DataFrame(rows, columns=["Year", "Metric", "Value"]).to_csv(
+        raw / "historical_aihw_ed.csv", index=False
+    )
+
+    gsa = tmp_path / "data/gsa"
+    gsa.mkdir(parents=True)
+    for artifact in ("morris_results.csv", "morris_tornado.png"):
+        shutil.copy2(source / "data/gsa" / artifact, gsa / artifact)
 
     result = subprocess.run(
         [
@@ -131,11 +152,29 @@ def test_pipeline_generate_report():
             "--printshellcmds",
             "--show-failed-logs",
         ],
+        cwd=tmp_path,
         check=False,
         capture_output=True,
         text=True,
     )
 
+    report = tmp_path / "reports/validation_report.md"
+    holdouts = tmp_path / "data/calibration/recursive_results.json"
+    if not include_occupancy:
+        assert result.returncode != 0
+        assert "Historical observations require occupancy" in result.stdout + result.stderr
+        assert not holdouts.exists()
+        assert not report.exists()
+        return
+
     assert result.returncode == 0, result.stderr
-    assert out_path.exists()
-    assert out_path.stat().st_size > 0
+    assert holdouts.is_file()
+    assert (
+        (tmp_path / "outputs/validation/theil_decomposition.png")
+        .read_bytes()
+        .startswith(b"\x89PNG\r\n\x1a\n")
+    )
+    text = report.read_text(encoding="utf-8")
+    assert "Mean RMSE criterion" in text
+    assert "| within4 |" in text
+    assert "| occupancy |" in text

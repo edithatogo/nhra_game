@@ -54,12 +54,12 @@ def main() -> int:
 
     # GSA Section
     if gsa_path.exists():
-        gsa_df = pd.read_csv(gsa_path)
+        gsa_df = pd.read_csv(gsa_path, index_col=0)
         report.append("\n## 3. Mechanism Integrity (Morris GSA)")
         report.append("Top 5 Drivers (mu_star):")
         top5 = gsa_df.sort_values("mu_star", ascending=False).head(5)
-        for _, row in top5.iterrows():
-            report.append(f"- **{row['index']}**: {row['mu_star']:.3f} (sigma: {row['sigma']:.3f})")
+        for parameter, row in top5.iterrows():
+            report.append(f"- **{parameter}**: {row['mu_star']:.3f} (sigma: {row['sigma']:.3f})")
 
     report.append("\n## 4. Review")
     report.append(
