@@ -2437,6 +2437,15 @@ own differentiable JAX path. The standalone alternating-offer calculation
 uses an infinite horizon. Its equal split at perfect patience is a
 historical endpoint convention. The <code>rubinstein</code> dispatch name in <code>solve_game</code>
 remains a legacy alias for simultaneous Nash.</p>
+<p>For three-player logit QRE, call
+<code>solve_three_player_qre((payoffs_1, payoffs_2, payoffs_3))</code> from
+<code>nhra_gt.solvers_jax</code> at the Python boundary. It reports the solver's residual
+as a scalar. The result has status <code>converged</code> and carries the three strategy
+vectors in seat order when the residual is between zero and <code>tol</code>, inclusive.
+The default bound is <code>1e-6</code>. Other residuals, including nonfinite values, give
+<code>nonconverged</code> with <code>strategies=None</code>. A caller can retain the residual for
+diagnosis. Use <code>qre_3player_jax</code> inside JAX transformations to get the final
+iterate and its residual.</p>
 <h3 id="2-system-dynamics">2) System dynamics<a class="headerlink" href="#2-system-dynamics" title="Permanent link">&para;</a></h3>
 <p>A compact set of state variables evolve annually (or finer if needed), including:</p>
 <ul>
@@ -2501,7 +2510,7 @@ and <code>within4</code>.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 26, 2026 15:16:57 UTC"><span class="timeago" datetime="2026-11-26T15:16:57+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 26, 2026 15:16:57 UTC">2026-11-26</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 26, 2026 20:14:12 UTC"><span class="timeago" datetime="2026-11-26T20:14:12+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 26, 2026 20:14:12 UTC">2026-11-26</span>
   </span>
 
     
