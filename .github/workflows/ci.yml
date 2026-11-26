@@ -49,6 +49,32 @@ jobs:
         run: uv run python scripts/build_context_pack.py
       - name: Install Chromium for dashboard and PDF tests
         run: uv run --locked playwright install --with-deps chromium
+      - name: Provision Graphviz (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          if ! command -v dot >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install --yes graphviz
+          fi
+          dot -V
+      - name: Provision Graphviz (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          if ! command -v dot >/dev/null; then
+            HOMEBREW_NO_AUTO_UPDATE=1 brew install graphviz
+          fi
+          dot -V
+      - name: Provision Graphviz (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          if (!(Get-Command dot -ErrorAction SilentlyContinue)) {
+            choco install graphviz --yes --no-progress
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            $graphvizBin = Join-Path $env:ProgramFiles 'Graphviz\bin'
+            $env:PATH = "$graphvizBin;$env:PATH"
+            $graphvizBin >> $env:GITHUB_PATH
+          }
+          dot -V
       - name: Tests
         run: uv run pytest -q
       - name: Verify Pipeline (Snakemake)

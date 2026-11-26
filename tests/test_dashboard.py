@@ -10,6 +10,7 @@ from pathlib import Path
 import pandas as pd
 
 from nhra_gt.engine import Params, run_hybrid, summarise_outcome
+from nhra_gt.sensitivity import get_parameter_lineage
 
 _MIN_RURALITY = 0.05
 _MAX_RURALITY = 0.70
@@ -74,14 +75,11 @@ def test_plotly_df_generation():
 
 def test_lineage_lookup_logic():
     """Verify that we can map parameters to evidence sources."""
-    lineage_map = {
-        "nominal_cth_share_target": "https://www.federalfinancialrelations.gov.au/programs/national-health-reform",
-        "rurality_weight": "AIHW (2024) Hospital Activity Data",
-    }
-
-    param = "rurality_weight"
-    assert param in lineage_map
-    assert "AIHW" in lineage_map[param]
+    lineage = get_parameter_lineage()
+    assert Params().flatten().keys() <= lineage.keys()
+    assert lineage["within4_base"].startswith("primary ·")
+    assert "aihw.gov.au" in lineage["within4_base"]
+    assert lineage["occupancy_base"].startswith("assumed ·")
 
 
 def test_narrative_generator_rules():

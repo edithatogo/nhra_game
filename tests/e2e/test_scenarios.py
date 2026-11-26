@@ -1,5 +1,7 @@
 """Tests for scenarios."""
 
+import json
+
 from playwright.sync_api import expect
 
 
@@ -25,23 +27,18 @@ def test_expert_mode_interaction(dashboard):
 
     # Toggle Expert Mode
     dashboard.expert_checkbox.click()
-    dashboard.page.wait_for_timeout(500)
+    expect(dashboard.page.get_by_text("Strategy Overrides", exact=True)).to_be_visible()
     dashboard.check_for_errors()
-
-    # Verify Override headers appear (generic check for "Override")
-    expect(dashboard.page.get_by_text("Overrides", exact=False).first).to_be_visible()
 
 
 def test_simulation_trigger(dashboard):
-    """Test triggering a simulation run."""
+    """Changing the scenario applies its simulation inputs and renders results."""
     dashboard.navigate_to_tab(dashboard.tab_scenario)
-
-    # Click Boost
-    if dashboard.boost_button.is_visible():
-        dashboard.boost_button.click()
-        # Wait for "Running" indicator or completion
-        dashboard.page.wait_for_timeout(2000)
-        dashboard.check_for_errors()
+    dashboard.scenario_picker.click()
+    dashboard.page.get_by_role("option", name="Fiscal Cliff 2026").click()
+    expect(dashboard.funding_share).to_have_value("0.38")
+    expect(dashboard.page.get_by_text("Resilience", exact=True)).to_be_visible()
+    dashboard.check_for_errors()
 
 
 def test_download_functionality(dashboard):
@@ -57,20 +54,16 @@ def test_download_functionality(dashboard):
         download_btn.click()
 
     download = download_info.value
-    # Filename depends on scenario, but should verify extension
-    assert ".json" in download.suggested_filename
+    assert download.suggested_filename.endswith(".json")
+    snapshot = json.loads(download.path().read_text(encoding="utf-8"))
+    assert snapshot["scenario_name"] == "Manual / Custom"
+    assert snapshot["params"]["nominal_cth_share_target"] == float(
+        dashboard.funding_share.input_value()
+    )
 
 
 def test_forensic_audit_load(dashboard):
     """Test loading the 'Forensic Audit' sub-tab to ensure no crashes due to missing columns."""
     dashboard.navigate_to_tab(dashboard.tab_forensic)
-    dashboard.page.wait_for_timeout(500)
-
-    # It might be in a sub-section/expander, but assuming based on previous logs it's part of the main data tab or accessible.
-    # The browser logs showed "Forensic Audit & Solver Integrity" as a markdown header.
-    # We should ensure we scroll to it or it renders.
     expect(dashboard.page.get_by_text("Forensic Audit & Solver Integrity")).to_be_visible()
-
-    # Wait for potential graphing errors
-    dashboard.page.wait_for_timeout(2000)
     dashboard.check_for_errors()

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import dataclasses
+import json
 import os
 import sys
 from pathlib import Path
@@ -20,15 +20,14 @@ sys.path.append(str(Path(__file__).parent.parent / "src"))
 try:
     from nhra_gt.visualization.game_trees import (
         create_extensive_game_from_matrix,
-        render_tree_static,
+        game_tree_graph,
     )
 except ImportError:  # pragma: no cover
     create_extensive_game_from_matrix = None  # type: ignore[assignment]
-    render_tree_static = None  # type: ignore[assignment]
+    game_tree_graph = None  # type: ignore[assignment]
 
 from nhra_gt import __version__
 from nhra_gt.domain.params import Params
-from nhra_gt.domain.state import ParamsJax
 from nhra_gt.engine import apply_intervention, initialize_rules, summarise_outcome
 from nhra_gt.game_theory.content import get_populated_registry
 from nhra_gt.game_theory.ui import render_game_encyclopedia
@@ -61,27 +60,28 @@ def load_scenario_library() -> dict:
 
 
 def initialize_slider_state(scenarios: dict) -> None:
-    """Initializes session state for model parameters based on scenario defaults."""
-    csv_defaults: dict[str, Any] = {}
-    master_path = Path("context/04_parameter_registry.csv")
-    if master_path.exists():
-        try:
-            df_reg = pd.read_csv(master_path)
-            csv_defaults = dict(zip(df_reg["parameter"], df_reg["value"], strict=False))
-        except Exception as e:
-            st.warning(f"Could not load parameter registry: {e}")
+    """Seed the model controls from typed runtime defaults and the steady scenario."""
+    defaults = Params().flatten()
+    defaults.update(scenarios.get("steady_state", {}).get("params", {}))
+    for name, value in defaults.items():
+        st.session_state.setdefault(name, value)
 
-    param_fields = dataclasses.fields(ParamsJax)
-    default_scenario = scenarios.get("steady_state", {})
-    scenario_params = default_scenario.get("params", {})
 
-    for field in param_fields:
-        key = field.name
-        if key not in st.session_state:
-            val = scenario_params.get(key, csv_defaults.get(key))
-            if val is None:
-                val = field.default if field.default is not dataclasses.MISSING else 0.0
-            st.session_state[key] = val
+def _strategy_overrides(full_strat: bool) -> dict[str, Any]:
+    overrides: dict[str, Any] = {"STRATEGIC_MODE": True} if full_strat else {}
+    if st.sidebar.toggle("🧠 Expert Strategic Mode", help="Override individual game strategies."):
+        st.sidebar.subheader("Strategy Overrides")
+        for code, label, options in (
+            ("DEF", "Definition Game", ("Auto", "R", "E")),
+            ("BARG", "Bargaining Game", ("Auto", "A", "D")),
+            ("SHIFT", "Cost-Shifting Game", ("Auto", "I", "S")),
+            ("DISC", "Discharge Game", ("Auto", "C", "F")),
+            ("COMP", "Compliance Game", ("Auto", "T", "L")),
+        ):
+            choice = st.sidebar.selectbox(label, options)
+            if choice != "Auto":
+                overrides[code] = choice
+    return overrides
 
 
 def prepare_share_drift_data(
@@ -168,8 +168,7 @@ def _render_game_tree() -> None:
         u_row = np.array([[10, 0], [0, 5]])
         u_col = np.array([[10, 0], [0, 5]])
         g_tree = create_extensive_game_from_matrix(u_row, u_col, title="Subgame Tree")
-        render_tree_static(g_tree, "outputs/diagrams/current_subgame")
-        st.image("outputs/diagrams/current_subgame.svg", use_container_width=True)
+        st.graphviz_chart(game_tree_graph(g_tree), width="stretch")
 
 
 def _render_lhn(traj_game: pd.DataFrame) -> None:
@@ -226,18 +225,10 @@ def _render_analysis(
         st.plotly_chart(plot_workforce_dynamics(traj_game), use_container_width=True)
 
 
-def main() -> None:
-    """Main dashboard entrypoint."""
-    st.set_page_config(page_title="NHRA Strategic Dashboard", page_icon="🏥", layout="wide")
-    scenarios = load_scenario_library()
+def _scenario_controls(scenarios: dict) -> tuple[str, Params, int, dict[str, Any]]:
     initialize_slider_state(scenarios)
-    registry = get_populated_registry()
-
     git_hash = os.environ.get("COMMIT_SHA", "dev")[:7]
     st.sidebar.markdown(f"**Version:** `{git_hash}`")
-    st.title(f"🏥 NHRA Strategic Simulator (v{__version__})")
-
-    # Sidebar
     st.sidebar.title("🎮 Levers")
     scenario_options = ["Manual / Custom"] + [scenarios[k]["name"] for k in scenarios]
     sel_scen = st.sidebar.selectbox("Scenario:", scenario_options)
@@ -252,6 +243,9 @@ def main() -> None:
     st.session_state.bed_capacity_index = st.sidebar.slider(
         "Bed Index", 0.70, 1.30, float(st.session_state.bed_capacity_index), 0.05
     )
+    st.session_state.rurality_weight = st.sidebar.slider(
+        "Rurality Weight", 0.05, 0.70, float(st.session_state.rurality_weight), 0.05
+    )
 
     st.sidebar.markdown("---")
     full_strat = st.sidebar.toggle("💎 Full Strategic Mode", help="Enable Monthly Nash solving.")
@@ -259,19 +253,43 @@ def main() -> None:
         "MC Samples", options=[10, 50, 200, 1000], value=int(st.session_state.get("n_mc", LITE_MC))
     )
 
-    # Execution
-    years = list(range(2025, 2031))
-    p_base = Params()
-    traj_base, _ = cached_run_model(p_base, years, n_mc=int(st.session_state.n_mc))
-    summary_base = summarise_outcome(traj_base)
-
-    p_game = Params.from_flat_dict(
-        {k: v for k, v in st.session_state.items() if isinstance(k, str)}
+    p_game = Params.from_flat_dict({name: st.session_state[name] for name in Params().flatten()})
+    return (
+        sel_scen,
+        initialize_rules(p_game),
+        int(st.session_state.n_mc),
+        _strategy_overrides(full_strat),
     )
-    p_game = initialize_rules(p_game)
 
-    ovr = {"STRATEGIC_MODE": True} if full_strat else {}
-    traj_game, _ = cached_run_model(p_game, years, n_mc=int(st.session_state.n_mc), overrides=ovr)
+
+def main() -> None:
+    """Main dashboard entrypoint."""
+    st.set_page_config(page_title="NHRA Strategic Dashboard", page_icon="🏥", layout="wide")
+    st.title(f"🏥 NHRA Strategic Simulator (v{__version__})")
+    sel_scen, p_game, n_mc, overrides = _scenario_controls(load_scenario_library())
+    p_base = Params()
+    registry = get_populated_registry()
+    years = list(range(2025, 2031))
+    st.sidebar.download_button(
+        "📥 Download Snapshot (JSON)",
+        data=json.dumps(
+            {
+                "scenario_name": sel_scen,
+                "params": p_game.flatten(),
+                "years": years,
+                "n_mc": n_mc,
+                "seed": 42,
+                "overrides": overrides,
+            },
+            indent=2,
+        ),
+        file_name="nhra_scenario_snapshot.json",
+        mime="application/json",
+    )
+
+    traj_base, _ = cached_run_model(p_base, years, n_mc=n_mc)
+    summary_base = summarise_outcome(traj_base)
+    traj_game, _ = cached_run_model(p_game, years, n_mc=n_mc, overrides=overrides)
     summary_game = summarise_outcome(traj_game)
 
     # Clear attrs for concat safety
@@ -282,41 +300,73 @@ def main() -> None:
     combined_plot = pd.concat([tb_plot, tg_plot])
 
     # Tabs
-    tabs = st.tabs(
+    (
+        theory,
+        analysis,
+        game_map,
+        trees,
+        lhn,
+        lineage_tab,
+        validation,
+        technical,
+        audit,
+        encyclopedia,
+    ) = st.tabs(
         [
-            "📉 Analysis",
-            "🕸️ Map",
-            "🌲 Trees",
+            "📖 Theory & Background",
+            "📈 Scenario Analysis",
+            "🕸️ Strategic Map",
+            "🌲 Game Tree Explorer",
             "🏥 LHN",
-            "🧬 Lineage",
+            "🧬 Data Lineage",
             "⚖️ Validation",
             "🔬 Technical",
-            "🛡️ Evidence",
+            "🔍 Forensic Audit",
             "📚 Encyclopedia",
-        ]
+        ],
+        default="📈 Scenario Analysis",
     )
 
-    with tabs[0]:  # Analysis
+    with theory:
+        st.markdown(
+            "The simulator compares Commonwealth funding and state responses under alternative "
+            "hospital capacity and policy settings. The Encyclopedia describes the stage games. "
+            "Data Lineage records the sources and scope of the model parameters."
+        )
+
+    with analysis:
         _render_analysis(traj_game, combined_plot, years, p_game, (summary_base, summary_game))
 
-    with tabs[1]:  # Map
+    with game_map:
         _render_map()
 
-    with tabs[2]:  # Trees
+    with trees:
         _render_game_tree()
 
-    with tabs[3]:  # LHN
+    with lhn:
         _render_lhn(traj_game)
 
-    with tabs[4]:  # Lineage
+    with lineage_tab:
         st.markdown("### 🧬 Data Lineage")
         lineage = get_parameter_lineage()
-        st.table(pd.DataFrame([{"Parameter": k, "Source": v} for k, v in lineage.items()]))
+        st.dataframe(pd.DataFrame([{"Parameter": k, "Source": v} for k, v in lineage.items()]))
 
-    with tabs[6]:  # Technical
+    with validation:
+        st.markdown(
+            "[Historical validation inputs and scope](https://github.com/edithatogo/nhra_game/blob/main/context/06_data_provenance.md)"
+        )
+
+    with technical:
         _render_technical(traj_game)
 
-    with tabs[8]:  # Encyclopedia
+    with audit:
+        st.subheader("Forensic Audit & Solver Integrity")
+        st.json(p_game.flatten(), expanded=False)
+        st.dataframe(traj_game)
+        comparison = pd.DataFrame({"Baseline": summary_base, "Scenario": summary_game})
+        st.dataframe(comparison)
+
+    with encyclopedia:
         render_game_encyclopedia(registry)
 
 

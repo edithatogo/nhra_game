@@ -77,11 +77,8 @@ def create_extensive_game_from_matrix(
     return g
 
 
-def render_tree_static(game: Any, output_path: Path | str) -> None:
-    """Renders the game tree to an SVG/PNG using Graphviz.
-
-    Traverses the PyGambit tree and builds a Graphviz Digraph.
-    """
+def game_tree_graph(game: Any) -> Any:
+    """Build a Graphviz graph from the PyGambit tree without writing files."""
     if graphviz is None:
         message = "graphviz is required for game tree rendering."
         raise ImportError(message)
@@ -147,7 +144,12 @@ def render_tree_static(game: Any, output_path: Path | str) -> None:
                 edge_label = child.prior_action.label if child.prior_action else ""
                 dot.edge(nid, cid, label=f" {edge_label} ")
 
-    # Output
+    return dot
+
+
+def render_tree_static(game: Any, output_path: Path | str) -> None:
+    """Render the game tree to SVG and PNG using Graphviz."""
+    dot = game_tree_graph(game)
     out_base = Path(output_path)
     if out_base.suffix:
         out_base = out_base.with_suffix("")

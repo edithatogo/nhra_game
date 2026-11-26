@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import warnings
 from collections.abc import Callable
 from concurrent.futures import ProcessPoolExecutor
@@ -58,17 +59,19 @@ def generate_sensitivity_summary(morris_path: Path, sobol_path: Path, output_pat
 
 
 def get_parameter_lineage() -> dict[str, str]:
-    """Returns a mapping of model parameters to their evidence sources in the context pack."""
-    return {
-        "nominal_cth_share_target": "NHRA Section 127; Federal Financial Relations Agreement (2020-2025)",
-        "nep_annual_growth": "IHACPA National Efficient Price Determination 2024-25 (Historical Indexation)",
-        "bed_capacity_index": "AIHW Hospital Resources 2022-23 (Bed-to-Population Ratios)",
-        "discharge_delay_base": "Medicare UCC Evaluation Report (2024); Aged Care/NDIS Interface Audit",
-        "political_salience": "Model Assumption Log (05_assumptions_log.md) - Behavioural Weights",
-        "audit_pressure": "NHRA Performance and Accountability Framework (Section 4.2)",
-        "rurality_weight": "AIHW Hospital Activity Data (2024) - Regional/Remote peer group weights",
-        "cost_shifting_intensity": "Productivity Commission (2023) - Report on Government Services (Health)",
-    }
+    """Read the evidence category and source from the checked parameter ledger."""
+    registry = Path(__file__).resolve().parents[2] / "context" / "04_parameter_registry.csv"
+    if not registry.is_file():
+        return {}
+    with registry.open(encoding="utf-8", newline="") as stream:
+        return {
+            row["parameter"]: " · ".join(
+                part
+                for part in (row["source_type"], row["locator"], row["citation_or_file"])
+                if part
+            )
+            for row in csv.DictReader(stream)
+        }
 
 
 def plot_sobol_indices(si: dict[str, Any], output_path: Path) -> None:
