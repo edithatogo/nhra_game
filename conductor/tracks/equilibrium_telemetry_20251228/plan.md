@@ -43,6 +43,20 @@
 - [ ] Track Gate: Reconcile completed work against `spec.md` and record any deviations.
 - [ ] Track Gate: Evaluate the `spec.md` acceptance checklist and record pass/fail.
 
+## Three-player QRE caller acceptance
+
+- [x] Qualify the existing fixed-budget result at the caller boundary. Use the
+  unchanged residual and default `1e-6` tolerance. Return no strategies when
+  the residual falls outside the bound.
+- [x] Replay the [independent coupled QRE controls](https://github.com/edithatogo/paignia/pull/112)
+  at the original `1e-10` bound. At 99 and 100 iterations, the caller preserves
+  the convergent profile at `lambda=0.5` and reports nonconvergence with the
+  original residual at `lambda=8`. Cover an exact-bound result, a nonfinite
+  residual and invalid tolerances in `tests/test_solvers_jax.py`.
+
+The historical occupancy hold and the signed-consumer and external validation
+gates remain open in [NHRA #39](https://github.com/edithatogo/nhra_game/issues/39).
+
 ---
 **Track Status:** PENDING 2025-12-28
 Track initialized to track solver performance and strategic ambiguity.

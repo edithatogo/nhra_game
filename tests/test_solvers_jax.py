@@ -2,21 +2,27 @@
 
 from __future__ import annotations
 
+from math import isnan
+
 import jax
 import jax.numpy as jnp
 import numpy as np
 import pytest
+from jax import Array
 
 from nhra_gt.solvers_jax import (
     discrete_nash_jax,
     qre_3player_jax,
     qre_solver_jax,
     regret_min_solver_jax,
+    solve_three_player_qre,
 )
 
 _MIN_DOMINANT_ACTION_PROBABILITY = 0.9
 _MAX_TOTAL_REGRET = 0.1
 _MAX_LOGIT_RESIDUAL = 0.1
+_COUPLED_QRE_TOLERANCE = 1e-10
+_DEFAULT_QRE_TOLERANCE = 1e-6
 
 
 def test_qre_solver_basic():
@@ -139,3 +145,82 @@ def test_qre_3player_reports_fixed_point_error_of_returned_profile(
         + abs(probability(first + second) - third)
     )
     np.testing.assert_allclose(observed, expected, atol=1e-6, rtol=0)
+
+
+def _unique_coupled_payoffs() -> tuple[Array, Array, Array]:
+    a, b, c = np.indices((2, 2, 2))
+    return (
+        jnp.asarray(a * (0.35 - b)),
+        jnp.asarray(b * (c - 0.45)),
+        jnp.asarray(c * (a - 0.65)),
+    )
+
+
+@pytest.mark.parametrize(
+    ("iterations", "expected_error"), [(99, 0.8975736051769919), (100, 0.9462680213183089)]
+)
+def test_three_player_qre_caller_requires_convergence(
+    iterations: int, expected_error: float
+) -> None:
+    """Replay the independent binary64 controls with the original error bound."""
+    with jax.enable_x64():
+        payoffs = _unique_coupled_payoffs()
+        accepted = solve_three_player_qre(
+            payoffs, lam=0.5, max_iter=iterations, tol=_COUPLED_QRE_TOLERANCE
+        )
+        p1, p2, p3, converged_error = qre_3player_jax(*payoffs, lam=0.5, max_iter=iterations)
+        rejected = solve_three_player_qre(
+            payoffs, lam=8.0, max_iter=iterations, tol=_COUPLED_QRE_TOLERANCE
+        )
+        *_, nonconverged_error = qre_3player_jax(*payoffs, lam=8.0, max_iter=iterations)
+
+    assert accepted.status == "converged"
+    assert accepted.residual == float(converged_error)
+    assert 0.0 <= accepted.residual <= _COUPLED_QRE_TOLERANCE
+    assert accepted.strategies is not None
+    np.testing.assert_array_equal(accepted.strategies, (p1, p2, p3))
+    np.testing.assert_allclose(
+        [float(strategy[1]) for strategy in accepted.strategies],
+        (0.4808084462248103, 0.5036078948003780, 0.4788636593639917),
+        atol=_COUPLED_QRE_TOLERANCE,
+        rtol=0,
+    )
+
+    assert rejected.status == "nonconverged"
+    assert rejected.residual == float(nonconverged_error)
+    assert rejected.residual == pytest.approx(expected_error, abs=1e-12, rel=0)
+    assert rejected.strategies is None
+
+
+def test_three_player_qre_caller_applies_tolerance_inclusively() -> None:
+    """Use the same finite-budget error for the default, stricter and exact bounds."""
+    with jax.enable_x64():
+        payoffs = _unique_coupled_payoffs()
+        *_, residual = qre_3player_jax(*payoffs, lam=0.5, max_iter=6)
+        error = float(residual)
+        assert _COUPLED_QRE_TOLERANCE < error <= _DEFAULT_QRE_TOLERANCE
+        assert solve_three_player_qre(payoffs, lam=0.5, max_iter=6).status == "converged"
+        assert solve_three_player_qre(payoffs, lam=0.5, max_iter=6, tol=error).status == "converged"
+        strict = solve_three_player_qre(payoffs, lam=0.5, max_iter=6, tol=_COUPLED_QRE_TOLERANCE)
+    assert strict.status == "nonconverged"
+    assert strict.residual == error
+    assert strict.strategies is None
+
+
+def test_three_player_qre_caller_preserves_nonfinite_error() -> None:
+    """A nonfinite diagnostic cannot qualify the returned profile."""
+    first, second, third = _unique_coupled_payoffs()
+    payoffs = (first.at[0, 0, 0].set(jnp.nan), second, third)
+    *_, raw_error = qre_3player_jax(*payoffs, max_iter=0)
+    result = solve_three_player_qre(payoffs, max_iter=0)
+    assert isnan(float(raw_error))
+    assert isnan(result.residual)
+    assert result.status == "nonconverged"
+    assert result.strategies is None
+
+
+@pytest.mark.parametrize("tolerance", [-1.0, float("inf"), float("nan")])
+def test_three_player_qre_caller_rejects_invalid_tolerance(tolerance: float) -> None:
+    """An invalid bound cannot admit an arbitrary profile."""
+    with pytest.raises(ValueError, match="QRE tolerance must be finite and nonnegative"):
+        solve_three_player_qre(_unique_coupled_payoffs(), tol=tolerance)
