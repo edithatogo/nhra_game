@@ -1,7 +1,15 @@
+"""Tests for API ingestion."""
+
 from __future__ import annotations
 
 import pandas as pd
 from scripts.data.ingest_aihw_api import process_api_data
+
+_OBSERVATION_COUNT = 2
+_LATER_YEAR = 2024
+_NORMALIZED_LATER = 0.53
+_EARLIER_YEAR = 2023
+_NORMALIZED_EARLIER = 0.55
 
 
 def test_process_api_data():
@@ -32,7 +40,9 @@ def test_process_api_data():
 
     df = process_api_data(raw_data, datasets)
 
-    assert len(df) == 2
+    assert len(df) == _OBSERVATION_COUNT
     assert "Year" in df.columns
-    assert df.loc[df["Year"] == 2024, "Value"].iloc[0] == 0.53  # 53.0 -> 0.53 normalized
-    assert df.loc[df["Year"] == 2023, "Value"].iloc[0] == 0.55
+    assert (
+        df.loc[df["Year"] == _LATER_YEAR, "Value"].iloc[0] == _NORMALIZED_LATER
+    )  # 53.0 -> 0.53 normalized
+    assert df.loc[df["Year"] == _EARLIER_YEAR, "Value"].iloc[0] == _NORMALIZED_EARLIER

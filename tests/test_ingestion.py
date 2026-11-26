@@ -1,9 +1,15 @@
+"""Tests for ingestion."""
+
 from __future__ import annotations
 
 import pandas as pd
 
 # I'll implement these ingestors in a new module
 from scripts.ingest_structured import ABSIngestor, AIHWIngestor
+
+_LATEST_WITHIN_FOUR = 0.53
+_LATEST_LOWER_BOUND = 0.51
+_POPULATION_GROWTH = 0.024
 
 
 def test_aihw_ingestor_mock_file(tmp_path):
@@ -25,8 +31,8 @@ def test_aihw_ingestor_mock_file(tmp_path):
 
     assert len(entries) >= 1
     target = next(e for e in entries if e.parameter == "within4_base")
-    assert target.mean == 0.53
-    assert target.lower_ci == 0.51
+    assert target.mean == _LATEST_WITHIN_FOUR
+    assert target.lower_ci == _LATEST_LOWER_BOUND
     assert "Table 1.1" in target.source_url
 
 
@@ -44,4 +50,4 @@ def test_abs_ingestor_mock_file(tmp_path):
     entries = ingestor.extract_entries()
 
     target = next(e for e in entries if e.parameter == "demand_base_growth")
-    assert target.mean == 0.024
+    assert target.mean == _POPULATION_GROWTH

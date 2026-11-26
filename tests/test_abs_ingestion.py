@@ -1,3 +1,5 @@
+"""Tests for ABS ingestion."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -7,8 +9,12 @@ import pytest
 
 from nhra_gt.domain.abs_api import ABSApiClient
 
+_WPI_BASE_YEAR = 2011
+_BASE_INDEX = 100.0
+
 
 def test_abs_client_initialization():
+    """Check ABS client initialization."""
     client = ABSApiClient(cache_dir="data/test_cache")
     assert client.cache_dir == Path("data/test_cache")
 
@@ -26,9 +32,9 @@ def test_fetch_wpi_health_structure():
     assert len(df) > 0
 
     # Check normalization (approximate if 2011 is present)
-    if 2011 in df["year"].values:
-        val_2011 = df.loc[df["year"] == 2011, "wpi_health_index"].values[0]
-        assert pytest.approx(val_2011) == 100.0
+    if _WPI_BASE_YEAR in df["year"].values:
+        val_2011 = df.loc[df["year"] == _WPI_BASE_YEAR, "wpi_health_index"].values[0]
+        assert pytest.approx(val_2011) == _BASE_INDEX
 
 
 def test_fetch_wpi_health_cache():
@@ -52,8 +58,8 @@ def test_fetch_wpi_health_cache():
     client = ABSApiClient(cache_dir=cache_dir)
     df = client.fetch_wpi_health(use_cache=True)
 
-    assert 2011 in df["year"].values
-    assert df.loc[df["year"] == 2011, "wpi_health_index"].values[0] == 100.0
+    assert _WPI_BASE_YEAR in df["year"].values
+    assert df.loc[df["year"] == _WPI_BASE_YEAR, "wpi_health_index"].values[0] == _BASE_INDEX
 
     # Cleanup
     cache_file.unlink()

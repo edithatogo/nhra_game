@@ -1,3 +1,5 @@
+"""Tests for pub structure."""
+
 import os
 
 import pytest
@@ -5,6 +7,7 @@ import pytest
 
 @pytest.mark.skipif(not os.path.isdir("publications"), reason="Publications dir not in CI")
 def test_publication_folder_structure() -> None:
+    """Check publication folder structure."""
     required_dirs = [
         "publications/shared/references",
         "publications/shared/author_guidelines",

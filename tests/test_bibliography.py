@@ -1,8 +1,13 @@
+"""Tests for bibliography."""
+
 from __future__ import annotations
 
 import pytest
 
 from nhra_gt.domain.bibliography import Reference, parse_endnote_token
+
+_ENDNOTE_RECORD_NUMBER = 101
+_PUBLICATION_YEAR = 2024
 
 
 def test_reference_model():
@@ -16,21 +21,21 @@ def test_reference_model():
         doi="10.1234/test",
         url="https://example.com",
     )
-    assert ref.record_number == 101
-    assert ref.year == 2024
+    assert ref.record_number == _ENDNOTE_RECORD_NUMBER
+    assert ref.year == _PUBLICATION_YEAR
 
 
 def test_parse_endnote_token():
     """Verify parsing of {Author, YYYY @Label #RecordNumber}."""
-    token = "{Australian Institute of Health and Welfare, 2024 @AIHW_MyHospitals #101}"
+    citation = "{Australian Institute of Health and Welfare, 2024 @AIHW_MyHospitals #101}"
 
     # This should return a dict of extracted fields
-    parsed = parse_endnote_token(token)
+    parsed = parse_endnote_token(citation)
 
     assert parsed["author"] == "Australian Institute of Health and Welfare"
-    assert parsed["year"] == 2024
+    assert parsed["year"] == _PUBLICATION_YEAR
     assert parsed["label"] == "AIHW_MyHospitals"
-    assert parsed["record_number"] == 101
+    assert parsed["record_number"] == _ENDNOTE_RECORD_NUMBER
 
 
 def test_invalid_token():

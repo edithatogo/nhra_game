@@ -8,6 +8,7 @@ from nhra_gt.visualization.game_trees import create_extensive_game_from_matrix, 
 
 
 def test_render():
+    """Check render."""
     u_row = np.array([[10, 0], [0, 5]])
     u_col = np.array([[10, 0], [0, 5]])
 

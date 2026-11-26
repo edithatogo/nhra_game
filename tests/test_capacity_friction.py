@@ -1,3 +1,5 @@
+"""Tests for capacity friction."""
+
 from __future__ import annotations
 
 from dataclasses import replace
@@ -12,6 +14,10 @@ from nhra_gt.engine import Params, baseline_state, step
 from nhra_gt.engine_jax import baseline_state_jax, step_jax
 from nhra_gt.rules import initialize_rules
 
+_EXPANDED_CAPACITY = 1.05
+_CONTRACTED_CAPACITY = 0.75
+_NEGATIVE_ADJUSTMENT_COST = -0.1
+
 
 def test_legacy_asymmetric_lag():
     """Verify that expansion lag differs from contraction lag in legacy engine."""
@@ -25,15 +31,15 @@ def test_legacy_asymmetric_lag():
     # Run one step
     s_next_exp = step(s_exp, p, {}, np.random.default_rng(42))
 
-    # Expected: 1.0 + 0.1 * (1.5 - 1.0) = 1.05
-    assert pytest.approx(s_next_exp.current_capacity) == 1.05
+    # Expansion closes ten percent of the gap from one to 1.5.
+    assert pytest.approx(s_next_exp.current_capacity) == _EXPANDED_CAPACITY
 
     # 2. Test Contraction (Target < Current)
     s_con = replace(s_exp, target_capacity=0.5, current_capacity=1.0)
     s_next_con = step(s_con, p, {}, np.random.default_rng(42))
 
-    # Expected: 1.0 + 0.5 * (0.5 - 1.0) = 0.75
-    assert pytest.approx(s_next_con.current_capacity) == 0.75
+    # Contraction closes half the gap from one to 0.5.
+    assert pytest.approx(s_next_con.current_capacity) == _CONTRACTED_CAPACITY
 
 
 def test_legacy_adjustment_costs():
@@ -50,7 +56,7 @@ def test_legacy_adjustment_costs():
 
     assert s_next.adjustment_costs == pytest.approx(0.1)
     # Check that it hit reconciliation
-    assert s_next.reconciliation_balance <= -0.1
+    assert s_next.reconciliation_balance <= _NEGATIVE_ADJUSTMENT_COST
 
 
 def test_jax_asymmetric_lag():
@@ -66,13 +72,13 @@ def test_jax_asymmetric_lag():
     strategies = jnp.zeros(12)
     s_next_exp = step_jax(s_exp, p, strategies, key)
 
-    assert pytest.approx(float(s_next_exp.current_capacity)) == 1.05
+    assert pytest.approx(float(s_next_exp.current_capacity)) == _EXPANDED_CAPACITY
 
     # 2. Test Contraction
     s_con = s_exp.replace(target_capacity=0.5, current_capacity=1.0)
     s_next_con = step_jax(s_con, p, strategies, key)
 
-    assert pytest.approx(float(s_next_con.current_capacity)) == 0.75
+    assert pytest.approx(float(s_next_con.current_capacity)) == _CONTRACTED_CAPACITY
 
 
 def test_jax_adjustment_costs():

@@ -1,7 +1,18 @@
+"""Tests for model audit phase2."""
+
 from __future__ import annotations
 
 import re
 from pathlib import Path
+
+_TABLE_HEADER_ROWS = 2
+_MIN_PARAMETER_COLUMNS = 2
+_MIN_REFERENCE_COLUMNS = 7
+_MIN_INVENTORY_COLUMNS = 4
+_MIN_ENUMERATED_COLUMNS = 2
+_MIN_ASSUMPTION_COLUMNS = 5
+_SOURCE_COLUMN = 2
+_MIN_TAG_COLUMNS = 3
 
 
 def _section_lines(content: str, heading: str) -> list[str]:
@@ -21,7 +32,7 @@ def _section_lines(content: str, heading: str) -> list[str]:
 
 def _table_rows(section_lines: list[str]) -> list[list[str]]:
     table_lines = [line for line in section_lines if line.startswith("|")]
-    if len(table_lines) < 2:
+    if len(table_lines) < _TABLE_HEADER_ROWS:
         return []
     data_lines = table_lines[2:]
     rows = []
@@ -62,12 +73,14 @@ def _assumption_ids(content: str) -> set[str]:
 
 
 def test_input_parameter_sources_section_exists() -> None:
+    """Check input parameter sources section exists."""
     audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
     content = audit_path.read_text(encoding="utf-8")
     assert "## Input & Parameter Sources" in content, "Missing Input & Parameter Sources section"
 
 
 def test_input_parameter_sources_table_has_entries() -> None:
+    """Check input parameter sources table has entries."""
     audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Input & Parameter Sources")
@@ -76,6 +89,7 @@ def test_input_parameter_sources_table_has_entries() -> None:
 
 
 def test_input_parameters_cover_inventory_models() -> None:
+    """Check input parameters cover inventory models."""
     audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
     content = audit_path.read_text(encoding="utf-8")
 
@@ -93,12 +107,13 @@ def test_input_parameters_cover_inventory_models() -> None:
 
 
 def test_input_parameters_are_enumerated() -> None:
+    """Check input parameters are enumerated."""
     audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Input & Parameter Sources")
     rows = _table_rows(section)
     for row in rows:
-        if len(row) < 2:
+        if len(row) < _MIN_PARAMETER_COLUMNS:
             continue
         inputs = row[1].strip()
         assert inputs, "Inputs must be enumerated per model"
@@ -106,14 +121,16 @@ def test_input_parameters_are_enumerated() -> None:
 
 
 def test_input_sources_have_reference_details() -> None:
+    """Check input sources have reference details."""
     audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Input & Parameter Sources")
     rows = _table_rows(section)
     assert rows, "Input & Parameter Sources table should include data rows"
     for row in rows:
-        if len(row) < 7:
-            raise AssertionError("Input & Parameter Sources rows must include reference details")
+        if len(row) < _MIN_REFERENCE_COLUMNS:
+            message = "Input & Parameter Sources rows must include reference details"
+            raise AssertionError(message)
         source_id = row[2].strip()
         doi_url = row[3].strip()
         pub_date = row[4].strip()
@@ -137,6 +154,7 @@ def test_input_sources_have_reference_details() -> None:
 
 
 def test_input_sources_include_doi_when_available() -> None:
+    """Check input sources include DOI when available."""
     audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Input & Parameter Sources")
@@ -144,7 +162,7 @@ def test_input_sources_include_doi_when_available() -> None:
     dois = _reference_dois()
     assert rows, "Input & Parameter Sources table should include data rows"
     for row in rows:
-        if len(row) < 4:
+        if len(row) < _MIN_INVENTORY_COLUMNS:
             continue
         doi_url = row[3].strip().lower()
         source_ids = [source_id.strip() for source_id in row[2].split(";")]
@@ -158,6 +176,7 @@ def test_input_sources_include_doi_when_available() -> None:
 
 
 def test_helper_edge_cases() -> None:
+    """Check helper edge cases."""
     assert _section_lines("no headings here", "## Missing") == []
     assert _table_rows([]) == []
     assert _table_rows(["| header only |"]) == []
@@ -165,12 +184,14 @@ def test_helper_edge_cases() -> None:
     rows = _table_rows(["| col | col2 |", "| --- | --- |", "| onlyone |"])
     assert rows == [["onlyone"]]
     for row in rows:
-        if len(row) < 2:
+        if len(row) < _MIN_ENUMERATED_COLUMNS:
             continue
-        raise AssertionError("Expected short row handling")
+        message = "Expected short row handling"
+        raise AssertionError(message)
 
 
 def test_assumption_register_has_entries() -> None:
+    """Check assumption register has entries."""
     audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Assumption & Risk Register")
@@ -179,12 +200,13 @@ def test_assumption_register_has_entries() -> None:
 
 
 def test_assumption_register_no_tbd() -> None:
+    """Check assumption register no tbd."""
     audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Assumption & Risk Register")
     rows = _table_rows(section)
     for row in rows:
-        if len(row) < 5:
+        if len(row) < _MIN_ASSUMPTION_COLUMNS:
             continue
         assumption = row[0].strip()
         rationale = row[1].strip()
@@ -205,6 +227,7 @@ def test_assumption_register_no_tbd() -> None:
 
 
 def test_input_sources_match_reference_registry() -> None:
+    """Check input sources match reference registry."""
     audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
     content = audit_path.read_text(encoding="utf-8")
 
@@ -213,7 +236,7 @@ def test_input_sources_match_reference_registry() -> None:
     input_rows = _table_rows(input_section)
     cited_sources = set()
     for row in input_rows:
-        if len(row) > 2:
+        if len(row) > _SOURCE_COLUMN:
             # Handle multiple sources separated by semicolon
             ids = row[2].split(";")
             for source_id in ids:
@@ -234,6 +257,7 @@ def test_input_sources_match_reference_registry() -> None:
 
 
 def test_input_sources_assumptions_listed() -> None:
+    """Check input sources assumptions listed."""
     audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
     content = audit_path.read_text(encoding="utf-8")
     input_section = _section_lines(content, "## Input & Parameter Sources")
@@ -242,7 +266,7 @@ def test_input_sources_assumptions_listed() -> None:
 
     cited_assumptions = set()
     for row in input_rows:
-        if len(row) < 3:
+        if len(row) < _MIN_TAG_COLUMNS:
             continue
         ids = [source_id.strip() for source_id in row[2].split(";")]
         for source_id in ids:

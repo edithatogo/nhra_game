@@ -1,3 +1,5 @@
+"""Tests for dashboard parity."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -5,12 +7,13 @@ from scripts.dashboard import cached_run_model
 
 from nhra_gt.engine import Params, State, baseline_state, decide_strategies, run_hybrid, step
 
+_RELATIVE_ERROR_LIMIT = 0.10
+_MIN_OCCUPANCY = 0.78
+_MAX_OCCUPANCY = 0.98
+
 
 def test_engine_dashboard_parity_logic():
-    """
-    Verify that the dashboard's cached_run_model produces statistically
-    similar mean trajectories to the core engine's run_hybrid.
-    """
+    """Compare dashboard mean trajectories with the core hybrid rollouts."""
     years = list(range(2025, 2031))
     p = Params()  # Ensure deterministic params if used
 
@@ -39,14 +42,11 @@ def test_engine_dashboard_parity_logic():
         print(f"Metric: {metric}, Engine: {e_val:.4f}, Dash: {d_val:.4f}, Diff: {diff:.2%}")
 
         # Assertion with tolerance for stochastic variation
-        assert diff < 0.10, f"Divergence in {metric} exceeds 10% ({diff:.2%})"
+        assert diff < _RELATIVE_ERROR_LIMIT, f"Divergence in {metric} exceeds 10% ({diff:.2%})"
 
 
 def test_step_logic_parity():
-    """
-    Directly verify that the step function used by the dashboard
-    (imported from engine) behaves exactly as expected.
-    """
+    """Check occupancy limits for the monthly step used by the dashboard."""
     p = Params()
     s = baseline_state(2025, p)
     rng = np.random.default_rng(42)
@@ -56,4 +56,4 @@ def test_step_logic_parity():
 
     assert isinstance(s_next, State)
     assert s_next.month == s.month + 1
-    assert 0.78 <= s_next.occupancy <= 0.98
+    assert _MIN_OCCUPANCY <= s_next.occupancy <= _MAX_OCCUPANCY

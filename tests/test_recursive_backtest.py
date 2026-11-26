@@ -1,3 +1,5 @@
+"""Tests for recursive backtest."""
+
 from __future__ import annotations
 
 from unittest.mock import patch
@@ -9,9 +11,15 @@ import pytest
 from nhra_gt.domain.validation import RecursiveBacktest, RecursiveResult
 from nhra_gt.engine import Params
 
+_WINDOW_COUNT = 3
+_FIRST_TEST_YEAR = 2013
+_FIRST_PREDICTION = 0.66
+_FIRST_ACTUAL = 0.65
+
 
 @pytest.fixture
 def mock_historical_data():
+    """Provide the historical data used in the backtest fixture."""
     return pd.DataFrame(
         {
             "year": [2011, 2012, 2013, 2014, 2015],
@@ -32,7 +40,7 @@ def test_recursive_backtest_windowing(mock_historical_data):
     # 3. Train: [2013, 2014], Test: 2015
 
     windows = list(engine.generate_windows())
-    assert len(windows) == 3
+    assert len(windows) == _WINDOW_COUNT
 
     train_0, test_0 = windows[0]
     assert train_0["year"].tolist() == [2011, 2012]
@@ -44,7 +52,7 @@ def test_recursive_backtest_step(mock_run, mock_historical_data):
     """Verify that a single step of the backtest produces a RecursiveResult."""
 
     # Mock run_hybrid to return a trajectory matching the year
-    def side_effect(years, p, seed, n_mc):
+    def side_effect(years, *_args, **_kwargs):
         return pd.DataFrame(
             {
                 "year": years,
@@ -63,9 +71,9 @@ def test_recursive_backtest_step(mock_run, mock_historical_data):
     result = engine.run_step(train_df, test_df)
 
     assert isinstance(result, RecursiveResult)
-    assert result.test_year == 2013
-    assert result.predicted["within4"] == 0.66
-    assert result.actual["within4"] == 0.65
+    assert result.test_year == _FIRST_TEST_YEAR
+    assert result.predicted["within4"] == _FIRST_PREDICTION
+    assert result.actual["within4"] == _FIRST_ACTUAL
 
 
 def test_recursive_backtest_full_loop(mock_historical_data):
@@ -78,5 +86,5 @@ def test_recursive_backtest_full_loop(mock_historical_data):
         engine = RecursiveBacktest(mock_historical_data, train_window=2)
         all_results = engine.run_all()
 
-        assert len(all_results) == 3
-        assert all_results[0].test_year == 2013
+        assert len(all_results) == _WINDOW_COUNT
+        assert all_results[0].test_year == _FIRST_TEST_YEAR

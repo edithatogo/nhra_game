@@ -1,3 +1,5 @@
+"""Tests for policy brief."""
+
 from scripts.generate_policy_brief import generate_brief
 
 

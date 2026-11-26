@@ -1,8 +1,13 @@
+"""Page selectors and actions for dashboard tests."""
+
 from playwright.sync_api import Page, expect
 
 
 class DashboardPage:
+    """Page objects used by the dashboard browser tests."""
+
     def __init__(self, page: Page, base_url: str):
+        """Bind the page locators to a browser page and dashboard URL."""
         self.page = page
         self.base_url = base_url
 
@@ -42,7 +47,8 @@ class DashboardPage:
         errors = self.page.locator("div[data-testid='stException']")
         if errors.count() > 0:
             error_text = errors.first.inner_text()
-            raise AssertionError(f"Streamlit Error Detected: {error_text}")
+            message = f"Streamlit Error Detected: {error_text}"
+            raise AssertionError(message)
 
     def navigate_to_tab(self, tab_locator):
         """Click a tab and wait for stability."""

@@ -1,7 +1,10 @@
+"""Tests for nlp processor."""
+
 from nhra_gt.nlp.processor import EvidenceProcessor
 
 
 def test_evidence_processor_basic():
+    """Check evidence processor basic."""
     processor = EvidenceProcessor()
     text = "The Federal government provides funding for public hospitals under the NHRA cap."
     result = processor.parse_text(text)
@@ -13,6 +16,7 @@ def test_evidence_processor_basic():
 
 
 def test_evidence_processor_entities():
+    """Check evidence processor entities."""
     processor = EvidenceProcessor()
     text = "IHACPA sets the NEP for 2025."
     result = processor.parse_text(text)

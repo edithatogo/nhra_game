@@ -1,28 +1,17 @@
+"""Tests for robustness."""
+
 from __future__ import annotations
 
 import os
 import subprocess
+import sys
 from pathlib import Path
 
 import pandas as pd
 
-
-def run_snakemake(rule: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess:
-    """Helper to run a snakemake rule."""
-    cmd = [
-        "snakemake",
-        "--cores",
-        "1",
-        rule,
-        "--printshellcmds",
-        "--show-failed-logs",
-    ]
-    return subprocess.run(
-        cmd,
-        capture_output=True,
-        text=True,
-        env={**os.environ, **(env or {})},
-    )
+_FIRST_SCENARIO_YEAR = 2020
+_LAST_SCENARIO_YEAR = 2040
+_MAX_OCCUPANCY = 1.5
 
 
 def test_pipeline_gsa_morris():
@@ -30,8 +19,22 @@ def test_pipeline_gsa_morris():
     out_path = Path("data/gsa/morris_results.csv")
     out_path.unlink(missing_ok=True)
 
-    result = run_snakemake("gsa_morris")
-    assert result.returncode == 0
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "snakemake",
+            "--cores",
+            "1",
+            "gsa_morris",
+            "--printshellcmds",
+            "--show-failed-logs",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stderr
     assert out_path.exists()
 
     # Integrity check: non-empty CSV with expected columns
@@ -46,9 +49,24 @@ def test_pipeline_calibrate_minimal():
     out_path.unlink(missing_ok=True)
 
     # Use environment variable to speed up test
-    result = run_snakemake("calibrate", env={"NHRA_CALIBRATION_TRIALS": "1"})
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "snakemake",
+            "--cores",
+            "1",
+            "calibrate",
+            "--printshellcmds",
+            "--show-failed-logs",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        env={**os.environ, "NHRA_CALIBRATION_TRIALS": "1"},
+    )
 
-    assert result.returncode == 0
+    assert result.returncode == 0, result.stderr
     assert out_path.exists()
 
     df = pd.read_csv(out_path)
@@ -60,14 +78,30 @@ def test_pipeline_baseline_integrity():
     """Verify that the baseline trajectory contains plausible data."""
     out_path = Path("data/baseline/tables/trajectory.csv")
     # Rule might have already run, or we run it
-    run_snakemake("run_baseline")
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "snakemake",
+            "--cores",
+            "1",
+            "run_baseline",
+            "--printshellcmds",
+            "--show-failed-logs",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
 
     assert out_path.exists()
     df = pd.read_csv(out_path)
 
+    assert result.returncode == 0, result.stderr
+
     # Check years
-    assert df["year"].min() >= 2020
-    assert df["year"].max() <= 2040
+    assert df["year"].min() >= _FIRST_SCENARIO_YEAR
+    assert df["year"].max() <= _LAST_SCENARIO_YEAR
 
     # Check within4_mean (share should be 0-1)
     if "within4_mean" in df.columns:
@@ -76,7 +110,7 @@ def test_pipeline_baseline_integrity():
     # Check occupancy (should be positive and generally < 1.1)
     if "occupancy_mean" in df.columns:
         assert (df["occupancy_mean"] > 0).all()
-        assert (df["occupancy_mean"] < 1.5).all()
+        assert (df["occupancy_mean"] < _MAX_OCCUPANCY).all()
 
 
 def test_pipeline_generate_report():
@@ -86,8 +120,22 @@ def test_pipeline_generate_report():
     out_path = Path("reports/validation_report.md")
     out_path.unlink(missing_ok=True)
 
-    result = run_snakemake("generate_report")
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "snakemake",
+            "--cores",
+            "1",
+            "generate_report",
+            "--printshellcmds",
+            "--show-failed-logs",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
 
-    assert result.returncode == 0
+    assert result.returncode == 0, result.stderr
     assert out_path.exists()
     assert out_path.stat().st_size > 0

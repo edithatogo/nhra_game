@@ -1,9 +1,15 @@
+"""Tests for audit recorder."""
+
 from __future__ import annotations
 
 import json
+import time
 from typing import Any
 
 from nhra_gt.domain.audit import Recorder
+
+_RECORDED_SEED = 42
+_MIN_ELAPSED_SECONDS = 0.1
 
 
 def test_recorder_captures_metadata_and_versioned_path(tmp_path: Any) -> None:
@@ -19,7 +25,6 @@ def test_recorder_captures_metadata_and_versioned_path(tmp_path: Any) -> None:
     assert art_path.parent.exists()
 
     # Simulate work
-    import time
 
     time.sleep(0.1)
     recorder.end_experiment()
@@ -33,7 +38,7 @@ def test_recorder_captures_metadata_and_versioned_path(tmp_path: Any) -> None:
         data = json.load(f)
 
     assert data["experiment_name"] == "test_run"
-    assert data["seed"] == 42
+    assert data["seed"] == _RECORDED_SEED
     assert "git_hash" in data
-    assert data["duration_seconds"] >= 0.1
+    assert data["duration_seconds"] >= _MIN_ELAPSED_SECONDS
     assert "timestamp" in data

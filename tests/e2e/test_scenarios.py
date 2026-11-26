@@ -1,10 +1,10 @@
+"""Tests for scenarios."""
+
 from playwright.sync_api import expect
 
 
 def test_tab_navigation(dashboard):
-    """
-    Test navigation through all main tabs.
-    """
+    """Test navigation through all main tabs."""
     tabs = [
         dashboard.tab_theory,
         dashboard.tab_scenario,
@@ -19,9 +19,7 @@ def test_tab_navigation(dashboard):
 
 
 def test_expert_mode_interaction(dashboard):
-    """
-    Test enabling expert mode and interacting with overrides.
-    """
+    """Test enabling expert mode and interacting with overrides."""
     # Navigate to scenario tab where expert mode lives
     dashboard.navigate_to_tab(dashboard.tab_scenario)
 
@@ -35,9 +33,7 @@ def test_expert_mode_interaction(dashboard):
 
 
 def test_simulation_trigger(dashboard):
-    """
-    Test triggering a simulation run.
-    """
+    """Test triggering a simulation run."""
     dashboard.navigate_to_tab(dashboard.tab_scenario)
 
     # Click Boost
@@ -49,9 +45,7 @@ def test_simulation_trigger(dashboard):
 
 
 def test_download_functionality(dashboard):
-    """
-    Test that the download button triggers a download event.
-    """
+    """Test that the download button triggers a download event."""
     # Locate the sidebar download button
     download_btn = dashboard.page.get_by_role("button", name="📥 Download Snapshot (JSON)")
 
@@ -68,9 +62,7 @@ def test_download_functionality(dashboard):
 
 
 def test_forensic_audit_load(dashboard):
-    """
-    Test loading the 'Forensic Audit' sub-tab to ensure no crashes due to missing columns.
-    """
+    """Test loading the 'Forensic Audit' sub-tab to ensure no crashes due to missing columns."""
     dashboard.navigate_to_tab(dashboard.tab_forensic)
     dashboard.page.wait_for_timeout(500)
 

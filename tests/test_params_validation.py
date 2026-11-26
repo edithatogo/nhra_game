@@ -1,3 +1,5 @@
+"""Tests for params validation."""
+
 from __future__ import annotations
 
 import pytest
@@ -5,6 +7,9 @@ from pydantic import ValidationError
 
 from nhra_gt.domain.params import Params
 from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
+
+_REQUESTED_RURALITY = 0.5
+_ENTRY_MEAN = 0.5
 
 
 def test_params_pydantic_validation():
@@ -15,7 +20,7 @@ def test_params_pydantic_validation():
 
     # Check valid creation
     p = Params(rurality_weight=0.5)
-    assert p.rurality_weight == 0.5
+    assert p.rurality_weight == _REQUESTED_RURALITY
 
 
 def test_evidence_entry_pydantic_validation():
@@ -26,7 +31,7 @@ def test_evidence_entry_pydantic_validation():
 
     # Valid entry
     entry = EvidenceEntry(parameter="test", mean=0.5, lower_ci=0.4, upper_ci=0.6)
-    assert entry.mean == 0.5
+    assert entry.mean == _ENTRY_MEAN
 
 
 def test_registry_pydantic_serialization(tmp_path):
@@ -39,4 +44,4 @@ def test_registry_pydantic_serialization(tmp_path):
     json_path.write_text(registry.model_dump_json())
 
     new_registry = EvidenceRegistry.model_validate_json(json_path.read_text())
-    assert new_registry.get_entry("test").mean == 0.5
+    assert new_registry.get_entry("test").mean == _ENTRY_MEAN

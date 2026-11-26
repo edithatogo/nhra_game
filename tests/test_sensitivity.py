@@ -1,9 +1,26 @@
+"""Tests for sensitivity."""
+
 from __future__ import annotations
 
 import numpy as np
+import pandas as pd
 import pytest
 
-from nhra_gt.sensitivity import evaluate_parallel, get_salib_problem
+from nhra_gt.sensitivity import (
+    evaluate_parallel,
+    generate_sensitivity_summary,
+    get_salib_problem,
+    run_morris_analysis,
+    run_sobol_analysis,
+)
+
+_VARIABLE_COUNT = 2
+_BOUND_ENDPOINTS = 2
+_BATCH_SIZE = 3
+_FIRST_OUTPUT = 3.0
+_SECOND_OUTPUT = 7.0
+_THIRD_OUTPUT = 11.0
+_SCENARIO_COUNT = 2
 
 
 def mock_model(params: np.ndarray) -> float:
@@ -18,11 +35,11 @@ def test_get_salib_problem_basic() -> None:
     # We expect bounds to be roughly +/- 20% of default or explicitly provided
     problem = get_salib_problem(param_list)
 
-    assert problem["num_vars"] == 2
+    assert problem["num_vars"] == _VARIABLE_COUNT
     assert problem["names"] == param_list
-    assert len(problem["bounds"]) == 2
+    assert len(problem["bounds"]) == _VARIABLE_COUNT
     for bound in problem["bounds"]:
-        assert len(bound) == 2
+        assert len(bound) == _BOUND_ENDPOINTS
         assert bound[0] < bound[1]
 
 
@@ -48,16 +65,14 @@ def test_evaluate_parallel_basic() -> None:
 
     results = evaluate_parallel(mock_model, param_values, n_procs=2)
 
-    assert len(results) == 3
-    assert results[0] == 3.0
-    assert results[1] == 7.0
-    assert results[2] == 11.0
+    assert len(results) == _BATCH_SIZE
+    assert results[0] == _FIRST_OUTPUT
+    assert results[1] == _SECOND_OUTPUT
+    assert results[2] == _THIRD_OUTPUT
 
 
 def test_run_morris_analysis() -> None:
     """Verify that Morris analysis produces a dataframe with mu_star and sigma."""
-    from nhra_gt.sensitivity import run_morris_analysis
-
     param_list = ["rurality_weight", "cost_shifting_intensity"]
     problem = get_salib_problem(param_list)
 
@@ -66,14 +81,12 @@ def test_run_morris_analysis() -> None:
 
     assert "mu_star" in df.columns
     assert "sigma" in df.columns
-    assert len(df) == 2
+    assert len(df) == _SCENARIO_COUNT
     assert set(df.index) == set(param_list)
 
 
 def test_run_sobol_analysis() -> None:
     """Verify that Sobol analysis produces a results dictionary with S1 and ST."""
-    from nhra_gt.sensitivity import run_sobol_analysis
-
     param_list = ["rurality_weight", "cost_shifting_intensity"]
     problem = get_salib_problem(param_list)
 
@@ -82,16 +95,12 @@ def test_run_sobol_analysis() -> None:
 
     assert "S1" in results_dict
     assert "ST" in results_dict
-    assert len(results_dict["S1"]) == 2
-    assert len(results_dict["ST"]) == 2
+    assert len(results_dict["S1"]) == _VARIABLE_COUNT
+    assert len(results_dict["ST"]) == _VARIABLE_COUNT
 
 
 def test_generate_sensitivity_summary(tmp_path) -> None:
     """Verify that the summary report is created with expected content."""
-    import pandas as pd
-
-    from nhra_gt.sensitivity import generate_sensitivity_summary
-
     # Create mock CSVs
     morris_csv = tmp_path / "morris.csv"
     pd.DataFrame({"mu_star": [0.1], "sigma": [0.01]}, index=["param1"]).to_csv(morris_csv)

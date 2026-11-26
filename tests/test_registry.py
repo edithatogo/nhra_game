@@ -1,3 +1,5 @@
+"""Tests for registry."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -5,6 +7,13 @@ import pytest
 
 from nhra_gt.domain.params import Params
 from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
+
+_WITHIN_FOUR_MEAN = 0.53
+_WITHIN_FOUR_LOWER_BOUND = 0.51
+_WITHIN_FOUR_ENTRY_COUNT = 2
+_SIGMA_ESTIMATE = 0.051
+_UPDATED_RURALITY = 0.50
+_UPDATED_TARGET = 0.55
 
 
 def test_evidence_entry_creation():
@@ -20,8 +29,8 @@ def test_evidence_entry_creation():
         access_date="2025-12-23",
     )
     assert entry.parameter == "within4_base"
-    assert entry.mean == 0.53
-    assert entry.lower_ci == 0.51
+    assert entry.mean == _WITHIN_FOUR_MEAN
+    assert entry.lower_ci == _WITHIN_FOUR_LOWER_BOUND
 
 
 def test_registry_add_and_get():
@@ -31,7 +40,7 @@ def test_registry_add_and_get():
     registry.add_entry(entry)
 
     retrieved = registry.get_entry("within4_base")
-    assert retrieved.mean == 0.53
+    assert retrieved.mean == _WITHIN_FOUR_MEAN
 
 
 def test_registry_conflict_logic():
@@ -43,7 +52,7 @@ def test_registry_conflict_logic():
     registry.add_entry(e1)
     registry.add_entry(e2)
 
-    assert len(registry.get_all_entries("within4_base")) == 2
+    assert len(registry.get_all_entries("within4_base")) == _WITHIN_FOUR_ENTRY_COUNT
     resolved = registry.resolve_conflict("within4_base", method="best_grade")
     assert resolved.nhmrc_level == "I"
 
@@ -118,7 +127,7 @@ def test_registry_sanity_checks():
 def test_evidence_to_noise_mapping():
     """Verify that we can map 95% CI to standard deviation."""
     entry = EvidenceEntry(parameter="test", mean=0.5, lower_ci=0.4, upper_ci=0.6)
-    assert pytest.approx(entry.get_sigma(), rel=1e-2) == 0.051
+    assert pytest.approx(entry.get_sigma(), rel=1e-2) == _SIGMA_ESTIMATE
 
     entry_none = EvidenceEntry(parameter="test", mean=0.5)
     assert entry_none.get_sigma() is None
@@ -147,7 +156,7 @@ def test_registry_sync_to_params():
 
     p_base = Params()
     p_new = registry.promote_to_params(p_base)
-    assert p_new.rurality_weight == 0.50
+    assert p_new.rurality_weight == _UPDATED_RURALITY
 
 
 def test_registry_sync_to_calibration_targets(tmp_path):
@@ -160,4 +169,4 @@ def test_registry_sync_to_calibration_targets(tmp_path):
 
     registry.sync_to_targets(targets_path)
     updated = pd.read_csv(targets_path)
-    assert updated.loc[updated["metric"] == "within4_base", "target"].iloc[0] == 0.55
+    assert updated.loc[updated["metric"] == "within4_base", "target"].iloc[0] == _UPDATED_TARGET

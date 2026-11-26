@@ -1,8 +1,13 @@
+"""Tests for agreement cycles."""
+
 import jax
 import jax.numpy as jnp
 
 from nhra_gt.domain.state import ParamsJax
 from nhra_gt.engine_jax import baseline_state_jax, run_simulation_jax
+
+_CLOCK_AFTER_YEAR_ONE = 4
+_CLOCK_AFTER_RENEWAL = 5
 
 
 def test_agreement_clock_reset():
@@ -15,12 +20,12 @@ def test_agreement_clock_reset():
     strat = jnp.zeros((num_months, 11))
     key = jax.random.PRNGKey(0)
 
-    final_s, trajectory = run_simulation_jax(s, p, strat, key, num_months)
+    _final_s, trajectory = run_simulation_jax(s, p, strat, key, num_months)
 
     # After 1 year (12 months), clock should be 4
-    assert trajectory.agreement_clock[11] == 4
+    assert trajectory.agreement_clock[11] == _CLOCK_AFTER_YEAR_ONE
     # With a 5->4->3->2->1->0->5 cycle, it resets at month 72 (End of Year 6)
-    assert trajectory.agreement_clock[71] == 5
+    assert trajectory.agreement_clock[71] == _CLOCK_AFTER_RENEWAL
 
 
 def test_renegotiation_leverage():

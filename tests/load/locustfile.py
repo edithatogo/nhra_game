@@ -1,9 +1,13 @@
+"""Locust workload for the dashboard."""
+
 from __future__ import annotations
 
 from locust import HttpUser, between, task
 
 
 class DashboardUser(HttpUser):
+    """Generate dashboard requests during the load test."""
+
     wait_time = between(1, 5)
 
     @task

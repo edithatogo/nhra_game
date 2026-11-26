@@ -10,8 +10,7 @@ from streamlit.testing.v1 import AppTest
 def app():
     """Fixture to load the dashboard app."""
     # Assumes the dashboard script is at 'streamlit_app.py' in root
-    at = AppTest.from_file("streamlit_app.py", default_timeout=30)
-    return at
+    return AppTest.from_file("streamlit_app.py", default_timeout=30)
 
 
 def test_app_loads(app):

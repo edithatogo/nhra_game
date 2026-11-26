@@ -1,3 +1,5 @@
+"""Tests for subgames nash."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -12,20 +14,24 @@ from nhra_gt.subgames.nash import (
     select_equilibrium,
 )
 
+_PURE_EQUILIBRIUM_COUNT = 2
+
 
 def test_all_nash_pure_exists() -> None:
     # Coordination game has two pure equilibria
+    """Check all nash pure exists."""
     u_r = np.array([[2, 0], [0, 1]], dtype=float)
     u_c = np.array([[2, 0], [0, 1]], dtype=float)
     g = TwoPlayerGame(u_row=u_r, u_col=u_c, row_actions=("A", "B"), col_actions=("A", "B"))
     eqs = all_nash(g)
     assert any(e.kind == "pure" for e in eqs)
-    assert len([e for e in eqs if e.kind == "pure"]) == 2
+    assert len([e for e in eqs if e.kind == "pure"]) == _PURE_EQUILIBRIUM_COUNT
 
 
 def test_all_nash_mixed_for_matching_pennies_is_none() -> None:
     # Matching pennies has no pure, mixed exists but degenerate selection may return mixed;
     # this test ensures the solver doesn't crash on zero denominators in arbitrary games.
+    """Check all nash mixed for matching pennies is none."""
     u_r = np.array([[1, -1], [-1, 1]], dtype=float)
     u_c = -u_r
     g = TwoPlayerGame(u_row=u_r, u_col=u_c, row_actions=("H", "T"), col_actions=("H", "T"))
@@ -35,6 +41,7 @@ def test_all_nash_mixed_for_matching_pennies_is_none() -> None:
 
 
 def test_mixed_nash_rejects_non_2x2() -> None:
+    """Check mixed nash rejects non 2x2."""
     u_r = np.zeros((3, 3), dtype=float)
     u_c = np.zeros((3, 3), dtype=float)
     g = TwoPlayerGame(
@@ -44,7 +51,8 @@ def test_mixed_nash_rejects_non_2x2() -> None:
 
 
 def test_mixed_nash_rejects_degenerate() -> None:
-    # denom_q == 0
+    # The row player's indifference denominator is zero.
+    """Check mixed nash rejects degenerate."""
     u_r = np.array([[1, 1], [1, 1]], dtype=float)
     u_c = np.array([[1, 0], [0, 1]], dtype=float)
     g = TwoPlayerGame(u_row=u_r, u_col=u_c, row_actions=("A", "B"), col_actions=("A", "B"))
@@ -52,6 +60,7 @@ def test_mixed_nash_rejects_degenerate() -> None:
 
 
 def test_select_equilibrium_rules() -> None:
+    """Check select equilibrium rules."""
     u_r = np.array([[2, 0], [0, 1]], dtype=float)
     u_c = np.array([[1, 0], [0, 2]], dtype=float)
     g = TwoPlayerGame(u_row=u_r, u_col=u_c, row_actions=("A", "B"), col_actions=("A", "B"))

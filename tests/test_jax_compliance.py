@@ -1,3 +1,5 @@
+"""Tests for JAX compliance."""
+
 from __future__ import annotations
 
 import numpy as np

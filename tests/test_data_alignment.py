@@ -1,8 +1,14 @@
+"""Tests for data alignment."""
+
 from __future__ import annotations
 
 import polars as pl
 import pytest
 from scripts.data.preprocess_historical import normalize_nhra_data
+
+_BASE_YEAR = 2011
+_BASE_WITHIN_FOUR = 0.70
+_NEXT_YEAR = 2012
 
 
 def test_historical_data_alignment():
@@ -18,8 +24,8 @@ def test_historical_data_alignment():
     # We expect normalization to produce a standard format
     normalized = normalize_nhra_data(raw_data)
 
-    assert 2011 in normalized["year"].to_list()
-    assert normalized.filter(pl.col("year") == 2011)["within4"][0] == 0.70
+    assert _BASE_YEAR in normalized["year"].to_list()
+    assert normalized.filter(pl.col("year") == _BASE_YEAR)["within4"][0] == _BASE_WITHIN_FOUR
 
 
 def test_historical_data_missing_years():
@@ -34,6 +40,6 @@ def test_historical_data_missing_years():
 
     normalized = normalize_nhra_data(raw_data)
     # Should fill in 2012
-    assert 2012 in normalized["year"].to_list()
+    assert _NEXT_YEAR in normalized["year"].to_list()
     # Simple linear interpolation check
-    assert normalized.filter(pl.col("year") == 2012)["within4"][0] == pytest.approx(0.65)
+    assert normalized.filter(pl.col("year") == _NEXT_YEAR)["within4"][0] == pytest.approx(0.65)

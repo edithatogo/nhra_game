@@ -1,3 +1,5 @@
+"""Inspect the network export for its embedded D3 data."""
+
 import json
 import sys
 from pathlib import Path
@@ -5,6 +7,7 @@ from pathlib import Path
 
 def test_injection():
     # Paths based on project structure
+    """Check injection."""
     repo_root = Path(__file__).resolve().parents[1]
     d3_path = repo_root / "outputs/interactive/games_network_d3.html"
     json_path = repo_root / "outputs/interactive/games_network.json"

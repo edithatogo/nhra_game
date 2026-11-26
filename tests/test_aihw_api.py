@@ -1,3 +1,5 @@
+"""Tests for AIHW API."""
+
 from __future__ import annotations
 
 from unittest.mock import patch
@@ -7,9 +9,14 @@ import pytest
 
 from nhra_gt.domain.aihw_api import AIHWClient
 
+_MEASURE_COUNT = 2
+_DATA_ROW_COUNT = 2
+_FIRST_WITHIN_FOUR = 0.53
+
 
 @pytest.fixture
 def client():
+    """Provide the AIHW client used by the ingestion tests."""
     return AIHWClient()
 
 
@@ -23,7 +30,7 @@ def test_fetch_measures(mock_get, client):
     mock_get.return_value.status_code = 200
 
     measures = client.get_measures()
-    assert len(measures) == 2
+    assert len(measures) == _MEASURE_COUNT
     assert measures[0]["code"] == "ED_WAIT"
 
 
@@ -38,8 +45,8 @@ def test_fetch_data_items(mock_get, client):
 
     df = client.get_measure_data("ED_WAIT")
     assert isinstance(df, pl.DataFrame)
-    assert len(df) == 2
-    assert df["value"][0] == 0.53
+    assert len(df) == _DATA_ROW_COUNT
+    assert df["value"][0] == _FIRST_WITHIN_FOUR
 
 
 if __name__ == "__main__":

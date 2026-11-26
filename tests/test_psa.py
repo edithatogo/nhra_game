@@ -1,3 +1,5 @@
+"""Tests for probabilistic sensitivity analysis."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -5,21 +7,23 @@ import pytest
 
 from nhra_gt.sensitivity import run_psa
 
+_EXPECTED_SAMPLES = 10
+
 
 # Mock model must be top-level for pickling
 def mock_model(params):
+    """Return synthetic outcomes for the uncertainty analysis."""
     return np.sum(params**2)
 
 
 def test_run_psa_structure():
     """Verify PSA runner output structure."""
-
     # Mock distributions
     dists = {"a": lambda n: np.random.uniform(0, 1, n), "b": lambda n: np.random.normal(0, 1, n)}
 
     df = run_psa(dists, mock_model, n_samples=10, n_procs=1)
 
-    assert len(df) == 10
+    assert len(df) == _EXPECTED_SAMPLES
     assert "a" in df.columns
     assert "b" in df.columns
     assert "outcome" in df.columns

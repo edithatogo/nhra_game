@@ -1,3 +1,5 @@
+"""Tests for outreach validate images."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -5,6 +7,8 @@ from pathlib import Path
 import pytest
 from PIL import Image
 from scripts.outreach.validate_images import validate_cover_images
+
+_MISSING_IMAGES = 2
 
 
 def _write_png(path: Path, *, width: int, height: int) -> None:
@@ -15,6 +19,7 @@ def _write_png(path: Path, *, width: int, height: int) -> None:
 
 @pytest.fixture
 def mini_series(tmp_path: Path) -> tuple[Path, Path]:
+    """Create a minimal outreach series under the temporary directory."""
     root = tmp_path / "series"
     meta = root / "00_series_meta"
     meta.mkdir(parents=True)
@@ -42,13 +47,15 @@ bundles:
 
 
 def test_validate_cover_images_missing(mini_series: tuple[Path, Path]) -> None:
+    """Check validate cover images missing."""
     root, manifest = mini_series
     missing, errors = validate_cover_images(manifest_path=manifest, series_root=root)
     assert errors == []
-    assert len(missing) == 2
+    assert len(missing) == _MISSING_IMAGES
 
 
 def test_validate_cover_images_ok(mini_series: tuple[Path, Path]) -> None:
+    """Check validate cover images ok."""
     root, manifest = mini_series
     out_dir = root / "01_demo_bundle" / "images" / "out"
     _write_png(out_dir / "cover_linkedin_article_1200x644.png", width=1200, height=644)
@@ -60,6 +67,7 @@ def test_validate_cover_images_ok(mini_series: tuple[Path, Path]) -> None:
 
 
 def test_validate_cover_images_dimension_mismatch(mini_series: tuple[Path, Path]) -> None:
+    """Check validate cover images dimension mismatch."""
     root, manifest = mini_series
     out_dir = root / "01_demo_bundle" / "images" / "out"
     _write_png(out_dir / "cover_linkedin_article_1200x644.png", width=1200, height=645)

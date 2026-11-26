@@ -1,3 +1,5 @@
+"""Tests for visual regression."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -9,6 +11,7 @@ from nhra_gt.visualization.trajectories import plot_trajectory
 
 @pytest.fixture
 def sample_traj():
+    """Provide a deterministic trajectory for the rendering comparison."""
     return pd.DataFrame(
         {
             "year": [2025, 2026, 2027],
@@ -21,6 +24,7 @@ def sample_traj():
 
 @pytest.fixture
 def sample_strat():
+    """Provide a deterministic strategy history for the rendering comparison."""
     return pd.DataFrame(
         {
             "year": [2025, 2025, 2026, 2026],
@@ -33,14 +37,17 @@ def sample_strat():
 
 @pytest.mark.mpl_image_compare
 def test_plot_trajectory_regression(sample_traj):
+    """Check plot trajectory regression."""
     return plot_trajectory(sample_traj, "metric", "Value", q_low_col="q_low", q_high_col="q_high")
 
 
 @pytest.mark.mpl_image_compare
 def test_plot_strategy_heatmap_regression(sample_strat):
+    """Check plot strategy heatmap regression."""
     return plot_strategy_heatmap(sample_strat)
 
 
 @pytest.mark.mpl_image_compare
 def test_plot_distributions_regression(sample_traj):
+    """Check plot distributions regression."""
     return plot_distributions(sample_traj, "metric")

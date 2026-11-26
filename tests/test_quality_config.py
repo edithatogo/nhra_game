@@ -1,3 +1,5 @@
+"""Tests for quality config."""
+
 from __future__ import annotations
 
 import tomllib

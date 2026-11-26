@@ -1,3 +1,5 @@
+"""Tests for workforce competition."""
+
 import jax
 import jax.numpy as jnp
 

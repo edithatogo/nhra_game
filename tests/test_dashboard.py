@@ -1,3 +1,5 @@
+"""Tests for dashboard."""
+
 from __future__ import annotations
 
 import contextlib
@@ -6,6 +8,16 @@ import json
 from pathlib import Path
 
 import pandas as pd
+
+from nhra_gt.engine import Params, run_hybrid, summarise_outcome
+
+_MIN_RURALITY = 0.05
+_MAX_RURALITY = 0.70
+_MIN_DISCHARGE_DELAY = 0.5
+_MAX_DISCHARGE_DELAY = 2.0
+_SCENARIO_ROW_COUNT = 4
+_SNAPSHOT_SHARE = 0.50
+_FINAL_EFFECTIVE_SHARE = 0.42
 
 
 def test_dashboard_script_exists():
@@ -26,24 +38,20 @@ def test_dashboard_loadable():
 
 def test_parameter_mapping_logic():
     """Verify that parameters can be correctly mapped to expected slider ranges."""
-    from nhra_gt.engine import Params
-
     defaults = Params()
     # Test a few key mappings we expect in the dashboard
-    assert 0.05 <= defaults.rurality_weight <= 0.70
-    assert 0.5 <= defaults.discharge_delay_base <= 2.0
+    assert _MIN_RURALITY <= defaults.rurality_weight <= _MAX_RURALITY
+    assert _MIN_DISCHARGE_DELAY <= defaults.discharge_delay_base <= _MAX_DISCHARGE_DELAY
 
 
 def test_model_rollout_interface():
     """Verify that the model can be called with dashboard-provided parameters."""
-    from nhra_gt.engine import Params, run_hybrid
-
     # Simulate a dashboard update
     p = Params(rurality_weight=0.5)
     years = list(range(2025, 2031))
 
     # Low-fidelity run (small n_mc)
-    traj, strat = run_hybrid(years, p, n_mc=10)
+    traj, _strat = run_hybrid(years, p, n_mc=10)
 
     assert isinstance(traj, pd.DataFrame)
     assert not traj.empty
@@ -60,7 +68,7 @@ def test_plotly_df_generation():
     df_game["Scenario"] = "War Game"
     combined = pd.concat([df_base, df_game])
 
-    assert len(combined) == 4
+    assert len(combined) == _SCENARIO_ROW_COUNT
     assert set(combined["Scenario"]) == {"Baseline", "War Game"}
 
 
@@ -101,14 +109,12 @@ def test_scenario_serialization():
     serialized = json.dumps(state)
     deserialized = json.loads(serialized)
 
-    assert deserialized["nominal_cth_share_target"] == 0.50
+    assert deserialized["nominal_cth_share_target"] == _SNAPSHOT_SHARE
     assert deserialized["scenario_name"] == "Test Scenario"
 
 
 def test_summarise_outcome_keys():
     """Verify that summarise_outcome returns all keys expected by the dashboard."""
-    from nhra_gt.engine import summarise_outcome
-
     # Create a dummy DataFrame simulating the output of run_hybrid
     data = {
         "year": [2025, 2030],
@@ -124,4 +130,4 @@ def test_summarise_outcome_keys():
     summary = summarise_outcome(agg)
 
     assert "effshare_effective_2030" in summary
-    assert summary["effshare_effective_2030"] == 0.42
+    assert summary["effshare_effective_2030"] == _FINAL_EFFECTIVE_SHARE

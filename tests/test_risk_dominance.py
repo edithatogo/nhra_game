@@ -1,12 +1,17 @@
+"""Tests for risk dominance."""
+
 import numpy as np
 
 from nhra_gt.subgames.nash import TwoPlayerGame, all_nash, select_equilibrium
+
+_EQUILIBRIUM_COUNT = 3
 
 
 def test_risk_dominance_stag_hunt():
     # Stag Hunt
     # R/C: 0=Stag, 1=Hare
-    # (S,S)=4,4; (S,H)=0,3; (H,S)=3,0; (H,H)=3,3
+    # Mutual Stag pays four, and mutual Hare pays three. A lone Stag player receives zero.
+    """Check risk dominance stag hunt."""
     u_row = np.array([[4, 0], [3, 3]])
     u_col = np.array([[4, 3], [0, 3]])
 
@@ -16,7 +21,7 @@ def test_risk_dominance_stag_hunt():
 
     eqs = all_nash(game)
     # Expect 3 eqs: (S,S), (H,H), and Mixed
-    assert len(eqs) == 3
+    assert len(eqs) == _EQUILIBRIUM_COUNT
 
     # 1. Test Payoff Dominance (should be Stag,Stag)
     sel_pd = select_equilibrium(eqs, rule="payoff_dominant", u_row=u_row, u_col=u_col)
@@ -33,6 +38,7 @@ def test_risk_dominance_stag_hunt():
 
 def test_risk_dominance_prisoner_dilemma():
     # PD has only one unique Nash (Defect, Defect), so Risk Dominance should pick it.
+    """Check risk dominance prisoner dilemma."""
     u_row = np.array([[3, 0], [5, 1]])
     u_col = np.array([[3, 5], [0, 1]])
     # Nash is (1,1) -> (5,5) NO wait.

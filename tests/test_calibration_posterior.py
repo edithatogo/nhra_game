@@ -1,8 +1,13 @@
+"""Tests for calibration posterior."""
+
 from __future__ import annotations
 
 from pathlib import Path
 
 import pandas as pd
+
+_GOOD_TRIAL_THRESHOLD = 0.003
+_GOOD_TRIAL_COUNT = 2
 
 
 def test_posterior_sampling_logic():
@@ -18,8 +23,8 @@ def test_posterior_sampling_logic():
     df = pd.DataFrame(data)
 
     # Filtering for 'good' trials (e.g. value < 0.003)
-    good_trials = df[df["value"] < 0.003]
-    assert len(good_trials) == 2
+    good_trials = df[df["value"] < _GOOD_TRIAL_THRESHOLD]
+    assert len(good_trials) == _GOOD_TRIAL_COUNT
 
     # Sampling a parameter set
     sample = good_trials.sample(1).iloc[0]

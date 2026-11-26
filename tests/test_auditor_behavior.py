@@ -1,8 +1,13 @@
+"""Tests for auditor behavior."""
+
 import jax
 import jax.numpy as jnp
 
 from nhra_gt.domain.state import Params
 from nhra_gt.engine_jax import baseline_state_jax, step_jax
+
+_SUSPICION_THRESHOLD = 0.3
+_ACTIVE_AUDIT_THRESHOLD = 0.3
 
 
 def test_auditor_suspicion_logic():
@@ -32,10 +37,10 @@ def test_auditor_suspicion_logic():
     last_s, suspicion_traj = jax.lax.scan(body, s_gaming_start, jnp.arange(24))
 
     # Suspicion should have increased significantly
-    assert last_s.auditor_suspicion > 0.3
+    assert last_s.auditor_suspicion > _SUSPICION_THRESHOLD
     # Active audit pressure should have increased above the lazy baseline
     # (Since 0.25 was the 'complacent' floor)
-    assert last_s.audit_pressure_active > 0.3
+    assert last_s.audit_pressure_active > _ACTIVE_AUDIT_THRESHOLD
 
     print(f"Suspicion Traj: {suspicion_traj}")
     print(f"Final Pressure: {last_s.audit_pressure_active}")

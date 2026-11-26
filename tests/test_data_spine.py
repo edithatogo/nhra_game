@@ -1,7 +1,15 @@
+"""Tests for data spine."""
+
 import pytest
 
 from nhra_gt.domain.registry import EvidenceEntry, EvidenceRegistry
 from nhra_gt.domain.state import BaselineProvider, Params
+
+_REQUESTED_SHARE = 0.55
+_REQUESTED_PRICE_GROWTH = 0.05
+_UPDATED_SHARE = 0.50
+_INITIAL_YEAR = 2025
+_DEFAULT_SHARE = 0.45
 
 
 def test_yaml_param_loading(tmp_path):
@@ -16,8 +24,8 @@ pricing:
     config_path.write_text(config_content)
 
     p = Params.from_yaml(config_path)
-    assert p.nominal_cth_share_target == 0.55
-    assert p.nep_annual_growth == 0.05
+    assert p.nominal_cth_share_target == _REQUESTED_SHARE
+    assert p.nep_annual_growth == _REQUESTED_PRICE_GROWTH
 
 
 def test_registry_to_yaml_promotion(tmp_path):
@@ -38,7 +46,7 @@ def test_registry_to_yaml_promotion(tmp_path):
 
     # 4. Verify
     p_updated = Params.from_yaml(config_path)
-    assert p_updated.nominal_cth_share_target == 0.50
+    assert p_updated.nominal_cth_share_target == _UPDATED_SHARE
 
 
 def test_baseline_provider_integration():
@@ -46,9 +54,9 @@ def test_baseline_provider_integration():
     params, state = BaselineProvider.get_baseline()
 
     assert isinstance(params, Params)
-    assert state.year == 2025
+    assert state.year == _INITIAL_YEAR
     # Should have loaded from defaults.yaml
-    assert params.nominal_cth_share_target == 0.45
+    assert params.nominal_cth_share_target == _DEFAULT_SHARE
 
 
 def test_load_spine_requires_nep_and_wpi(tmp_path):

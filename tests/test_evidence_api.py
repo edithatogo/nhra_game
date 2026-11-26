@@ -1,22 +1,30 @@
+"""Tests for evidence API."""
+
 from __future__ import annotations
 
 from scripts.llm_evidence_parser import LLMEvidenceExtractor
 
 from nhra_gt.domain.evidence import EvidenceType
 
+_EXTRACTED_WITHIN_FOUR = 0.55
+_EMPIRICAL_RELIABILITY = 0.95
+_ANECDOTAL_RELIABILITY = 0.30
+
 
 def test_evidence_parsing_basic():
+    """Check evidence parsing basic."""
     parser = LLMEvidenceExtractor()
     report_text = "The AIHW report indicates that ED within 4 hour performance has dropped to 55%."
 
     entry = parser.parse_evidence(report_text)
 
     assert entry.parameter == "within4_base"
-    assert entry.mean == 0.55
+    assert entry.mean == _EXTRACTED_WITHIN_FOUR
     assert entry.nhmrc_level == "II"
 
 
 def test_evidence_analysis_pipeline():
+    """Check evidence analysis pipeline."""
     parser = LLMEvidenceExtractor()
     raw_input = "Hospital occupancy is at 98%. System stability is improving. Recent data confirms a crisis in staffing."
 
@@ -30,5 +38,6 @@ def test_evidence_analysis_pipeline():
 
 
 def test_evidence_type_reliability():
-    assert EvidenceType.EMPIRICAL.reliability_score() == 0.95
-    assert EvidenceType.ANECDOTAL.reliability_score() == 0.30
+    """Check evidence type reliability."""
+    assert EvidenceType.EMPIRICAL.reliability_score() == _EMPIRICAL_RELIABILITY
+    assert EvidenceType.ANECDOTAL.reliability_score() == _ANECDOTAL_RELIABILITY

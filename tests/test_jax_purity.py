@@ -2,6 +2,11 @@
 
 from __future__ import annotations
 
+try:
+    import chex
+except ImportError:
+    chex = None
+
 import jax
 import jax.numpy as jnp
 
@@ -25,14 +30,8 @@ def test_step_jax_is_jitable():
     next_state_2 = jitted_step(state, params, strategies, key)
 
     # Check structural equality (leaf by leaf)
-    chex_available = False
-    try:
-        import chex
-
-        chex_available = True
+    if chex is not None:
         chex.assert_trees_all_close(next_state, next_state_2)
-    except ImportError:
-        pass
 
     # Basic check
     assert jnp.allclose(next_state.pressure, next_state_2.pressure)

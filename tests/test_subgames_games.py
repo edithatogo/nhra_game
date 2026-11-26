@@ -1,3 +1,5 @@
+"""Tests for subgames games."""
+
 from __future__ import annotations
 
 from nhra_gt.subgames.games import (
@@ -13,6 +15,7 @@ from nhra_gt.subgames.nash import all_nash
 
 
 def test_each_game_has_equilibrium() -> None:
+    """Check each game has equilibrium."""
     gp = GameParams(
         pressure=1.2,
         efficiency_gap=0.3,

@@ -1,6 +1,9 @@
+"""Tests for remote smoke."""
+
 import os
 
 import pytest
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 
 @pytest.mark.skipif(
@@ -8,9 +11,7 @@ import pytest
     reason="Skipping remote smoke test unless RUN_REMOTE_E2E is set",
 )
 def test_remote_smoke_load(dashboard):
-    """Verifies that the deployed application loads successfully.
-    Targeting the remote URL defined in STREAMLIT_REMOTE_URL or default.
-    """
+    """Verify the configured remote deployment loads."""
     print(f"Loading remote smoke test at: {dashboard.base_url}")
     dashboard.page.goto(dashboard.base_url)
 
@@ -24,7 +25,7 @@ def test_remote_smoke_load(dashboard):
     try:
         # Give it a moment to render something specific
         dashboard.page.wait_for_selector("[data-testid='stAppViewContainer']", timeout=10000)
-    except:
+    except PlaywrightTimeoutError:
         print("WARNING: stAppViewContainer not found in 10s.")
         print(f"Current Body Text: {dashboard.page.inner_text('body')[:500]}")
 

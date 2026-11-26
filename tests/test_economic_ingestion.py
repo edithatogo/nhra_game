@@ -1,3 +1,5 @@
+"""Tests for economic ingestion."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -6,6 +8,10 @@ from pandera.errors import SchemaError
 from scripts.data.ingest_economic_spine import process_economic_data
 
 from nhra_gt.domain.schemas import EconomicSpineSchema
+
+_LATEST_YEAR = 2024
+_LATEST_PRICE = 6465.0
+_LATEST_WPI = 144.8
 
 
 def test_economic_data_processing():
@@ -19,8 +25,10 @@ def test_economic_data_processing():
     # Should follow schema
     EconomicSpineSchema.validate(processed)
 
-    assert processed.loc[processed["year"] == 2024, "nep_per_nwau"].iloc[0] == 6465.0
-    assert processed.loc[processed["year"] == 2024, "wpi_health_index"].iloc[0] == 144.8
+    assert processed.loc[processed["year"] == _LATEST_YEAR, "nep_per_nwau"].iloc[0] == _LATEST_PRICE
+    assert (
+        processed.loc[processed["year"] == _LATEST_YEAR, "wpi_health_index"].iloc[0] == _LATEST_WPI
+    )
 
 
 def test_economic_data_schema_failure():

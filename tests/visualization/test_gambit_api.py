@@ -1,7 +1,10 @@
+"""Tests for Gambit API."""
+
 import pygambit as gambit
 
 
 def test_api():
+    """Check API."""
     g = gambit.Game.new_tree(title="Test")
     p1 = g.add_player("P1")
     p2 = g.add_player("P2")

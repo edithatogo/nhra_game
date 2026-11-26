@@ -1,11 +1,16 @@
+"""Tests for outreach validate bundle completeness."""
+
 from __future__ import annotations
 
 from pathlib import Path
 
 from scripts.outreach.validate_bundle_completeness import validate_bundles
 
+_MISSING_BUNDLE_ITEMS = 3
+
 
 def test_validate_bundles_missing(tmp_path: Path) -> None:
+    """Check validate bundles missing."""
     root = tmp_path / "series"
     meta = root / "00_series_meta"
     meta.mkdir(parents=True)
@@ -26,10 +31,11 @@ bundles:
 
     missing, errors = validate_bundles(manifest_path=manifest, series_root=root)
     assert errors == []
-    assert len(missing) == 3
+    assert len(missing) == _MISSING_BUNDLE_ITEMS
 
 
 def test_validate_bundles_ok(tmp_path: Path) -> None:
+    """Check validate bundles ok."""
     root = tmp_path / "series"
     meta = root / "00_series_meta"
     meta.mkdir(parents=True)
@@ -62,6 +68,7 @@ bundles:
 
 
 def test_validate_bundles_filtering_behavior(tmp_path: Path) -> None:
+    """Check validate bundles filtering behavior."""
     root = tmp_path / "series"
     meta = root / "00_series_meta"
     meta.mkdir(parents=True)

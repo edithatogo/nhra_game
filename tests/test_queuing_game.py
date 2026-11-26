@@ -1,3 +1,5 @@
+"""Tests for queuing game."""
+
 from __future__ import annotations
 
 from nhra_gt.domain.params import Params
@@ -7,6 +9,8 @@ from nhra_gt.subgames.queuing import (
     solve_queuing_equilibrium_jax,
     solve_queuing_equilibrium_legacy,
 )
+
+_MIN_HIGH_CAPACITY_DEMAND = 0.1
 
 
 def test_queuing_impact_jax():
@@ -75,4 +79,4 @@ def test_wait_time_feedback_jax():
 
     assert 0.0 <= float(p_low) < float(p_high) <= 1.0
     assert 0.0 <= float(d_low_cap) < float(d_high_cap) <= demand_base
-    assert float(d_high_cap) > 0.1
+    assert float(d_high_cap) > _MIN_HIGH_CAPACITY_DEMAND
