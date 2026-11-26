@@ -169,6 +169,37 @@ def test_reciprocal_rescaling_does_not_certify_a_multiple_root_game():
         assert np.isnan(col).all()
 
 
+def test_underflowed_payoff_difference_cannot_certify_uniqueness():
+    """Bound payoff differences before a large scale can amplify flushed terms."""
+    tiny = np.finfo(np.float32).tiny
+    a = tiny * jnp.array([[1.75, 1.0], [1.0, 1.75]], dtype=jnp.float32)
+    b = jnp.float32(2**124) * jnp.eye(2, dtype=jnp.float32)
+    lam = 5.0
+
+    # The uniform root is exact by symmetry. Its slope product exceeds one,
+    # so the finite-logit endpoint signs imply another root on each side.
+    slope_product = (lam * 0.75 * float(tiny) / 2.0) * (lam * 2**124 / 2.0)
+    assert slope_product > 1.0
+
+    solve = jax.jit(solve_qualified_two_player_qre)
+    row, col, diagnostics = solve(a, b)
+    assert diagnostics.status == QreStatus.BRANCH_UNQUALIFIED
+    assert float(diagnostics.residual) <= _ORACLE_BOUND
+    assert np.isnan(row).all()
+    assert np.isnan(col).all()
+
+    zeros = jnp.zeros_like(a)
+    nested = jax.jit(
+        lambda u, v: solve_constitutional_game_with_diagnostics_jax(
+            u, v, lambda _i, _j: (zeros, zeros)
+        )
+    )(a, b)
+    assert np.all(nested.micro.qualified)
+    assert nested.macro.status == QreStatus.BRANCH_UNQUALIFIED
+    assert float(nested.macro.residual) == float(diagnostics.residual)
+    assert all(np.isnan(value).all() for value in nested.solution)
+
+
 @pytest.mark.parametrize("lam", [5.0, 8.0])
 def test_nonconvergence_reports_original_residual(lam):
     """Uniqueness alone cannot qualify a fixed-budget iterate."""

@@ -85,18 +85,35 @@ class QreDiagnostics(NamedTuple):
         return self.status == QreStatus.QUALIFIED
 
 
-def _log_response_bound(payoffs: Array, lam: float) -> tuple[Array, Array]:
-    """Return the log of a total-variation bound and the scale of its terms."""
-    # Round tiny terms up to keep the bound conservative on devices that flush
-    # subnormal values to zero.
-    tiny = jnp.finfo(payoffs.dtype).tiny
+def _roundoff_padding(value: Array) -> Array:
+    """Pad a rounded value for relative error and flushed subnormals."""
+    info = jnp.finfo(value.dtype)
+    return 8 * (info.eps * jnp.abs(value) + info.tiny)
+
+
+def _difference_interval(differences: Array, source_tiny: Array) -> tuple[Array, Array]:
+    # Either operand may have had a subnormal value flushed on conversion.
+    padding = _roundoff_padding(differences) + 2 * source_tiny
+    return differences - padding, differences + padding
+
+
+def _log_response_bound(
+    payoffs: Array, source_tiny: Array, rationality_low: Array, rationality_high: Array
+) -> tuple[Array, Array]:
+    """Return an upper log bound in total variation and its term scale."""
+    log_rationality = jnp.log(rationality_high)
     if payoffs.shape[0] == _BINARY_ACTIONS:
-        gains = lam * (payoffs[1] - payoffs[0])
-        low, high = jnp.min(gains), jnp.max(gains)
-        closest_to_zero = jnp.maximum(0.0, jnp.maximum(low, -high))
+        # Bound the unscaled subtraction first. A lost small payoff
+        # difference can become material after scaling by rationality.
+        lower, upper = _difference_interval(payoffs[1] - payoffs[0], source_tiny)
+        low, high = jnp.min(lower), jnp.max(upper)
+        width = high - low
+        distance = rationality_low * jnp.maximum(0.0, jnp.maximum(low, -high))
+        closest_to_zero = jnp.maximum(0.0, distance - _roundoff_padding(distance))
         terms = jnp.stack(
             (
-                jnp.log(jnp.maximum(high - low, tiny)),
+                log_rationality,
+                jnp.log(width + _roundoff_padding(width)),
                 jax.nn.log_sigmoid(closest_to_zero),
                 jax.nn.log_sigmoid(-closest_to_zero),
             )
@@ -104,33 +121,43 @@ def _log_response_bound(payoffs: Array, lam: float) -> tuple[Array, Array]:
     else:
         # The softmax probability of any subset has derivative bounded by one
         # quarter of the utility perturbation's range across own actions.
-        differences = payoffs[:, None, :] - payoffs[None, :, :]
-        interaction = jnp.max(jnp.ptp(differences, axis=-1))
+        lower, upper = _difference_interval(payoffs[:, None, :] - payoffs[None, :, :], source_tiny)
+        interaction = jnp.max(jnp.max(upper, axis=-1) - jnp.min(lower, axis=-1))
         terms = jnp.stack(
             (
-                jnp.log(jnp.maximum(abs(lam), tiny)),
-                jnp.log(jnp.maximum(interaction, tiny)),
+                log_rationality,
+                jnp.log(interaction + _roundoff_padding(interaction)),
                 -jnp.log(jnp.asarray(4.0, dtype=payoffs.dtype)),
             )
         )
     return jnp.sum(terms), jnp.sum(jnp.abs(terms))
 
 
+def _binary_response_direction(payoffs: Array, source_tiny: Array) -> Array:
+    """Certify an increase or decrease only when the gains are separated."""
+    low, high = _difference_interval(payoffs[1] - payoffs[0], source_tiny)
+    return jnp.where(low[1] > high[0], 1, jnp.where(low[0] > high[1], -1, 0))
+
+
 def _unique_logit_branch(u_row: Array, u_col: Array, lam: float) -> Array:
     # Evaluate both certificates at the same precision before combining them.
     dtype = jnp.result_type(u_row, u_col, jnp.float32)
+    row_tiny = jnp.asarray(jnp.finfo(u_row.dtype).tiny, dtype=dtype)
+    col_tiny = jnp.asarray(jnp.finfo(u_col.dtype).tiny, dtype=dtype)
     u_row, u_col = u_row.astype(dtype), u_col.astype(dtype)
-    row_bound, row_scale = _log_response_bound(u_row, lam)
-    col_bound, col_scale = _log_response_bound(u_col.T, lam)
+    rationality = jnp.abs(jnp.asarray(lam, dtype=dtype))
+    padding = _roundoff_padding(rationality)
+    rationality_low = jnp.maximum(0.0, rationality - padding)
+    rationality_high = rationality + padding
+    row_bound, row_scale = _log_response_bound(u_row, row_tiny, rationality_low, rationality_high)
+    col_bound, col_scale = _log_response_bound(u_col.T, col_tiny, rationality_low, rationality_high)
     # Use each term before cancellation within either bound.
     margin = 8 * jnp.finfo(dtype).eps * (1.0 + row_scale + col_scale)
-    unique = row_bound + col_bound < -margin
+    unique = (row_bound + col_bound < -margin) | (isinstance(lam, float) and lam == 0.0)
     if u_row.shape == (_BINARY_ACTIONS, _BINARY_ACTIONS):
         # Oppositely directed binary responses compose to a decreasing map.
-        row_gains = u_row[1] - u_row[0]
-        col_gains = u_col[:, 1] - u_col[:, 0]
-        row_direction = jnp.sign(row_gains[1] - row_gains[0])
-        col_direction = jnp.sign(col_gains[1] - col_gains[0])
+        row_direction = _binary_response_direction(u_row, row_tiny)
+        col_direction = _binary_response_direction(u_col.T, col_tiny)
         unique = unique | (row_direction * col_direction < 0)
     return unique
 
