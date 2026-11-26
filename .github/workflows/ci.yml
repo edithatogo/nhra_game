@@ -106,4 +106,5 @@ jobs:
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2.7.0
         with:
+          token: ''
           args: --no-progress --files-from '${{ runner.temp }}/nhra-markdown.txt'
