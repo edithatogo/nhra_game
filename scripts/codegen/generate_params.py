@@ -1,6 +1,7 @@
-"""Generates the ParamsGenerated class from the parameter registry CSV."""
+"""Generate the legacy flat ParamsGenerated class from its archived CSV."""
 
 import argparse
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -14,18 +15,19 @@ def infer_type(val):
     if s in ["none", "nan", ""] or pd.isna(val):
         return "Any"
     try:
-        # Check if it's an integer or a float that is effectively an integer
         f_val = float(val)
-        if f_val.is_integer():
-            return "int"
-        return "float"
     except ValueError:
         return "str"
+    return "int" if f_val.is_integer() else "float"
 
 
 def generate_params_code(csv_path):
     """Generate Python source code for the ParamsGenerated class."""
     df = pd.read_csv(csv_path)
+    grouped = {"Operational coefficient", "Policy coefficient"}
+    if "group" in df and df["group"].isin(grouped).any():
+        message = "Flat JAX code generation requires an archived flat registry"
+        raise ValueError(message)
 
     # Filter out rows that are not scalar parameters
     scalar_df = df[~df["value"].astype(str).str.startswith("(")]
@@ -71,12 +73,12 @@ def generate_params_code(csv_path):
 def main() -> None:
     """Run the parameter generation script."""
     parser = argparse.ArgumentParser()
+    parser.add_argument("--registry", type=Path, required=True, help="Archived flat registry CSV")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     project_root = Path(__file__).parent.parent.parent
-    csv_path = project_root / "context/04_parameter_registry.csv"
     output_path = project_root / "src/nhra_gt/domain/params_generated.py"
-    generated = generate_params_code(csv_path)
+    generated = generate_params_code(args.registry)
     if args.check:
         if output_path.exists():
             with open(output_path) as f:
