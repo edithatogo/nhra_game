@@ -1,7 +1,11 @@
 """Tests for sequential."""
 
+from itertools import product
+
 import numpy as np
 
+from nhra_gt._paignia import commitment_choice
+from nhra_gt.subgames import sequential
 from nhra_gt.subgames.sequential import rubinstein_solution, stackelberg_solution
 
 
@@ -54,3 +58,40 @@ def test_stackelberg_basic():
 
     assert idx_leader == 0
     assert idx_follower == 0
+
+
+def test_native_commitment_matches_first_index_enumeration():
+    """Compare the installed provider with an independent finite oracle."""
+    for entries in product((0.0, 1.0), repeat=8):
+        leader = [list(entries[:2]), list(entries[2:4])]
+        follower = [list(entries[4:6]), list(entries[6:])]
+        replies = [max(range(2), key=utilities.__getitem__) for utilities in follower]
+        row = max(range(2), key=lambda i: leader[i][replies[i]])
+        assert commitment_choice(leader, follower) == (row, replies[row])
+
+
+def test_stackelberg_uses_native_lower_index_ties_and_exact_order(mocker):
+    """Check the receiving path on ties and close but distinct binary64 payoffs."""
+    native = mocker.spy(sequential, "commitment_choice")
+    leader = np.zeros((12, 2))
+    follower = np.zeros_like(leader)
+    leader[2, 0] = leader[10, 0] = 1.0
+    leader[0, 1] = 9.0
+    assert stackelberg_solution(leader, follower) == (2, 0)
+
+    leader[10, 0] = np.nextafter(1.0, 2.0)
+    assert stackelberg_solution(leader, follower) == (10, 0)
+
+    leader = np.array([[0.0, 9.0], [4.0, 0.0]])
+    follower = np.array([[0.0, 5e-13], [1.0, 0.0]])
+    assert stackelberg_solution(leader, follower) == (0, 1)
+
+    expected_native_calls = 3
+    assert native.call_count == expected_native_calls
+
+
+def test_stackelberg_preserves_integer_order_outside_binary64():
+    """Keep the exact legacy ordering for integers above binary64 precision."""
+    leader = np.array([[2**53], [2**53 + 1]], dtype=np.int64)
+    follower = np.zeros_like(leader)
+    assert stackelberg_solution(leader, follower) == (1, 0)

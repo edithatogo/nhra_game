@@ -83,8 +83,36 @@ A small set of two-player stage games represent strategic tensions, e.g.:
 For each game, the code:
 
 - constructs payoff matrices from state variables (pressure, efficiency gap, discharge delay),
-- solves **all Nash equilibria** (pure + mixed) using enumeration / support methods,
+- enumerates pure equilibria and checks for a full-support mixed witness for admitted 2×2 games,
 - selects equilibria for simulation using a configurable rule (e.g., welfare, risk-dominant).
+
+#### Solver boundaries
+
+The eager two-player interface uses Paignia at
+`cb35688c096a2200f51c0fc1dc8c079a7ffa50c9`. The mixed 2×2 path keeps NHRA’s
+indifference cutoff and returns a verified interior witness in action order.
+The asymmetric coordination fixtures check both players’ probabilities and
+deviations. Singular games and boundary continua remain outside the scope of
+this mixed witness.
+
+For eager sequential decisions, the leader chooses a row and the follower
+observes it before choosing a column. The native tree applies zero numeric
+tolerance and preserves the first index at exact ties. The retained NumPy
+path covers inputs outside the bounded binary64 profile. Compiled JAX
+commitment uses the leader-favourable follower tie rule.
+
+The UOGTO mapping reuses `https://w3id.org/uogto/core#NormalFormRepresentation`
+for simultaneous payoffs and `https://w3id.org/uogto/core#ExtensiveFormRepresentation`
+for the two-stage policy. Each follower decision has its own information set.
+The static graph maps players to decision nodes and terminal payoffs.
+[UOGTO vocabulary](https://github.com/edithatogo/UOGTO/tree/cc0c84201929996580bb4af98774cf2145b224ae)
+[Static graph example](https://github.com/edithatogo/paignia/blob/dbc647c9943b43b7f49fb8c052063442424454b1/verification/uogto_interchange/game.ttl)
+
+Logit QRE depends on the returned strategies’ fixed-point error and has its
+own differentiable JAX path. The standalone alternating-offer calculation
+uses an infinite horizon. Its equal split at perfect patience is a
+historical endpoint convention. The `rubinstein` dispatch name in `solve_game`
+remains a legacy alias for simultaneous Nash.
 
 ### 2) System dynamics
 
@@ -98,6 +126,15 @@ The dynamics support:
 
 - stochastic Monte Carlo runs (for robustness),
 - deterministic mean-field and fixed-point checks (equation solving for stability).
+
+The recursive historical backtest requires an observed occupancy series
+alongside the four-hour ED measure. AIHW’s patient-day counts describe
+episodes ending in the reporting period. A bed occupancy series needs aligned
+overnight patient days and available overnight bed-days for the same hospitals
+and financial years. The tracked normalized data currently supplies `year`
+and `within4`.
+[AIHW beds](https://www.aihw.gov.au/hospitals/topics/hospital-resources/public-hospital-beds)
+[AIHW patient days](https://www.aihw.gov.au/hospitals/topics/admitted-patient-care/hospitalisations-and-patient-days)
 
 ## Outputs and reporting
 

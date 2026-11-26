@@ -28,16 +28,43 @@ def test_all_nash_pure_exists() -> None:
     assert len([e for e in eqs if e.kind == "pure"]) == _PURE_EQUILIBRIUM_COUNT
 
 
-def test_all_nash_mixed_for_matching_pennies_is_none() -> None:
-    # Matching pennies has no pure, mixed exists but degenerate selection may return mixed;
-    # this test ensures the solver doesn't crash on zero denominators in arbitrary games.
-    """Check all nash mixed for matching pennies is none."""
+def test_all_nash_finds_the_matching_pennies_witness() -> None:
+    """Matching pennies has exactly one fully supported witness."""
     u_r = np.array([[1, -1], [-1, 1]], dtype=float)
     u_c = -u_r
     g = TwoPlayerGame(u_row=u_r, u_col=u_c, row_actions=("H", "T"), col_actions=("H", "T"))
     eqs = all_nash(g)
-    # pure none, mixed may be returned depending on denominators; at least it returns a list
-    assert isinstance(eqs, list)
+    assert len(eqs) == 1
+    assert eqs[0].kind == "mixed"
+    np.testing.assert_allclose(eqs[0].row, (0.5, 0.5), atol=1e-12, rtol=0)
+    np.testing.assert_allclose(eqs[0].col, (0.5, 0.5), atol=1e-12, rtol=0)
+
+
+def test_mixed_nash_keeps_asymmetric_probabilities_in_action_order() -> None:
+    """The first actions have weights 3/4 and 1/4 by indifference."""
+    row = np.array([[3.0, 0.0], [0.0, 1.0]])
+    column = np.array([[1.0, 0.0], [0.0, 3.0]])
+    game = TwoPlayerGame(row, column, ("A", "B"), ("Left", "Right"))
+    witness = mixed_nash_2x2(game)
+    assert witness is not None
+    np.testing.assert_allclose(witness.row, (0.75, 0.25), atol=1e-12, rtol=0)
+    np.testing.assert_allclose(witness.col, (0.25, 0.75), atol=1e-12, rtol=0)
+    np.testing.assert_allclose(row @ witness.col, (0.75, 0.75), atol=1e-12, rtol=0)
+    np.testing.assert_allclose(witness.row @ column, (0.75, 0.75), atol=1e-12, rtol=0)
+
+
+def test_mixed_nash_matches_t21_gambit_reference() -> None:
+    """Strategies agree with the independently checked T21 fixture."""
+    game = TwoPlayerGame(
+        np.array([[4.0, 0.0], [2.0, 3.0]]),
+        np.array([[3.0, 1.0], [0.0, 4.0]]),
+        ("A", "B"),
+        ("Left", "Right"),
+    )
+    witness = mixed_nash_2x2(game)
+    assert witness is not None
+    np.testing.assert_allclose(witness.row, (2 / 3, 1 / 3), atol=1e-12, rtol=0)
+    np.testing.assert_allclose(witness.col, (3 / 5, 2 / 5), atol=1e-12, rtol=0)
 
 
 def test_mixed_nash_rejects_non_2x2() -> None:

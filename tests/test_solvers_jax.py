@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import jax
 import jax.numpy as jnp
+import numpy as np
 
 from nhra_gt.solvers_jax import (
     discrete_nash_jax,
@@ -46,6 +47,23 @@ def test_qre_differentiability():
     # Should be a finite float
     assert not jnp.isnan(g)
     assert jnp.abs(g) > 0.0
+
+
+def test_qre_reports_fixed_point_error_of_returned_profile() -> None:
+    """One iteration returns an approximation with a measurable response error."""
+    u_row = jnp.array([[4.0, 0.0], [2.0, 3.0]])
+    u_col = jnp.array([[3.0, 1.0], [0.0, 4.0]])
+    rationality = 2.0
+    row, column, residual = qre_solver_jax(u_row, u_col, lam=rationality, max_iter=1)
+
+    def logit(utility):
+        odds = np.exp(rationality * (utility - np.max(utility)))
+        return odds / odds.sum()
+
+    row_response = logit(np.asarray(u_row @ column))
+    column_response = logit(np.asarray(row @ u_col))
+    fixed_point_error = max(abs(row_response - row)) + max(abs(column_response - column))
+    np.testing.assert_allclose(residual, fixed_point_error, atol=1e-6, rtol=0)
 
 
 def test_discrete_nash_oracle():
