@@ -2640,17 +2640,17 @@
 <tr>
 <td><a href="https://docs.astral.sh/ruff/">Ruff</a></td>
 <td>Linting + formatting</td>
-<td><code>poetry run ruff check src tests</code></td>
+<td><code>uv run ruff check src tests</code></td>
 </tr>
 <tr>
 <td><a href="https://mypy.readthedocs.io/">Mypy</a></td>
 <td>Static type checking</td>
-<td><code>poetry run mypy --strict src/nhra_gt</code></td>
+<td><code>uv run mypy --strict src/nhra_gt</code></td>
 </tr>
 <tr>
 <td><a href="https://docs.pytest.org/">Pytest</a></td>
 <td>Testing framework</td>
-<td><code>poetry run pytest</code></td>
+<td><code>uv run pytest</code></td>
 </tr>
 <tr>
 <td><a href="https://hypothesis.readthedocs.io/">Hypothesis</a></td>
@@ -2665,37 +2665,37 @@
 <tr>
 <td><a href="https://bandit.readthedocs.io/">Bandit</a></td>
 <td>Security scanning</td>
-<td><code>poetry run bandit -r src</code></td>
+<td><code>uv run bandit -r src</code></td>
 </tr>
 <tr>
 <td><a href="https://deptry.com/">Deptry</a></td>
 <td>Dependency hygiene</td>
-<td><code>poetry run deptry .</code></td>
+<td><code>uv run deptry .</code></td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2 id="running-tests">Running Tests<a class="headerlink" href="#running-tests" title="Permanent link">&para;</a></h2>
 <h3 id="basic-test-run">Basic Test Run<a class="headerlink" href="#basic-test-run" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest
 </span></code></pre></div>
 <h3 id="with-coverage">With Coverage<a class="headerlink" href="#with-coverage" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>src/nhra_gt<span class="w"> </span>--cov-report<span class="o">=</span>html
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>src/nhra_gt<span class="w"> </span>--cov-report<span class="o">=</span>html
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>open<span class="w"> </span>htmlcov/index.html
 </span></code></pre></div>
 <h3 id="specific-test-files">Specific Test Files<a class="headerlink" href="#specific-test-files" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Run only game tests</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_games.py
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_games.py
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Run with verbose output</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-v
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-v
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Stop on first failure</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-x
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>-x
 </span></code></pre></div>
 <h3 id="property-based-tests">Property-Based Tests<a class="headerlink" href="#property-based-tests" title="Permanent link">&para;</a></h3>
 <p>We use Hypothesis for property-based testing:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_properties.py
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_properties.py
 </span></code></pre></div>
 <hr />
 <h2 id="performance-profiling">Performance Profiling<a class="headerlink" href="#performance-profiling" title="Permanent link">&para;</a></h2>
@@ -2724,7 +2724,7 @@
 <li><strong>Statelessness:</strong> Use <code>StateJax</code> Pytrees instead of objects with <code>self</code>.</li>
 </ol>
 <h3 id="pytree-state-management">Pytree State Management<a class="headerlink" href="#pytree-state-management" title="Permanent link">&para;</a></h3>
-<p>System state is managed using <code>flax.struct.dataclass</code>. This allows JAX to treat complex objects as unified blocks of memory:</p>
+<p>System state is managed using frozen dataclasses registered with JAX. This allows JAX to treat complex objects as unified blocks of memory:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">nhra_gt.domain.state</span><span class="w"> </span><span class="kn">import</span> <span class="n">StateJax</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># Transformation (returns a new state)</span>
@@ -2739,26 +2739,26 @@
 <h3 id="performance-caching">Performance &amp; Caching<a class="headerlink" href="#performance-caching" title="Permanent link">&para;</a></h3>
 <p>The engine automatically uses a persistent disk cache for compiled XLA kernels located at <code>~/.cache/jax_cache</code>. This minimizes "Time-to-First-Plot" in the dashboard.</p>
 <p>To run performance benchmarks:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/benchmark_modernization.py
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>scripts/benchmark_modernization.py
 </span></code></pre></div>
 <hr />
 <h2 id="snakemake-pipelines">Snakemake Pipelines<a class="headerlink" href="#snakemake-pipelines" title="Permanent link">&para;</a></h2>
 <p>The project uses <a href="https://snakemake.github.io/">Snakemake</a> for reproducible pipelines.</p>
 <h3 id="available-targets">Available Targets<a class="headerlink" href="#available-targets" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Run baseline simulation</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--cores<span class="w"> </span><span class="m">4</span><span class="w"> </span>run_baseline
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>uv<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--cores<span class="w"> </span><span class="m">4</span><span class="w"> </span>run_baseline
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Build context pack</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>poetry<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--cores<span class="w"> </span><span class="m">4</span><span class="w"> </span>context_pack
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>uv<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--cores<span class="w"> </span><span class="m">4</span><span class="w"> </span>context_pack
 </span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
 </span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># Run all experiments</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>poetry<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--cores<span class="w"> </span><span class="m">4</span><span class="w"> </span>all
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>uv<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--cores<span class="w"> </span><span class="m">4</span><span class="w"> </span>all
 </span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
 </span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="c1"># Dry run (show what would execute)</span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>poetry<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>-n<span class="w"> </span>all
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>uv<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>-n<span class="w"> </span>all
 </span></code></pre></div>
 <h3 id="visualize-dag">Visualize DAG<a class="headerlink" href="#visualize-dag" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--dag<span class="w"> </span>all<span class="w"> </span><span class="p">|</span><span class="w"> </span>dot<span class="w"> </span>-Tpng<span class="w"> </span>&gt;<span class="w"> </span>dag.png
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>uv<span class="w"> </span>run<span class="w"> </span>snakemake<span class="w"> </span>--dag<span class="w"> </span>all<span class="w"> </span><span class="p">|</span><span class="w"> </span>dot<span class="w"> </span>-Tpng<span class="w"> </span>&gt;<span class="w"> </span>dag.png
 </span></code></pre></div>
 <hr />
 <h2 id="cicd-pipeline">CI/CD Pipeline<a class="headerlink" href="#cicd-pipeline" title="Permanent link">&para;</a></h2>
@@ -2785,7 +2785,7 @@
 <h2 id="observability-optional">Observability (Optional)<a class="headerlink" href="#observability-optional" title="Permanent link">&para;</a></h2>
 <p>For production observability, we support <a href="https://logfire.pydantic.dev/">Logfire</a>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Install observability extras</span>
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>poetry<span class="w"> </span>install<span class="w"> </span>--extras<span class="w"> </span>observability
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>uv<span class="w"> </span>sync<span class="w"> </span>--locked<span class="w"> </span>--extra<span class="w"> </span>observability
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Enable Logfire</span>
 </span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">LOGFIRE_SEND_TO_LOGFIRE</span><span class="o">=</span><span class="nb">true</span>
@@ -2808,15 +2808,15 @@
 </tr>
 <tr>
 <td>Type errors</td>
-<td>Run <code>poetry run mypy --strict src/nhra_gt</code></td>
+<td>Run <code>uv run mypy --strict src/nhra_gt</code></td>
 </tr>
 <tr>
 <td>Test failures</td>
-<td>Check <code>poetry run pytest -v</code> for details</td>
+<td>Check <code>uv run pytest -v</code> for details</td>
 </tr>
 <tr>
 <td>Slow builds</td>
-<td>Use <code>poetry run mkdocs serve</code> for live reload</td>
+<td>Use <code>uv run mkdocs serve</code> for live reload</td>
 </tr>
 </tbody>
 </table>
@@ -2856,7 +2856,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 4, 2026 04:58:33 UTC"><span class="timeago" datetime="2026-01-04T04:58:33+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 4, 2026 04:58:33 UTC">2026-01-04</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 26, 2026 13:42:41 UTC"><span class="timeago" datetime="2026-11-26T13:42:41+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 26, 2026 13:42:41 UTC">2026-11-26</span>
   </span>
 
     
