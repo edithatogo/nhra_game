@@ -66,6 +66,7 @@ jobs:
           dot -V
       - name: Provision Graphviz (Windows)
         if: matrix.os == 'windows-latest'
+        shell: pwsh
         run: |
           if (!(Get-Command dot -ErrorAction SilentlyContinue)) {
             choco install graphviz --yes --no-progress
@@ -81,11 +82,28 @@ jobs:
         run: uv run snakemake --cores 1 run_baseline context_pack --forceall
       - name: Build docs
         run: uv run mkdocs build -q
+
+  links:
+    name: Link Checker
+    runs-on: >-
+      ${{ vars.NHRA_LINK_CHECK_REF != '' &&
+          vars.NHRA_LINK_CHECK_REF == (github.head_ref || github.ref_name) &&
+          github.actor == github.repository_owner &&
+          (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) &&
+          format('nhra-links-{0}-{1}', github.run_id, github.run_attempt) || 'ubuntu-latest' }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: false
+      - name: Build context pack
+        run: uv run --no-project --python "$(cat .python-version)" python scripts/build_context_pack.py
       - name: List tracked Markdown for link checking
-        if: matrix.os == 'ubuntu-latest'
         run: git -c core.quotePath=false ls-files '*.md' | sed 's#^#./#' > "$RUNNER_TEMP/nhra-markdown.txt"
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2.7.0
-        if: matrix.os == 'ubuntu-latest'
         with:
           args: --no-progress --files-from '${{ runner.temp }}/nhra-markdown.txt'
