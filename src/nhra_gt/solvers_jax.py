@@ -85,8 +85,8 @@ class QreDiagnostics(NamedTuple):
         return self.status == QreStatus.QUALIFIED
 
 
-def _log_response_bound(payoffs: Array, lam: float) -> Array:
-    """Bound a logit response in total variation and store the bound in log space."""
+def _log_response_bound(payoffs: Array, lam: float) -> tuple[Array, Array]:
+    """Return the log of a total-variation bound and the scale of its terms."""
     # Round tiny terms up to keep the bound conservative on devices that flush
     # subnormal values to zero.
     tiny = jnp.finfo(payoffs.dtype).tiny
@@ -94,30 +94,36 @@ def _log_response_bound(payoffs: Array, lam: float) -> Array:
         gains = lam * (payoffs[1] - payoffs[0])
         low, high = jnp.min(gains), jnp.max(gains)
         closest_to_zero = jnp.maximum(0.0, jnp.maximum(low, -high))
-        return (
-            jnp.log(jnp.maximum(high - low, tiny))
-            + jax.nn.log_sigmoid(closest_to_zero)
-            + jax.nn.log_sigmoid(-closest_to_zero)
+        terms = jnp.stack(
+            (
+                jnp.log(jnp.maximum(high - low, tiny)),
+                jax.nn.log_sigmoid(closest_to_zero),
+                jax.nn.log_sigmoid(-closest_to_zero),
+            )
         )
-    # The softmax probability of any subset has derivative bounded by one
-    # quarter of the utility perturbation's range across own actions.
-    differences = payoffs[:, None, :] - payoffs[None, :, :]
-    interaction = jnp.max(jnp.ptp(differences, axis=-1))
-    return (
-        jnp.log(jnp.maximum(abs(lam), tiny))
-        + jnp.log(jnp.maximum(interaction, tiny))
-        - jnp.log(jnp.asarray(4.0, dtype=payoffs.dtype))
-    )
+    else:
+        # The softmax probability of any subset has derivative bounded by one
+        # quarter of the utility perturbation's range across own actions.
+        differences = payoffs[:, None, :] - payoffs[None, :, :]
+        interaction = jnp.max(jnp.ptp(differences, axis=-1))
+        terms = jnp.stack(
+            (
+                jnp.log(jnp.maximum(abs(lam), tiny)),
+                jnp.log(jnp.maximum(interaction, tiny)),
+                -jnp.log(jnp.asarray(4.0, dtype=payoffs.dtype)),
+            )
+        )
+    return jnp.sum(terms), jnp.sum(jnp.abs(terms))
 
 
 def _unique_logit_branch(u_row: Array, u_col: Array, lam: float) -> Array:
     # Evaluate both certificates at the same precision before combining them.
     dtype = jnp.result_type(u_row, u_col, jnp.float32)
     u_row, u_col = u_row.astype(dtype), u_col.astype(dtype)
-    row_bound = _log_response_bound(u_row, lam)
-    col_bound = _log_response_bound(u_col.T, lam)
-    # Account for rounding in both log bounds, including cancellation.
-    margin = 8 * jnp.finfo(dtype).eps * (1.0 + jnp.abs(row_bound) + jnp.abs(col_bound))
+    row_bound, row_scale = _log_response_bound(u_row, lam)
+    col_bound, col_scale = _log_response_bound(u_col.T, lam)
+    # Use each term before cancellation within either bound.
+    margin = 8 * jnp.finfo(dtype).eps * (1.0 + row_scale + col_scale)
     unique = row_bound + col_bound < -margin
     if u_row.shape == (_BINARY_ACTIONS, _BINARY_ACTIONS):
         # Oppositely directed binary responses compose to a decreasing map.

@@ -141,6 +141,34 @@ def test_mixed_precision_cannot_certify_a_multiple_root_game():
     assert admitted.status == QreStatus.QUALIFIED
 
 
+def test_reciprocal_rescaling_does_not_certify_a_multiple_root_game():
+    """Use the individual log terms to cover cancellation in larger games."""
+    groups = jnp.array([0, 0, 1, 1])
+    within_group = groups[:, None] == groups[None, :]
+    rationality = float(2**26)
+    scale = np.float32(2.0**-25 * (1.0 + np.finfo(np.float32).eps))
+    payoffs = scale * within_group.astype(jnp.float32)
+    gain = rationality * float(scale)
+
+    def composed_error(mass):
+        other = expit(gain * (2 * mass - 1))
+        return expit(gain * (2 * other - 1)) - mass
+
+    # The mass on either action group satisfies the same scalar logit map.
+    # The uniform root has a distinct root on each side.
+    assert composed_error(0.0) > 0.0 > composed_error(0.4999)
+    assert composed_error(1.0) < 0.0 < composed_error(0.5001)
+
+    for inputs, lam in ((payoffs, rationality), (payoffs * rationality, 1.0)):
+        row, col, diagnostics = jax.jit(
+            lambda matrix, lam=lam: solve_qualified_two_player_qre(matrix, matrix, lam=lam)
+        )(inputs)
+        assert diagnostics.status == QreStatus.BRANCH_UNQUALIFIED
+        assert float(diagnostics.residual) <= _ORACLE_BOUND
+        assert np.isnan(row).all()
+        assert np.isnan(col).all()
+
+
 @pytest.mark.parametrize("lam", [5.0, 8.0])
 def test_nonconvergence_reports_original_residual(lam):
     """Uniqueness alone cannot qualify a fixed-budget iterate."""
