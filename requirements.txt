@@ -1168,9 +1168,9 @@ pandas==2.3.3 \
     #   salib
     #   seaborn
     #   streamlit
-pandera==0.27.1 \
-    --hash=sha256:642493c04ef16eb03704edf35b0f40ddea32d93e2c3bed3cb3a20895c395bbf4 \
-    --hash=sha256:944838f134035bbc548410943be662379669488e00f3d290ff2c36b6df52665e
+pandera==0.28.0 \
+    --hash=sha256:377b341845b64f7ddfd6a20bbadb6f6f2bdf52e8961176bbe58903679849903b \
+    --hash=sha256:423875d7e86d590c308cb409c4250f10396462219b7add9ed7112f2f1a6b4b91
     # via nhra-gt
 pillow==12.1.0 \
     --hash=sha256:00162e9ca6d22b7c3ee8e61faa3c3253cd19b6a37f126cad04f2f88b306f557d \
