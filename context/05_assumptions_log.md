@@ -38,7 +38,7 @@ offload value are scenario inputs. The historical National Health Reform
 Agreement documents a 6.5% annual funding cap and a 45% Commonwealth share of
 efficient growth under that cap. The model uses the latter as its nominal
 agreement-share input. [AIHW ED data](https://www.aihw.gov.au/hospitals/topics/emergency-departments/time-spent-in-emergency) ·
-[2020–25 Addendum](https://federalfinancialrelations.gov.au/sites/federalfinancialrelations.gov.au/files/2021-07/NHRA_2020-25_Addendum_consolidated.pdf)
+[2020–25 Addendum](https://www.mtaa.org.au/sites/default/files/uploaded-content/field_f_content_file/2020-25_national_health_reform_agreement.pdf)
 
 ## Current high-impact assumptions (track for refinement)
 

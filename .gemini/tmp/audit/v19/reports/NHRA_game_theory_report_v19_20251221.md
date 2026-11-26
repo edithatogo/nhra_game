@@ -16,19 +16,19 @@ This report synthesises a stylised, policy-facing simulation of the NHRA negotia
 
 Baseline outputs are the mean of Monte Carlo runs from 2025–2030. The core dynamic is a feedback loop: rising pressure worsens discharge and offload, degrading ED performance and raising risk, which in turn increases political salience and audit intensity in the stage games.
 
-![Baseline system pressure (mean)](outputs/v19/plots/baseline_pressure.png)
+![Baseline system pressure (mean)](../outputs/v19/plots/baseline_pressure.png)
 
 *Figure:* Baseline system pressure (mean)
 
-![Baseline ambulance offload delay (mean minutes)](outputs/v19/plots/baseline_offload.png)
+![Baseline ambulance offload delay (mean minutes)](../outputs/v19/plots/baseline_offload.png)
 
 *Figure:* Baseline ambulance offload delay (mean minutes)
 
-![Baseline ED performance (proportion within 4 hours)](outputs/v19/plots/baseline_within4.png)
+![Baseline ED performance (proportion within 4 hours)](../outputs/v19/plots/baseline_within4.png)
 
 *Figure:* Baseline ED performance (proportion within 4 hours)
 
-![Baseline clinical risk proxy (RR index)](outputs/v19/plots/baseline_rr.png)
+![Baseline clinical risk proxy (RR index)](../outputs/v19/plots/baseline_rr.png)
 
 *Figure:* Baseline clinical risk proxy (RR index)
 
@@ -51,11 +51,11 @@ The table below provides the first years of the baseline trajectory. Full tables
 
 IHACPA’s NEP is an annual price per NWAU; the activity-funded payment for a case is the product of NEP and the NWAU weight assigned by the relevant classification. In this model we track NEP and input costs as indices to represent the *direction* of drift and its incentive effects, not the dollar value of any particular DRG.
 
-![NEP vs input costs (indices, 2025=1.0)](outputs/v19/plots/macro_nep_vs_cost.png)
+![NEP vs input costs (indices, 2025=1.0)](../outputs/v19/plots/macro_nep_vs_cost.png)
 
 *Figure:* NEP vs input costs (indices, 2025=1.0)
 
-![NEP-to-cost ratio over time](outputs/v19/plots/macro_nep_to_cost_ratio.png)
+![NEP-to-cost ratio over time](../outputs/v19/plots/macro_nep_to_cost_ratio.png)
 
 *Figure:* NEP-to-cost ratio over time
 
@@ -103,27 +103,27 @@ Stage games are solved as normal-form games each year using the mean state (pres
 
 ### Figure set: equilibria count grids
 
-![Number of Nash equilibria across a pressure × efficiency-gap grid for BARG](outputs/v19/plots/equilibria_grid_BARG.png)
+![Number of Nash equilibria across a pressure × efficiency-gap grid for BARG](../outputs/v19/plots/equilibria_grid_BARG.png)
 
 *Figure:* Number of Nash equilibria across a pressure × efficiency-gap grid for BARG
 
-![Number of Nash equilibria across a pressure × efficiency-gap grid for COMP](outputs/v19/plots/equilibria_grid_COMP.png)
+![Number of Nash equilibria across a pressure × efficiency-gap grid for COMP](../outputs/v19/plots/equilibria_grid_COMP.png)
 
 *Figure:* Number of Nash equilibria across a pressure × efficiency-gap grid for COMP
 
-![Number of Nash equilibria across a pressure × efficiency-gap grid for DEF](outputs/v19/plots/equilibria_grid_DEF.png)
+![Number of Nash equilibria across a pressure × efficiency-gap grid for DEF](../outputs/v19/plots/equilibria_grid_DEF.png)
 
 *Figure:* Number of Nash equilibria across a pressure × efficiency-gap grid for DEF
 
-![Number of Nash equilibria across a pressure × efficiency-gap grid for DISC](outputs/v19/plots/equilibria_grid_DISC.png)
+![Number of Nash equilibria across a pressure × efficiency-gap grid for DISC](../outputs/v19/plots/equilibria_grid_DISC.png)
 
 *Figure:* Number of Nash equilibria across a pressure × efficiency-gap grid for DISC
 
-![Number of Nash equilibria across a pressure × efficiency-gap grid for GOV](outputs/v19/plots/equilibria_grid_GOV.png)
+![Number of Nash equilibria across a pressure × efficiency-gap grid for GOV](../outputs/v19/plots/equilibria_grid_GOV.png)
 
 *Figure:* Number of Nash equilibria across a pressure × efficiency-gap grid for GOV
 
-![Number of Nash equilibria across a pressure × efficiency-gap grid for SHIFT](outputs/v19/plots/equilibria_grid_SHIFT.png)
+![Number of Nash equilibria across a pressure × efficiency-gap grid for SHIFT](../outputs/v19/plots/equilibria_grid_SHIFT.png)
 
 *Figure:* Number of Nash equilibria across a pressure × efficiency-gap grid for SHIFT
 
@@ -131,15 +131,15 @@ Stage games are solved as normal-form games each year using the mean state (pres
 
 Scenarios apply individual levers (e.g., pooled funding, UCC integration, aged/NDIS capacity) and two packages. All scenarios are run with the same random seed and Monte Carlo count to support like-for-like comparison.
 
-![2030 risk proxy across scenarios](outputs/v19/plots/scenario_rr_2030.png)
+![2030 risk proxy across scenarios](../outputs/v19/plots/scenario_rr_2030.png)
 
 *Figure:* 2030 risk proxy across scenarios
 
-![Pressure trajectories for key packages](outputs/v19/plots/scenario_pressure_timeseries.png)
+![Pressure trajectories for key packages](../outputs/v19/plots/scenario_pressure_timeseries.png)
 
 *Figure:* Pressure trajectories for key packages
 
-![Risk trajectories for key packages](outputs/v19/plots/scenario_rr_timeseries.png)
+![Risk trajectories for key packages](../outputs/v19/plots/scenario_rr_timeseries.png)
 
 *Figure:* Risk trajectories for key packages
 

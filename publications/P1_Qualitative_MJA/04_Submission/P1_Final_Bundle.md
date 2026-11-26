@@ -174,7 +174,7 @@ This study provided a formal game-theoretic mapping of the NHRA. The current inc
 8. IHACPA. (2024). *Pricing Framework for Australian Public Hospital Services 2024–25*.
 9. Mannion, R., & Braithwaite, J. (2012). Unintended consequences of performance measurement in healthcare: 20 salutary lessons from the English National Health Service. *Internal Medicine Journal*, 42(5), 569-574.
 10. O'Brien, B. C., et al. (2014). Standards for reporting qualitative research: a synthesis of recommendations. *Academic Medicine*, 89(9), 1245-1251.
-11. Ostrom, Elinor. (2005). Understanding Institutional Diversity. *Princeton University Press*. Available at: <https://press.princeton.edu/books/paperback/9780691122380/understanding-institutional-diversity>
+11. Ostrom, Elinor. (2005). Understanding Institutional Diversity. *Princeton University Press*. Available at: <https://lccn.loc.gov/2004065772>
 12. Schelling, Thomas C.. (1960). The Strategy of Conflict. *Harvard University Press*. Available at: <https://www.hup.harvard.edu/books/9780674840317>
-13. Australian Institute of Health and Welfare. (2024). Hospital resources 2022–23: Australian hospital statistics. *Report*. Available at: <https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23>
+13. Australian Institute of Health and Welfare. (2024). Hospital resources 2022–23: Australian hospital statistics. *Report*. Available at: <https://www.aihw.gov.au/getmedia/747ae239-e38b-45a9-8d83-0ac6a3e0726f/Hospital-resources-2022-23-Appendix.pdf>
 14. Independent Health and Aged Care Pricing Authority. (2024). Pricing Framework for Australian Public Hospital Services 2024–25. *Report*. Available at: <https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25>

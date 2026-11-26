@@ -63,7 +63,7 @@ If this framing is roughly correct, then policy arguments about definitions aren
 ## Evidence / further reading
 
 - Independent Health and Aged Care Pricing Authority (IHACPA). *Pricing Framework for Australian Public Hospital Services 2024–25*. <https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25>
-- Australian Institute of Health and Welfare (AIHW). *Hospital resources 2022–23: Australian hospital statistics*. <https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23>
+- Australian Institute of Health and Welfare (AIHW). *Hospital resources 2022–23: Australian hospital statistics*. <https://www.aihw.gov.au/getmedia/747ae239-e38b-45a9-8d83-0ac6a3e0726f/Hospital-resources-2022-23-Appendix.pdf>
 
 ## TL;DR
 

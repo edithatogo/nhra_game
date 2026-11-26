@@ -99,9 +99,9 @@ This study provided a formal game-theoretic mapping of the NHRA. The current inc
 ## References
 
 1. Baez Hernandez, Alexander. (2025). Games theory. A valuable instrument in decision-making in public policies. *Revista de la Facultad de Ciencias Económicas*. DOI: 10.14409/rfce.v1i1.12345
-2. Ostrom, Elinor. (2005). Understanding Institutional Diversity. *Princeton University Press*. Available at: <https://press.princeton.edu/books/paperback/9780691122380/understanding-institutional-diversity>
+2. Ostrom, Elinor. (2005). Understanding Institutional Diversity. *Princeton University Press*. Available at: <https://lccn.loc.gov/2004065772>
 3. Schelling, Thomas C.. (1960). The Strategy of Conflict. *Harvard University Press*. Available at: <https://www.hup.harvard.edu/books/9780674840317>
 4. Hermans, Leon M. and Cunningham, Scott W. and Slinger, Jill H.. (2014). The usefulness of game theory as a method for policy evaluation. *Evaluation*. DOI: 10.1177/1356389013516053
 5. Duckett, Stephen. (2021). Vicious cycles: hospital bed block and the National Health Reform Agreement. *Medical Journal of Australia*. DOI: 10.5694/mja2.51016
-6. Australian Institute of Health and Welfare. (2024). Hospital resources 2022–23: Australian hospital statistics. *Report*. Available at: <https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23>
+6. Australian Institute of Health and Welfare. (2024). Hospital resources 2022–23: Australian hospital statistics. *Report*. Available at: <https://www.aihw.gov.au/getmedia/747ae239-e38b-45a9-8d83-0ac6a3e0726f/Hospital-resources-2022-23-Appendix.pdf>
 7. Independent Health and Aged Care Pricing Authority. (2024). Pricing Framework for Australian Public Hospital Services 2024–25. *Report*. Available at: <https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25>

@@ -89,5 +89,5 @@ The NHRA currently operates in a Strategic Gaming equilibrium. Policymakers must
 2. Duckett, Stephen. (2021). Vicious cycles: hospital bed block and the National Health Reform Agreement. *Medical Journal of Australia*. DOI: 10.5694/mja2.51016
 3. Council on Federal Financial Relations. (2011). *National Health Reform Agreement*.
 4. IHACPA. (2024). Pricing Framework for Australian Public Hospital Services 2024–25. *Report*. Available at: <https://www.ihacpa.gov.au/resources/pricing-framework-australian-public-hospital-services-2024-25>
-5. Australian Institute of Health and Welfare. (2024). Hospital resources 2022–23: Australian hospital statistics. *Report*. Available at: <https://www.aihw.gov.au/reports/hospitals/hospital-resources-2022-23>
-6. Ostrom, Elinor. (2005). Understanding Institutional Diversity. *Princeton University Press*. Available at: <https://press.princeton.edu/books/paperback/9780691122380/understanding-institutional-diversity>
+5. Australian Institute of Health and Welfare. (2024). Hospital resources 2022–23: Australian hospital statistics. *Report*. Available at: <https://www.aihw.gov.au/getmedia/747ae239-e38b-45a9-8d83-0ac6a3e0726f/Hospital-resources-2022-23-Appendix.pdf>
+6. Ostrom, Elinor. (2005). Understanding Institutional Diversity. *Princeton University Press*. Available at: <https://lccn.loc.gov/2004065772>

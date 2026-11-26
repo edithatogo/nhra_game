@@ -81,8 +81,11 @@ jobs:
         run: uv run snakemake --cores 1 run_baseline context_pack --forceall
       - name: Build docs
         run: uv run mkdocs build -q
+      - name: List tracked Markdown for link checking
+        if: matrix.os == 'ubuntu-latest'
+        run: git -c core.quotePath=false ls-files '*.md' | sed 's#^#./#' > "$RUNNER_TEMP/nhra-markdown.txt"
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2.7.0
         if: matrix.os == 'ubuntu-latest'
         with:
-          args: --no-progress './**/*.md'
+          args: --no-progress --files-from '${{ runner.temp }}/nhra-markdown.txt'
