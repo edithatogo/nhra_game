@@ -3,14 +3,18 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import IntEnum
 from math import isfinite
-from typing import Any, Literal
+from typing import Any, Literal, NamedTuple
 
 import jax
 import jax.numpy as jnp
 from beartype import beartype
 from jax import lax
 from jaxtyping import Array, Float
+
+_TWO_PLAYER_QRE_TOLERANCE = 1e-6
+_BINARY_ACTIONS = 2
 
 
 @beartype
@@ -19,7 +23,7 @@ def qre_solver_jax(
     u_col: Float[Array, "m n"],
     lam: float = 5.0,
     max_iter: int = 100,
-    tol: float = 1e-6,
+    tol: float = _TWO_PLAYER_QRE_TOLERANCE,
 ) -> tuple[Any, Any, Any]:
     """Solves for the Quantal Response Equilibrium (Logit-equilibrium).
 
@@ -58,6 +62,129 @@ def qre_solver_jax(
     res_final = jnp.max(jnp.abs(p_response - p_final)) + jnp.max(jnp.abs(q_response - q_final))
 
     return p_final, q_final, jnp.maximum(res_final, jnp.asarray(1e-12, dtype=res_final.dtype))
+
+
+class QreStatus(IntEnum):
+    """Disposition of a compiled logit QRE attempt."""
+
+    SKIPPED = 0
+    QUALIFIED = 1
+    NONCONVERGED = 2
+    BRANCH_UNQUALIFIED = 3
+
+
+class QreDiagnostics(NamedTuple):
+    """Residual and disposition stored in arrays for JAX transformations."""
+
+    residual: Array
+    status: Array
+
+    @property
+    def qualified(self) -> Array:
+        """Tell whether the associated equilibrium can be used."""
+        return self.status == QreStatus.QUALIFIED
+
+
+def _roundoff_padding(value: Array) -> Array:
+    """Pad a rounded value for relative error and flushed subnormals."""
+    info = jnp.finfo(value.dtype)
+    return 8 * (info.eps * jnp.abs(value) + info.tiny)
+
+
+def _difference_interval(differences: Array, source_tiny: Array) -> tuple[Array, Array]:
+    # Either operand may have had a subnormal value flushed on conversion.
+    padding = _roundoff_padding(differences) + 2 * source_tiny
+    return differences - padding, differences + padding
+
+
+def _log_response_bound(
+    payoffs: Array, source_tiny: Array, rationality_low: Array, rationality_high: Array
+) -> tuple[Array, Array]:
+    """Return an upper log bound in total variation and its term scale."""
+    log_rationality = jnp.log(rationality_high)
+    if payoffs.shape[0] == _BINARY_ACTIONS:
+        # Bound the unscaled subtraction first. A lost small payoff
+        # difference can become material after scaling by rationality.
+        lower, upper = _difference_interval(payoffs[1] - payoffs[0], source_tiny)
+        low, high = jnp.min(lower), jnp.max(upper)
+        width = high - low
+        distance = rationality_low * jnp.maximum(0.0, jnp.maximum(low, -high))
+        closest_to_zero = jnp.maximum(0.0, distance - _roundoff_padding(distance))
+        terms = jnp.stack(
+            (
+                log_rationality,
+                jnp.log(width + _roundoff_padding(width)),
+                jax.nn.log_sigmoid(closest_to_zero),
+                jax.nn.log_sigmoid(-closest_to_zero),
+            )
+        )
+    else:
+        # The softmax probability of any subset has derivative bounded by one
+        # quarter of the utility perturbation's range across own actions.
+        lower, upper = _difference_interval(payoffs[:, None, :] - payoffs[None, :, :], source_tiny)
+        interaction = jnp.max(jnp.max(upper, axis=-1) - jnp.min(lower, axis=-1))
+        terms = jnp.stack(
+            (
+                log_rationality,
+                jnp.log(interaction + _roundoff_padding(interaction)),
+                -jnp.log(jnp.asarray(4.0, dtype=payoffs.dtype)),
+            )
+        )
+    return jnp.sum(terms), jnp.sum(jnp.abs(terms))
+
+
+def _binary_response_direction(payoffs: Array, source_tiny: Array) -> Array:
+    """Certify an increase or decrease only when the gains are separated."""
+    low, high = _difference_interval(payoffs[1] - payoffs[0], source_tiny)
+    return jnp.where(low[1] > high[0], 1, jnp.where(low[0] > high[1], -1, 0))
+
+
+def _unique_logit_branch(u_row: Array, u_col: Array, lam: float) -> Array:
+    # Evaluate both certificates at the same precision before combining them.
+    dtype = jnp.result_type(u_row, u_col, jnp.float32)
+    row_tiny = jnp.asarray(jnp.finfo(u_row.dtype).tiny, dtype=dtype)
+    col_tiny = jnp.asarray(jnp.finfo(u_col.dtype).tiny, dtype=dtype)
+    u_row, u_col = u_row.astype(dtype), u_col.astype(dtype)
+    rationality = jnp.abs(jnp.asarray(lam, dtype=dtype))
+    padding = _roundoff_padding(rationality)
+    rationality_low = jnp.maximum(0.0, rationality - padding)
+    rationality_high = rationality + padding
+    row_bound, row_scale = _log_response_bound(u_row, row_tiny, rationality_low, rationality_high)
+    col_bound, col_scale = _log_response_bound(u_col.T, col_tiny, rationality_low, rationality_high)
+    # Use each term before cancellation within either bound.
+    margin = 8 * jnp.finfo(dtype).eps * (1.0 + row_scale + col_scale)
+    unique = (row_bound + col_bound < -margin) | (isinstance(lam, float) and lam == 0.0)
+    if u_row.shape == (_BINARY_ACTIONS, _BINARY_ACTIONS):
+        # Oppositely directed binary responses compose to a decreasing map.
+        row_direction = _binary_response_direction(u_row, row_tiny)
+        col_direction = _binary_response_direction(u_col.T, col_tiny)
+        unique = unique | (row_direction * col_direction < 0)
+    return unique
+
+
+def solve_qualified_two_player_qre(
+    u_row: Array, u_col: Array, lam: float = 5.0
+) -> tuple[Array, Array, QreDiagnostics]:
+    """Admit a converged two-player result on a provably unique logit branch.
+
+    Use a contraction bound on the composed responses or, for binary games,
+    opposite response monotonicity. Withhold strategies when convergence or
+    uniqueness cannot be established and preserve the solver's exact residual.
+    """
+    p, q, residual = qre_solver_jax(u_row, u_col, lam=lam)
+    converged = (residual >= 0.0) & (residual <= _TWO_PLAYER_QRE_TOLERANCE)
+    branch_qualified = _unique_logit_branch(u_row, u_col, lam)
+    status = jnp.where(
+        converged,
+        jnp.where(branch_qualified, QreStatus.QUALIFIED, QreStatus.BRANCH_UNQUALIFIED),
+        QreStatus.NONCONVERGED,
+    ).astype(jnp.int32)
+    diagnostics = QreDiagnostics(residual, status)
+    return (
+        jnp.where(diagnostics.qualified, p, jnp.nan),
+        jnp.where(diagnostics.qualified, q, jnp.nan),
+        diagnostics,
+    )
 
 
 @beartype

@@ -8,7 +8,16 @@ except ImportError:
     pass
 
 from nhra_gt.engine import run_simulation, step
-from nhra_gt.hierarchical_jax import solve_constitutional_game_jax
+from nhra_gt.hierarchical_jax import (
+    solve_constitutional_game_jax,
+    solve_constitutional_game_with_diagnostics_jax,
+)
 
 __version__ = "26.0.2"
-__all__ = ["__version__", "run_simulation", "solve_constitutional_game_jax", "step"]
+__all__ = [
+    "__version__",
+    "run_simulation",
+    "solve_constitutional_game_jax",
+    "solve_constitutional_game_with_diagnostics_jax",
+    "step",
+]
