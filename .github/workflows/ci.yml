@@ -47,6 +47,8 @@ jobs:
         run: uv run python scripts/check_parameters_grounded.py
       - name: Build context pack
         run: uv run python scripts/build_context_pack.py
+      - name: Install Chromium for dashboard and PDF tests
+        run: uv run --locked playwright install --with-deps chromium
       - name: Tests
         run: uv run pytest -q
       - name: Verify Pipeline (Snakemake)
