@@ -33,7 +33,7 @@ def _table_rows(lines: list[str]) -> list[list[str]]:
 
 def test_benchmark_comparisons_populated() -> None:
     """Check benchmark comparisons populated."""
-    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "### Benchmark Comparisons")
     rows = _table_rows(section)
@@ -58,7 +58,7 @@ def test_benchmark_comparisons_populated() -> None:
 
 def test_sanity_checks_populated() -> None:
     """Check sanity checks populated."""
-    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "### Sanity Checks")
     rows = _table_rows(section)

@@ -64,7 +64,7 @@ def test_queuing_logic_erlang():
     servers = jnp.array(30.0)
 
     # Wait in minutes
-    wait = mm_s_queue_wait_jax(arr, svc, servers)
+    wait = mm_s_queue_wait_jax(arr, svc, servers, ParamsJax())
     wait_val = float(wait)
     print(f"Wait (30 servers, 25 load): {wait_val} mins")
 
