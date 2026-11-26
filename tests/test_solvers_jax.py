@@ -5,6 +5,7 @@ from __future__ import annotations
 import jax
 import jax.numpy as jnp
 import numpy as np
+import pytest
 
 from nhra_gt.solvers_jax import (
     discrete_nash_jax,
@@ -107,3 +108,34 @@ def test_qre_3player_basic():
     assert p2[0] > _MIN_DOMINANT_ACTION_PROBABILITY
     assert p3[0] > _MIN_DOMINANT_ACTION_PROBABILITY
     assert res < _MAX_LOGIT_RESIDUAL
+
+
+@pytest.mark.parametrize(("rationality", "iterations"), [(0.5, 0), (0.5, 1), (8.0, 100)])
+def test_qre_3player_reports_fixed_point_error_of_returned_profile(
+    rationality: float, iterations: int
+) -> None:
+    """Use the closed-form binary logit response for every seat in a coupled game."""
+    a, b, c = np.indices((2, 2, 2))
+    bias = 1.1
+    utilities = [
+        jnp.array(a * (bias - b - c)),
+        jnp.array(b * (bias - a - c)),
+        jnp.array(c * (bias - a - b)),
+    ]
+
+    @jax.jit
+    def solve(u1, u2, u3):
+        return qre_3player_jax(u1, u2, u3, lam=rationality, max_iter=iterations)
+
+    p1, p2, p3, observed = solve(*utilities)
+    first, second, third = (float(profile[1]) for profile in (p1, p2, p3))
+
+    def probability(other_actions: float) -> float:
+        return float(1.0 / (1.0 + np.exp(-rationality * (bias - other_actions))))
+
+    expected = (
+        abs(probability(second + third) - first)
+        + abs(probability(first + third) - second)
+        + abs(probability(first + second) - third)
+    )
+    np.testing.assert_allclose(observed, expected, atol=1e-6, rtol=0)
