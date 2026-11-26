@@ -1380,6 +1380,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="1) Stage games">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solver-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solver boundaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2212,6 +2229,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="1) Stage games">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#solver-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solver boundaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2377,9 +2411,32 @@
 <p>For each game, the code:</p>
 <ul>
 <li>constructs payoff matrices from state variables (pressure, efficiency gap, discharge delay),</li>
-<li>solves <strong>all Nash equilibria</strong> (pure + mixed) using enumeration / support methods,</li>
+<li>enumerates pure equilibria and checks for a full-support mixed witness for admitted 2×2 games,</li>
 <li>selects equilibria for simulation using a configurable rule (e.g., welfare, risk-dominant).</li>
 </ul>
+<h4 id="solver-boundaries">Solver boundaries<a class="headerlink" href="#solver-boundaries" title="Permanent link">&para;</a></h4>
+<p>The eager two-player interface uses Paignia at
+<code>cb35688c096a2200f51c0fc1dc8c079a7ffa50c9</code>. The mixed 2×2 path keeps NHRA’s
+indifference cutoff and returns a verified interior witness in action order.
+The asymmetric coordination fixtures check both players’ probabilities and
+deviations. Singular games and boundary continua remain outside the scope of
+this mixed witness.</p>
+<p>For eager sequential decisions, the leader chooses a row and the follower
+observes it before choosing a column. The native tree applies zero numeric
+tolerance and preserves the first index at exact ties. The retained NumPy
+path covers inputs outside the bounded binary64 profile. Compiled JAX
+commitment uses the leader-favourable follower tie rule.</p>
+<p>The UOGTO mapping reuses <code>https://w3id.org/uogto/core#NormalFormRepresentation</code>
+for simultaneous payoffs and <code>https://w3id.org/uogto/core#ExtensiveFormRepresentation</code>
+for the two-stage policy. Each follower decision has its own information set.
+The static graph maps players to decision nodes and terminal payoffs.
+<a href="https://github.com/edithatogo/UOGTO/tree/cc0c84201929996580bb4af98774cf2145b224ae">UOGTO vocabulary</a>
+<a href="https://github.com/edithatogo/paignia/blob/dbc647c9943b43b7f49fb8c052063442424454b1/verification/uogto_interchange/game.ttl">Static graph example</a></p>
+<p>Logit QRE depends on the returned strategies’ fixed-point error and has its
+own differentiable JAX path. The standalone alternating-offer calculation
+uses an infinite horizon. Its equal split at perfect patience is a
+historical endpoint convention. The <code>rubinstein</code> dispatch name in <code>solve_game</code>
+remains a legacy alias for simultaneous Nash.</p>
 <h3 id="2-system-dynamics">2) System dynamics<a class="headerlink" href="#2-system-dynamics" title="Permanent link">&para;</a></h3>
 <p>A compact set of state variables evolve annually (or finer if needed), including:</p>
 <ul>
@@ -2392,6 +2449,14 @@
 <li>stochastic Monte Carlo runs (for robustness),</li>
 <li>deterministic mean-field and fixed-point checks (equation solving for stability).</li>
 </ul>
+<p>The recursive historical backtest requires an observed occupancy series
+alongside the four-hour ED measure. AIHW’s patient-day counts describe
+episodes ending in the reporting period. A bed occupancy series needs aligned
+overnight patient days and available overnight bed-days for the same hospitals
+and financial years. The tracked normalized data currently supplies <code>year</code>
+and <code>within4</code>.
+<a href="https://www.aihw.gov.au/hospitals/topics/hospital-resources/public-hospital-beds">AIHW beds</a>
+<a href="https://www.aihw.gov.au/hospitals/topics/admitted-patient-care/hospitalisations-and-patient-days">AIHW patient days</a></p>
 <h2 id="outputs-and-reporting">Outputs and reporting<a class="headerlink" href="#outputs-and-reporting" title="Permanent link">&para;</a></h2>
 <h3 id="reports">Reports<a class="headerlink" href="#reports" title="Permanent link">&para;</a></h3>
 <p>Reports are built from templates that:</p>
@@ -2436,7 +2501,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="January 4, 2026 04:58:33 UTC"><span class="timeago" datetime="2026-01-04T04:58:33+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="January 4, 2026 04:58:33 UTC">2026-01-04</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago" title="November 26, 2026 15:16:57 UTC"><span class="timeago" datetime="2026-11-26T15:16:57+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="November 26, 2026 15:16:57 UTC">2026-11-26</span>
   </span>
 
     
