@@ -74,14 +74,14 @@ def _assumption_ids(content: str) -> set[str]:
 
 def test_input_parameter_sources_section_exists() -> None:
     """Check input parameter sources section exists."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     assert "## Input & Parameter Sources" in content, "Missing Input & Parameter Sources section"
 
 
 def test_input_parameter_sources_table_has_entries() -> None:
     """Check input parameter sources table has entries."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Input & Parameter Sources")
     rows = _table_rows(section)
@@ -90,7 +90,7 @@ def test_input_parameter_sources_table_has_entries() -> None:
 
 def test_input_parameters_cover_inventory_models() -> None:
     """Check input parameters cover inventory models."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
 
     inventory_section = _section_lines(content, "## Model Inventory")
@@ -108,7 +108,7 @@ def test_input_parameters_cover_inventory_models() -> None:
 
 def test_input_parameters_are_enumerated() -> None:
     """Check input parameters are enumerated."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Input & Parameter Sources")
     rows = _table_rows(section)
@@ -122,7 +122,7 @@ def test_input_parameters_are_enumerated() -> None:
 
 def test_input_sources_have_reference_details() -> None:
     """Check input sources have reference details."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Input & Parameter Sources")
     rows = _table_rows(section)
@@ -155,7 +155,7 @@ def test_input_sources_have_reference_details() -> None:
 
 def test_input_sources_include_doi_when_available() -> None:
     """Check input sources include DOI when available."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Input & Parameter Sources")
     rows = _table_rows(section)
@@ -192,7 +192,7 @@ def test_helper_edge_cases() -> None:
 
 def test_assumption_register_has_entries() -> None:
     """Check assumption register has entries."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Assumption & Risk Register")
     rows = _table_rows(section)
@@ -201,7 +201,7 @@ def test_assumption_register_has_entries() -> None:
 
 def test_assumption_register_no_tbd() -> None:
     """Check assumption register no tbd."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Assumption & Risk Register")
     rows = _table_rows(section)
@@ -228,7 +228,7 @@ def test_assumption_register_no_tbd() -> None:
 
 def test_input_sources_match_reference_registry() -> None:
     """Check input sources match reference registry."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
 
     # Get Input Sources
@@ -258,7 +258,7 @@ def test_input_sources_match_reference_registry() -> None:
 
 def test_input_sources_assumptions_listed() -> None:
     """Check input sources assumptions listed."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     input_section = _section_lines(content, "## Input & Parameter Sources")
     input_rows = _table_rows(input_section)

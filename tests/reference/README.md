@@ -44,10 +44,10 @@ The track files were removed in
 The original four test modules still check the report structure, assumptions,
 references and recorded results. The phase 2 checks still cross-reference the
 maintained bibliography. These files record the January 2026 audit, including
-its unresolved source checks. The current model has its own numerical and
-input-grounding checks.
+its unresolved source checks. The fixtures preserve the source bytes as test
+inputs. The current model has its own numerical and input-grounding checks.
 
 | Fixture | SHA-256 |
 | --- | --- |
-| `model_audit/audit.md` | `37682a0e044159abaf2fcdf5dc388f033742f0a7d26196fa0b63dd0a27582c40` |
-| `model_audit/model_candidates.md` | `7ab20aef5d318f1b74ac5f008c8ab4ae037f1aa7ffcf580bce455bc3a3a7861a` |
+| `model_audit/audit.md.fixture` | `37682a0e044159abaf2fcdf5dc388f033742f0a7d26196fa0b63dd0a27582c40` |
+| `model_audit/model_candidates.md.fixture` | `7ab20aef5d318f1b74ac5f008c8ab4ae037f1aa7ffcf580bce455bc3a3a7861a` |

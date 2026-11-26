@@ -32,7 +32,7 @@ def _table_rows(lines: list[str]) -> list[list[str]]:
 
 def test_issue_log_populated() -> None:
     """Check issue log populated."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Issue Log")
     rows = _table_rows(section)

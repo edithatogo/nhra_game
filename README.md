@@ -1,6 +1,6 @@
 # NHRA Game Theory: Cognitive Digital Twin
 
-[![CI](https://github.com/edithatogo/nhra_gt/actions/workflows/ci.yml/badge.svg)](https://github.com/edithatogo/nhra_gt)
+[![CI](https://github.com/edithatogo/nhra_game/actions/workflows/ci.yml/badge.svg)](https://github.com/edithatogo/nhra_game)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-teal.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.15.2](https://img.shields.io/badge/python-3.15.2-blue.svg)](https://www.python.org/downloads/)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
@@ -47,8 +47,8 @@ This project implements a "Cognitive Digital Twin" of the Australian health fund
 ### Installation
 
 ```bash
-git clone https://github.com/edithatogo/nhra_gt.git
-cd nhra_gt
+git clone https://github.com/edithatogo/nhra_game.git
+cd nhra_game
 just install
 ```
 
@@ -135,7 +135,7 @@ We adhere to high-integrity software engineering standards:
 
 If you use this model in your research, please cite:
 
-> Mordaunt, D. A. (2025). *NHRA Game Theory: A Cognitive Digital Twin Framework for Mechanism Design*. <https://github.com/edithatogo/nhra_gt>
+> Mordaunt, D. A. (2025). *NHRA Game Theory: A Cognitive Digital Twin Framework for Mechanism Design*. <https://github.com/edithatogo/nhra_game>
 
 ## Security
 

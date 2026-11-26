@@ -9,7 +9,7 @@ _MIN_INVENTORY_LINES = 3
 
 def test_model_candidates_file_exists_and_has_definition() -> None:
     """Check model candidates file exists and has definition."""
-    candidates_path = Path(__file__).parent / "reference/model_audit/model_candidates.md"
+    candidates_path = Path(__file__).parent / "reference/model_audit/model_candidates.md.fixture"
     assert candidates_path.exists(), "model_candidates.md should exist"
     content = candidates_path.read_text(encoding="utf-8")
     assert (
@@ -20,7 +20,7 @@ def test_model_candidates_file_exists_and_has_definition() -> None:
 
 def test_model_candidates_list_is_not_empty() -> None:
     """Check model candidates list is not empty."""
-    candidates_path = Path(__file__).parent / "reference/model_audit/model_candidates.md"
+    candidates_path = Path(__file__).parent / "reference/model_audit/model_candidates.md.fixture"
     content = candidates_path.read_text(encoding="utf-8")
     candidate_lines = [line for line in content.splitlines() if line.startswith("- ")]
     assert candidate_lines, "At least one candidate model entry is required"
@@ -28,7 +28,7 @@ def test_model_candidates_list_is_not_empty() -> None:
 
 def test_audit_report_structure_exists() -> None:
     """Check audit report structure exists."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     assert audit_path.exists(), "audit.md should exist"
     content = audit_path.read_text(encoding="utf-8")
     required_headings = [
@@ -49,7 +49,7 @@ def test_audit_report_structure_exists() -> None:
 
 def test_audit_artifacts_section_lists_deliverables() -> None:
     """Check audit artifacts section lists deliverables."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     required_items = [
         "Model inventory table",
@@ -63,7 +63,7 @@ def test_audit_artifacts_section_lists_deliverables() -> None:
 
 def test_model_inventory_has_non_tbd_entries() -> None:
     """Check model inventory has non tbd entries."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     lines = audit_path.read_text(encoding="utf-8").splitlines()
     try:
         start_index = lines.index("## Model Inventory")
@@ -87,7 +87,7 @@ def test_model_inventory_has_non_tbd_entries() -> None:
 
 def test_reference_registry_conventions_documented() -> None:
     """Check reference registry conventions documented."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     required_strings = [
         "## Reference Registry Conventions",
@@ -101,7 +101,7 @@ def test_reference_registry_conventions_documented() -> None:
 
 def test_assumption_risk_register_conventions_documented() -> None:
     """Check assumption risk register conventions documented."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     required_strings = [
         "### Assumption & Risk Register Conventions",
@@ -114,7 +114,7 @@ def test_assumption_risk_register_conventions_documented() -> None:
 
 def test_data_access_licensing_constraints_documented() -> None:
     """Check data access licensing constraints documented."""
-    audit_path = Path(__file__).parent / "reference/model_audit/audit.md"
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     required_strings = [
         "## Data Access & Licensing Constraints",

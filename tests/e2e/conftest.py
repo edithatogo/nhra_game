@@ -102,7 +102,9 @@ def page(page):
 
 @pytest.fixture
 def dashboard(page, base_url):
-    """Fixture for DashboardPage POM."""
+    """Open the local dashboard and bind its page selectors."""
+    if not os.getenv("STREAMLIT_REMOTE_URL"):
+        page.goto(base_url)
     return DashboardPage(page, base_url)
 
 
