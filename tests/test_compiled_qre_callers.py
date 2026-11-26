@@ -12,7 +12,11 @@ import pytest
 from scipy.optimize import brentq
 from scipy.special import expit
 
-from nhra_gt import engine, solve_constitutional_game_jax
+from nhra_gt import (
+    engine,
+    solve_constitutional_game_jax,
+    solve_constitutional_game_with_diagnostics_jax,
+)
 from nhra_gt.agents.jax import HeuristicAgentJax
 from nhra_gt.solvers_jax import QreStatus, qre_solver_jax, solve_qualified_two_player_qre
 
@@ -110,6 +114,31 @@ def test_gambit_agreement_is_insufficient_when_the_game_has_multiple_roots():
     assert diagnostics.status == QreStatus.BRANCH_UNQUALIFIED
     assert np.isnan(row).all()
     assert np.isnan(col).all()
+
+
+def test_mixed_precision_cannot_certify_a_multiple_root_game():
+    """The certificate uses common precision near the contraction boundary."""
+    a = jnp.diag(jnp.array([1.5, 1.5], dtype=jnp.float16))
+    b = jnp.diag(jnp.array([2.667, 2.667], dtype=jnp.float32))
+    row_gain = float(np.asarray(a)[0, 0])
+    col_gain = float(np.asarray(b)[0, 0])
+
+    def composed_error(probability):
+        column = expit(col_gain * (2 * probability - 1))
+        return expit(row_gain * (2 * column - 1)) - probability
+
+    # At lambda 1 the uniform root is repelling. The end-point signs give
+    # two additional roots, one on each side of that uniform profile.
+    assert composed_error(0.0) > 0.0 > composed_error(0.4995)
+    assert composed_error(1.0) < 0.0 < composed_error(0.5005)
+
+    p, q, diagnostics = jax.jit(lambda a, b: solve_qualified_two_player_qre(a, b, lam=1.0))(a, b)
+    _, _, admitted = jax.jit(lambda a, b: solve_qualified_two_player_qre(a, b, lam=0.5))(a, b)
+    assert float(diagnostics.residual) <= _ORACLE_BOUND
+    assert diagnostics.status == QreStatus.BRANCH_UNQUALIFIED
+    assert np.isnan(p).all()
+    assert np.isnan(q).all()
+    assert admitted.status == QreStatus.QUALIFIED
 
 
 @pytest.mark.parametrize("lam", [5.0, 8.0])
@@ -226,12 +255,14 @@ def test_nested_micro_failure_blocks_macro_and_reports_micro_residual():
         def micro(i, j):
             return scales[i, j] * a + offsets[i, j], scales[i, j] * b - offsets[i, j]
 
-        accepted = jax.jit(lambda u, v: solve_constitutional_game_jax(u, v, micro, lam=0.5))(*macro)
-        rejected = jax.jit(lambda u, v: solve_constitutional_game_jax(u, v, micro))(*macro)
+        accepted = jax.jit(
+            lambda u, v: solve_constitutional_game_with_diagnostics_jax(u, v, micro, lam=0.5)
+        )(*macro)
+        rejected = jax.jit(
+            lambda u, v: solve_constitutional_game_with_diagnostics_jax(u, v, micro)
+        )(*macro)
 
-    row, col, state, lhn = accepted
-    assert len(accepted) == _FOUR_ARRAYS
-    np.testing.assert_array_equal(accepted[0], row)
+    row, col, state, lhn = accepted.solution
     assert np.all(accepted.micro.qualified)
     assert accepted.qualified
     assert np.isfinite(state).all()
@@ -249,7 +280,7 @@ def test_nested_micro_failure_blocks_macro_and_reports_micro_residual():
     assert rejected.macro.status == QreStatus.SKIPPED
     assert np.isnan(rejected.macro.residual)
     assert not rejected.qualified
-    assert all(np.isnan(value).all() for value in rejected)
+    assert all(np.isnan(value).all() for value in rejected.solution)
 
 
 def test_nested_macro_failure_reports_macro_residual():
@@ -260,11 +291,29 @@ def test_nested_macro_failure_reports_macro_residual():
         zero = zero.astype(jnp.float64)
         payoffs = _coupled_payoffs()
         result = jax.jit(
-            lambda a, b: solve_constitutional_game_jax(a, b, lambda _i, _j: (zero, zero))
+            lambda a, b: solve_constitutional_game_with_diagnostics_jax(
+                a, b, lambda _i, _j: (zero, zero)
+            )
         )(*payoffs)
         _p, _q, residual = qre_solver_jax(*payoffs)
     assert np.all(result.micro.qualified)
     assert result.macro.status == QreStatus.NONCONVERGED
     np.testing.assert_allclose(result.macro.residual, residual, atol=_DIAGNOSTIC_BOUND, rtol=0)
     assert not result.qualified
-    assert all(np.isnan(value).all() for value in result)
+    assert all(np.isnan(value).all() for value in result.solution)
+
+
+def test_legacy_constitutional_result_keeps_four_output_vmap_axes():
+    """Qualify and mask separate batch entries without changing the legacy tree."""
+    a, b = _coupled_payoffs()
+    zero = jnp.zeros_like(a)
+
+    def solve(u, v):
+        return solve_constitutional_game_jax(u, v, lambda _i, _j: (zero, zero))
+
+    batched = jax.jit(jax.vmap(solve, out_axes=(0, 0, 0, 0)))
+    result = batched(jnp.stack([0.10 * a, a]), jnp.stack([0.10 * b, b]))
+    assert len(result) == _FOUR_ARRAYS
+    assert len(jax.tree.leaves(result)) == _FOUR_ARRAYS
+    assert all(np.isfinite(value[0]).all() for value in result)
+    assert all(np.isnan(value[1]).all() for value in result)

@@ -132,8 +132,10 @@ order. The array-only `decide` keeps its shape. A rejected strategy vector
 contains NaNs. A strategic `run_hybrid` run reports the first failed game,
 rollout, month, status and residual before aggregating any trajectories.
 
-`solve_constitutional_game_jax` still supports unpacking its four arrays and
-now exposes per-cell `micro` and scalar `macro` diagnostics. A failed
+`solve_constitutional_game_jax` returns the original four-array tuple,
+including when used with JAX's four-output `vmap` axes. To read per-cell
+`micro` and scalar `macro` diagnostics, call
+`solve_constitutional_game_with_diagnostics_jax`. A failed
 microgame leaves the macro solve `SKIPPED`. Any unqualified constitutional
 solution withholds all four arrays as NaNs. A skipped macro residual is NaN.
 An attempted solve always reports its original residual.

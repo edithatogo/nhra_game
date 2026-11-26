@@ -8,15 +8,13 @@ affect micro-level incentives.
 
 from __future__ import annotations
 
-from collections.abc import Iterator
-from typing import Any
+from typing import Any, NamedTuple
 
 import jax
 import jax.numpy as jnp
 from beartype import beartype
 from jax import Array
 
-from nhra_gt._pytree import PytreeRecord, pytree_dataclass
 from nhra_gt.domain.state import Params, StateJax
 from nhra_gt.engine import step_jax
 from nhra_gt.solvers_jax import QreDiagnostics, QreStatus, solve_qualified_two_player_qre
@@ -100,9 +98,8 @@ def hierarchical_step_jax(
     return new_commonwealth_state, new_jurisdiction_states
 
 
-@pytree_dataclass
-class ConstitutionalQreResult(PytreeRecord):
-    """Four legacy arrays with compiled macro and per-cell micro diagnostics."""
+class ConstitutionalQreResult(NamedTuple):
+    """Constitutional solution and compiled macro and per-cell micro diagnostics."""
 
     row: Array
     column: Array
@@ -116,21 +113,27 @@ class ConstitutionalQreResult(PytreeRecord):
         """Tell whether every required QRE was qualified."""
         return self.macro.qualified
 
-    def __iter__(self) -> Iterator[Array]:
-        """Support unpacking the original four arrays."""
-        return iter(self[:])
-
-    def __getitem__(self, index: int | slice) -> Any:
-        """Index the original four arrays."""
-        return (self.row, self.column, self.state_micro_utils, self.lhn_micro_utils)[index]
-
-    def __len__(self) -> int:
-        """Count the unpackable arrays."""
-        return 4
+    @property
+    def solution(self) -> tuple[Array, Array, Array, Array]:
+        """Return the four-array solution used by the original compiled API."""
+        return self.row, self.column, self.state_micro_utils, self.lhn_micro_utils
 
 
 @beartype
 def solve_constitutional_game_jax(
+    u_cth: Any,
+    u_state_macro: Any,
+    micro_game_factory: Any,
+    lam: float = 5.0,
+) -> tuple[Array, Array, Array, Array]:
+    """Return the qualified solution using the original four-array JAX tree."""
+    return solve_constitutional_game_with_diagnostics_jax(
+        u_cth, u_state_macro, micro_game_factory, lam=lam
+    ).solution
+
+
+@beartype
+def solve_constitutional_game_with_diagnostics_jax(
     u_cth: Any,
     u_state_macro: Any,
     micro_game_factory: Any,  # (m, n) -> (u_state_micro, u_lhn)
@@ -144,8 +147,8 @@ def solve_constitutional_game_jax(
     The State's macro payoff is its own payoff from (1) PLUS its equilibrium
     payoff from (2).
 
-    The result still unpacks as (p_cth, q_state, state_micro_utils, lhn_micro_utils).
-    Diagnostic fields expose the original residuals. An unqualified microgame
+    The solution property returns the original four arrays. The micro and
+    macro fields expose the original residuals. An unqualified microgame
     withholds the constitutional solution and skips the macro solve.
     """
     m, n = u_cth.shape
