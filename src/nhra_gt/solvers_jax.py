@@ -146,7 +146,7 @@ def qre_3player_jax(
         tol: Tolerance.
 
     Returns:
-        Strategies for all three players and the final residual.
+        Strategies for all three players and their summed maximum response errors.
     """
     settings = _ThreePlayerQreOptions(*options, **named_options)
     lam = settings.lam
@@ -156,37 +156,30 @@ def qre_3player_jax(
     del tol
     m, n, k_dim = u1.shape
 
-    def scan_body(probs, _):
-        p1, p2, p3, _ = probs
-
-        # Expected utilities for P1
+    def responses(p1: Array, p2: Array, p3: Array) -> tuple[Array, Array, Array]:
         e1 = jnp.einsum("ijk,j,k->i", u1, p2, p3)
         e2 = jnp.einsum("ijk,i,k->j", u2, p1, p3)
         e3 = jnp.einsum("ijk,i,j->k", u3, p1, p2)
-
-        # Softmax
-        next_p1 = jax.nn.softmax(lam * e1)
-        next_p2 = jax.nn.softmax(lam * e2)
-        next_p3 = jax.nn.softmax(lam * e3)
-
-        # Residual
-        res = (
-            jnp.max(jnp.abs(next_p1 - p1))
-            + jnp.max(jnp.abs(next_p2 - p2))
-            + jnp.max(jnp.abs(next_p3 - p3))
+        return (
+            jax.nn.softmax(lam * e1),
+            jax.nn.softmax(lam * e2),
+            jax.nn.softmax(lam * e3),
         )
 
-        return (next_p1, next_p2, next_p3, res), None
+    def scan_body(
+        probs: tuple[Array, Array, Array], _: Any
+    ) -> tuple[tuple[Array, Array, Array], None]:
+        return responses(*probs), None
 
-    p1_0 = jnp.ones(m) / m
-    p2_0 = jnp.ones(n) / n
-    p3_0 = jnp.ones(k_dim) / k_dim
-
-    (pf1, pf2, pf3, res_final), _ = lax.scan(
-        scan_body, (p1_0, p2_0, p3_0, jnp.array(1.0)), jnp.arange(max_iter)
+    initial = (jnp.ones(m) / m, jnp.ones(n) / n, jnp.ones(k_dim) / k_dim)
+    (p1, p2, p3), _ = lax.scan(scan_body, initial, jnp.arange(max_iter))
+    response1, response2, response3 = responses(p1, p2, p3)
+    residual = (
+        jnp.max(jnp.abs(response1 - p1))
+        + jnp.max(jnp.abs(response2 - p2))
+        + jnp.max(jnp.abs(response3 - p3))
     )
-
-    return pf1, pf2, pf3, res_final
+    return p1, p2, p3, residual
 
 
 @beartype
