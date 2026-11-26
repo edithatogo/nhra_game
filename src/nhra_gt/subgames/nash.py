@@ -13,8 +13,8 @@ from typing import Any
 
 import numpy as np
 
-from nhra_gt._paignia import pure_profiles
-from nhra_gt.subgames.sequential import stackelberg_solution
+from nhra_gt._paignia import mixed_profile, pure_profiles
+from nhra_gt.subgames.sequential import _native_payoffs, stackelberg_solution
 
 _MATRIX_DIMENSIONS = 2
 _INDIFFERENCE_TOLERANCE = 1e-9
@@ -92,7 +92,7 @@ def solve_game(
 
     Args:
         game: The game to solve.
-        mechanism: 'nash', 'stackelberg', 'rubinstein'.
+        mechanism: 'nash' or 'stackelberg'. The legacy 'rubinstein' name invokes Nash.
         rule: Equilibrium selection rule for Nash ('payoff_dominant', 'risk_dominant', 'random').
         discount_rate: Delta for Rubinstein/Sequential.
         first_mover: Index of the first mover (Stackelberg Leader).
@@ -120,29 +120,7 @@ def solve_game(
         return EquilibriumSelection(eq, 1)
 
     if mechanism == "rubinstein":
-        # Assumes 2x2 bargaining game over a pie.
-        # This is tricky because TwoPlayerGame is arbitrary matrix.
-        # Rubinstein applies to "splitting a pie".
-        # We need to map the matrix outcomes to "Share".
-        # Assumption: The game has a "Cooperate" outcome (A, A) which is the Pie.
-        # And a "Conflict" outcome (D, D) which is 0 (or breakdown).
-        # And the "First Mover" proposes a split.
-        #
-        # Implementation: We calculate the theoretical share and map it to a Mixed Strategy?
-        # No, Rubinstein result is a specific share (x, 1-x).
-        # We can return a pseudo-equilibrium where payoffs match the share.
-        # OR we just solve the Nash of the *Simultaneous* game but weighted by delta?
-        #
-        # Simplified Integration: Use the Rubinstein share to define the 'Effective' outcome
-        # if the game is 'bargaining_game'.
-        # For generic games, Rubinstein doesn't apply directly without defining the pie.
-        # Fallback to Nash for generic games.
-        if "A" in game.row_actions and "D" in game.row_actions:
-            # It's likely a bargaining game.
-            # Assume Pie Size is the sum of payoffs at (A, A)?
-            # Or max possible sum?
-            # Let's approximate by returning Nash for now, but logging a warning.
-            pass
+        # Historical dispatch predates a pie size and two discount factors.
         return solve_game(game, mechanism="nash", rule=rule)
 
     # Find all equilibria for the simultaneous game.
@@ -180,32 +158,38 @@ def pure_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
     return equilibria
 
 
-def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
-    """Solve mixed Nash for 2x2 games using the indifference principle.
+def _absolute_indifference_denominator(payoffs: np.ndarray[Any, Any]) -> float:
+    a, b, c, d = payoffs.ravel()
+    if payoffs.dtype.kind in "biu":
+        return float(abs(int(a) - int(b) - int(c) + int(d)))
+    return float(abs(a - b - c + d))
 
-    Returns None if the game is degenerate or has only pure equilibria.
+
+def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
+    """Find the Paignia-verified full-support Nash witness for a 2x2 game.
+
+    Preserve the NHRA indifference cutoff and use the provider's deviation
+    checks. Return None when this search yields no verified interior witness.
     """
     if game.u_row.shape != (2, 2):
         return None
-    A = game.u_row
-    B = game.u_col
+    row, column = game.u_row, game.u_col
+    if column.shape != row.shape or not (_native_payoffs(row) and _native_payoffs(column)):
+        msg = "Expected matching finite 2x2 payoffs representable in binary64"
+        raise ValueError(msg)
 
-    # Mixed equilibrium makes each player indifferent.
-    denom_q = A[0, 0] - A[0, 1] - A[1, 0] + A[1, 1]
-    denom_p = B[0, 0] - B[1, 0] - B[0, 1] + B[1, 1]
+    # Retain the existing admission cutoff before the bounded support search.
+    row_denominator = _absolute_indifference_denominator(row)
+    column_denominator = _absolute_indifference_denominator(column.T)
 
-    if abs(denom_q) < _INDIFFERENCE_TOLERANCE or abs(denom_p) < _INDIFFERENCE_TOLERANCE:
+    if min(row_denominator, column_denominator) < _INDIFFERENCE_TOLERANCE:
         return None
 
-    q_hard = (A[1, 1] - A[0, 1]) / denom_q  # col prob of action1
-    p_hard = (B[1, 1] - B[1, 0]) / denom_p  # row prob of action1
-
-    if not (0.0 <= p_hard <= 1.0 and 0.0 <= q_hard <= 1.0):
+    witness = mixed_profile(row.tolist(), column.tolist())
+    if witness is None:
         return None
-
-    row = np.array([1.0 - p_hard, p_hard], dtype=float)
-    col = np.array([1.0 - q_hard, q_hard], dtype=float)
-    return NashEquilibrium(kind="mixed", row=row, col=col)
+    row_strategy, column_strategy = witness
+    return NashEquilibrium("mixed", np.array(row_strategy), np.array(column_strategy))
 
 
 def all_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:

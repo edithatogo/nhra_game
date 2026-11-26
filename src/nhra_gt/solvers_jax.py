@@ -29,10 +29,11 @@ def qre_solver_jax(
         u_col: Payoff matrix for the column player.
         lam: Rationality parameter (lambda). Higher = closer to Nash.
         max_iter: Maximum number of iterations.
-        tol: Convergence tolerance.
+        tol: Legacy tolerance argument. Callers compare the returned residual.
 
     Returns:
-        A tuple of (row_strategy, col_strategy, residual).
+        A tuple of (row_strategy, col_strategy, residual). The residual measures
+        the logit response error at the returned profile, with the telemetry floor.
     """
     # Keep the original fixed-length scan for callers of the compiled solver.
     del tol
@@ -43,25 +44,17 @@ def qre_solver_jax(
         z = jnp.exp(lam * u)
         return z / jnp.sum(z)
 
-    def scan_body(
-        val: tuple[Array, Array, Array], _: Any
-    ) -> tuple[tuple[Array, Array, Array], None]:
-        p, q, _ = val
-        exp_u_row = u_row @ q
-        exp_u_col = p @ u_col
+    def responses(p: Array, q: Array) -> tuple[Array, Array]:
+        return logit_choice(u_row @ q), logit_choice(p @ u_col)
 
-        # Update distributions
-        next_p = logit_choice(exp_u_row)
-        next_q = logit_choice(exp_u_col)
+    def scan_body(val: tuple[Array, Array], _: Any) -> tuple[tuple[Array, Array], None]:
+        return responses(*val), None
 
-        # Convergence residual
-        res = jnp.max(jnp.abs(next_p - p)) + jnp.max(jnp.abs(next_q - q))
-
-        return (next_p, next_q, res), None
-
-    (p_final, q_final, res_final), _ = lax.scan(
-        scan_body, (jnp.ones(m) / m, jnp.ones(n) / n, jnp.array(1.0)), jnp.arange(max_iter)
+    (p_final, q_final), _ = lax.scan(
+        scan_body, (jnp.ones(m) / m, jnp.ones(n) / n), jnp.arange(max_iter)
     )
+    p_response, q_response = responses(p_final, q_final)
+    res_final = jnp.max(jnp.abs(p_response - p_final)) + jnp.max(jnp.abs(q_response - q_final))
 
     return p_final, q_final, jnp.maximum(res_final, jnp.asarray(1e-12, dtype=res_final.dtype))
 
