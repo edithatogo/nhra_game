@@ -158,6 +158,13 @@ def pure_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
     return equilibria
 
 
+def _absolute_indifference_denominator(payoffs: np.ndarray[Any, Any]) -> float:
+    a, b, c, d = payoffs.ravel()
+    if payoffs.dtype.kind in "biu":
+        return float(abs(int(a) - int(b) - int(c) + int(d)))
+    return float(abs(a - b - c + d))
+
+
 def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
     """Find the Paignia-verified full-support Nash witness for a 2x2 game.
 
@@ -172,10 +179,10 @@ def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
         raise ValueError(msg)
 
     # Retain the existing admission cutoff before the bounded support search.
-    row_denominator = row[0, 0] - row[0, 1] - row[1, 0] + row[1, 1]
-    column_denominator = column[0, 0] - column[1, 0] - column[0, 1] + column[1, 1]
+    row_denominator = _absolute_indifference_denominator(row)
+    column_denominator = _absolute_indifference_denominator(column.T)
 
-    if min(abs(row_denominator), abs(column_denominator)) < _INDIFFERENCE_TOLERANCE:
+    if min(row_denominator, column_denominator) < _INDIFFERENCE_TOLERANCE:
         return None
 
     witness = mixed_profile(row.tolist(), column.tolist())

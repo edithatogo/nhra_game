@@ -95,3 +95,10 @@ def test_stackelberg_preserves_integer_order_outside_binary64():
     leader = np.array([[2**53], [2**53 + 1]], dtype=np.int64)
     follower = np.zeros_like(leader)
     assert stackelberg_solution(leader, follower) == (1, 0)
+
+
+def test_masked_follower_payoff_preserves_numpy_selection():
+    """Preserve the active follower option on a masked payoff table."""
+    leader = np.array([[0.0, 1.0]])
+    follower = np.ma.array([[99.0, 1.0]], mask=[[True, False]])
+    assert stackelberg_solution(leader, follower) == (0, 1)

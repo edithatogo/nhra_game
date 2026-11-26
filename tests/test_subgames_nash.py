@@ -67,6 +67,18 @@ def test_mixed_nash_matches_t21_gambit_reference() -> None:
     np.testing.assert_allclose(witness.col, (3 / 5, 2 / 5), atol=1e-12, rtol=0)
 
 
+@pytest.mark.parametrize(("dtype", "high"), [(np.uint8, 128), (np.bool_, True)])
+def test_all_nash_handles_integer_and_boolean_indifference(dtype, high) -> None:
+    """The cutoff is evaluated without unsigned wraparound or boolean subtraction."""
+    row = np.array([[high, 0], [0, high]], dtype=dtype)
+    column = row.copy()
+    game = TwoPlayerGame(row, column, ("A", "B"), ("Left", "Right"))
+    witnesses = [witness for witness in all_nash(game) if witness.kind == "mixed"]
+    assert len(witnesses) == 1
+    np.testing.assert_allclose(witnesses[0].row, (0.5, 0.5), atol=1e-12, rtol=0)
+    np.testing.assert_allclose(witnesses[0].col, (0.5, 0.5), atol=1e-12, rtol=0)
+
+
 def test_mixed_nash_rejects_non_2x2() -> None:
     """Check mixed nash rejects non 2x2."""
     u_r = np.zeros((3, 3), dtype=float)

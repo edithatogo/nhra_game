@@ -18,7 +18,11 @@ _MAX_EXACT_INTEGER = 2**53
 
 
 def _native_payoffs(payoffs: np.ndarray[Any, Any]) -> bool:
-    if payoffs.dtype.kind not in "biuf" or payoffs.dtype.itemsize > _BINARY64_BYTES:
+    if (
+        np.ma.isMaskedArray(payoffs)
+        or payoffs.dtype.kind not in "biuf"
+        or payoffs.dtype.itemsize > _BINARY64_BYTES
+    ):
         return False
     if payoffs.dtype.kind in "iu" and payoffs.dtype.itemsize == _BINARY64_BYTES:
         return (
