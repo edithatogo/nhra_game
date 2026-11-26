@@ -2380,6 +2380,7 @@ version = "26.0.2"
 source = { editable = "." }
 dependencies = [
     { name = "beartype" },
+    { name = "gitpython" },
     { name = "graphviz" },
     { name = "jax" },
     { name = "jaxlib" },
@@ -2472,6 +2473,7 @@ dev = [
 requires-dist = [
     { name = "beartype" },
     { name = "chex", marker = "extra == 'accel'", specifier = ">=0.1" },
+    { name = "gitpython", specifier = ">=3.2.1" },
     { name = "graphviz", specifier = ">=0.21" },
     { name = "jax", specifier = ">=0.4.36" },
     { name = "jaxlib", specifier = ">=0.4.36" },

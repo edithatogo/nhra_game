@@ -6,12 +6,13 @@ scenario summaries, and risk calculations, wrapping the core JAX engine.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, NamedTuple
 
 import numpy as np
 import pandas as pd
 
 from nhra_gt.domain.params import Params
+from nhra_gt.domain.state import ParamsJax
 from nhra_gt.engine import apply_intervention
 from nhra_gt.engine import run_hybrid as run_hybrid_modern
 
@@ -25,22 +26,10 @@ def relative_risk(pressure: float, offload_min: float, params: Params | None = N
 
 
 def run_hybrid(
-    years: list[int],
-    params: Params,
-    seed: int = 123,
-    n_mc: int = 300,
-    recorder: Any | None = None,
-    overrides: dict[str, Any] | None = None,
+    years: list[int], params: Params | ParamsJax, *options: Any, **named_options: Any
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Wrapper for the modern JAX engine that accepts Pydantic Params."""
-    return run_hybrid_modern(
-        years=years,
-        p=params.to_params_jax(),
-        seed=seed,
-        n_mc=n_mc,
-        recorder=recorder,
-        overrides=overrides,
-    )
+    """Run the modern hybrid engine using the historical params argument."""
+    return run_hybrid_modern(years, params, *options, **named_options)
 
 
 def scenario_summary(
@@ -88,15 +77,19 @@ def one_way_sensitivity(
     return pd.DataFrame(rows)
 
 
+class _SensitivitySampling(NamedTuple):
+    """Sampling settings for probabilistic sensitivity analysis."""
+
+    seed: int = 123
+    n_param: int = 50
+    n_mc: int = 50
+
+
 def probabilistic_sensitivity(
-    years: list[int],
-    params: Params,
-    interventions: list[str],
-    seed: int = 123,
-    n_param: int = 50,
-    n_mc: int = 50,
+    years: list[int], params: Params, interventions: list[str], *options: Any, **named_options: Any
 ) -> list[dict[str, Any]]:
     """Performs probabilistic sensitivity analysis (PSA) with noise sampling."""
+    seed, n_param, n_mc = _SensitivitySampling(*options, **named_options)
     rng = np.random.default_rng(seed)
     out: list[dict[str, Any]] = []
 

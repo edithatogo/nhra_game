@@ -6,7 +6,7 @@ Sobol indices, Morris screening, and tornado plots.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, NamedTuple
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -84,7 +84,8 @@ def plot_sobol_heatmap(
     s2 = si["S2"]
 
     # Ensure square matrix
-    if not (isinstance(s2, np.ndarray) and s2.ndim == 2):
+    matrix_dimensions = 2
+    if not (isinstance(s2, np.ndarray) and s2.ndim == matrix_dimensions):
         return None
 
     fig = plt.figure(figsize=(10, 8))
@@ -174,27 +175,32 @@ def plot_morris_tornado(
     return fig
 
 
+class _RankTornadoOptions(NamedTuple):
+    """Display settings for the rank-correlation tornado."""
+
+    config: PlotConfig | None = None
+    topk: int = 10
+    path: str | Path | None = None
+
+
 def plot_rank_tornado(
-    data: pd.DataFrame,
-    outcome_col: str,
-    params: list[str],
-    config: PlotConfig | None = None,
-    topk: int = 10,
-    path: str | Path | None = None,
+    data: pd.DataFrame, outcome_col: str, params: list[str], *options: Any, **named_options: Any
 ) -> Figure:
     """Rank-correlation tornado using Spearman rho."""
+    config, topk, path = _RankTornadoOptions(*options, **named_options)
     # Validation
     RankCorrelationSchema.validate(data)
     for col in [outcome_col, *params]:
         if col not in data.columns:
-            raise ValueError(f"Column '{col}' not found in data.")
+            message = f"Column '{col}' not found in data."
+            raise ValueError(message)
 
     if config is None:
         config = PlotConfig()
 
     rows = []
     for p in params:
-        rho = data[[p, outcome_col]].corr(method="spearman").iloc[0, 1]
+        rho = data[[p, outcome_col]].corr(method="spearman").to_numpy(dtype=float)[0, 1]
         rows.append((p, float(rho)))
 
     rows.sort(key=lambda x: abs(x[1]), reverse=True)

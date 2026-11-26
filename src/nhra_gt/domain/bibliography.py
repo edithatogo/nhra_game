@@ -40,7 +40,8 @@ def parse_endnote_token(token: str) -> dict[str, Any]:
 
     match = re.search(pattern, token)
     if not match:
-        raise ValueError(f"Invalid Endnote token format: {token}")
+        message = f"Invalid Endnote token format: {token}"
+        raise ValueError(message)
 
     author, year, label, record_num = match.groups()
 

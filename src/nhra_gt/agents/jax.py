@@ -115,9 +115,7 @@ class HeuristicAgentJax(PytreeRecord):
             gp = GameParamsJax(
                 pressure=obs_pressure,
                 efficiency_gap=obs_eff_gap,
-                discharge_delay=state.reported_discharge_delay
-                if hasattr(state, "reported_discharge_delay")
-                else 1.0,
+                discharge_delay=getattr(state, "reported_discharge_delay", 1.0),
                 political_salience=params.political_salience,
                 audit_pressure=params.audit_pressure,
                 cost_shifting_intensity=params.cost_shifting_intensity,

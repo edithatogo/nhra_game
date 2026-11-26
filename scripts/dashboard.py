@@ -1,9 +1,4 @@
-# Interactive Streamlit Dashboard for NHRA War Gaming.
-# Provides a unified interface for:
-# - Scenario Analysis
-# - Strategic Network Visualization
-# - Game Theoretic Encyclopedia
-# - Evidence Management
+"""Streamlit dashboard for NHRA scenarios, strategy and evidence."""
 
 from __future__ import annotations
 
@@ -34,7 +29,7 @@ except ImportError:  # pragma: no cover
 from nhra_gt import __version__
 from nhra_gt.domain.params import Params
 from nhra_gt.domain.state import ParamsJax
-from nhra_gt.engine import initialize_rules, summarise_outcome
+from nhra_gt.engine import apply_intervention, initialize_rules, summarise_outcome
 from nhra_gt.game_theory.content import get_populated_registry
 from nhra_gt.game_theory.ui import render_game_encyclopedia
 from nhra_gt.helpers import probabilistic_sensitivity, run_hybrid
@@ -93,6 +88,54 @@ def initialize_slider_state(scenarios: dict) -> None:
             st.session_state[key] = val
 
 
+def prepare_share_drift_data(
+    traj: pd.DataFrame, threshold: float
+) -> tuple[pd.DataFrame, list[dict]]:
+    """Calculate effective share drift and identify threshold breaches."""
+    df = traj.copy()
+    df["drift_gap"] = df["cth_nominal_mean"] - df["cth_effective_mean"]
+
+    breaches = [
+        {"year": int(row["year"]), "value": float(row["cth_effective_mean"])}
+        for _, row in df.loc[df["cth_effective_mean"] < threshold].iterrows()
+    ]
+
+    return df, breaches
+
+
+def rank_interventions(base_params: Params, intervention_list: list[str]) -> pd.DataFrame:
+    """Ranks interventions by their impact on 2030 pressure."""
+    years = list(range(2025, 2031))
+
+    # Run Baseline
+    traj_base, _ = run_hybrid(years, base_params, n_mc=50, seed=42)
+    base_pressure = float(traj_base.iloc[-1]["pressure_mean"])
+
+    results = []
+    for name in intervention_list:
+        # Apply intervention
+        p_iv = apply_intervention(base_params.to_params_jax(), name)
+        traj_iv, _ = run_hybrid(years, p_iv, n_mc=50, seed=42)
+
+        iv_pressure = float(traj_iv.iloc[-1]["pressure_mean"])
+        iv_rr = float(traj_iv.iloc[-1]["rr_mean"])
+
+        # Uncertainty (using p90 - p10 from the trajectory as a proxy for CI width)
+        iv_rr_width = float(traj_iv.iloc[-1]["rr_p90"] - traj_iv.iloc[-1]["rr_p10"])
+
+        results.append(
+            {
+                "Intervention": name,
+                "Pressure (2030)": iv_pressure,
+                "Pressure Impact": base_pressure - iv_pressure,
+                "Relative Risk (2030)": iv_rr,
+                "Uncertainty (90% Width)": iv_rr_width,
+            }
+        )
+
+    return pd.DataFrame(results).sort_values("Pressure Impact", ascending=False)
+
+
 @st.cache_data
 def cached_run_model(
     p: Params, years: list[int], n_mc: int = 50, overrides: dict[str, Any] | None = None
@@ -112,6 +155,79 @@ def generate_prose_summary(summary_base: dict, summary_game: dict) -> str:
     else:
         narrative += "⚖️ **Stability:** Marginal structural shifts observed."
     return narrative
+
+
+def _render_map() -> None:
+    st.markdown("### 🕸️ Interactive Strategic Map")
+    d3_path = Path("outputs/interactive/games_network_d3.html")
+    if d3_path.exists():
+        with open(d3_path, encoding="utf-8") as f:
+            st.components.v1.html(f.read(), height=600, scrolling=True)
+    else:
+        st.error("D3 assets not found.")
+
+
+def _render_game_tree() -> None:
+    if create_extensive_game_from_matrix:
+        u_row = np.array([[10, 0], [0, 5]])
+        u_col = np.array([[10, 0], [0, 5]])
+        g_tree = create_extensive_game_from_matrix(u_row, u_col, title="Subgame Tree")
+        render_tree_static(g_tree, "outputs/diagrams/current_subgame")
+        st.image("outputs/diagrams/current_subgame.svg", use_container_width=True)
+
+
+def _render_lhn(traj_game: pd.DataFrame) -> None:
+    st.subheader("Intra-State LHN Variance")
+    if "lhn_snapshot" in traj_game.attrs:
+        lhn_df = traj_game.attrs["lhn_snapshot"]
+        fig_lhn = px.scatter(
+            lhn_df,
+            x="Pressure Index",
+            y="NWAU Capture (Relative)",
+            color="LHN_ID",
+            title="LHN Strategic Distribution",
+        )
+        st.plotly_chart(fig_lhn, use_container_width=True)
+    else:
+        st.info("High-fidelity LHN data available in SOTA mode.")
+
+
+def _render_technical(traj_game: pd.DataFrame) -> None:
+    if st.button("Run Live Morris"):
+        prob = get_salib_problem(["nominal_cth_share_target", "bed_capacity_index"])
+        df_m = run_morris_analysis(prob, lambda x: x[:, 0] * 0.5)
+        st.pyplot(plot_morris_tornado(df_m))
+    st.plotly_chart(plot_strategic_stability(traj_game), use_container_width=True)
+    st.plotly_chart(plot_agreement_cycle(traj_game), use_container_width=True)
+
+
+def _render_analysis(
+    traj_game: pd.DataFrame,
+    combined_plot: pd.DataFrame,
+    years: list[int],
+    p_game: Params,
+    summaries: tuple[dict, dict],
+) -> None:
+    summary_base, summary_game = summaries
+    c1, c2 = st.columns([2, 1])
+    with c1:
+        st.plotly_chart(
+            plot_risk_pressure(combined_plot, "rr_mean", "System Risk", "Risk Index"),
+            use_container_width=True,
+        )
+        st.plotly_chart(plot_phase_space(traj_game), use_container_width=True)
+        if st.button("Run Live PSA"):
+            with st.spinner("Sampling..."):
+                psa = probabilistic_sensitivity(years, p_game, [], n_param=20, n_mc=10)
+                st.plotly_chart(
+                    px.scatter(pd.DataFrame(psa), x="noise_sd", y="rr_end", trendline="lowess"),
+                    use_container_width=True,
+                )
+    with c2:
+        st.metric("Resilience", f"{summary_game['resilience_index'] * 100:.0f}%")
+        st.markdown(generate_prose_summary(summary_base, summary_game))
+        st.plotly_chart(plot_patient_choice(traj_game), use_container_width=True)
+        st.plotly_chart(plot_workforce_dynamics(traj_game), use_container_width=True)
 
 
 def main() -> None:
@@ -162,21 +278,6 @@ def main() -> None:
     traj_game, _ = cached_run_model(p_game, years, n_mc=int(st.session_state.n_mc), overrides=ovr)
     summary_game = summarise_outcome(traj_game)
 
-    # Execution
-    years = list(range(2025, 2031))
-    p_base = Params()
-    traj_base, _ = cached_run_model(p_base, years, n_mc=int(st.session_state.n_mc))
-    summary_base = summarise_outcome(traj_base)
-
-    p_game = Params.from_flat_dict(
-        {k: v for k, v in st.session_state.items() if isinstance(k, str)}
-    )
-    p_game = initialize_rules(p_game)
-
-    ovr = {"STRATEGIC_MODE": True} if full_strat else {}
-    traj_game, _ = cached_run_model(p_game, years, n_mc=int(st.session_state.n_mc), overrides=ovr)
-    summary_game = summarise_outcome(traj_game)
-
     # Clear attrs for concat safety
     tb_plot = traj_base.assign(Scenario="Baseline")
     tg_plot = traj_game.assign(Scenario="Scenario")
@@ -200,57 +301,16 @@ def main() -> None:
     )
 
     with tabs[0]:  # Analysis
-        c1, c2 = st.columns([2, 1])
-        with c1:
-            st.plotly_chart(
-                plot_risk_pressure(combined_plot, "rr_mean", "System Risk", "Risk Index"),
-                use_container_width=True,
-            )
-            st.plotly_chart(plot_phase_space(traj_game), use_container_width=True)
-            if st.button("Run Live PSA"):
-                with st.spinner("Sampling..."):
-                    psa = probabilistic_sensitivity(years, p_game, [], n_param=20, n_mc=10)
-                    st.plotly_chart(
-                        px.scatter(pd.DataFrame(psa), x="noise_sd", y="rr_end", trendline="lowess"),
-                        use_container_width=True,
-                    )
-        with c2:
-            st.metric("Resilience", f"{summary_game['resilience_index'] * 100:.0f}%")
-            st.markdown(generate_prose_summary(summary_base, summary_game))
-            st.plotly_chart(plot_patient_choice(traj_game), use_container_width=True)
-            st.plotly_chart(plot_workforce_dynamics(traj_game), use_container_width=True)
+        _render_analysis(traj_game, combined_plot, years, p_game, (summary_base, summary_game))
 
     with tabs[1]:  # Map
-        st.markdown("### 🕸️ Interactive Strategic Map")
-        d3_path = Path("outputs/interactive/games_network_d3.html")
-        if d3_path.exists():
-            with open(d3_path, encoding="utf-8") as f:
-                st.components.v1.html(f.read(), height=600, scrolling=True)
-        else:
-            st.error("D3 assets not found.")
+        _render_map()
 
     with tabs[2]:  # Trees
-        if create_extensive_game_from_matrix:
-            u_row = np.array([[10, 0], [0, 5]])
-            u_col = np.array([[10, 0], [0, 5]])
-            g_tree = create_extensive_game_from_matrix(u_row, u_col, title="Subgame Tree")
-            render_tree_static(g_tree, "outputs/diagrams/current_subgame")
-            st.image("outputs/diagrams/current_subgame.svg", use_container_width=True)
+        _render_game_tree()
 
     with tabs[3]:  # LHN
-        st.subheader("Intra-State LHN Variance")
-        if "lhn_snapshot" in traj_game.attrs:
-            lhn_df = traj_game.attrs["lhn_snapshot"]
-            fig_lhn = px.scatter(
-                lhn_df,
-                x="Pressure Index",
-                y="NWAU Capture (Relative)",
-                color="LHN_ID",
-                title="LHN Strategic Distribution",
-            )
-            st.plotly_chart(fig_lhn, use_container_width=True)
-        else:
-            st.info("High-fidelity LHN data available in SOTA mode.")
+        _render_lhn(traj_game)
 
     with tabs[4]:  # Lineage
         st.markdown("### 🧬 Data Lineage")
@@ -258,12 +318,7 @@ def main() -> None:
         st.table(pd.DataFrame([{"Parameter": k, "Source": v} for k, v in lineage.items()]))
 
     with tabs[6]:  # Technical
-        if st.button("Run Live Morris"):
-            prob = get_salib_problem(["nominal_cth_share_target", "bed_capacity_index"])
-            df_m = run_morris_analysis(prob, lambda x: x[:, 0] * 0.5)
-            st.pyplot(plot_morris_tornado(df_m))
-        st.plotly_chart(plot_strategic_stability(traj_game), use_container_width=True)
-        st.plotly_chart(plot_agreement_cycle(traj_game), use_container_width=True)
+        _render_technical(traj_game)
 
     with tabs[8]:  # Encyclopedia
         render_game_encyclopedia(registry)

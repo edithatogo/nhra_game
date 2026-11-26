@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Any
 
 import jax
@@ -33,6 +34,8 @@ def qre_solver_jax(
     Returns:
         A tuple of (row_strategy, col_strategy, residual).
     """
+    # Keep the original fixed-length scan for callers of the compiled solver.
+    del tol
     m, n = u_row.shape
 
     def logit_choice(utilities):
@@ -64,13 +67,78 @@ def qre_solver_jax(
 
 
 @beartype
+def regret_min_solver_jax(
+    u_row: Any,
+    u_col: Any,
+    max_iter: int = 500,
+    learning_rate: float = 0.05,
+) -> tuple[Any, Any, Any]:
+    """Finds approximate Nash equilibrium by minimizing total regret using gradient descent.
+
+    Args:
+        u_row: Payoff matrix for the row player.
+        u_col: Payoff matrix for the column player.
+        max_iter: Number of optimization iterations.
+        learning_rate: Step size for gradient descent.
+
+    Returns:
+        A tuple of (row_strategy, col_strategy, final_regret).
+    """
+    m, n = u_row.shape
+
+    def total_regret(params: tuple[Array, Array]) -> Float[Array, ""]:
+        p_logit, q_logit = params
+        p = jax.nn.softmax(p_logit)
+        q = jax.nn.softmax(q_logit)
+
+        # Expected payoffs
+        pay_row = p @ u_row @ q
+        pay_col = p @ u_col @ q
+
+        # Best possible payoffs
+        best_row = jnp.max(u_row @ q)
+        best_col = jnp.max(p @ u_col)
+
+        return (best_row - pay_row) + (best_col - pay_col)
+
+    # Initial logits (uniform)
+    p_logits = jnp.zeros(m)
+    q_logits = jnp.zeros(n)
+
+    # Simple gradient descent loop
+    def scan_body(logits: tuple[Array, Array], _: Any) -> tuple[tuple[Array, Array], Array]:
+        grads = jax.grad(total_regret)(logits)
+        next_logits = (
+            logits[0] - learning_rate * grads[0],
+            logits[1] - learning_rate * grads[1],
+        )
+        # Calculate current regret
+        curr_regret = total_regret(next_logits)
+        return next_logits, curr_regret
+
+    final_logits, regrets = lax.scan(scan_body, (p_logits, q_logits), jnp.arange(max_iter))
+
+    final_regret = regrets[-1]
+    return (
+        jax.nn.softmax(final_logits[0]),
+        jax.nn.softmax(final_logits[1]),
+        jnp.maximum(final_regret, jnp.asarray(1e-12, dtype=final_regret.dtype)),
+    )
+
+
+@beartype
+@dataclass(frozen=True)
+class _ThreePlayerQreOptions:
+    """Parameters of the fixed-point QRE iteration."""
+
+    lam: float = 5.0
+    max_iter: int = 100
+    tol: float = 1e-06
+
+
+@beartype
 def qre_3player_jax(
-    u1: Float[Array, "m n k"],
-    u2: Any,
-    u3: Any,
-    lam: float = 5.0,
-    max_iter: int = 100,
-    tol: float = 1e-6,
+    u1: Float[Array, "m n k"], u2: Any, u3: Any, *options: Any, **named_options: Any
 ) -> tuple[Any, Any, Any, Any]:
     """Solves for QRE in a 3-player normal form game using tensor contractions.
 
@@ -78,6 +146,8 @@ def qre_3player_jax(
         u1: Payoff for player 1.
         u2: Payoff for player 2.
         u3: Payoff for player 3.
+        *options: Historical positional values for lam, max_iter and tol.
+        **named_options: The same values by keyword.
         lam: Rationality parameter.
         max_iter: Max iterations.
         tol: Tolerance.
@@ -85,6 +155,12 @@ def qre_3player_jax(
     Returns:
         Strategies for all three players and the final residual.
     """
+    settings = _ThreePlayerQreOptions(*options, **named_options)
+    lam = settings.lam
+    max_iter = settings.max_iter
+    tol = settings.tol
+    # Keep the tolerance argument for callers of the fixed-iteration solver.
+    del tol
     m, n, k_dim = u1.shape
 
     def scan_body(probs, _):

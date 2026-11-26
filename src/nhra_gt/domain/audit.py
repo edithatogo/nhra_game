@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import json
-import shutil
-import subprocess  # nosec B404
 import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any
+
+from git import Repo
+from git.exc import GitError
 
 
 class Recorder:
@@ -22,18 +23,10 @@ class Recorder:
 
     def _get_git_hash(self) -> str:
         """Retrieves the current git commit hash."""
-        git_path = shutil.which("git")
-        if not git_path:
-            return "unknown"
         try:
-            result = subprocess.run(  # nosec B603
-                [git_path, "rev-parse", "HEAD"],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-            return result.stdout.strip()
-        except Exception:
+            with Repo(search_parent_directories=True) as repo:
+                return repo.head.commit.hexsha
+        except GitError, OSError, ValueError:
             return "unknown"
 
     def start_experiment(self, experiment_name: str, **metadata: Any) -> None:
@@ -59,7 +52,8 @@ class Recorder:
         """Returns a versioned path for an artifact within the current experiment directory."""
         if not self.experiment_dir:
             # Fallback if no experiment started, but ideally we should raise or start a default
-            raise RuntimeError("Experiment not started. Call start_experiment first.")
+            message = "Experiment not started. Call start_experiment first."
+            raise RuntimeError(message)
         return self.experiment_dir / filename
 
     def end_experiment(self) -> None:

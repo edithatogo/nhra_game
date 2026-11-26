@@ -21,9 +21,10 @@ class EvidenceProcessor:
         try:
             self.nlp = spacy.load(model)
         except OSError as err:
-            raise RuntimeError(
+            message = (
                 f"SpaCy model '{model}' not found. Please run 'python -m spacy download {model}'"
-            ) from err
+            )
+            raise RuntimeError(message) from err
 
     @beartype
     def parse_text(self, text: str) -> dict[str, Any]:

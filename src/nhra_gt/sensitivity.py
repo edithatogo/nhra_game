@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import warnings
 from collections.abc import Callable
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -15,6 +16,11 @@ from SALib.sample import morris as morris_sampler
 from SALib.sample import saltelli as sobol_sampler
 
 from nhra_gt.domain.params import Params
+
+from .visualization.base import PlotConfig, save_figure
+from .visualization.sensitivity import plot_morris_tornado as new_plot_morris_tornado
+from .visualization.sensitivity import plot_sobol_heatmap as new_plot_sobol_heatmap
+from .visualization.sensitivity import plot_sobol_indices as new_plot_sobol_indices
 
 
 def generate_sensitivity_summary(morris_path: Path, sobol_path: Path, output_path: Path) -> None:
@@ -67,11 +73,6 @@ def get_parameter_lineage() -> dict[str, str]:
 
 def plot_sobol_indices(si: dict[str, Any], output_path: Path) -> None:
     """Generates Sobol first-order and total sensitivity plots."""
-    import warnings
-
-    from .visualization.base import PlotConfig, save_figure
-    from .visualization.sensitivity import plot_sobol_indices as new_plot_sobol_indices
-
     warnings.warn(
         "plot_sobol_indices is deprecated, use nhra_gt.visualization.sensitivity instead",
         DeprecationWarning,
@@ -90,11 +91,6 @@ def plot_sobol_indices(si: dict[str, Any], output_path: Path) -> None:
 
 def plot_sobol_heatmap(si: dict[str, Any], output_path: Path) -> None:
     """Generates a heatmap of second-order interaction indices (S2)."""
-    import warnings
-
-    from .visualization.base import PlotConfig, save_figure
-    from .visualization.sensitivity import plot_sobol_heatmap as new_plot_sobol_heatmap
-
     warnings.warn(
         "plot_sobol_heatmap is deprecated, use nhra_gt.visualization.sensitivity instead",
         DeprecationWarning,
@@ -108,11 +104,6 @@ def plot_sobol_heatmap(si: dict[str, Any], output_path: Path) -> None:
 
 def plot_morris_tornado(df: pd.DataFrame, output_path: Path) -> None:
     """Generates a Morris Tornado plot (mu_star ranking)."""
-    import warnings
-
-    from .visualization.base import PlotConfig, save_figure
-    from .visualization.sensitivity import plot_morris_tornado as new_plot_morris_tornado
-
     warnings.warn(
         "plot_morris_tornado is deprecated, use nhra_gt.visualization.sensitivity instead",
         DeprecationWarning,
@@ -146,7 +137,8 @@ def get_salib_problem(
 
     for name in param_names:
         if name not in defaults:
-            raise ValueError(f"Parameter '{name}' not found in Params dataclass.")
+            message = f"Parameter '{name}' not found in Params dataclass."
+            raise ValueError(message)
 
         problem_names.append(name)
 
@@ -284,7 +276,8 @@ def export_sobol_s2_to_csv(si: dict[str, Any], output_path: Path) -> None:
     s2 = si["S2"]
     # S2 is often a 2D array in modern SALib or a dict of pairs
     # If it's a 2D array, we can directly create a DF
-    if isinstance(s2, np.ndarray) and s2.ndim == 2:
+    matrix_dimensions = 2
+    if isinstance(s2, np.ndarray) and s2.ndim == matrix_dimensions:
         df = pd.DataFrame(s2, index=names, columns=names)
         df.to_csv(output_path)
     else:
@@ -317,7 +310,7 @@ def run_psa(
         samples[name] = sampler(n_samples)
 
     # Create param array for model_func
-    # shape: (n_samples, n_vars)
+    # Rows are samples, and columns are model inputs.
     param_matrix = np.column_stack([samples[name] for name in param_names])
 
     # Evaluate

@@ -27,7 +27,8 @@ def generate_payoff_matrix_figure(game: GameDefinition) -> go.Figure:
     def fmt_cell(row: int, col: int) -> str:
         try:
             val = matrix[row][col]
-            if isinstance(val, (list, tuple)) and len(val) == 2:
+            payoff_pair_size = 2
+            if isinstance(val, (list, tuple)) and len(val) == payoff_pair_size:
                 # Use a cleaner (X, Y) notation which is standard for game theory matrices
                 return f"({val[0]}, {val[1]})"
             return str(val)

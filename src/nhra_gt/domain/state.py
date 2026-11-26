@@ -11,6 +11,7 @@ from __future__ import annotations
 import logging
 from dataclasses import field, replace
 from enum import IntEnum
+from importlib import import_module
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +19,7 @@ import jax.numpy as jnp
 import pandas as pd
 import yaml
 
+import nhra_gt.engine
 from nhra_gt._pytree import PytreeRecord, pytree_dataclass
 
 from .params_generated import ParamsGenerated
@@ -372,8 +374,6 @@ class ParamsJax(ParamsGenerated):
     @classmethod
     def from_yaml(cls, path: Path | str) -> ParamsJax:
         """Loads parameters from a YAML file via Pydantic for validation."""
-        from .params import Params
-
         with open(path) as f:
             data = yaml.safe_load(f)
 
@@ -386,7 +386,9 @@ class ParamsJax(ParamsGenerated):
                 flat_data[k] = v
 
         # 2. Use Pydantic to validate and handle nesting
-        p_pydantic = Params.from_flat_dict(flat_data)
+        # YAML validation depends on the JAX records defined in this module.
+        schema = import_module("nhra_gt.domain.params")
+        p_pydantic = schema.Params.from_flat_dict(flat_data)
         return p_pydantic.to_params_jax()
 
 
@@ -414,7 +416,8 @@ class BaselineProvider:
             df_pd = pd.read_csv(path)
             missing = required - set(df_pd.columns)
             if missing:
-                raise ValueError(f"Spine missing required columns: {sorted(missing)}")
+                message = f"Spine missing required columns: {sorted(missing)}"
+                raise ValueError(message)
             return EconomicSpineJax(
                 years=jnp.array(df_pd["year"].to_numpy().astype(jnp.int32)),
                 nep_per_nwau=jnp.array(df_pd["nep_per_nwau"].to_numpy()),
@@ -424,7 +427,8 @@ class BaselineProvider:
         df = pl.read_csv(path)
         missing = required - set(df.columns)
         if missing:
-            raise ValueError(f"Spine missing required columns: {sorted(missing)}")
+            message = f"Spine missing required columns: {sorted(missing)}"
+            raise ValueError(message)
         return EconomicSpineJax(
             years=jnp.array(df["year"].to_numpy().astype(jnp.int32)),
             nep_per_nwau=jnp.array(df["nep_per_nwau"].to_numpy()),
@@ -434,8 +438,6 @@ class BaselineProvider:
     @classmethod
     def get_baseline(cls, config_path: str = "configs/defaults.yaml") -> tuple[ParamsJax, StateJax]:
         """Retrieves baseline parameters and state for a new simulation run."""
-        from nhra_gt.engine_jax import baseline_state_jax
-
         params = ParamsJax.from_yaml(config_path)
         # Check if spine exists
         spine_path = Path("data/calibration/historical_normalized.csv")
@@ -447,7 +449,7 @@ class BaselineProvider:
             else:
                 params = params.replace(spine=spine)
 
-        state = baseline_state_jax(2025, params)
+        state = nhra_gt.engine.baseline_state(2025, params)
         return params, state
 
 

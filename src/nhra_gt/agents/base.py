@@ -13,6 +13,8 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
+from nhra_gt.domain.state import SystemModeJax
+
 if TYPE_CHECKING:
     from nhra_gt.engine import Params, State
 
@@ -54,25 +56,27 @@ class BriefGenerator:
         # Get values from first jurisdiction if available, fallback to defaults
         eff_gap = state.reported_efficiency_gap
         eff_share = (
-            state.jurisdictions[0].effective_cth_share
-            if hasattr(state, "jurisdictions") and state.jurisdictions
+            float(np.ravel(state.jurisdictions.effective_cth_share)[0])
+            if state.jurisdictions is not None
             else 0.38
         )
         pol_cap = (
-            state.jurisdictions[0].political_capital
-            if hasattr(state, "jurisdictions") and state.jurisdictions
+            float(np.ravel(state.jurisdictions.political_capital)[0])
+            if state.jurisdictions is not None
             else 1.0
         )
         eq_idx = (
-            state.jurisdictions[0].equity_index
-            if hasattr(state, "jurisdictions") and state.jurisdictions
+            float(np.ravel(state.jurisdictions.equity_index)[0])
+            if state.jurisdictions is not None
             else 1.0
         )
 
-        brief = f"""
+        mode = SystemModeJax(int(state.system_mode)).name.lower()
+
+        return f"""
 ### NHRA POLICY BRIEF - {role.upper()}
 **Current Year:** {state.year}, Month {state.month}
-**System Mode:** {state.system_mode.value.upper()} - {mode_desc.get(state.system_mode.value, "")}
+**System Mode:** {mode.upper()} - {mode_desc.get(mode, "")}
 
 **Key Metrics:**
 - System Pressure: {state.pressure:.2f} (Base: 1.0)
@@ -91,7 +95,6 @@ class BriefGenerator:
 **Decision Required:**
 You must choose strategies for the current period.
 """
-        return brief
 
 
 class AuditorValidator:
@@ -198,8 +201,8 @@ class JurisdictionAgent(Agent):
 
         # Get bailout expectation from first jurisdiction
         bailout_exp = (
-            state.jurisdictions[0].bailout_expectation
-            if hasattr(state, "jurisdictions") and state.jurisdictions
+            float(np.ravel(state.jurisdictions.bailout_expectation)[0])
+            if state.jurisdictions is not None
             else 0.0
         )
 

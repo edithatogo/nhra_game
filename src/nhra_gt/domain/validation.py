@@ -44,7 +44,8 @@ def calculate_hit_rate(actual: np.ndarray[Any, Any], predicted: np.ndarray[Any, 
 
     Percentage of steps where predicted change direction matches actual change direction.
     """
-    if len(actual) < 2:
+    minimum_observations = 2
+    if len(actual) < minimum_observations:
         return 1.0
 
     actual_diff = np.diff(actual)
@@ -172,7 +173,8 @@ class RecursiveBacktest:
         2. Running the model for test_df years.
         3. Comparing results.
         """
-        # For now, we use default params (calibration integration is a separate task)
+        # The training window is reserved for calibration. This baseline uses defaults.
+        del train_df
         p = Params()
 
         test_years = test_df["year"].tolist()

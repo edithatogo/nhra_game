@@ -50,8 +50,8 @@ class IHACPAClient:
                                 nep_val = row_vals[i + 1]
                                 if isinstance(nep_val, int | float):
                                     return float(nep_val)
-        except Exception as e:
-            logger.error(f"Error parsing {file_path}: {e}")
+        except Exception:
+            logger.exception("Error parsing %s", file_path)
         return None
 
     def fetch_nep_series(self) -> pd.DataFrame:

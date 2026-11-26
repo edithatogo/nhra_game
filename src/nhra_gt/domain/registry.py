@@ -7,8 +7,12 @@ data and that multiple data sources are resolved consistently.
 
 from __future__ import annotations
 
+import math
 from pathlib import Path
 from typing import Any, cast
+
+import pandas as pd
+import yaml
 
 try:
     import polars as pl
@@ -37,9 +41,11 @@ class EvidenceEntry(BaseModel):
     def validate_ci_bounds(self) -> EvidenceEntry:
         """Ensures CI bounds are consistent with the mean."""
         if self.lower_ci is not None and self.lower_ci > self.mean:
-            raise ValueError("lower_ci must be <= mean")
+            message = "lower_ci must be <= mean"
+            raise ValueError(message)
         if self.upper_ci is not None and self.upper_ci < self.mean:
-            raise ValueError("upper_ci must be >= mean")
+            message = "upper_ci must be >= mean"
+            raise ValueError(message)
         return self
 
     def get_sigma(self) -> float | None:
@@ -110,8 +116,6 @@ class EvidenceRegistry(BaseModel):
     def sync_to_targets(self, targets_path: Path | str) -> None:
         """Updates the calibration targets CSV with promoted evidence."""
         if pl is None:
-            import pandas as pd
-
             df = pd.read_csv(targets_path)
 
             best_entries: list[dict[str, Any]] = []
@@ -165,8 +169,6 @@ class EvidenceRegistry(BaseModel):
 
     def promote_all_to_yaml(self, config_path: Path | str) -> None:
         """Overwrites the YAML config defaults with the latest 'best' evidence from the registry."""
-        import yaml
-
         with open(config_path) as f:
             config = yaml.safe_load(f)
 
@@ -201,11 +203,8 @@ class EvidenceRegistry(BaseModel):
         """Persists the registry to a CSV file."""
         flat_data = []
         for p_entries in self.entries.values():
-            for e in p_entries:
-                flat_data.append(e.model_dump())
+            flat_data.extend(entry.model_dump() for entry in p_entries)
         if pl is None:
-            import pandas as pd
-
             pd.DataFrame(flat_data).to_csv(path, index=False)
             return
 
@@ -216,10 +215,6 @@ class EvidenceRegistry(BaseModel):
         """Loads a registry from a CSV file."""
         registry = cls()
         if pl is None:
-            import math
-
-            import pandas as pd
-
             df_pd = pd.read_csv(path)
             for row in df_pd.to_dict(orient="records"):
                 lower_ci = row.get("lower_ci")

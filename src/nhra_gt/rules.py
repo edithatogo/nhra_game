@@ -10,6 +10,9 @@ from __future__ import annotations
 from dataclasses import replace
 from typing import TYPE_CHECKING, Any
 
+import numpy as np
+from jax import Array
+
 from nhra_gt._pytree import PytreeRecord, pytree_dataclass
 
 try:
@@ -38,7 +41,7 @@ class CapRule(PytreeRecord):
     cap_limit: float = 0.065
     soft_multiplier: float = 0.5
 
-    def apply(self, nwau_growth: float) -> float:
+    def apply(self, nwau_growth: float) -> Array | np.ndarray:
         """Calculate the cap effect on funding share.
 
         Args:
@@ -84,7 +87,7 @@ class AuditRule(PytreeRecord):
     threshold_penalty_high: float = 3.0
     threshold_penalty_low: float = 0.1
 
-    def evaluate(self, coding_intensity: float, active_pressure: float) -> float:
+    def evaluate(self, coding_intensity: float, active_pressure: float) -> Array | np.ndarray:
         """Calculate the probability of detection or audit penalty."""
 
         # Proportional logic
@@ -118,7 +121,7 @@ class EligibilityRule(PytreeRecord):
     venue_shift_impact: float = 0.10
     eligibility_abf_share_min: float = 0.5
 
-    def get_abf_share(self, venue_shift_strat: float) -> float:
+    def get_abf_share(self, venue_shift_strat: float) -> Array | np.ndarray:
         """Determines the share of activity that remains in ABF."""
         base_abf_share = 1.0 - self.block_funding_base
         # If strategy is 'Shift' (1.0), we reduce ABF share (moving activity to Block)
@@ -141,7 +144,9 @@ class ReconciliationRule(PytreeRecord):
     bailout_increment: float = 0.05
     safety_net_generosity: float = 1.5
 
-    def calculate_bailout(self, current_pressure: float, month_growth_factor: float) -> float:
+    def calculate_bailout(
+        self, current_pressure: float, month_growth_factor: float
+    ) -> Array | np.ndarray:
         """Calculates the bailout amount based on system pressure."""
         bail_inc = jnp.where(
             current_pressure > self.safety_net_threshold,

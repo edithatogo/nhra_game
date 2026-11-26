@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
-
-if TYPE_CHECKING:
-    pass
+from importlib.util import find_spec
+from typing import Any, Protocol, runtime_checkable
 
 import numpy as np
 from numpy.typing import NDArray
@@ -16,15 +14,7 @@ FloatArray = NDArray[np.float64]
 # Standard numpy-based int array
 IntArray = NDArray[np.int_]
 
-# Optional: jaxtyping support if available
-try:
-    from jaxtyping import Array, Float, Int
-
-    has_jaxtyping = True
-except ImportError:
-    has_jaxtyping = False
-
-HAS_JAXTYPING = has_jaxtyping
+HAS_JAXTYPING = find_spec("jaxtyping") is not None
 
 # --- Game Theory Protocols ---
 

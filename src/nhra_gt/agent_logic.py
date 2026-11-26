@@ -7,6 +7,7 @@ JAX-compatible and differentiable.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from typing import Any
 
 from nhra_gt._pytree import PytreeRecord, pytree_dataclass
@@ -59,20 +60,27 @@ class AgentWeights(PytreeRecord):
 
 
 @beartype
-def lhn_utility(
-    pressure: Any,
-    revenue: Any,
-    cost: Any,
-    is_shifting: bool,
-    delta_target_capacity: Any,
-    weights: AgentWeights,
-) -> Any:
+@dataclass(frozen=True)
+class _LhnAdjustment:
+    """Workforce and incentive inputs to LHN utility."""
+
+    is_shifting: bool
+    delta_target_capacity: Any
+    weights: AgentWeights
+
+
+@beartype
+def lhn_utility(pressure: Any, revenue: Any, cost: Any, *options: Any, **named_options: Any) -> Any:
     """Utility for the LHN Agent.
 
     Prioritizes minimizing ramping (pressure) and maximizing net revenue.
     Ramping penalty is non-linear (squared) to reflect political sensitivity.
     Inertia penalty discourages rapid target oscillations.
     """
+    settings = _LhnAdjustment(*options, **named_options)
+    is_shifting = settings.is_shifting
+    delta_target_capacity = settings.delta_target_capacity
+    weights = settings.weights
     ramping_cost = weights.ramping_penalty * jnp.square(jnp.maximum(0, pressure - 1.0))
     net_revenue = weights.nwau_utility * revenue - weights.cost_disutility * cost
     shift_cost = jnp.where(is_shifting, weights.shifting_penalty, 0.0)
