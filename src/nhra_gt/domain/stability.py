@@ -13,6 +13,8 @@ import pandas as pd
 from nhra_gt.subgames.games import GameParams, cost_shifting_game
 from nhra_gt.subgames.nash import all_nash, select_equilibrium
 
+_MIN_POLYGON_VERTICES = 3
+
 
 def analyze_cost_shifting_stability(
     intensities: np.ndarray[Any, Any], pressures: np.ndarray[Any, Any], efficiency_gap: float = 0.20
@@ -62,7 +64,7 @@ def calculate_hysteresis_area(x: np.ndarray, y: np.ndarray) -> float:
 
     A larger area indicates greater system lag or inertia in responding to demand shocks.
     """
-    if len(x) < 3:
+    if len(x) < _MIN_POLYGON_VERTICES:
         return 0.0
     return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
 

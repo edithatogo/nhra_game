@@ -13,13 +13,12 @@ class Edge(TypedDict):
 
 def extract_visual_trace(content: str) -> list[Edge]:
     """Extract influence edges from Mermaid graph definitions."""
-    edges = []
     # Match: A --> B or A -- "label" --> B
     # Simplified regex for Mermaid flowchart syntax
     pattern = r"([A-Za-z0-9_]+)\s*-+>\s*([A-Za-z0-9_]+)"
-    matches = re.finditer(pattern, content)
-    for m in matches:
-        edges.append({"source": m.group(1), "target": m.group(2)})
+    edges: list[Edge] = [
+        {"source": m.group(1), "target": m.group(2)} for m in re.finditer(pattern, content)
+    ]
 
     # Also check for Graphviz style: "Node A" -> "Node B"
     if not edges:

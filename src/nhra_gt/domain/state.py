@@ -2,21 +2,25 @@
 
 This module defines the data structures used to represent the state of the system
 at various levels of granularity (LHN, Jurisdiction, Global). It uses
-`flax.struct.dataclass` to ensure compatibility with JAX transformations
+registered frozen dataclasses to ensure compatibility with JAX transformations
 like `jit`, `vmap`, and `grad`.
 """
 
 from __future__ import annotations
 
 import logging
+from dataclasses import field, replace
 from enum import IntEnum
+from importlib import import_module
 from pathlib import Path
 from typing import Any
 
 import jax.numpy as jnp
 import pandas as pd
 import yaml
-from flax import struct
+
+import nhra_gt.engine
+from nhra_gt._pytree import PytreeRecord, pytree_dataclass
 
 from .params_generated import ParamsGenerated
 
@@ -37,8 +41,8 @@ class SystemModeJax(IntEnum):
     RECOVERY = 3
 
 
-@struct.dataclass
-class EconomicSpineJax:
+@pytree_dataclass
+class EconomicSpineJax(PytreeRecord):
     """JAX-compatible container for economic indices."""
 
     years: jnp.ndarray  # int32[N]
@@ -46,8 +50,8 @@ class EconomicSpineJax:
     wpi_health_index: jnp.ndarray  # float64[N]
 
 
-@struct.dataclass
-class MetricsJax:
+@pytree_dataclass
+class MetricsJax(PytreeRecord):
     """Accumulated metrics for policy optimization and objective functions."""
 
     cumulative_pressure: float = 0.0
@@ -67,11 +71,11 @@ class MetricsJax:
 
     def replace(self, **kwargs: Any) -> MetricsJax:
         """Create a new instance with updated fields."""
-        return struct.replace(self, **kwargs)
+        return replace(self, **kwargs)
 
 
-@struct.dataclass
-class OperationalParamsJax:
+@pytree_dataclass
+class OperationalParamsJax(PytreeRecord):
     """Hidden coefficients for system dynamics (JAX version)."""
 
     wf_drain_max: float = 0.2
@@ -154,8 +158,8 @@ class OperationalParamsJax:
     # Auditor
 
 
-@struct.dataclass
-class BehavioralParamsJax:
+@pytree_dataclass
+class BehavioralParamsJax(PytreeRecord):
     """Hidden coefficients for subgame payoffs (JAX version)."""
 
     # Definition Game
@@ -305,8 +309,8 @@ class BehavioralParamsJax:
     comp_cost_slope: float = 0.2
 
 
-@struct.dataclass
-class PolicyParamsJax:
+@pytree_dataclass
+class PolicyParamsJax(PytreeRecord):
     """Hidden coefficients for rule logic (JAX version)."""
 
     cap_soft_multiplier: float = 0.5
@@ -340,7 +344,7 @@ class PolicyParamsJax:
     iv_audit_relief_burden_max: float = 0.6
 
 
-@struct.dataclass
+@pytree_dataclass
 class ParamsJax(ParamsGenerated):
     """JAX-compatible simulation parameters.
 
@@ -349,29 +353,27 @@ class ParamsJax(ParamsGenerated):
     """
 
     # Grouped coefficients
-    ops: OperationalParamsJax = struct.field(default_factory=OperationalParamsJax)
-    behavior: BehavioralParamsJax = struct.field(default_factory=BehavioralParamsJax)
-    policy: PolicyParamsJax = struct.field(default_factory=PolicyParamsJax)
+    ops: OperationalParamsJax = field(default_factory=OperationalParamsJax)
+    behavior: BehavioralParamsJax = field(default_factory=BehavioralParamsJax)
+    policy: PolicyParamsJax = field(default_factory=PolicyParamsJax)
 
     # Modular Rules (JAX-compatible PyTrees)
-    cap_rule: Any = struct.field(default_factory=lambda: None)
-    audit_rule: Any = struct.field(default_factory=lambda: None)
-    eligibility_rule: Any = struct.field(default_factory=lambda: None)
-    reconciliation_rule: Any = struct.field(default_factory=lambda: None)
+    cap_rule: Any = field(default_factory=lambda: None)
+    audit_rule: Any = field(default_factory=lambda: None)
+    eligibility_rule: Any = field(default_factory=lambda: None)
+    reconciliation_rule: Any = field(default_factory=lambda: None)
 
     # Economic Spine (optional JAX arrays)
     spine: EconomicSpineJax | None = None
-    economic_spine: str | None = struct.field(default=None, pytree_node=False)  # alias/placeholder
+    economic_spine: str | None = field(default=None, metadata={"static": True})  # alias/placeholder
 
     def replace(self, **kwargs: Any) -> ParamsJax:
         """Flax-compatible field replacement."""
-        return struct.replace(self, **kwargs)
+        return replace(self, **kwargs)
 
     @classmethod
     def from_yaml(cls, path: Path | str) -> ParamsJax:
         """Loads parameters from a YAML file via Pydantic for validation."""
-        from .params import Params
-
         with open(path) as f:
             data = yaml.safe_load(f)
 
@@ -384,7 +386,9 @@ class ParamsJax(ParamsGenerated):
                 flat_data[k] = v
 
         # 2. Use Pydantic to validate and handle nesting
-        p_pydantic = Params.from_flat_dict(flat_data)
+        # YAML validation depends on the JAX records defined in this module.
+        schema = import_module("nhra_gt.domain.params")
+        p_pydantic = schema.Params.from_flat_dict(flat_data)
         return p_pydantic.to_params_jax()
 
 
@@ -412,7 +416,8 @@ class BaselineProvider:
             df_pd = pd.read_csv(path)
             missing = required - set(df_pd.columns)
             if missing:
-                raise ValueError(f"Spine missing required columns: {sorted(missing)}")
+                message = f"Spine missing required columns: {sorted(missing)}"
+                raise ValueError(message)
             return EconomicSpineJax(
                 years=jnp.array(df_pd["year"].to_numpy().astype(jnp.int32)),
                 nep_per_nwau=jnp.array(df_pd["nep_per_nwau"].to_numpy()),
@@ -422,7 +427,8 @@ class BaselineProvider:
         df = pl.read_csv(path)
         missing = required - set(df.columns)
         if missing:
-            raise ValueError(f"Spine missing required columns: {sorted(missing)}")
+            message = f"Spine missing required columns: {sorted(missing)}"
+            raise ValueError(message)
         return EconomicSpineJax(
             years=jnp.array(df["year"].to_numpy().astype(jnp.int32)),
             nep_per_nwau=jnp.array(df["nep_per_nwau"].to_numpy()),
@@ -432,8 +438,6 @@ class BaselineProvider:
     @classmethod
     def get_baseline(cls, config_path: str = "configs/defaults.yaml") -> tuple[ParamsJax, StateJax]:
         """Retrieves baseline parameters and state for a new simulation run."""
-        from nhra_gt.engine_jax import baseline_state_jax
-
         params = ParamsJax.from_yaml(config_path)
         # Check if spine exists
         spine_path = Path("data/calibration/historical_normalized.csv")
@@ -445,12 +449,12 @@ class BaselineProvider:
             else:
                 params = params.replace(spine=spine)
 
-        state = baseline_state_jax(2025, params)
+        state = nhra_gt.engine.baseline_state(2025, params)
         return params, state
 
 
-@struct.dataclass
-class LhnState:
+@pytree_dataclass
+class LhnState(PytreeRecord):
     """Granular state for a single Local Hospital Network (LHN).
 
     Represents the operational and strategic status of a hospital cluster,
@@ -472,11 +476,11 @@ class LhnState:
 
     def replace(self, **kwargs: Any) -> LhnState:
         """Flax-compatible field replacement."""
-        return struct.replace(self, **kwargs)
+        return replace(self, **kwargs)
 
 
-@struct.dataclass
-class JurisdictionState:
+@pytree_dataclass
+class JurisdictionState(PytreeRecord):
     """Granular state for a single Jurisdiction (State/Territory).
 
     Aggregates LHNs and manages jurisdictional-level fiscal and political state.
@@ -490,17 +494,15 @@ class JurisdictionState:
     efficiency_gap: float = 0.10
     equity_index: float = 1.0
     total_block_revenue: float = 0.0
-    lhn_states: LhnState = struct.field(
-        default_factory=lambda: LhnState(0)
-    )  # Vectorized in practice
+    lhn_states: LhnState = field(default_factory=lambda: LhnState(0))  # Vectorized in practice
 
     def replace(self, **kwargs: Any) -> JurisdictionState:
         """Flax-compatible field replacement."""
-        return struct.replace(self, **kwargs)
+        return replace(self, **kwargs)
 
 
-@struct.dataclass
-class StateJax:
+@pytree_dataclass
+class StateJax(PytreeRecord):
     """JAX-compatible simulation state (Global Orchestrator).
 
     The root PyTree for the entire simulation state. It contains both global
@@ -535,8 +537,8 @@ class StateJax:
     jurisdiction_id: Any = 0
 
     # Per-LHN (flat) state used by tests + simple vmaps
-    lhn_pressure: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(5))
-    lhn_nwau: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(5))
+    lhn_pressure: jnp.ndarray = field(default_factory=lambda: jnp.zeros(5))
+    lhn_nwau: jnp.ndarray = field(default_factory=lambda: jnp.zeros(5))
 
     # Hierarchical Entities (optional richer representation)
     jurisdictions: JurisdictionState | None = None
@@ -548,12 +550,12 @@ class StateJax:
 
     # Lags & Measurement
     # Buffers store up to 12 months of history
-    lag_buffer_pressure: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
-    lag_buffer_occupancy: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
-    lag_buffer_within4: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
-    lag_buffer_nwau: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
-    lag_buffer_efficiency_gap: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
-    lag_buffer_coding: jnp.ndarray = struct.field(default_factory=lambda: jnp.zeros(12))
+    lag_buffer_pressure: jnp.ndarray = field(default_factory=lambda: jnp.zeros(12))
+    lag_buffer_occupancy: jnp.ndarray = field(default_factory=lambda: jnp.zeros(12))
+    lag_buffer_within4: jnp.ndarray = field(default_factory=lambda: jnp.zeros(12))
+    lag_buffer_nwau: jnp.ndarray = field(default_factory=lambda: jnp.zeros(12))
+    lag_buffer_efficiency_gap: jnp.ndarray = field(default_factory=lambda: jnp.zeros(12))
+    lag_buffer_coding: jnp.ndarray = field(default_factory=lambda: jnp.zeros(12))
 
     # Reported values (lagged) available to agents
     reported_pressure: float = 1.0
@@ -571,11 +573,11 @@ class StateJax:
     prob_ed: float = 0.5
 
     # ... (other orchestrator state)
-    metrics: MetricsJax = struct.field(default_factory=MetricsJax)
+    metrics: MetricsJax = field(default_factory=MetricsJax)
 
     def replace(self, **kwargs: Any) -> StateJax:
         """Flax-compatible field replacement."""
-        return struct.replace(self, **kwargs)
+        return replace(self, **kwargs)
 
 
 # Aliases for hierarchical modeling

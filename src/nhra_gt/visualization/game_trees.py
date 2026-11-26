@@ -4,12 +4,14 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from pathlib import Path
-from typing import Any
+from typing import Any, NamedTuple
+
+import numpy as np
 
 try:
-    import pygambit as gambit
+    from pygambit.gambit import Game
 except ImportError:
-    gambit = None
+    Game = None
 
 try:
     import graphviz
@@ -17,32 +19,29 @@ except ImportError:
     graphviz = None
 
 
-def _require_pygambit() -> None:
-    if gambit is None:
-        raise ImportError("pygambit is required for game tree visualization.")
+class _GameTreeLabels(NamedTuple):
+    """Labels for players, actions and the game."""
 
-
-def _require_graphviz() -> None:
-    if graphviz is None:
-        raise ImportError("graphviz is required for game tree rendering.")
+    row_player_label: str = "Commonwealth"
+    col_player_label: str = "State"
+    row_action_labels: Sequence[str] | None = None
+    col_action_labels: Sequence[str] | None = None
+    title: str = "Extensive Form Game"
 
 
 def create_extensive_game_from_matrix(
-    u_row: Any,
-    u_col: Any,
-    row_player_label: str = "Commonwealth",
-    col_player_label: str = "State",
-    row_action_labels: Sequence[str] | None = None,
-    col_action_labels: Sequence[str] | None = None,
-    title: str = "Extensive Form Game",
+    u_row: Any, u_col: Any, *options: Any, **named_options: Any
 ) -> Any:
     """Constructs a 2-player extensive form game from payoff matrices.
 
     Sequence: Player 1 moves, then Player 2 moves (perfect information).
     """
-    _require_pygambit()
-
-    import numpy as np
+    row_player_label, col_player_label, row_action_labels, col_action_labels, title = (
+        _GameTreeLabels(*options, **named_options)
+    )
+    if Game is None:
+        message = "pygambit is required for game tree visualization."
+        raise ImportError(message)
 
     u_row = np.array(u_row)
     u_col = np.array(u_col)
@@ -54,7 +53,7 @@ def create_extensive_game_from_matrix(
     if col_action_labels is None:
         col_action_labels = [f"C{j + 1}" for j in range(n_col_actions)]
 
-    g = gambit.Game.new_tree(title=title)
+    g = Game.new_tree(title=title)
 
     # Add players
     p1 = g.add_player(row_player_label)
@@ -64,26 +63,25 @@ def create_extensive_game_from_matrix(
     g.append_move(g.root, p1, list(row_action_labels))
 
     # For each branch of P1, add P2's moves
-    for i in range(n_row_actions):
-        p1_node = g.root.children[i]
+    for i, p1_node in enumerate(g.root.children):
         g.append_move(p1_node, p2, list(col_action_labels))
 
         # Set Outcomes/Payoffs for leaves of this node
-        for j in range(n_col_actions):
-            leaf = p1_node.children[j]
+        for j, leaf in enumerate(p1_node.children):
             payoffs = [float(u_row[i, j]), float(u_col[i, j])]
-            outcome = g.add_outcome(payoffs)
+            outcome = g.add_outcome(
+                label=f"{row_action_labels[i]} / {col_action_labels[j]}", payoffs=payoffs
+            )
             g.set_outcome(leaf, outcome)
 
     return g
 
 
-def render_tree_static(game: Any, output_path: Path | str) -> None:
-    """Renders the game tree to an SVG/PNG using Graphviz.
-
-    Traverses the PyGambit tree and builds a Graphviz Digraph.
-    """
-    _require_graphviz()
+def game_tree_graph(game: Any) -> Any:
+    """Build a Graphviz graph from the PyGambit tree without writing files."""
+    if graphviz is None:
+        message = "graphviz is required for game tree rendering."
+        raise ImportError(message)
 
     dot = graphviz.Digraph(comment=game.title)
     dot.attr(rankdir="LR")
@@ -146,7 +144,12 @@ def render_tree_static(game: Any, output_path: Path | str) -> None:
                 edge_label = child.prior_action.label if child.prior_action else ""
                 dot.edge(nid, cid, label=f" {edge_label} ")
 
-    # Output
+    return dot
+
+
+def render_tree_static(game: Any, output_path: Path | str) -> None:
+    """Render the game tree to SVG and PNG using Graphviz."""
+    dot = game_tree_graph(game)
     out_base = Path(output_path)
     if out_base.suffix:
         out_base = out_base.with_suffix("")

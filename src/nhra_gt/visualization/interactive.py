@@ -5,9 +5,12 @@ Dynamic charts for risk, pressure, stability, and workforce dynamics.
 
 from __future__ import annotations
 
+from typing import Any, NamedTuple
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 from .config import PlotConfig
 
@@ -142,8 +145,6 @@ def plot_strategic_stability(
     if config is None:
         config = PlotConfig()
 
-    from plotly.subplots import make_subplots
-
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     # 1. Strategic Ambiguity (Number of Equilibria)
@@ -258,17 +259,23 @@ def plot_stability_heatmap(
     return fig
 
 
-def plot_vfi_waterfall(
-    nominal_share: float,
-    indexation_loss: float,
-    cap_loss: float,
-    audit_loss: float,
-    adjustment_loss: float,
-    effective_share: float,
-    title: str = "VFI Funding Leakage (Waterfall)",
-    config: PlotConfig | None = None,
-) -> go.Figure:
+class _VfiWaterfallInputs(NamedTuple):
+    """Funding adjustments and display settings for the VFI waterfall."""
+
+    indexation_loss: float
+    cap_loss: float
+    audit_loss: float
+    adjustment_loss: float
+    effective_share: float
+    title: str = "VFI Funding Leakage (Waterfall)"
+    config: PlotConfig | None = None
+
+
+def plot_vfi_waterfall(nominal_share: float, *options: Any, **named_options: Any) -> go.Figure:
     """Visualises the 'leakage' from nominal funding to effective share."""
+    indexation_loss, cap_loss, audit_loss, adjustment_loss, effective_share, title, config = (
+        _VfiWaterfallInputs(*options, **named_options)
+    )
     if config is None:
         config = PlotConfig()
 
@@ -345,7 +352,8 @@ def plot_phase_space(
 
     # Add directional arrows
     n_points = len(traj)
-    if n_points > 2:
+    interval_endpoints = 2
+    if n_points > interval_endpoints:
         # Add arrows at 25%, 50%, 75% marks
         for i in [n_points // 4, n_points // 2, (3 * n_points) // 4]:
             fig.add_annotation(
@@ -454,8 +462,6 @@ def plot_agreement_cycle(
     """Plots the 5-year Agreement cycle dynamics (Contribution Share vs. Clock)."""
     if config is None:
         config = PlotConfig()
-
-    from plotly.subplots import make_subplots
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 

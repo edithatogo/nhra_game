@@ -1,3 +1,5 @@
+"""Tests for outreach validate links."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -15,6 +17,7 @@ class _DummyResponse:
 
 
 def test_extract_urls_trims_punctuation() -> None:
+    """Check extract urls trims punctuation."""
     text = (
         "See https://example.com/foo). And [bar](https://example.com/bar), "
         "and https://doi.org/10.2307/1907266."
@@ -27,6 +30,7 @@ def test_extract_urls_trims_punctuation() -> None:
 
 @pytest.fixture
 def mini_series(tmp_path: Path) -> tuple[Path, Path, Path]:
+    """Create a minimal outreach series under the temporary directory."""
     root = tmp_path / "series"
     meta = root / "00_series_meta"
     meta.mkdir(parents=True)
@@ -67,6 +71,7 @@ bundles:
 
 
 def test_collect_series_urls_uses_latest_version(mini_series: tuple[Path, Path, Path]) -> None:
+    """Check collect series urls uses latest version."""
     root, manifest, library = mini_series
     urls = collect_series_urls(
         manifest_path=manifest, series_root=root, library_path=library, bundle_slug=None
@@ -77,7 +82,9 @@ def test_collect_series_urls_uses_latest_version(mini_series: tuple[Path, Path, 
 
 
 def test_validate_urls_classification(monkeypatch: pytest.MonkeyPatch) -> None:
-    def fake_get(url: str, *args, **kwargs):
+    """Check validate urls classification."""
+
+    def fake_get(url: str, *_args, **_kwargs):
         if "doi.org" in url:
             return _DummyResponse(302)
         if url.endswith("/ok"):

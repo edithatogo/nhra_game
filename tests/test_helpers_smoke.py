@@ -1,3 +1,7 @@
+"""Tests for helpers smoke."""
+
+import nhra_gt
+import nhra_gt.engine
 from nhra_gt.domain.params import Params
 from nhra_gt.helpers import (
     one_way_sensitivity,
@@ -5,9 +9,14 @@ from nhra_gt.helpers import (
     run_hybrid,
     scenario_summary,
 )
+from nhra_gt.interfaces import NormalFormGame, Strategy
+
+_EXPECTED_SCENARIOS = 2
+_PSA_SAMPLES = 10
 
 
 def test_run_hybrid_smoke():
+    """Check run hybrid smoke."""
     years = [2025, 2026, 2027]
     agg, freq = run_hybrid(years, Params(), seed=1, n_mc=30)
     assert not agg.empty
@@ -16,14 +25,16 @@ def test_run_hybrid_smoke():
 
 
 def test_scenario_summary_smoke():
+    """Check scenario summary smoke."""
     years = [2025, 2026, 2027]
     p = Params()
     scen = scenario_summary(years, p, {"baseline": [], "pooled": ["pooled"]}, seed=1, n_mc=20)
     assert {"scenario", "rr_mean", "pressure_mean"}.issubset(scen.columns)
-    assert len(scen) == 2
+    assert len(scen) == _EXPECTED_SCENARIOS
 
 
 def test_one_way_sensitivity_smoke():
+    """Check one way sensitivity smoke."""
     years = [2025, 2026, 2027]
     p = Params()
     out = one_way_sensitivity(years, p, {"noise_sd": [0.01, 0.03]}, seed=1, n_mc=15)
@@ -32,18 +43,15 @@ def test_one_way_sensitivity_smoke():
 
 
 def test_psa_smoke():
+    """Check probabilistic sensitivity analysis smoke."""
     years = [2025, 2026, 2027]
     p = Params()
     psa = probabilistic_sensitivity(years, p, ["pooled"], seed=1, n_param=10, n_mc=10)
-    assert len(psa) == 10
+    assert len(psa) == _PSA_SAMPLES
 
 
 def test_imports():
     """Verify that core modules can be imported."""
-    import nhra_gt
-    import nhra_gt.engine
-    from nhra_gt.interfaces import NormalFormGame, Strategy
-
     assert nhra_gt.__version__ is not None
     assert Strategy is not None
     assert NormalFormGame is not None

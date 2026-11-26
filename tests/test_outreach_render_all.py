@@ -1,3 +1,5 @@
+"""Tests for outreach render all."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -7,6 +9,7 @@ from scripts.outreach import render_all
 
 
 def test_render_mermaid_includes_puppeteer_config_when_present(tmp_path: Path, monkeypatch) -> None:
+    """Check render mermaid includes puppeteer config when present."""
     cfg_dir = tmp_path / "cfg"
     cfg_dir.mkdir()
     mermaid_cfg = cfg_dir / "mermaid-config.json"
@@ -16,7 +19,7 @@ def test_render_mermaid_includes_puppeteer_config_when_present(tmp_path: Path, m
 
     captured: dict[str, object] = {}
 
-    def fake_run(cmd, check, stdout, stderr, text):  # type: ignore[no-untyped-def]
+    def fake_run(cmd, **_kwargs):  # type: ignore[no-untyped-def]
         captured["cmd"] = cmd
         return type("R", (), {"returncode": 0})()
 
@@ -33,6 +36,7 @@ def test_render_mermaid_includes_puppeteer_config_when_present(tmp_path: Path, m
 
 
 def test_render_mermaid_omits_puppeteer_config_when_absent(tmp_path: Path, monkeypatch) -> None:
+    """Check render mermaid omits puppeteer config when absent."""
     cfg_dir = tmp_path / "cfg"
     cfg_dir.mkdir()
     mermaid_cfg = cfg_dir / "mermaid-config.json"
@@ -40,7 +44,7 @@ def test_render_mermaid_omits_puppeteer_config_when_absent(tmp_path: Path, monke
 
     captured: dict[str, object] = {}
 
-    def fake_run(cmd, check, stdout, stderr, text):  # type: ignore[no-untyped-def]
+    def fake_run(cmd, **_kwargs):  # type: ignore[no-untyped-def]
         captured["cmd"] = cmd
         return type("R", (), {"returncode": 0})()
 
@@ -56,6 +60,7 @@ def test_render_mermaid_omits_puppeteer_config_when_absent(tmp_path: Path, monke
 
 
 def test_pad_to_exact_size(tmp_path: Path) -> None:
+    """Check pad to exact size."""
     src = tmp_path / "src.png"
     dest = tmp_path / "dest.png"
     Image.new("RGB", (200, 100), color=(255, 255, 255)).save(src, format="PNG")

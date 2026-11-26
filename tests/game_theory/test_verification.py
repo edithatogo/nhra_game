@@ -1,3 +1,5 @@
+"""Tests for verification."""
+
 from nhra_gt.game_theory.content import get_populated_registry
 
 

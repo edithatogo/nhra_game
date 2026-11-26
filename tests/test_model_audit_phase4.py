@@ -1,4 +1,8 @@
+"""Tests for model audit phase4."""
+
 from pathlib import Path
+
+_MIN_ISSUE_COLUMNS = 6
 
 
 def _section_lines(content: str, section_header: str) -> list[str]:
@@ -27,14 +31,15 @@ def _table_rows(lines: list[str]) -> list[list[str]]:
 
 
 def test_issue_log_populated() -> None:
-    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    """Check issue log populated."""
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "## Issue Log")
     rows = _table_rows(section)
     assert rows, "Issue Log table should have entries (even if just one)"
 
     for row in rows:
-        if len(row) < 6:
+        if len(row) < _MIN_ISSUE_COLUMNS:
             continue
         issue_id = row[0]
         severity = row[1]

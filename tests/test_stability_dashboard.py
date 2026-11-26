@@ -1,8 +1,12 @@
+"""Tests for stability dashboard."""
+
 from __future__ import annotations
 
 import numpy as np
 
 from nhra_gt.domain.stability import analyze_cost_shifting_stability
+
+_EXPECTED_CYCLES = 2
 
 
 def test_analyze_cost_shifting_stability():
@@ -12,7 +16,7 @@ def test_analyze_cost_shifting_stability():
 
     df = analyze_cost_shifting_stability(intensities, pressures)
 
-    assert len(df) == 2
+    assert len(df) == _EXPECTED_CYCLES
     assert "outcome" in df.columns
     # With csi=0.0, pr=1.0, shift_gain=0.50. coop_gain=0.91. pr_cost=0.65.
     # Payoff I: 1.26. Payoff S: 1.15. -> I (0)

@@ -1,3 +1,5 @@
+"""Tests for visualization."""
+
 import plotly.graph_objects as go
 
 from nhra_gt.game_theory.registry import GameDefinition

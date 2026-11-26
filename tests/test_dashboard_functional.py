@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 from streamlit.testing.v1 import AppTest
 
@@ -9,9 +11,8 @@ from streamlit.testing.v1 import AppTest
 @pytest.fixture
 def app():
     """Fixture to load the dashboard app."""
-    # Assumes the dashboard script is at 'streamlit_app.py' in root
-    at = AppTest.from_file("streamlit_app.py", default_timeout=30)
-    return at
+    entrypoint = Path(__file__).resolve().parents[1] / "streamlit_app.py"
+    return AppTest.from_file(entrypoint, default_timeout=30)
 
 
 def test_app_loads(app):

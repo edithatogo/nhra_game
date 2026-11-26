@@ -1,4 +1,9 @@
+"""Tests for content."""
+
 from nhra_gt.game_theory.content import get_populated_registry
+
+_MIN_PLAYERS = 2
+_MIN_STRATEGIES = 2
 
 
 def test_core_games_existence():
@@ -20,8 +25,8 @@ def test_core_games_existence():
         game = registry.get(game_id)
         assert game is not None
         assert game.id == game_id
-        assert len(game.players) >= 2
-        assert len(game.strategies) >= 2
+        assert len(game.players) >= _MIN_PLAYERS
+        assert len(game.strategies) >= _MIN_STRATEGIES
         assert game.payoffs is not None
         assert game.nash_equilibrium != ""
         assert game.evidence_link != ""

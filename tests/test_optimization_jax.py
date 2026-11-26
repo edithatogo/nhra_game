@@ -1,3 +1,5 @@
+"""Tests for optimization JAX."""
+
 from __future__ import annotations
 
 import jax
@@ -6,11 +8,14 @@ import jax.numpy as jnp
 from nhra_gt.domain.state import Params, StateJax
 from nhra_gt.optimization_jax import optimize_policy_jax
 
+_LOWER_SOLUTION_BOUND = 0.35
+_UPPER_SOLUTION_BOUND = 0.55
+
 
 def test_policy_optimization():
     # Setup a simple optimization task
     # Minimize cumulative pressure by varying nominal_cth_share_target
-
+    """Check policy optimization."""
     p = Params()
 
     num_months = 12
@@ -36,7 +41,7 @@ def test_policy_optimization():
     strat = jnp.zeros((num_months, 11))
     key = jax.random.PRNGKey(42)
 
-    def objective(final_s, trajectory):
+    def objective(final_s, _trajectory):
         # We want to minimize final pressure
         return final_s.pressure
 
@@ -48,5 +53,5 @@ def test_policy_optimization():
     )
 
     assert res["success"]
-    assert 0.35 <= res["optimized_value"] <= 0.55
+    assert _LOWER_SOLUTION_BOUND <= res["optimized_value"] <= _UPPER_SOLUTION_BOUND
     print(f"Optimized Cth Share: {res['optimized_value']:.4f}")

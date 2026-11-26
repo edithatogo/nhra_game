@@ -1,21 +1,26 @@
+"""Tests for dynamic drift."""
+
 from __future__ import annotations
 
+import jax.numpy as jnp
 import numpy as np
-import pandas as pd
 import pytest
 
+from nhra_gt.domain.state import EconomicSpineJax, ParamsJax
 from nhra_gt.engine import Params, baseline_state, step
 
 
 def test_dynamic_drift_calculation():
-    """Verify that step() uses economic_spine when available."""
+    """Verify that step() uses the loaded economic spine when available."""
     # Create a spine with divergence
     # Year 2025 -> 2026: NEP stays same, WPI grows 10%
-    spine = pd.DataFrame(
-        {"year": [2025, 2026], "nep_per_nwau": [5000.0, 5000.0], "wpi_health_index": [100.0, 110.0]}
+    spine = EconomicSpineJax(
+        years=jnp.array([2025, 2026]),
+        nep_per_nwau=jnp.array([5000.0, 5000.0]),
+        wpi_health_index=jnp.array([100.0, 110.0]),
     )
 
-    p = Params(economic_spine=spine)
+    p = ParamsJax(spine=spine)
     s = baseline_state(start_year=2025, p=p)
 
     initial_gap = s.efficiency_gap

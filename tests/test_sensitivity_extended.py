@@ -1,3 +1,5 @@
+"""Tests for sensitivity extended."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -12,6 +14,8 @@ from nhra_gt.sensitivity import (
     plot_sobol_heatmap,
     run_psa,
 )
+
+_EXPECTED_SAMPLES = 10
 
 
 def test_generate_sensitivity_summary_logic(tmp_path):
@@ -54,6 +58,7 @@ def test_plot_sobol_heatmap_with_interactions(tmp_path):
 
 
 def dummy_model(params):
+    """Return synthetic model outputs for the sensitivity tests."""
     return float(np.sum(params))
 
 
@@ -65,7 +70,7 @@ def test_run_psa_flow():
     }
 
     df = run_psa(distributions, dummy_model, n_samples=10, n_procs=1)
-    assert len(df) == 10
+    assert len(df) == _EXPECTED_SAMPLES
     assert "outcome" in df.columns
     assert "p1" in df.columns
 

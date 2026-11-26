@@ -1,3 +1,5 @@
+"""Tests for sequential."""
+
 import numpy as np
 
 from nhra_gt.subgames.sequential import rubinstein_solution, stackelberg_solution
@@ -6,15 +8,16 @@ from nhra_gt.subgames.sequential import rubinstein_solution, stackelberg_solutio
 def test_rubinstein_symmetric_patience():
     # Both players have delta = 0.5
     # Share = 1 / (1 + 0.5) = 1 / 1.5 = 2/3 approx 0.666...
-    # Formula: (1 - d2) / (1 - d1*d2)
+    # Compare the first-mover share with the closed-form Rubinstein solution.
     # (1-0.5) / (1-0.25) = 0.5 / 0.75 = 2/3.
-
+    """Check rubinstein symmetric patience."""
     share_p1 = rubinstein_solution(pie_size=1.0, delta_1=0.5, delta_2=0.5)
     assert np.isclose(share_p1, 2 / 3)
 
 
 def test_rubinstein_extreme_patience():
     # As delta -> 1, share -> 0.5
+    """Check rubinstein extreme patience."""
     share_p1 = rubinstein_solution(1.0, 0.999, 0.999)
     assert np.isclose(share_p1, 0.5, atol=0.01)
 
@@ -23,6 +26,7 @@ def test_rubinstein_asymmetric():
     # P1 impatient (0.1), P2 patient (0.9)
     # Share = (1-0.9) / (1 - 0.09) = 0.1 / 0.91 = 0.109...
     # P1 gets very little despite moving first.
+    """Check rubinstein asymmetric."""
     share_p1 = rubinstein_solution(1.0, 0.1, 0.9)
     assert np.isclose(share_p1, 0.1 / 0.91)
 
@@ -42,7 +46,7 @@ def test_stackelberg_basic():
     # If R1 -> Col C1 -> Leader 2.
     # If R2 -> Col C2 -> Leader 1.
     # Leader chooses R1. Outcome (0, 0).
-
+    """Check stackelberg basic."""
     u_row = np.array([[2, 0], [1, 1]])
     u_col = np.array([[1, 0], [0, 2]])
 

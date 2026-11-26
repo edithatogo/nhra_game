@@ -8,13 +8,13 @@ This guide covers development workflows, tooling, and advanced features for cont
 
 | Tool | Purpose | Command |
 |------|---------|---------|
-| [Ruff](https://docs.astral.sh/ruff/) | Linting + formatting | `poetry run ruff check src tests` |
-| [Mypy](https://mypy.readthedocs.io/) | Static type checking | `poetry run mypy --strict src/nhra_gt` |
-| [Pytest](https://docs.pytest.org/) | Testing framework | `poetry run pytest` |
+| [Ruff](https://docs.astral.sh/ruff/) | Linting + formatting | `uv run ruff check src tests` |
+| [Mypy](https://mypy.readthedocs.io/) | Static type checking | `uv run mypy --strict src/nhra_gt` |
+| [Pytest](https://docs.pytest.org/) | Testing framework | `uv run pytest` |
 | [Hypothesis](https://hypothesis.readthedocs.io/) | Property-based testing | Integrated with pytest |
 | [Pre-commit](https://pre-commit.com/) | Git hooks | `pre-commit run --all-files` |
-| [Bandit](https://bandit.readthedocs.io/) | Security scanning | `poetry run bandit -r src` |
-| [Deptry](https://deptry.com/) | Dependency hygiene | `poetry run deptry .` |
+| [Bandit](https://bandit.readthedocs.io/) | Security scanning | `uv run bandit -r src` |
+| [Deptry](https://deptry.com/) | Dependency hygiene | `uv run deptry .` |
 
 ---
 
@@ -23,13 +23,13 @@ This guide covers development workflows, tooling, and advanced features for cont
 ### Basic Test Run
 
 ```bash
-poetry run pytest
+uv run pytest
 ```
 
 ### With Coverage
 
 ```bash
-poetry run pytest --cov=src/nhra_gt --cov-report=html
+uv run pytest --cov=src/nhra_gt --cov-report=html
 open htmlcov/index.html
 ```
 
@@ -37,13 +37,13 @@ open htmlcov/index.html
 
 ```bash
 # Run only game tests
-poetry run pytest tests/test_games.py
+uv run pytest tests/test_games.py
 
 # Run with verbose output
-poetry run pytest -v
+uv run pytest -v
 
 # Stop on first failure
-poetry run pytest -x
+uv run pytest -x
 ```
 
 ### Property-Based Tests
@@ -51,7 +51,7 @@ poetry run pytest -x
 We use Hypothesis for property-based testing:
 
 ```bash
-poetry run pytest tests/test_properties.py
+uv run pytest tests/test_properties.py
 ```
 
 ---
@@ -99,7 +99,7 @@ To maintain JIT-compatibility, all code in `src/nhra_gt/engine.py` must be **pur
 
 ### Pytree State Management
 
-System state is managed using `flax.struct.dataclass`. This allows JAX to treat complex objects as unified blocks of memory:
+System state is managed using frozen dataclasses registered with JAX. This allows JAX to treat complex objects as unified blocks of memory:
 
 ```python
 from nhra_gt.domain.state import StateJax
@@ -125,7 +125,7 @@ The engine automatically uses a persistent disk cache for compiled XLA kernels l
 To run performance benchmarks:
 
 ```bash
-poetry run python scripts/benchmark_modernization.py
+uv run python scripts/benchmark_modernization.py
 ```
 
 ---
@@ -138,22 +138,22 @@ The project uses [Snakemake](https://snakemake.github.io/) for reproducible pipe
 
 ```bash
 # Run baseline simulation
-poetry run snakemake --cores 4 run_baseline
+uv run snakemake --cores 4 run_baseline
 
 # Build context pack
-poetry run snakemake --cores 4 context_pack
+uv run snakemake --cores 4 context_pack
 
 # Run all experiments
-poetry run snakemake --cores 4 all
+uv run snakemake --cores 4 all
 
 # Dry run (show what would execute)
-poetry run snakemake -n all
+uv run snakemake -n all
 ```
 
 ### Visualize DAG
 
 ```bash
-poetry run snakemake --dag all | dot -Tpng > dag.png
+uv run snakemake --dag all | dot -Tpng > dag.png
 ```
 
 ---
@@ -188,7 +188,7 @@ For production observability, we support [Logfire](https://logfire.pydantic.dev/
 
 ```bash
 # Install observability extras
-poetry install --extras observability
+uv sync --locked --extra observability
 
 # Enable Logfire
 export LOGFIRE_SEND_TO_LOGFIRE=true
@@ -204,9 +204,9 @@ python scripts/run_baseline.py
 | Issue | Solution |
 |-------|----------|
 | Import errors | Ensure `PYTHONPATH=src` is set |
-| Type errors | Run `poetry run mypy --strict src/nhra_gt` |
-| Test failures | Check `poetry run pytest -v` for details |
-| Slow builds | Use `poetry run mkdocs serve` for live reload |
+| Type errors | Run `uv run mypy --strict src/nhra_gt` |
+| Test failures | Check `uv run pytest -v` for details |
+| Slow builds | Use `uv run mkdocs serve` for live reload |
 
 ### Debug Logging
 

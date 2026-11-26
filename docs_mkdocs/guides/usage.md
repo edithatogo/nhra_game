@@ -7,7 +7,7 @@ This guide covers installation, quickstart, and common workflows for the NHRA Ga
 ### Prerequisites
 
 - Python 3.10, 3.11, 3.12, or 3.13
-- [Poetry](https://python-poetry.org/) (recommended) or pip
+- [uv](https://docs.astral.sh/uv/) (recommended) or pip
 
 ### Using Poetry (Recommended)
 
@@ -17,10 +17,10 @@ git clone https://github.com/edithatogo/nhra_game.git
 cd nhra_game
 
 # Install dependencies
-poetry install
+uv sync --locked
 
 # Activate the virtual environment
-poetry shell
+source .venv/bin/activate
 ```
 
 ### Using pip
@@ -33,13 +33,13 @@ pip install nhra-gt
 
 ```bash
 # For optimization (Optuna)
-poetry install --extras opt
+uv sync --locked --extra opt
 
 # For JAX acceleration
-poetry install --extras accel
+uv sync --locked --extra accel
 
 # For observability (Logfire)
-poetry install --extras observability
+uv sync --locked --extra observability
 ```
 
 ---

@@ -1,3 +1,5 @@
+"""Tests for modular rules."""
+
 from __future__ import annotations
 
 from dataclasses import replace
@@ -59,18 +61,17 @@ def test_modular_audit_impact_jax():
 def test_legacy_modular_rules():
     """Verify modular rules work in legacy engine."""
     p = Params(cap_growth=0.001)  # Very low cap
-    p = initialize_rules(p)
     s = baseline_state(p=p)
     s = replace(s, occupancy=1.2)  # High occupancy -> high NWAU growth
 
     rng = np.random.default_rng(42)
 
     # Hard Cap
-    p_hard = replace(p, cap_rule=CapRule(rule_type=0, cap_limit=0.001))
+    p_hard = p.replace(cap_rule_type=0)
     s_hard = step(s, p_hard, {}, rng)
 
     # Soft Cap
-    p_soft = replace(p, cap_rule=CapRule(rule_type=1, cap_limit=0.001))
+    p_soft = p.replace(cap_rule_type=1)
     s_soft = step(s, p_soft, {}, rng)
 
     assert s_soft.effective_cth_share > s_hard.effective_cth_share

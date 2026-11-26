@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 ABS_API_BASE_URL = "https://data.api.abs.gov.au/rest/data"
 WPI_DATAFLOW = "ABS,WPI"
+WPI_BASE_YEAR = 2011
 # MEASURE=1 (Index), INDEX=THRPEB (Total hourly), SECTOR=7 (Total), INDUSTRY=Q (Health), TSEST=10 (Original), REGION=AUS, FREQ=Q
 WPI_HEALTH_KEY = "1.THRPEB.7.Q.10.AUS.Q"
 
@@ -52,8 +53,8 @@ class ABSApiClient:
                     f.write(response.text)
 
                 df_raw = pd.read_csv(cache_path)
-            except Exception as e:
-                logger.error(f"Failed to fetch WPI data from ABS API: {e}")
+            except Exception:
+                logger.exception("Failed to fetch WPI data from ABS API")
                 if cache_path.exists():
                     logger.warning("Falling back to existing cache.")
                     df_raw = pd.read_csv(cache_path)
@@ -68,8 +69,9 @@ class ABSApiClient:
         df_annual = df_annual.rename(columns={"OBS_VALUE": "wpi_health_index"})
 
         # Normalize to 2011 = 100.0
-        if 2011 in df_annual["year"].values:
-            base_val = df_annual.loc[df_annual["year"] == 2011, "wpi_health_index"].values[0]
+        base_index = df_annual.loc[df_annual["year"] == WPI_BASE_YEAR, "wpi_health_index"]
+        if not base_index.empty:
+            base_val = base_index.to_numpy(dtype=float)[0]
             df_annual["wpi_health_index"] = (df_annual["wpi_health_index"] / base_val) * 100.0
         else:
             logger.warning("2011 not found in WPI data. Normalization might be inconsistent.")

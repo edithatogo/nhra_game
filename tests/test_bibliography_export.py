@@ -1,3 +1,5 @@
+"""Tests for bibliography export."""
+
 from __future__ import annotations
 
 import pytest
@@ -7,6 +9,7 @@ from nhra_gt.domain.bibliography import BibliographyManager, Reference
 
 @pytest.fixture
 def manager():
+    """Provide an isolated bibliography manager."""
     mgr = BibliographyManager()
     ref = Reference(
         record_number=101,
@@ -22,6 +25,7 @@ def manager():
 
 
 def test_ris_export(manager):
+    """Check ris export."""
     ris = manager.to_ris()
     assert "TY  - JOUR" in ris
     assert "ID  - AIHW_MyHospitals" in ris
@@ -29,6 +33,7 @@ def test_ris_export(manager):
 
 
 def test_enw_export(manager):
+    """Check enw export."""
     enw = manager.to_enw()
     assert "%0 Journal Article" in enw
     assert "%A AIHW" in enw
@@ -36,6 +41,7 @@ def test_enw_export(manager):
 
 
 def test_bibtex_export(manager):
+    """Check bibtex export."""
     bib = manager.to_bibtex()
     assert "@article{AIHW_MyHospitals" in bib
     assert "author = {AIHW}" in bib

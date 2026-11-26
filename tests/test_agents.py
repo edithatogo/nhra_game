@@ -1,9 +1,12 @@
+"""Tests for agents."""
+
 import jax.numpy as jnp
 
 from nhra_gt.agent_logic import AgentWeights, lhn_utility, state_utility
 
 
 def test_lhn_utility_ramping_penalty():
+    """Check LHN utility ramping penalty."""
     weights = AgentWeights(ramping_penalty=10.0)
 
     # Case 1: No ramping (pressure <= 1.0)
@@ -33,6 +36,7 @@ def test_lhn_utility_ramping_penalty():
 
 
 def test_state_utility_vfi():
+    """Check state utility vfi."""
     weights = AgentWeights(vfi_disutility=5.0, kpi_satisfaction=1.0)
 
     # Case 1: No fiscal gap

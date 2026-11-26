@@ -1,14 +1,18 @@
+"""Tests for calibration constraints."""
+
 from __future__ import annotations
 
 import numpy as np
 
 from nhra_gt.engine import Params, baseline_state, run_hybrid
 
+_EXPECTED_YEARS = 2
+
 
 def test_effective_share_v2_structural_parity():
     """Verify that current effective share logic matches the legacy mathematical form."""
-    # Legacy: alpha_eff = (alpha_nom * E) / (E + g)
-    # Current: alpha_eff = alpha_nom / (1 + efficiency_gap)
+    # The previous model used the nominal share scaled by effective costs.
+    # The change under test applies the efficiency gap to the base share.
     # These are identical if efficiency_gap = g / E
 
     p = Params(effective_cth_share_base=0.38)
@@ -16,7 +20,7 @@ def test_effective_share_v2_structural_parity():
 
     # In baseline_state:
     # s.effective_cth_share (stored) is actually the NOMINAL share derived from base and gap
-    # s.effective_cth_share = p.effective_cth_share_base * (1.0 + efficiency_gap)
+    # The engine multiplies the base share by one plus the gap.
 
     nom = s.effective_cth_share
     gap = s.efficiency_gap
@@ -34,6 +38,6 @@ def test_model_stability_at_v2_bounds():
         cost_shifting_intensity=0.8,  # High intensity
     )
     years = [2025, 2026]
-    traj, strat = run_hybrid(years, p, n_mc=10)
-    assert len(traj) == 2
+    traj, _strat = run_hybrid(years, p, n_mc=10)
+    assert len(traj) == _EXPECTED_YEARS
     assert not traj["pressure_mean"].isnull().any()

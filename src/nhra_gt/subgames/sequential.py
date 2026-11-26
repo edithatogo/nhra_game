@@ -29,6 +29,8 @@ def rubinstein_solution(
     Returns:
         The share of the pie received by the First Mover.
     """
+    # Callers provide discount factors in first-mover order.
+    del first_mover
     # Prevent division by zero
     if delta_1 * delta_2 == 1.0:
         return pie_size * 0.5  # Limit case (perfect patience -> equal split)

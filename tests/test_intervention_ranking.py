@@ -1,18 +1,24 @@
+"""Tests for intervention ranking."""
+
 from __future__ import annotations
+
+from unittest.mock import patch
 
 import pandas as pd
 from scripts.dashboard import rank_interventions
 
 from nhra_gt.engine import Params
 
+_POOLED_SHIFT_THRESHOLD = 0.34
+_UCC_FRAGMENTATION_THRESHOLD = 0.99
+_INTERVENTION_COUNT = 2
+
 
 def test_rank_interventions():
     """Verify intervention ranking logic."""
-    from unittest.mock import patch
-
     with patch("scripts.dashboard.run_hybrid") as mock_run:
         # Mock side effects for different interventions
-        def side_effect(years, p, **kwargs):
+        def side_effect(years, p, **_kwargs):
             # Baseline (no intervention roughly)
             pressure = 1.0
 
@@ -22,9 +28,9 @@ def test_rank_interventions():
             # Default CSI is 0.35. Pooled funding -> 0.2625 (< 0.34)
             # Default Frag is 1.0. UCC -> 0.8 (< 0.99)
 
-            if p.cost_shifting_intensity < 0.34:  # Pooled funding
+            if p.cost_shifting_intensity < _POOLED_SHIFT_THRESHOLD:  # Pooled funding
                 pressure = 0.90
-            elif p.fragmentation_index < 0.99:  # UCC
+            elif p.fragmentation_index < _UCC_FRAGMENTATION_THRESHOLD:  # UCC
                 pressure = 0.95
 
             # Return dummy trajectory
@@ -48,7 +54,7 @@ def test_rank_interventions():
 
         df = rank_interventions(base_params, interventions)
 
-        assert len(df) == 2
+        assert len(df) == _INTERVENTION_COUNT
         assert "Intervention" in df.columns
         assert "Pressure Impact" in df.columns
 

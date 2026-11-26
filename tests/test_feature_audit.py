@@ -1,12 +1,16 @@
+"""Tests for feature audit."""
+
 from pathlib import Path
 
 
 def test_feature_audit_report_exists():
+    """Check feature audit report exists."""
     path = Path("docs/reports/feature_audit_2026.md")
     assert path.exists(), "Feature Audit Report is missing"
 
 
 def test_feature_audit_report_populated():
+    """Check feature audit report populated."""
     path = Path("docs/reports/feature_audit_2026.md")
     content = path.read_text(encoding="utf-8")
 

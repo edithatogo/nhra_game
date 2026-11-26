@@ -60,5 +60,6 @@ This study adheres to the STRESS guidelines for reporting simulation studies {Mo
 ## 4. Bibliography
 
 1. Australian Institute of Health and Welfare. (2024). *MyHospitals API: Accessing national hospital data*. Australian Government. <https://www.aihw.gov.au/hospitals/other-resources/myhospitals-api>
-2. Duckett, Stephen. (2021). *Vicious cycles: Hospital bed block and the National Health Reform Agreement*. Medical Journal of Australia. <https://www.mja.com.au/journal/2021/214/8/vicious-cycles-hospital-bed-block-and-national-health-reform-agreement>
-3. Monks, Thomas; Currie, Christine S. M.; Ong, Gheong O.; Robinson, Stewart; Kentalis, Korina; Taylor, Simon J. E.. (2019). *Strengthening The Reporting of Empirical Simulation Studies (STRESS)*. Journal of Simulation. <https://www.tandfonline.com/doi/full/10.1080/17477778.2018.1442155>
+2. Monks T, Currie CSM, Onggo BS, Robinson S, Kunc M and Taylor SJE (2019). *Strengthening the reporting of empirical simulation studies: introducing the STRESS guidelines*. Journal of Simulation 13(1), 55–67. [Article record](https://wrap.warwick.ac.uk/id/eprint/100103/)
+
+See the [provenance record](../context/06_data_provenance.md#historical-validation) for the unresolved bed-block citation in earlier editions.

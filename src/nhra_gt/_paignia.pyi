@@ -1,0 +1,3 @@
+def pure_profiles(
+    row: list[list[float]], column: list[list[float]], binary32: list[bool]
+) -> list[tuple[int, int]]: ...

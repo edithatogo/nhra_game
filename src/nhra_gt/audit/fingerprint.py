@@ -6,9 +6,12 @@ Extracts structural signatures from Python files to detect drift or lost feature
 from __future__ import annotations
 
 import ast
+import logging
 import zipfile
 from pathlib import Path
 from typing import Any, TypedDict
+
+logger = logging.getLogger(__name__)
 
 
 class ClassInfo(TypedDict):
@@ -40,11 +43,6 @@ def extract_fingerprint(code: str) -> Fingerprint:
         # Handling legacy syntax or encoding issues gracefully
         return fingerprint
 
-    for _node in ast.iter_fields(tree):
-        # We only look at top-level body
-        pass
-
-    # Better to just iterate over body
     for node in tree.body:
         if isinstance(node, ast.Assign):
             # Extract constants
@@ -61,11 +59,8 @@ def extract_fingerprint(code: str) -> Fingerprint:
             fingerprint["functions"][node.name] = args
 
         elif isinstance(node, ast.ClassDef):
-            methods = []
+            methods = [item.name for item in node.body if isinstance(item, ast.FunctionDef)]
             bases = [base.id for base in node.bases if isinstance(base, ast.Name)]
-            for item in node.body:
-                if isinstance(item, ast.FunctionDef):
-                    methods.append(item.name)
 
             fingerprint["classes"][node.name] = {"methods": methods, "bases": bases}
 
@@ -91,8 +86,9 @@ def fingerprint_zip(zip_path: Path) -> dict[str, Fingerprint]:
                         content = zf.read(name).decode("utf-8")
                         results[name] = extract_fingerprint(content)
                     except Exception:
-                        # Skip files we can't read/parse
-                        continue  # nosec
+                        logger.warning(
+                            "Could not fingerprint %s from %s", name, zip_path, exc_info=True
+                        )
     except Exception:
-        pass  # nosec
+        logger.warning("Could not read fingerprint archive %s", zip_path, exc_info=True)
     return results

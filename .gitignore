@@ -18,6 +18,9 @@ archive/
 # Python
 __pycache__/
 *.pyc
+src/nhra_gt/_paignia*.so
+src/nhra_gt/_paignia*.pyd
+native/target/
 .venv/
 venv/
 .tox/

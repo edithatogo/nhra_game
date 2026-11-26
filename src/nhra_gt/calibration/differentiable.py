@@ -71,8 +71,7 @@ def loss_fn(
     _, trajectory = run_simulation_with_agent_jax(init_state, params, prng_key, num_steps)
 
     # Loss is Mean Squared Error on ED performance
-    loss = jnp.mean(jnp.square(trajectory.within4 - target_within4))
-    return loss
+    return jnp.mean(jnp.square(trajectory.within4 - target_within4))
 
 
 def calibrate_jax(

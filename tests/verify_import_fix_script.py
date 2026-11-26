@@ -1,9 +1,12 @@
+"""Check that the dashboard can import project modules."""
+
 import importlib
 import sys
 from unittest.mock import patch
 
 
 def verify_fix():
+    """Check that the dashboard's source imports resolve."""
     print("Starting verification...")
     with patch.dict(sys.modules, {"jaxtyping": None}):
         # Ensure jaxtyping is NOT importable

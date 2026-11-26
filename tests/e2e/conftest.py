@@ -1,12 +1,20 @@
+"""Fixtures for launching and diagnosing dashboard tests."""
+
 import logging
 import os
+import socket
 import subprocess
+import sys
 import time
 from datetime import datetime
 from pathlib import Path
 
 import pytest
 import requests
+
+from tests.e2e.pom.dashboard_page import DashboardPage
+
+_HTTP_OK = 200
 
 # Setup centralized logging
 log_dir = Path("logs/e2e")
@@ -28,19 +36,26 @@ def streamlit_server():
         yield os.getenv("STREAMLIT_REMOTE_URL")
         return
 
-    port = 8501
-    cmd = [
-        "streamlit",
-        "run",
-        "streamlit_app.py",
-        "--server.port",
-        str(port),
-        "--server.headless",
-        "true",
-    ]
-
+    with socket.socket() as listener:
+        listener.bind(("127.0.0.1", 0))
+        port = listener.getsockname()[1]
     logger.info("Starting local Streamlit server...")
-    proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    proc = subprocess.Popen(
+        [
+            sys.executable,
+            "-m",
+            "streamlit",
+            "run",
+            "streamlit_app.py",
+            "--server.address",
+            "127.0.0.1",
+            "--server.headless",
+            "true",
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        env={**os.environ, "STREAMLIT_SERVER_PORT": str(port)},
+    )
 
     # Wait for server to be ready
     url = f"http://localhost:{port}"
@@ -49,7 +64,7 @@ def streamlit_server():
     while time.time() - start_time < timeout:
         try:
             response = requests.get(url, timeout=1)
-            if response.status_code == 200:
+            if response.status_code == _HTTP_OK:
                 logger.info("Local Streamlit server ready.")
                 break
         except requests.exceptions.ConnectionError:
@@ -57,7 +72,8 @@ def streamlit_server():
         time.sleep(1)
     else:
         proc.terminate()
-        raise RuntimeError("Local Streamlit server failed to start within 30 seconds.")
+        message = "Local Streamlit server failed to start within 30 seconds."
+        raise RuntimeError(message)
 
     yield url
 
@@ -72,8 +88,8 @@ def base_url(streamlit_server):
     return streamlit_server
 
 
-@pytest.fixture(scope="function")
-def page(page, base_url):
+@pytest.fixture
+def page(page):
     """Extends playwright page fixture with error logging and screenshots."""
     # Set default timeout
     page.set_default_timeout(30000)
@@ -84,15 +100,16 @@ def page(page, base_url):
     # but pytest-playwright handles some of this. We will add custom error logging.
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def dashboard(page, base_url):
-    """Fixture for DashboardPage POM."""
-    from tests.e2e.pom.dashboard_page import DashboardPage
-
+    """Open the local dashboard and bind its page selectors."""
+    if not os.getenv("STREAMLIT_REMOTE_URL"):
+        page.goto(base_url)
     return DashboardPage(page, base_url)
 
 
 def pytest_exception_interact(node, call, report):
+    """Save an end-to-end test failure with its captured output."""
     if report.failed:
         logger.error(f"Test failed: {node.name}")
         logger.error(f"Error details: {call.excinfo.value}")

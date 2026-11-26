@@ -5,14 +5,15 @@ This enforces that every parameter used by the model is documented in
 use publicly retrievable sources (http/https URLs).
 
 Rules:
-- Registry must contain exactly the parameters in `nhra_gt.engine.Params`
-- For `source_type` in {"primary","secondary","calibrated"}:
+- Registry must match the public defaults in `Params` and the inherited scalar
+  defaults used only by `ParamsJax`.
+- For `source_type` in {"primary","secondary","calibrated","calculated"}:
     - `citation_or_file` must be a public URL (http/https)
     - `locator` must be non-empty
 - For `source_type` in {"assumed","normalisation"}:
     - `justification` must be detailed (>=150 chars)
-- For numeric parameters:
-    - `range_low` and `range_high` must be provided (for sensitivity)
+- Numeric bounds must be finite and include the default. Equal endpoints
+  identify a fixed reference value.
 
 Usage:
     python scripts/check_parameters_grounded.py
@@ -21,12 +22,15 @@ Usage:
 from __future__ import annotations
 
 import csv
+import math
 import sys
 from dataclasses import fields
+from importlib import import_module
 from pathlib import Path
 
+MINIMUM_JUSTIFICATION_LENGTH = 150
 URL_PREFIXES = ("http://", "https://")
-EVIDENCE_TYPES_NEED_URL = {"primary", "secondary", "calibrated"}
+EVIDENCE_TYPES_NEED_URL = {"primary", "secondary", "calibrated", "calculated"}
 EVIDENCE_TYPES_NEED_JUSTIFICATION = {"assumed", "normalisation"}
 
 REQUIRED_COLS = [
@@ -55,20 +59,91 @@ def is_public_url(s: str) -> bool:
     return s.startswith(URL_PREFIXES)
 
 
-def is_boolish(v: str) -> bool:
-    """Check if string represents a boolean value."""
-    return v.strip().lower() in {"true", "false"}
+def scalar_defaults(params_cls):
+    """Include scalar defaults used by JAX callers outside the public schema."""
+    model = params_cls()
+    defaults = model.flatten()
+    runtime = model.to_params_jax()
+    for field in fields(runtime):
+        value = getattr(runtime, field.name)
+        if field.name not in defaults and type(value) in (bool, int, float, str):
+            defaults[field.name] = value
+    return defaults
 
 
-def is_numeric(v: str) -> bool:
-    """Check if string represents a numeric value."""
-    if is_boolish(v):
-        return False
+def _matches_default(raw: str, expected: object) -> bool:
+    value = raw.strip()
+    if type(expected) in (int, float):
+        try:
+            parsed = type(expected)(value)
+        except ValueError:
+            return False
+        return parsed == expected and (type(parsed) is int or math.isfinite(parsed))
+    if expected is None or isinstance(expected, bool):
+        return value.casefold() == str(expected).casefold()
+    return value == expected
+
+
+def _bounds_error(low: str, high: str, default: float) -> str | None:
+    if not low.strip() or not high.strip():
+        return "numeric value requires range_low and range_high"
     try:
-        float(v)
-        return True
-    except Exception:
-        return False
+        lower, upper = float(low), float(high)
+    except ValueError:
+        return "range_low/high must be numeric"
+    if not (math.isfinite(lower) and math.isfinite(upper)):
+        return "range_low/high must be finite"
+    if lower > upper:
+        return "range_low > range_high"
+    if not lower <= default <= upper:
+        return "range_low/high must include the runtime default"
+    return None
+
+
+def _row_failures(rows: list[dict[str, str]], defaults: dict[str, object]) -> list[str]:
+    failures: list[str] = []
+    for idx, r in enumerate(rows, start=2):
+        st = (r["source_type"] or "").strip().lower()
+        cite = (r["citation_or_file"] or "").strip()
+        loc = (r["locator"] or "").strip()
+        just = (r["justification"] or "").strip()
+        name = r["parameter"].strip()
+
+        if st not in EVIDENCE_TYPES_NEED_URL | EVIDENCE_TYPES_NEED_JUSTIFICATION:
+            failures.append(f"L{idx}: {name}: unknown source_type {st!r}")
+        if not (r["description"].strip() and r["units"].strip()):
+            failures.append(f"L{idx}: {name}: description and units are required")
+
+        if st in EVIDENCE_TYPES_NEED_URL:
+            if not is_public_url(cite):
+                failures.append(
+                    f"L{idx}: {r['parameter']}: source_type={st} requires public URL in citation_or_file"
+                )
+            if not loc:
+                failures.append(
+                    f"L{idx}: {r['parameter']}: source_type={st} requires non-empty locator"
+                )
+
+        if st in EVIDENCE_TYPES_NEED_JUSTIFICATION and len(just) < MINIMUM_JUSTIFICATION_LENGTH:
+            failures.append(
+                f"L{idx}: {r['parameter']}: source_type={st} requires detailed justification (>=150 chars)"
+            )
+
+        if cite.startswith("internal://"):
+            failures.append(f"L{idx}: {r['parameter']}: citation_or_file cannot be internal://")
+
+        if name not in defaults:
+            continue
+        expected = defaults[name]
+        if not _matches_default(r["value"], expected):
+            failures.append(
+                f"L{idx}: {name}: documented value differs from runtime default {expected!r}"
+            )
+        if type(expected) in (int, float):
+            bounds_error = _bounds_error(r["range_low"], r["range_high"], expected)
+            if bounds_error is not None:
+                failures.append(f"L{idx}: {r['parameter']}: {bounds_error}")
+    return failures
 
 
 def main() -> None:
@@ -81,20 +156,24 @@ def main() -> None:
     # Import model parameters
     sys.path.insert(0, str(root / "src"))
     try:
-        from nhra_gt.engine import Params  # type: ignore
-    except Exception as e:
-        die(f"Could not import nhra_gt.engine.Params: {e}")
+        params_cls = import_module("nhra_gt.domain.params").Params
+    except ImportError as e:
+        die(f"Could not import nhra_gt.domain.params.Params: {e}")
 
-    model_params = {f.name for f in fields(Params)}
+    defaults = scalar_defaults(params_cls)
+    model_params = set(defaults)
 
     with reg_path.open("r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
-        if list(reader.fieldnames or []) != REQUIRED_COLS:
+        headers = list(reader.fieldnames or [])
+        if headers not in (REQUIRED_COLS, [*REQUIRED_COLS, "group"]):
             die(
                 "Registry header must match required columns exactly. "
-                f"Expected {REQUIRED_COLS}; got {list(reader.fieldnames or [])}"
+                f"Expected {REQUIRED_COLS} with an optional trailing group; got {headers}"
             )
         rows = list(reader)
+    if any(None in row or None in row.values() for row in rows):
+        die("Registry rows must have the same columns as the header")
 
     registry_params = [r["parameter"].strip() for r in rows]
     if len(set(registry_params)) != len(registry_params):
@@ -103,52 +182,16 @@ def main() -> None:
 
     extra = sorted(set(registry_params) - model_params)
     missing = sorted(model_params - set(registry_params))
-    if extra:
-        die(f"Registry contains parameters not in model Params: {extra}")
-    if missing:
-        die(f"Registry missing parameters from model Params: {missing}")
-
     failures: list[str] = []
-    for idx, r in enumerate(rows, start=2):
-        st = (r["source_type"] or "").strip().lower()
-        cite = (r["citation_or_file"] or "").strip()
-        loc = (r["locator"] or "").strip()
-        just = (r["justification"] or "").strip()
-
-        if st in EVIDENCE_TYPES_NEED_URL:
-            if not is_public_url(cite):
-                failures.append(
-                    f"L{idx}: {r['parameter']}: source_type={st} requires public URL in citation_or_file"
-                )
-            if not loc:
-                failures.append(
-                    f"L{idx}: {r['parameter']}: source_type={st} requires non-empty locator"
-                )
-
-        if st in EVIDENCE_TYPES_NEED_JUSTIFICATION and len(just) < 150:
-            failures.append(
-                f"L{idx}: {r['parameter']}: source_type={st} requires detailed justification (>=150 chars)"
-            )
-
-        if cite.startswith("internal://"):
-            failures.append(f"L{idx}: {r['parameter']}: citation_or_file cannot be internal://")
-
-        # Numeric sensitivity bounds required
-        if is_numeric(r["value"]):
-            lo = (r["range_low"] or "").strip()
-            hi = (r["range_high"] or "").strip()
-            if lo == "" or hi == "":
-                failures.append(
-                    f"L{idx}: {r['parameter']}: numeric value requires range_low and range_high"
-                )
-            else:
-                try:
-                    lo_f = float(lo)
-                    hi_f = float(hi)
-                    if lo_f > hi_f:
-                        failures.append(f"L{idx}: {r['parameter']}: range_low > range_high")
-                except Exception:
-                    failures.append(f"L{idx}: {r['parameter']}: range_low/high must be numeric")
+    if extra:
+        failures.append(
+            f"Registry contains {len(extra)} parameters absent from model Params: {extra}"
+        )
+    if missing:
+        failures.append(
+            f"Registry is missing {len(missing)} parameters from model Params: {missing}"
+        )
+    failures.extend(_row_failures(rows, defaults))
 
     if failures:
         print("\n".join(failures), file=sys.stderr)

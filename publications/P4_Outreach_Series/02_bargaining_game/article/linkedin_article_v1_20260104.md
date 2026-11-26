@@ -92,13 +92,13 @@ if both sides keep saying “you go first”, the system can end up waiting… a
 Primary sources (NHRA / governance):
 
 - NHRA page (Council on Federal Financial Relations): <https://federalfinancialrelations.gov.au/agreements/national-health-reform-agreement>
-- NHRA 2020–25 Addendum (Consolidated) (PDF): <https://federalfinancialrelations.gov.au/sites/federalfinancialrelations.gov.au/files/2021-07/NHRA_2020-25_Addendum_consolidated.pdf>
+- NHRA 2020–25 Addendum (Consolidated) (PDF): <https://www.mtaa.org.au/sites/default/files/uploaded-content/field_f_content_file/2020-25_national_health_reform_agreement.pdf>
 - Federal Financial Relations Act 2009 (Cth): <https://www.legislation.gov.au/C2009A00138/latest/text>
 
 Game theory background:
 
 - Nash (1950), “The Bargaining Problem” (DOI): <https://doi.org/10.2307/1907266>
-- Osborne & Rubinstein (1994), *A Course in Game Theory*: <https://mitpress.mit.edu/9780262650403/a-course-in-game-theory/>
+- Osborne & Rubinstein (1994), *A Course in Game Theory*: <https://www.economics.utoronto.ca/osborne/cgt/>
 
 ## TL;DR
 

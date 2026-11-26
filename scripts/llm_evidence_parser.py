@@ -1,45 +1,85 @@
-"""Standardized NLP interface for parsing evidence using LLMs."""
+"""Local evidence-interface fixtures for structured responses and heuristic text."""
 
+from __future__ import annotations
+
+import re
 from typing import Any
 
-from nhra_gt.domain.evidence import Evidence, EvidenceEvaluator
+from nhra_gt.agents.evidence_logic import EvidenceAnalyzer, EvidenceEvaluator
+from nhra_gt.domain.evidence import ConstraintEvidence
+from nhra_gt.domain.registry import EvidenceEntry
 
 
 class LLMEvidenceExtractor:
-    """Real-world implementation of an Evidence Parser.
-
-    Converts raw text/reports into structured EvidenceEntry objects for the model registry.
-    """
+    """Adapt structured responses and local examples to the evidence schema."""
 
     def __init__(self, model_name: str = "gpt-4"):
-        """Initialize with target LLM model."""
+        """Set the expected model name and the local scoring components."""
         self.model_name = model_name
         self.evaluator = EvidenceEvaluator()
+        self.analyzer = EvidenceAnalyzer()
 
     def _call_llm_structured(self, raw_text: str) -> dict[str, Any]:
-        """Simulates a structured LLM call (e.g. via Instructor or Outlines).
+        """Parse a synthetic example with the historical text heuristics.
 
-        Parses raw text into intermediate JSON.
+        The interval and evidence labels are fixture values. A real source
+        requires separately reviewed eligibility, provenance and bounds.
         """
-        # In a real environment, this would call LiteLLM or similar.
-        # Here we use heuristic extraction to enable the pipeline.
+        text = raw_text.lower()
+
+        # Heuristic parameter detection
+        param = "unknown"
+        if "within 4" in text or "ed wait" in text:
+            param = "within4_base"
+        elif "occupancy" in text:
+            param = "occupancy_base"
+        elif "cost shifting" in text:
+            param = "cost_shifting_intensity"
+
+        # Heuristic value detection (look for decimals or percentages)
+        matches = re.findall(r"(\d+\.?\d*)%", text)
+        val = 0.5
+        if matches:
+            val = float(matches[0]) / 100.0
+        else:
+            matches = re.findall(r"\b0\.\d+\b", text)
+            if matches:
+                val = float(matches[0])
+
         return {
-            "parameter": "unknown",
-            "mean": 0.0,
-            "confidence": 0.5,
-            "source_text": raw_text[:50],
+            "parameter": param,
+            "mean": val,
+            "lower_ci": val * 0.9,
+            "upper_ci": val * 1.1,
+            "nhmrc_level": "II" if "report" in text else "IV",
         }
 
     def _call_llm(self, raw_text: str) -> dict[str, Any]:
-        """Backward-compatible hook for tests/mocking."""
-        _ = raw_text
+        """Accept an injected structured response through the historical hook."""
+        del raw_text
         return {}
 
-    def extract_and_analyze(self, raw_text: str) -> list[Evidence]:
-        """Full pipeline: Raw Text -> Evidence List -> Aggregated ConstraintEvidence."""
+    def parse_evidence(self, raw_text: str) -> EvidenceEntry:
+        """Parses raw text into an EvidenceEntry using structured extraction."""
+        response = self._call_llm(raw_text) or self._call_llm_structured(raw_text)
+
+        # Schema enforcement
+        return EvidenceEntry(
+            parameter=str(response["parameter"]),
+            mean=float(response["mean"]),
+            lower_ci=float(response["lower_ci"]) if "lower_ci" in response else None,
+            upper_ci=float(response["upper_ci"]) if "upper_ci" in response else None,
+            nhmrc_level=str(response.get("nhmrc_level", "IV")),
+        )
+
+    def extract_and_analyze(self, raw_text: str) -> ConstraintEvidence:
+        """Score fragments of a synthetic example with the local evaluator."""
         # 1. 'Extract' by splitting into sentences as pseudo-sources
         parts = raw_text.split(". ")
-        results = [{"snippet": p} for p in parts if len(p) > 10]
+        mock_results = [{"title": f"Fragment {i}", "snippet": p} for i, p in enumerate(parts)]
 
-        # 2. Evaluate
-        return self.evaluator.extract_from_raw(results)
+        # 2. Evaluate quality
+        evidence_list = self.evaluator.extract_from_raw(mock_results)
+
+        # 3. Analyze confidence
+        return self.analyzer.analyze(evidence_list)

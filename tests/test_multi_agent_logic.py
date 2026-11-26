@@ -1,3 +1,5 @@
+"""Tests for multi agent logic."""
+
 import jax
 import jax.numpy as jnp
 

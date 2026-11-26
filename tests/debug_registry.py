@@ -1,3 +1,5 @@
+"""Inspect the loaded registry while diagnosing registry tests."""
+
 import sys
 from pathlib import Path
 
@@ -8,6 +10,7 @@ from nhra_gt.game_theory.content import get_populated_registry
 
 
 def check_registry():
+    """Print a diagnostic view of the model input registry."""
     registry = get_populated_registry()
     games = registry.list_all()
 

@@ -34,6 +34,16 @@ Thank you for your interest in contributing! This project follows [pyOpenSci](ht
 3. Ensure `ruff check .` passes.
 4. Submit a PR with a description of changes.
 
+## Documentation link check
+
+CI checks links in tracked Markdown, including the regenerated context pack.
+If the hosted runner cannot reach public sources, the repository owner can set
+the Actions variable `NHRA_LINK_CHECK_REF` to the branch under test and start an
+ephemeral GitHub Actions runner in Apple Container with the label
+`nhra-links-<run-id>-<attempt>`. Only owner-triggered pushes and pull requests
+from the same repository use this runner. Remove the variable once the run
+finishes. The link checker uses the same files and failure criteria on either runner.
+
 ## Code Style
 
 - **Formatting:** We use `ruff format`.

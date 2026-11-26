@@ -7,13 +7,11 @@ authors = [
 ]
 license = "Apache-2.0"
 readme = "README.md"
-requires-python = ">=3.10,<3.14"
+requires-python = "==3.15.2"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.15",
     "Topic :: Scientific/Engineering :: Mathematics",
 ]
 dependencies = [
@@ -36,13 +34,12 @@ dependencies = [
     "beartype",
     "pygambit>=16.4.1",
     "graphviz>=0.21",
-    "jax>=0.4",
-    "jaxlib>=0.4",
+    "GitPython>=3.2.1",
+    "jax>=0.4.36",
+    "jaxlib>=0.4.36",
     "jaxopt>=0.8",
-    "flax>=0.8",
     "jaxtyping>=0.2",
     "spacy>=3.7",
-    "attrs>=23.2.0,<24.0.0",
 ]
 
 [project.optional-dependencies]
@@ -76,8 +73,14 @@ exclude_lines = [
 directory = "htmlcov"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["maturin==1.16.0"]
+build-backend = "maturin"
+
+[tool.maturin]
+manifest-path = "native/Cargo.toml"
+python-source = "src"
+module-name = "nhra_gt._paignia"
+locked = true
 
 [dependency-groups]
 dev = [
@@ -117,6 +120,7 @@ dev = [
     "reportlab>=4.4.7",
     "playwright>=1.57.0",
     "pytest-playwright>=0.7.2",
+    "en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
     "vcrpy>=7.0.0",
     "basedpyright>=1.36.2",
     "commitizen>=4.11.0",
@@ -131,7 +135,7 @@ dev = [
 
 [tool.ruff]
 line-length = 100
-target-version = "py310"
+target-version = "py315"
 src = ["src", "scripts"]
 exclude = [
     ".git",
@@ -197,7 +201,7 @@ known_first_party = ["nhra_gt", "scripts"]
 
 [tool.deptry.per_rule_ignores]
 DEP001 = ["nhra_gt", "scripts"]
-DEP002 = ["scipy", "snakemake", "jaxlib", "jaxtyping", "polars", "seaborn", "pydantic-settings", "pandera", "networkx", "streamlit", "optuna", "chex", "reportlab", "kaleido", "attrs"]
+DEP002 = ["scipy", "snakemake", "jaxlib", "jaxtyping", "polars", "seaborn", "pydantic-settings", "pandera", "networkx", "streamlit", "optuna", "chex", "reportlab", "kaleido"]
 DEP003 = ["yaml", "pyxlsb"]
 DEP004 = ["nox", "pytest", "hypothesis", "logfire", "mypy", "ruff", "bandit", "deptry", "jaxopt"]
 

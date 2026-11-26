@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import Any, cast
 
+import pandas as pd
 import requests  # type: ignore
 
 try:
@@ -45,8 +46,6 @@ class AIHWClient:
         endpoint = f"/measures/{measure_code}/data-items"
         data = self._get(endpoint)
         if pl is None:
-            import pandas as pd
-
             return pd.DataFrame(data)
         return pl.DataFrame(data)
 

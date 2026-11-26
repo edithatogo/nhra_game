@@ -1,20 +1,14 @@
+"""Tests for quality config."""
+
 from __future__ import annotations
 
-import sys
+import tomllib
 from pathlib import Path
-
-if sys.version_info >= (3, 11):
-    import tomllib
 
 
 def _load_pyproject(path: Path) -> dict:
-    if sys.version_info >= (3, 11):
-        with open(path, "rb") as f:
-            return tomllib.load(f)  # type: ignore[name-defined]
-
-    import toml
-
-    return toml.loads(path.read_text(encoding="utf-8"))
+    with path.open("rb") as source:
+        return tomllib.load(source)
 
 
 def test_quality_configuration_completeness() -> None:

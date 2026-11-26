@@ -1,6 +1,7 @@
-"""Generates the ParamsGenerated class from the parameter registry CSV."""
+"""Generate the legacy flat ParamsGenerated class from its archived CSV."""
 
 import argparse
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -14,18 +15,19 @@ def infer_type(val):
     if s in ["none", "nan", ""] or pd.isna(val):
         return "Any"
     try:
-        # Check if it's an integer or a float that is effectively an integer
         f_val = float(val)
-        if f_val.is_integer():
-            return "int"
-        return "float"
     except ValueError:
         return "str"
+    return "int" if f_val.is_integer() else "float"
 
 
 def generate_params_code(csv_path):
     """Generate Python source code for the ParamsGenerated class."""
     df = pd.read_csv(csv_path)
+    grouped = {"Operational coefficient", "Policy coefficient"}
+    if "group" in df and df["group"].isin(grouped).any():
+        message = "Flat JAX code generation requires an archived flat registry"
+        raise ValueError(message)
 
     # Filter out rows that are not scalar parameters
     scalar_df = df[~df["value"].astype(str).str.startswith("(")]
@@ -33,10 +35,10 @@ def generate_params_code(csv_path):
     content = "# AUTO-GENERATED FILE. DO NOT EDIT.\n"
     content += "from __future__ import annotations\n"
     content += "from typing import Any\n"
-    content += "from flax import struct\n"
+    content += "from dataclasses import field\nfrom nhra_gt._pytree import PytreeRecord, pytree_dataclass\n"
     content += "import jax.numpy as jnp\n\n"
-    content += "@struct.dataclass\n"
-    content += "class ParamsGenerated:\n"
+    content += "@pytree_dataclass\n"
+    content += "class ParamsGenerated(PytreeRecord):\n"
     content += '    """Auto-generated parameter container from registry CSV."""\n'
 
     for _, row in scalar_df.iterrows():
@@ -49,13 +51,13 @@ def generate_params_code(csv_path):
 
         if py_type == "str":
             val_code = f'"{val}"'
-            field_def = f"struct.field(default={val_code}, pytree_node=False)"
+            field_def = f"field(default={val_code}, metadata={{'static': True}})"
         elif py_type == "bool":
             val_code = str(val).capitalize()
             field_def = val_code
         elif py_type == "Any":
             val_code = "None"
-            field_def = f"struct.field(default={val_code}, pytree_node=False)"
+            field_def = f"field(default={val_code}, metadata={{'static': True}})"
         elif py_type == "int":
             val_code = str(int(float(val)))
             field_def = val_code
@@ -71,12 +73,12 @@ def generate_params_code(csv_path):
 def main() -> None:
     """Run the parameter generation script."""
     parser = argparse.ArgumentParser()
+    parser.add_argument("--registry", type=Path, required=True, help="Archived flat registry CSV")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     project_root = Path(__file__).parent.parent.parent
-    csv_path = project_root / "context/04_parameter_registry.csv"
     output_path = project_root / "src/nhra_gt/domain/params_generated.py"
-    generated = generate_params_code(csv_path)
+    generated = generate_params_code(args.registry)
     if args.check:
         if output_path.exists():
             with open(output_path) as f:

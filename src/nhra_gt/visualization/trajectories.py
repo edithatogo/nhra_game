@@ -5,7 +5,7 @@ Standard line and swarm plots for simulation history.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, NamedTuple
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -15,13 +15,19 @@ from .config import PlotConfig
 from .schemas import TrajectorySchema
 
 
+class _QuantileColumns(NamedTuple):
+    """Column pair for the trajectory uncertainty ribbon."""
+
+    q_low_col: str | None = None
+    q_high_col: str | None = None
+
+
 def plot_trajectory(
     data: pd.DataFrame,
     y_col: str,
     ylabel: str,
     config: PlotConfig | None = None,
-    q_low_col: str | None = None,
-    q_high_col: str | None = None,
+    *quantile_columns: str | None,
     **kwargs: Any,
 ) -> Figure:
     """Plots a time-series trajectory with optional quantile ribbons.
@@ -31,6 +37,7 @@ def plot_trajectory(
         y_col: Column name for the primary metric.
         ylabel: Label for the y-axis.
         config: PlotConfig object for styling.
+        *quantile_columns: The lower and upper ribbon column names when passed by position.
         q_low_col: Optional column name for the lower quantile ribbon.
         q_high_col: Optional column name for the upper quantile ribbon.
         **kwargs: Additional parameters passed to ax.plot.
@@ -38,10 +45,15 @@ def plot_trajectory(
     Returns:
         A matplotlib Figure object.
     """
+    ribbon_fields = {
+        field: kwargs.pop(field) for field in _QuantileColumns._fields if field in kwargs
+    }
+    q_low_col, q_high_col = _QuantileColumns(*quantile_columns, **ribbon_fields)
     # Validation
     TrajectorySchema.validate(data)
     if y_col not in data.columns:
-        raise ValueError(f"y_col '{y_col}' not found in data.")
+        message = f"y_col '{y_col}' not found in data."
+        raise ValueError(message)
 
     if config is None:
         config = PlotConfig()

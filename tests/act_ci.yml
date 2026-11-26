@@ -10,37 +10,29 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.10"]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: pip
+      - uses: astral-sh/setup-uv@v5
       - name: Install
         run: |
-          python -m pip install -U pip
-          pip install -e ".[dev]"
+          uv python install
+          uv sync --locked --all-extras --dev
       - name: Lint
         run: |
-          ruff check src tests
-          ruff format src tests --check
+          uv run ruff check src tests
+          uv run ruff format src tests --check
       - name: Type check
         run: |
-          mypy --strict src/nhra_gt
+          uv run mypy --strict src/nhra_gt
       - name: Input traceability (public sources or justification)
         run: |
-          python scripts/check_parameters_grounded.py
+          uv run python scripts/check_parameters_grounded.py
       - name: Build context pack
         run: |
-          python scripts/build_context_pack.py
+          uv run python scripts/build_context_pack.py
       - name: Tests
         run: |
-          pytest -q
+          uv run pytest -q
       - name: Build docs
         run: |
-          mkdocs build -q
+          uv run mkdocs build -q

@@ -1,4 +1,9 @@
+"""Tests for model audit phase3."""
+
 from pathlib import Path
+
+_MIN_BENCHMARK_COLUMNS = 5
+_MIN_SANITY_CHECK_COLUMNS = 5
 
 
 def _section_lines(content: str, section_header: str) -> list[str]:
@@ -27,14 +32,15 @@ def _table_rows(lines: list[str]) -> list[list[str]]:
 
 
 def test_benchmark_comparisons_populated() -> None:
-    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    """Check benchmark comparisons populated."""
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "### Benchmark Comparisons")
     rows = _table_rows(section)
     assert rows, "Benchmark Comparisons table should have entries"
 
     for row in rows:
-        if len(row) < 5:
+        if len(row) < _MIN_BENCHMARK_COLUMNS:
             continue
         if row[0] == "Model":
             continue
@@ -45,20 +51,21 @@ def test_benchmark_comparisons_populated() -> None:
         result = row[3]
         _notes = row[4]
 
-        # assert model_name.upper() != "TBD", f"Model Name for row is TBD" # The model name is fixed
+        # Inventory model names have a dedicated check in the phase 1 audit.
         assert result.upper() in ["FAIL", "PASS", "WARN", "TBD"], f"Result invalid: {result}"
         assert result.upper() != "TBD", f"Result for {model_name} is TBD"
 
 
 def test_sanity_checks_populated() -> None:
-    audit_path = Path("conductor/tracks/model_audit_20260101/audit.md")
+    """Check sanity checks populated."""
+    audit_path = Path(__file__).parent / "reference/model_audit/audit.md.fixture"
     content = audit_path.read_text(encoding="utf-8")
     section = _section_lines(content, "### Sanity Checks")
     rows = _table_rows(section)
     assert rows, "Sanity Checks table should have entries"
 
     for row in rows:
-        if len(row) < 5:
+        if len(row) < _MIN_SANITY_CHECK_COLUMNS:
             continue
         if row[0] == "Model":
             continue

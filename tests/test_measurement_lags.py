@@ -1,3 +1,5 @@
+"""Tests for measurement lags."""
+
 from __future__ import annotations
 
 import jax
@@ -60,7 +62,7 @@ def test_jax_claims_lag():
     for _ in range(5):
         states.append(step_jax(states[-1], p, strategies, key))
 
-    # states[0] = initial
+    # The first buffered state is the initial state.
     # states[1] = step 1
     # states[2] = step 2
     # states[3] = step 3

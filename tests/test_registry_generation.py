@@ -1,7 +1,11 @@
+"""Tests for registry generation."""
+
 from __future__ import annotations
 
 import pandas as pd
 from scripts.reporting.generate_parameter_registry import generate_manuscript_table
+
+_MIN_BASE_PARAMETERS = 5
 
 
 def test_generate_manuscript_table(tmp_path):
@@ -16,4 +20,4 @@ def test_generate_manuscript_table(tmp_path):
     assert "Parameter" in df.columns
     assert "Value" in df.columns
     assert "Source" in df.columns
-    assert len(df) > 5
+    assert len(df) > _MIN_BASE_PARAMETERS

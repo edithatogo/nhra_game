@@ -1,3 +1,5 @@
+"""Tests for hierarchical JAX."""
+
 from __future__ import annotations
 
 import jax
@@ -7,8 +9,11 @@ import pytest
 from nhra_gt.domain.state import MetricsJax, Params, StateJax
 from nhra_gt.hierarchical_jax import hierarchical_step_jax
 
+_SECOND_MONTH = 2
+
 
 def test_multi_jurisdiction_vmap():
+    """Check multi jurisdiction vmap."""
     p = Params()
 
     # Initialize 8 jurisdictions (NSW, VIC, QLD, WA, SA, TAS, ACT, NT)
@@ -77,7 +82,7 @@ def test_multi_jurisdiction_vmap():
     new_cs, new_js = jax.jit(hierarchical_step_jax)(cs, js, p, macro_strats, key)
 
     assert new_js.year.shape == (8,)
-    assert new_js.month[0] == 2
+    assert new_js.month[0] == _SECOND_MONTH
     assert jnp.mean(new_js.pressure) == pytest.approx(new_cs.pressure)
 
     # Verify that different jurisdictions ended up with different pressures due to starting point

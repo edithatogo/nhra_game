@@ -9,16 +9,19 @@ demand levels.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any
-
-if TYPE_CHECKING:
-    pass
+from typing import TYPE_CHECKING, Any, NamedTuple
 
 import numpy as np
+
+import nhra_gt.engine
+
+if TYPE_CHECKING:
+    from nhra_gt.domain.state import ParamsJax
 
 try:
     import jax
     import jax.numpy as jnp
+    from jax import lax
 except ImportError:  # pragma: no cover
     jax = None  # type: ignore[assignment]
     jnp = np  # type: ignore[assignment]
@@ -80,31 +83,36 @@ def calculate_patient_utilities(
     return u_ed, u_gp
 
 
+class _QueueChoiceInputs(NamedTuple):
+    """Patient utilities, model parameters and iteration limit."""
+
+    params: PatientUtilityParams
+    p_global: ParamsJax
+    max_iter: int = 5
+
+
 def solve_queuing_equilibrium_jax(
-    total_base_demand: Any,
-    capacity: Any,
-    discharge_delay: Any,
-    params: PatientUtilityParams,
-    p_global: ParamsJax,
-    max_iter: int = 5,
+    total_base_demand: Any, capacity: Any, discharge_delay: Any, *options: Any, **named_options: Any
 ) -> tuple[Any, Any]:
     """Finds the Wardrop Equilibrium for patient demand using fixed-point iteration.
 
     Returns (demand_ed, prob_ed).
     """
+    params, p_global, max_iter = _QueueChoiceInputs(*options, **named_options)
     if jax is None:  # pragma: no cover
-        raise ImportError("`solve_queuing_equilibrium_jax` requires `jax` to be installed.")
-    from jax import lax
+        message = "`solve_queuing_equilibrium_jax` requires `jax` to be installed."
+        raise ImportError(message)
 
-    from nhra_gt.engine import mm_s_queue_wait_jax
+    softmax = jax.nn.softmax
+    as_array = jax.numpy.asarray
 
     def body_fun(_i, state):
         d_curr, _ = state
         # 1. Calculate resulting wait time at current demand
-        wait_min = mm_s_queue_wait_jax(
+        wait_min = nhra_gt.engine.mm_s_queue_wait_jax(
             d_curr,
             1.0 / jnp.maximum(1e-9, discharge_delay),
-            jnp.array(capacity * p_global.ops.capacity_scalar),
+            as_array(capacity * p_global.ops.capacity_scalar),
             p_global,
         )
 
@@ -114,7 +122,7 @@ def solve_queuing_equilibrium_jax(
         # 3. Logit choice (ED vs GP vs Outside Option)
         u_outside = p_global.ops.queuing_outside_utility
         logits = jnp.array([u_ed, u_gp, u_outside])
-        prob_ed = jax.nn.softmax(logits * p_global.ops.queuing_logit_sensitivity)[0]
+        prob_ed = softmax(logits * p_global.ops.queuing_logit_sensitivity)[0]
 
         # 4. Resulting demand
         return total_base_demand * prob_ed, prob_ed
@@ -134,17 +142,15 @@ def solve_queuing_equilibrium_legacy(
     total_base_demand: float,
     capacity: float,
     discharge_delay: float,
-    params: PatientUtilityParams,
-    p_global: Any,
-    max_iter: int = 5,
+    *options: Any,
+    **named_options: Any,
 ) -> tuple[float, float]:
     """Legacy version of the queuing solver. Returns (demand_ed, prob_ed)."""
-    from nhra_gt.engine import mm_s_queue_wait
-
+    params, p_global, max_iter = _QueueChoiceInputs(*options, **named_options)
     p_final = p_global.ops.queuing_init_prob
     d_final = total_base_demand
     for _ in range(max_iter):
-        wait_min = mm_s_queue_wait(
+        wait_min = nhra_gt.engine.mm_s_queue_wait(
             d_final,
             1.0 / max(1e-9, discharge_delay),
             capacity * p_global.ops.capacity_scalar,

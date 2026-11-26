@@ -1,3 +1,5 @@
+"""Tests for coefficient calibration."""
+
 from __future__ import annotations
 
 import jax
@@ -8,10 +10,7 @@ from nhra_gt.engine import baseline_state_jax, step_jax
 
 
 def test_coefficient_calibration_demo():
-    """
-    Demonstrates that previously hardcoded coefficients can now be optimized
-    using JAX gradients.
-    """
+    """Optimize a formerly hardcoded coefficient using JAX gradients."""
     p_base = ParamsJax()
     init_state = baseline_state_jax(2025, p_base)
     key = jax.random.PRNGKey(42)

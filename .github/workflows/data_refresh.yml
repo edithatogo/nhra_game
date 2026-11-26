@@ -5,9 +5,6 @@ on:
     - cron: '0 0 1 * *' # Monthly at midnight
   workflow_dispatch: # Manual trigger
 
-env:
-  POETRY_VERSION: "2.2.1"
-
 jobs:
   refresh-data:
     runs-on: ubuntu-latest
@@ -18,22 +15,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - uses: astral-sh/setup-uv@v5
       - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.13'
-          cache: 'pip'
-
-      - name: Install Poetry
-        run: pip install "poetry==${{ env.POETRY_VERSION }}"
-
+        run: uv python install
       - name: Install dependencies
-        run: poetry install --only main
+        run: uv sync --locked --no-dev
 
       - name: Run Data Ingestion
         run: |
-          poetry run python scripts/data/ingest_aihw_api.py
-          poetry run python scripts/data/ingest_economic_spine.py
+          uv run --no-dev python scripts/data/ingest_aihw_api.py
+          uv run --no-dev python scripts/data/ingest_economic_spine.py
 
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v7

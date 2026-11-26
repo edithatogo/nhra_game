@@ -1,12 +1,19 @@
+"""Tests for audit fingerprint."""
+
 from __future__ import annotations
 
+import zipfile
 from pathlib import Path
 
 # We'll import the implementation (which doesn't exist yet)
-from src.nhra_gt.audit.fingerprint import extract_fingerprint
+from src.nhra_gt.audit.fingerprint import extract_fingerprint, fingerprint_zip
+
+_FIRST_CONSTANT = 100
+_NESTED_CONSTANT = 2
 
 
 def test_extract_fingerprint_from_code() -> None:
+    """Check extract fingerprint from code."""
     code = """
 CONSTANT_A = 100
 CONSTANT_B = "hello"
@@ -21,7 +28,7 @@ class MyClass:
     fingerprint = extract_fingerprint(code)
 
     # Verify constants
-    assert fingerprint["constants"]["CONSTANT_A"] == 100
+    assert fingerprint["constants"]["CONSTANT_A"] == _FIRST_CONSTANT
     assert fingerprint["constants"]["CONSTANT_B"] == "hello"
 
     # Verify functions (top level)
@@ -34,10 +41,7 @@ class MyClass:
 
 
 def test_fingerprint_zip_file(tmp_path: Path) -> None:
-    import zipfile
-
-    from src.nhra_gt.audit.fingerprint import fingerprint_zip
-
+    """Check fingerprint zip file."""
     # Create a zip with python files
     zip_path = tmp_path / "test.zip"
     with zipfile.ZipFile(zip_path, "w") as zf:
@@ -52,6 +56,6 @@ def test_fingerprint_zip_file(tmp_path: Path) -> None:
     assert "foo" in fingerprints["module.py"]["functions"]
 
     assert "nested/other.py" in fingerprints
-    assert fingerprints["nested/other.py"]["constants"]["Y"] == 2
+    assert fingerprints["nested/other.py"]["constants"]["Y"] == _NESTED_CONSTANT
 
     assert "ignored.txt" not in fingerprints

@@ -1,3 +1,5 @@
+"""Tests for Gambit oracle."""
+
 from __future__ import annotations
 
 import jax.numpy as jnp
@@ -5,6 +7,8 @@ import numpy as np
 import pygambit as gambit
 
 from nhra_gt.solvers_jax import discrete_nash_jax, qre_solver_jax
+
+_EXPECTED_ACTION_PROBABILITY = 0.9
 
 
 def jax_to_gambit(u_row, u_col):
@@ -21,6 +25,7 @@ def jax_to_gambit(u_row, u_col):
 
 def test_gambit_oracle_pure_nash():
     # Symmetric 2x2 coordination
+    """Check Gambit oracle pure nash."""
     u_row = jnp.array([[2, 0], [0, 1]], dtype=float)
     u_col = jnp.array([[2, 0], [0, 1]], dtype=float)
 
@@ -38,7 +43,7 @@ def test_gambit_oracle_pure_nash():
         # eq is iterable, yields (Strategy, Value) pairs
         probs = [float(v) for s, v in eq]
         # For a 2x2 game, probs is [P1_A0, P1_A1, P2_A0, P2_A1]
-        if probs[0] > 0.9 and probs[2] > 0.9:
+        if probs[0] > _EXPECTED_ACTION_PROBABILITY and probs[2] > _EXPECTED_ACTION_PROBABILITY:
             found_dominant = True
             break
 
@@ -49,6 +54,7 @@ def test_gambit_oracle_pure_nash():
 
 def test_gambit_oracle_qre():
     # Prisoners' Dilemma
+    """Check Gambit oracle qre."""
     u_row = jnp.array([[-1, -10], [0, -5]], dtype=float)
     u_col = jnp.array([[-1, 0], [-10, -5]], dtype=float)
     lam = 2.0

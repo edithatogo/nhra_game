@@ -1,6 +1,11 @@
+"""Tests for registry."""
+
 import pytest
 
 from nhra_gt.game_theory.registry import GameDefinition, GameRegistry
+
+_EXPECTED_PLAYER_COUNT = 2
+_REGISTERED_GAME_COUNT = 2
 
 
 def test_game_definition_structure():
@@ -19,7 +24,7 @@ def test_game_definition_structure():
 
     assert game.id == "test_game"
     assert game.title == "Test Game"
-    assert len(game.players) == 2
+    assert len(game.players) == _EXPECTED_PLAYER_COUNT
     assert game.evidence_link == "Senate Inquiry 2024"
 
 
@@ -80,5 +85,5 @@ def test_registry_get_all():
     )
 
     all_games = registry.list_all()
-    assert len(all_games) == 2
+    assert len(all_games) == _REGISTERED_GAME_COUNT
     assert all_games[0].id == "g1"

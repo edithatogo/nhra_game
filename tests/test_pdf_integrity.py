@@ -1,3 +1,5 @@
+"""Tests for PDF integrity."""
+
 from __future__ import annotations
 
 import hashlib

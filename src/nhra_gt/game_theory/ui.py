@@ -73,4 +73,3 @@ def render_mechanism_explainer(
             if game.evidence_link:
                 st.markdown(f"[Evidence]({game.evidence_link})")
             # Maybe a small matrix button or link?
-            # st.caption("See 'Game Encyclopedia' tab for full matrix.")

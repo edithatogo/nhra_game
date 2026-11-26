@@ -1,9 +1,13 @@
+"""Tests for Theil decomposition."""
+
 from __future__ import annotations
 
 import numpy as np
 import pytest
 
 from nhra_gt.domain.validation import calculate_theil_decomposition
+
+_MIN_MEAN_BIAS_SHARE = 0.9
 
 
 def test_theil_decomposition_sum():
@@ -21,6 +25,6 @@ def test_theil_decomposition_bias():
     predicted = actual + 10  # Pure bias
 
     decomp = calculate_theil_decomposition(actual, predicted)
-    assert decomp["um"] > 0.9
+    assert decomp["um"] > _MIN_MEAN_BIAS_SHARE
     assert decomp["us"] == pytest.approx(0.0)
     assert decomp["uc"] == pytest.approx(0.0)

@@ -2,17 +2,11 @@
 
 from __future__ import annotations
 
-from dataclasses import replace
 from pathlib import Path
 
 import pandas as pd
 
-try:
-    import polars as pl  # type: ignore
-except ImportError:  # pragma: no cover
-    pl = None  # type: ignore[assignment]
-
-from nhra_gt.engine import Params, nep_series, nep_vs_cost_series, run_hybrid
+from nhra_gt.engine import Params, ParamsJax, nep_series, nep_vs_cost_series, run_hybrid
 from nhra_gt.subgames.games import (
     GameParams,
     bargaining_game,
@@ -25,8 +19,8 @@ from nhra_gt.subgames.games import (
 from nhra_gt.subgames.nash import all_nash
 
 
-def equilibria_snapshot(p: Params) -> pd.DataFrame:
-    """Count equilibria for each stage game over a small grid (pressure × effgap)."""
+def equilibria_snapshot(p: ParamsJax) -> pd.DataFrame:
+    """Count equilibria for each stage game over a grid of pressure and efficiency gap."""
     rows: list[dict[str, object]] = []
     pressures = [0.8, 1.0, 1.2, 1.4]
     effgaps = [0.0, 0.2, 0.4, 0.6]
@@ -63,7 +57,7 @@ def equilibria_snapshot(p: Params) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def equilibria_by_year(df: pd.DataFrame, p: Params) -> pd.DataFrame:
+def equilibria_by_year(df: pd.DataFrame, p: ParamsJax) -> pd.DataFrame:
     """Solve *all* Nash equilibria for each stage game at each year's mean state."""
     eq_rows: list[dict[str, object]] = []
     # df is expected to have aggregated results (means)
@@ -107,7 +101,7 @@ def equilibria_by_year(df: pd.DataFrame, p: Params) -> pd.DataFrame:
 
 
 def scenario_endpoints(
-    years: list[int], scenarios: dict[str, Params], seed: int = 123
+    years: list[int], scenarios: dict[str, ParamsJax], seed: int = 123
 ) -> pd.DataFrame:
     """Run a set of scenarios and return end-year summary metrics."""
     rows: list[dict[str, object]] = []
@@ -135,7 +129,7 @@ def main() -> None:
     tables.mkdir(parents=True, exist_ok=True)
 
     years = list(range(2025, 2031))
-    base = Params()
+    base = Params().to_params_jax()
 
     # Baseline
     traj_pd, strat_pd = run_hybrid(years=years, p=base, seed=123, n_mc=250)
@@ -164,45 +158,44 @@ def main() -> None:
 
     # Core scenario set
     scenarios_core = {
-        "baseline_equilibria": Params(),
-        "no_stage_equilibria": Params(use_stage_game_equilibria=False),
-        "cooperative": Params(
+        "baseline_equilibria": base,
+        "no_stage_equilibria": base.replace(use_stage_game_equilibria=False),
+        "cooperative": base.replace(
             cost_shifting_intensity=0.8,
             fragmentation_index=0.9,
             bed_capacity_index=1.05,
             discharge_delay_base=0.95,
         ),
-        "adversarial": Params(
+        "adversarial": base.replace(
             cost_shifting_intensity=1.2,
             fragmentation_index=1.1,
             bed_capacity_index=0.97,
             discharge_delay_base=1.05,
             political_salience=0.7,
         ),
-        "equilibrium_row_favourable": Params(equilibrium_selection_rule="row_favourable"),
-        "equilibrium_random": Params(equilibrium_selection_rule="random"),
+        "equilibrium_row_favourable": base.replace(equilibrium_selection_rule="row_favourable"),
+        "equilibrium_random": base.replace(equilibrium_selection_rule="random"),
     }
     core = scenario_endpoints(years, scenarios_core, seed=123)
     core.to_csv(tables / "scenario_summary.csv", index=False)
 
     # Policy intervention scenarios
     interventions = {
-        "pooled_funding_pilot": replace(
-            base, cost_shifting_intensity=0.90, fragmentation_index=0.92
+        "pooled_funding_pilot": base.replace(
+            cost_shifting_intensity=0.90, fragmentation_index=0.92
         ),
-        "ucc_integrated_governance": replace(
-            base, admin_burden_weight=0.95, fragmentation_index=0.95
+        "ucc_integrated_governance": base.replace(
+            admin_burden_weight=0.95, fragmentation_index=0.95
         ),
-        "aged_care_places_increase": replace(
-            base, bed_capacity_index=1.02, discharge_delay_base=0.90
+        "aged_care_places_increase": base.replace(
+            bed_capacity_index=1.02, discharge_delay_base=0.90
         ),
-        "nep_indexation_uplift": replace(
-            base,
+        "nep_indexation_uplift": base.replace(
             nep_to_cost_ratio_metro=min(1.0, base.nep_to_cost_ratio_metro + 0.03),
             nep_to_cost_ratio_regional=min(1.0, base.nep_to_cost_ratio_regional + 0.05),
             nep_to_cost_ratio_remote=min(1.0, base.nep_to_cost_ratio_remote + 0.07),
         ),
-        "audit_blitz": replace(base, admin_burden_weight=1.10, audit_pressure=1.25),
+        "audit_blitz": base.replace(admin_burden_weight=1.10, audit_pressure=1.25),
     }
     interv = scenario_endpoints(years, interventions, seed=123)
     interv.to_csv(tables / "intervention_scenarios.csv", index=False)
@@ -211,22 +204,20 @@ def main() -> None:
     baseline_metrics = core[core["scenario"] == "baseline_equilibria"].drop(columns=["scenario"])
     baseline_metrics_row = baseline_metrics.iloc[0]
 
-    deltas = []
-    for row in interv.to_dict(orient="records"):
-        deltas.append(
-            {
-                "scenario": row["scenario"],
-                "delta_rr_2030": row["rr_mean_2030"] - baseline_metrics_row["rr_mean_2030"],
-                "delta_offload_2030": row["offload_mean_2030"]
-                - baseline_metrics_row["offload_mean_2030"],
-                "delta_within4_2030": row["within4_mean_2030"]
-                - baseline_metrics_row["within4_mean_2030"],
-                "delta_pressure_2030": row["pressure_mean_2030"]
-                - baseline_metrics_row["pressure_mean_2030"],
-                "delta_effgap_2030": row["effgap_mean_2030"]
-                - baseline_metrics_row["effgap_mean_2030"],
-            }
-        )
+    deltas = [
+        {
+            "scenario": row["scenario"],
+            "delta_rr_2030": row["rr_mean_2030"] - baseline_metrics_row["rr_mean_2030"],
+            "delta_offload_2030": row["offload_mean_2030"]
+            - baseline_metrics_row["offload_mean_2030"],
+            "delta_within4_2030": row["within4_mean_2030"]
+            - baseline_metrics_row["within4_mean_2030"],
+            "delta_pressure_2030": row["pressure_mean_2030"]
+            - baseline_metrics_row["pressure_mean_2030"],
+            "delta_effgap_2030": row["effgap_mean_2030"] - baseline_metrics_row["effgap_mean_2030"],
+        }
+        for row in interv.to_dict(orient="records")
+    ]
     pd.DataFrame(deltas).to_csv(tables / "intervention_deltas.csv", index=False)
 
 

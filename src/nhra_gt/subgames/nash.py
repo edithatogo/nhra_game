@@ -13,7 +13,12 @@ from typing import Any
 
 import numpy as np
 
+from nhra_gt._paignia import pure_profiles
 from nhra_gt.subgames.sequential import stackelberg_solution
+
+_MATRIX_DIMENSIONS = 2
+_INDIFFERENCE_TOLERANCE = 1e-9
+_BINARY64_BYTES = np.dtype(np.float64).itemsize
 
 
 @dataclass(frozen=True)
@@ -39,6 +44,11 @@ class EquilibriumSelection:
 
     equilibrium: NashEquilibrium
     n_equilibria: int
+
+    def __hash__(self) -> int:
+        """Reject hashing of selections that contain mutable strategy arrays."""
+        message = "Equilibrium selections contain mutable strategy arrays"
+        raise TypeError(message)
 
     def __iter__(self) -> Iterator[object]:
         """Allows unpacking as (equilibrium, n_equilibria)."""
@@ -90,13 +100,14 @@ def solve_game(
     Returns:
         EquilibriumSelection wrapping the solution.
     """
+    # Reserved for Rubinstein dispatch with explicit pie payoffs.
+    del discount_rate
     if mechanism == "stackelberg":
         if first_mover == 0:  # Row Leader
             r, c = stackelberg_solution(game.u_row, game.u_col)
         else:  # Col Leader
             # Swap roles: Col is Leader (Row in stackelberg_solution terms)
             # Need to transpose payoffs?
-            # stackelberg_solution(leader_payoff, follower_payoff)
             # If Col is Leader, they choose column j to max u_col[i, j] given Row response.
             # Easiest way: Transpose the game.
             c, r = stackelberg_solution(game.u_col.T, game.u_row.T)
@@ -134,56 +145,39 @@ def solve_game(
             pass
         return solve_game(game, mechanism="nash", rule=rule)
 
-    # Default: Nash
+    # Find all equilibria for the simultaneous game.
     eqs = all_nash(game)
     if not eqs:
         # Should not happen in finite games (mixed always exists)
-        raise ValueError("No Nash Equilibrium found.")
+        message = "No Nash Equilibrium found."
+        raise ValueError(message)
     return select_equilibrium(eqs, rule=rule, u_row=game.u_row, u_col=game.u_col)
 
 
-def _best_responses_row(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
-    """Computes a boolean matrix of best responses for the Row player."""
-    # boolean matrix (n,m): row action i is best response to column action j
-    A = game.u_row
-    n, m = A.shape
-    br = np.zeros((n, m), dtype=bool)
-    for j in range(m):
-        mx = A[:, j].max()
-        br[:, j] = A[:, j] >= (mx - 1e-9)
-    return br
-
-
-def _best_responses_col(game: TwoPlayerGame) -> np.ndarray[Any, Any]:
-    """Computes a boolean matrix of best responses for the Column player."""
-    B = game.u_col
-    n, m = B.shape
-    br = np.zeros((n, m), dtype=bool)
-    for i in range(n):
-        mx = B[i, :].max()
-        br[i, :] = B[i, :] >= (mx - 1e-9)
-    return br
-
-
 def pure_nash(game: TwoPlayerGame) -> list[NashEquilibrium]:
-    """Finds all Pure Strategy Nash Equilibria.
-
-    An action profile is a PNE if no player can unilaterally improve their payoff
-    by switching to a different pure action.
-    """
-    br_r = _best_responses_row(game)
-    br_c = _best_responses_col(game)
-    n, m = game.u_row.shape
-    eqs: list[NashEquilibrium] = []
-    for i in range(n):
-        for j in range(m):
-            if br_r[i, j] and br_c[i, j]:
-                row = np.zeros(n, dtype=float)
-                row[i] = 1.0
-                col = np.zeros(m, dtype=float)
-                col[j] = 1.0
-                eqs.append(NashEquilibrium(kind="pure", row=row, col=col))
-    return eqs
+    """Find pure equilibria with Paignia using NHRA's inclusive tolerance."""
+    row_payoffs, column_payoffs = game.u_row, game.u_col
+    if row_payoffs.ndim != _MATRIX_DIMENSIONS or column_payoffs.ndim != _MATRIX_DIMENSIONS:
+        msg = "Expected two-dimensional payoff tables"
+        raise ValueError(msg)
+    for payoffs in (row_payoffs, column_payoffs):
+        if payoffs.dtype.kind not in "biuf" or payoffs.dtype.itemsize > _BINARY64_BYTES:
+            msg = "Unsupported payoff precision for the Paignia adapter"
+            raise ValueError(msg)
+    positions = pure_profiles(
+        row_payoffs.tolist(),
+        column_payoffs.tolist(),
+        [payoffs.dtype.type is np.float32 for payoffs in (row_payoffs, column_payoffs)],
+    )
+    height, width = row_payoffs.shape
+    equilibria = []
+    for i, j in positions:
+        row = np.zeros(height, dtype=float)
+        row[i] = 1.0
+        column = np.zeros(width, dtype=float)
+        column[j] = 1.0
+        equilibria.append(NashEquilibrium(kind="pure", row=row, col=column))
+    return equilibria
 
 
 def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
@@ -200,7 +194,7 @@ def mixed_nash_2x2(game: TwoPlayerGame) -> NashEquilibrium | None:
     denom_q = A[0, 0] - A[0, 1] - A[1, 0] + A[1, 1]
     denom_p = B[0, 0] - B[1, 0] - B[0, 1] + B[1, 1]
 
-    if abs(denom_q) < 1e-9 or abs(denom_p) < 1e-9:
+    if abs(denom_q) < _INDIFFERENCE_TOLERANCE or abs(denom_p) < _INDIFFERENCE_TOLERANCE:
         return None
 
     q_hard = (A[1, 1] - A[0, 1]) / denom_q  # col prob of action1
@@ -246,7 +240,8 @@ def select_equilibrium(
     For mixed equilibria, expected payoffs use row@U@col.
     """
     if not eqs:
-        raise ValueError("No equilibria to select from")
+        message = "No equilibria to select from"
+        raise ValueError(message)
     n_eqs = len(eqs)
     if rule == "random" or u_row is None or u_col is None:
         return EquilibriumSelection(eqs[0], n_eqs)

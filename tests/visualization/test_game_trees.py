@@ -1,3 +1,5 @@
+"""Tests for game trees."""
+
 from __future__ import annotations
 
 import shutil
@@ -10,6 +12,7 @@ from nhra_gt.visualization.game_trees import create_extensive_game_from_matrix, 
 
 
 def test_render_static_tree_smoke(tmp_path):
+    """Check render static tree smoke."""
     if shutil.which("dot") is None:
         pytest.skip("Graphviz 'dot' binary not available in this environment")
 

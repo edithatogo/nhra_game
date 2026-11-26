@@ -1,10 +1,15 @@
+"""Tests for smoke test engine."""
+
 from nhra_gt.engine import Params, run_hybrid
+
+_FINAL_YEAR = 2030
 
 
 def test_new_engine_compatibility():
+    """Check new engine compatibility."""
     p = Params()
     years = list(range(2025, 2031))
-    agg, freq = run_hybrid(years, p, n_mc=10)
+    agg, _freq = run_hybrid(years, p, n_mc=10)
 
     print("Aggregated Columns:", agg.columns.tolist())
     assert "pressure_mean" in agg.columns
@@ -14,7 +19,7 @@ def test_new_engine_compatibility():
     summary = agg.iloc[-1].to_dict()
     print("2030 Summary:", summary)
 
-    assert summary["year"] == 2030
+    assert summary["year"] == _FINAL_YEAR
 
 
 if __name__ == "__main__":

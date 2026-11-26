@@ -36,7 +36,8 @@ class GameRegistry:
     def get(self, game_id: str) -> GameDefinition:
         """Retrieve a game definition by its unique ID."""
         if game_id not in self._games:
-            raise KeyError(f"Game {game_id} not found")
+            message = f"Game {game_id} not found"
+            raise KeyError(message)
         return self._games[game_id]
 
     def list_all(self) -> list[GameDefinition]:

@@ -1,7 +1,17 @@
+"""Tests for audit benchmarks."""
+
 import jax
 import jax.numpy as jnp
 
 from nhra_gt.engine import ParamsJax, baseline_state, mm_s_queue_wait_jax, run_simulation_jax
+from nhra_gt.solvers_jax import discrete_nash_jax
+
+_MAX_PHYSICAL_OCCUPANCY = 2.0
+_MIN_WITHIN_FOUR = 0.64
+_MAX_WITHIN_FOUR = 0.66
+_MIN_WAIT_MINUTES = 50.0
+_MAX_WAIT_MINUTES = 120.0
+_MIN_DEFECTION_PROBABILITY = 0.99
 
 
 def test_sanity_metrics_bounds():
@@ -11,12 +21,12 @@ def test_sanity_metrics_bounds():
     seed = jax.random.PRNGKey(42)
     # Run 12 steps
     strategies = jnp.zeros((12, 13))
-    final, traj = run_simulation_jax(init, params, strategies, seed, 12)
+    _final, traj = run_simulation_jax(init, params, strategies, seed, 12)
 
     # Check Occupancy [0, 1.5]
     assert jnp.all(traj.occupancy >= 0.0), "Occupancy negative"
     # Allow some overflow for crisis dynamics, but not infinite
-    assert jnp.all(traj.occupancy <= 2.0), "Occupancy exceeding physics (>200%)"
+    assert jnp.all(traj.occupancy <= _MAX_PHYSICAL_OCCUPANCY), "Occupancy exceeding physics (>200%)"
 
     # Check Within4 [0, 1]
     assert jnp.all(traj.within4 >= 0.0), "Within4 negative"
@@ -35,13 +45,13 @@ def test_benchmark_within4_alignment():
     # Run 5 years to settle
     steps = 60
     strategies = jnp.zeros((steps, 13))
-    final, traj = run_simulation_jax(init, params, strategies, seed, steps)
+    _final, traj = run_simulation_jax(init, params, strategies, seed, steps)
 
     first_step_w4 = float(traj.within4[0])
     print(f"Initial Within4: {first_step_w4}")
 
     # Assert alignment at baseline (pressure=1.0 -> 0.65)
-    assert 0.64 <= first_step_w4 <= 0.66, (
+    assert _MIN_WITHIN_FOUR <= first_step_w4 <= _MAX_WITHIN_FOUR, (
         f"Initial Within4 {first_step_w4:.4f} mismatch target 0.65"
     )
 
@@ -54,12 +64,14 @@ def test_queuing_logic_erlang():
     servers = jnp.array(30.0)
 
     # Wait in minutes
-    wait = mm_s_queue_wait_jax(arr, svc, servers)
+    wait = mm_s_queue_wait_jax(arr, svc, servers, ParamsJax())
     wait_val = float(wait)
     print(f"Wait (30 servers, 25 load): {wait_val} mins")
 
     # Approx check: Should be around 10-20 mins -> now 80+ mins with units fixed
-    assert 50.0 <= wait_val <= 120.0, f"Wait time {wait_val} unrealistic for Rho=0.83"
+    assert _MIN_WAIT_MINUTES <= wait_val <= _MAX_WAIT_MINUTES, (
+        f"Wait time {wait_val} unrealistic for Rho=0.83"
+    )
 
 
 def test_jax_pd_equilibrium():
@@ -71,8 +83,6 @@ def test_jax_pd_equilibrium():
     # Matrix Row: [[2, 0], [3, 1]]
     # Matrix Col: [[2, 3], [0, 1]]
 
-    from nhra_gt.solvers_jax import discrete_nash_jax
-
     u_row = jnp.array([[2.0, 0.0], [3.0, 1.0]])
     u_col = jnp.array([[2.0, 3.0], [0.0, 1.0]])
 
@@ -82,5 +92,5 @@ def test_jax_pd_equilibrium():
     print(f"Row Strategy: {p_row}")
     print(f"Col Strategy: {q_col}")
 
-    assert p_row[1] > 0.99, "Row did not converge to Defect"
-    assert q_col[1] > 0.99, "Col did not converge to Defect"
+    assert p_row[1] > _MIN_DEFECTION_PROBABILITY, "Row did not converge to Defect"
+    assert q_col[1] > _MIN_DEFECTION_PROBABILITY, "Col did not converge to Defect"

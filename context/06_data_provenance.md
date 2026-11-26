@@ -42,3 +42,24 @@ The following automated and semi-automated ingestion paths are implemented:
 | **Economic Spine** | IHACPA Determinations | `scripts/data/ingest_economic_spine.py` | `data/calibration/economic_spine.csv` |
 
 *Note: The Economic Spine (NEP/WPI) currently uses hardcoded series in the ingestion script and requires manual updates for new Determinations. AIHW ingestion is fully automated via the public API.*
+
+## Historical validation
+
+The published ED time-spent series supplies four-hour completion observations.
+The current repository extract has no source-qualified annual occupancy
+series for the same scope. The older normalization interpolated occupancy
+between two unverified endpoints. Those interpolated values cannot supply
+observed holdouts.
+
+`snakemake --cores 1 validate` requires the complete historical inputs for
+the empirical report. The CI report test runs the report rules in a
+temporary directory with six years of synthetic observations. Its missing
+occupancy case verifies that the workflow stops before producing any
+holdout or report. The test outputs stay in the temporary directory.
+
+Earlier drafts cite a 2021 Stephen Duckett article on hospital bed block.
+Bibliography record 102 linked to a case report on epipericardial fat
+necrosis. The DOI used in the manuscript drafts identifies a letter on
+respirator fit testing. The bed-block citation requires source
+identification before it can support a claim. [Bibliography DOI record](https://pubmed.ncbi.nlm.nih.gov/33792067/) ·
+[Manuscript DOI record](https://pubmed.ncbi.nlm.nih.gov/33837543/)

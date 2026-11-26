@@ -1,3 +1,5 @@
+"""Tests for hysteresis."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -7,9 +9,13 @@ import pytest
 from nhra_gt.domain.stability import calculate_hysteresis_area, calculate_recovery_metrics
 from nhra_gt.engine import summarise_outcome
 
+_RECOVERY_STEPS = 4
+_SUMMARY_RECOVERY_TIME = 2.0
+
 
 def test_hysteresis_area_simple():
     # Square loop
+    """Check hysteresis area simple."""
     x = np.array([0, 1, 1, 0])
     y = np.array([0, 0, 1, 1])
     # Area should be 1.0
@@ -17,15 +23,17 @@ def test_hysteresis_area_simple():
 
 
 def test_recovery_metrics():
+    """Check recovery metrics."""
     modes = ["normal", "stress", "crisis", "crisis", "recovery", "normal"]
     metrics = calculate_recovery_metrics(modes)
 
-    assert metrics["recovery_time"] == 4  # stress, crisis, crisis, recovery
+    assert metrics["recovery_time"] == _RECOVERY_STEPS  # stress, crisis, crisis, recovery
     assert metrics["crisis_count"] == 1
     assert metrics["resilience_index"] == pytest.approx(1.0 - 4 / 6)
 
 
 def test_summarise_outcome_integration():
+    """Check summarise outcome integration."""
     data = {
         "year": [2025, 2026, 2027],
         "pressure_mean": [1.0, 1.2, 1.1],
@@ -48,4 +56,4 @@ def test_summarise_outcome_integration():
     assert "hysteresis_area" in summary
     assert "recovery_time" in summary
     assert "resilience_index" in summary
-    assert summary["recovery_time"] == 2.0
+    assert summary["recovery_time"] == _SUMMARY_RECOVERY_TIME

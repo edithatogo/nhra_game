@@ -1,14 +1,17 @@
+"""Tests for data integrity."""
+
 from __future__ import annotations
 
 import pandas as pd
 import pytest
-from pandera.errors import SchemaError
+from pandera.errors import SchemaError, SchemaErrors
 
 from nhra_gt.visualization.distributional import plot_strategy_heatmap
 from nhra_gt.visualization.trajectories import plot_trajectory
 
 
 def test_plot_trajectory_missing_year():
+    """Check plot trajectory missing year."""
     invalid_data = pd.DataFrame({"metric": [1.0, 2.0]})  # Missing 'year'
 
     with pytest.raises(SchemaError):
@@ -16,15 +19,16 @@ def test_plot_trajectory_missing_year():
 
 
 def test_plot_trajectory_wrong_type():
+    """Check plot trajectory wrong type."""
     invalid_data = pd.DataFrame({"year": ["abc"], "metric": [1.0]})
 
-    # Pandera should try to coerce, but "abc" will fail
-
-    with pytest.raises(SchemaError):
+    # Require the coercion failure for the year column.
+    with pytest.raises((SchemaError, SchemaErrors), match="year"):
         plot_trajectory(invalid_data, "metric", "Y")
 
 
 def test_plot_strategy_heatmap_invalid_share():
+    """Check plot strategy heatmap invalid share."""
     invalid_data = pd.DataFrame(
         {
             "year": [2025],

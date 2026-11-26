@@ -1,9 +1,12 @@
+"""Tests for outreach validate readability."""
+
 from __future__ import annotations
 
 from scripts.outreach.validate_readability import _pick_latest_versions, score_text
 
 
 def test_score_text_returns_grade() -> None:
+    """Check score text returns grade."""
     words, sentences, syllables, grade = score_text(
         "This is a short sentence. This is another one."
     )
@@ -14,6 +17,7 @@ def test_score_text_returns_grade() -> None:
 
 
 def test_pick_latest_versions(tmp_path) -> None:
+    """Check pick latest versions."""
     d = tmp_path / "bundle" / "article"
     d.mkdir(parents=True)
     p1 = d / "linkedin_article_v1_20260103.md"

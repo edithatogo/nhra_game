@@ -1,4 +1,8 @@
+"""Tests for methods generation."""
+
 from __future__ import annotations
+
+import json
 
 import pandas as pd
 from scripts.reporting.generate_methods_appendix import generate_appendix
@@ -22,8 +26,6 @@ def test_generate_appendix(tmp_path):
     # Mock references
     refs_path = tmp_path / "refs.json"
     with open(refs_path, "w") as f:
-        import json
-
         json.dump([], f)
 
     generate_appendix(registry_path, out_file, refs_path)

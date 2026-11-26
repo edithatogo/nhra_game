@@ -15,6 +15,7 @@ class EvidenceType(Enum):
     EMPIRICAL = auto()
     THEORETICAL = auto()
     ANECDOTAL = auto()
+    EXPERT_OPINION = auto()
 
     def reliability_score(self) -> float:
         """Return a base reliability score for this evidence type."""

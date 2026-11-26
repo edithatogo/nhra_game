@@ -1,9 +1,12 @@
+"""Check Gambit's headless integration."""
+
 import sys
 
 import pygambit
 
 
 def verify_headless_gambit():
+    """Check that Gambit solves a small game without a display."""
     print("Verifying headless Gambit support...")
     try:
         # Create a simple game to test library loading
@@ -20,10 +23,11 @@ def verify_headless_gambit():
         print(f"Profile created successfully: {profile}")
 
         print("SUCCESS: pygambit loaded and functioned without error.")
-        return 0
     except Exception as e:
         print(f"FAILURE: {e}")
         return 1
+    else:
+        return 0
 
 
 if __name__ == "__main__":

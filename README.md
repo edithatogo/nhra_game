@@ -1,8 +1,8 @@
 # NHRA Game Theory: Cognitive Digital Twin
 
-[![CI](https://github.com/edithatogo/nhra_gt/actions/workflows/ci.yml/badge.svg)](https://github.com/edithatogo/nhra_gt)
+[![CI](https://github.com/edithatogo/nhra_game/actions/workflows/ci.yml/badge.svg)](https://github.com/edithatogo/nhra_game)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-teal.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.15.2](https://img.shields.io/badge/python-3.15.2-blue.svg)](https://www.python.org/downloads/)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 
 **Decision-grade game-theory mechanism models for National Health Reform Agreement (NHRA) negotiations.**
@@ -39,15 +39,16 @@ This project implements a "Cognitive Digital Twin" of the Australian health fund
 
 ### Prerequisites
 
-- Python 3.12+ (3.13 recommended)
+- Python 3.15.2, selected by `.python-version`
+- Rust and Cargo for the Paignia extension build
 - [uv](https://github.com/astral-sh/uv) (Fast package manager)
 - [Just](https://github.com/casey/just) (Command runner)
 
 ### Installation
 
 ```bash
-git clone https://github.com/edithatogo/nhra_gt.git
-cd nhra_gt
+git clone https://github.com/edithatogo/nhra_game.git
+cd nhra_game
 just install
 ```
 
@@ -58,8 +59,10 @@ If you see lock/reset/status issues, clone/move the repo to a normal local folde
 
 ### Streamlit Cloud
 
-Streamlit Cloud installs dependencies from `requirements.txt` by default. This repo includes a minimal `requirements.txt`
-for the dashboard runtime; optional features (e.g. some game-tree rendering) may require extra dependencies.
+Community Cloud uses `uv.lock` when it is available. A deployment of this
+edition needs Python 3.15.2 and a built Paignia extension. Qualify a clean
+build on the receiving platform before promoting the dashboard revision.
+See the [Community Cloud Python settings](https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app/upgrade-python).
 
 ### Running the System
 
@@ -132,7 +135,7 @@ We adhere to high-integrity software engineering standards:
 
 If you use this model in your research, please cite:
 
-> Mordaunt, D. A. (2025). *NHRA Game Theory: A Cognitive Digital Twin Framework for Mechanism Design*. <https://github.com/edithatogo/nhra_gt>
+> Mordaunt, D. A. (2025). *NHRA Game Theory: A Cognitive Digital Twin Framework for Mechanism Design*. <https://github.com/edithatogo/nhra_game>
 
 ## Security
 

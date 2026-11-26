@@ -1,3 +1,5 @@
+"""Tests for LHN snapshot."""
+
 import pandas as pd
 
 from nhra_gt.engine import ParamsJax, run_hybrid

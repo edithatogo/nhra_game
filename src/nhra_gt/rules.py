@@ -7,22 +7,21 @@ for gradients to flow through rule logic during optimization.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import replace
 from typing import TYPE_CHECKING, Any
+
+import numpy as np
+from jax import Array
+
+from nhra_gt._pytree import PytreeRecord, pytree_dataclass
 
 try:
     import jax.numpy as jnp
-    from flax import struct
     from jax import lax
 except ImportError:  # pragma: no cover
     import numpy as jnp  # type: ignore[no-redef]
 
     lax = None
-
-    class _Struct:  # minimal replacement for `flax.struct`
-        dataclass = staticmethod(dataclass)
-
-    struct = _Struct()
 
 if TYPE_CHECKING:
     # Use Any or a Protocol if needed to avoid circular imports during JIT
@@ -30,8 +29,8 @@ if TYPE_CHECKING:
     State = Any
 
 
-@struct.dataclass
-class CapRule:
+@pytree_dataclass
+class CapRule(PytreeRecord):
     """Handles growth cap logic for Commonwealth funding.
 
     Supports both 'Hard' (strict limit) and 'Soft' (marginal reduction) caps.
@@ -42,7 +41,7 @@ class CapRule:
     cap_limit: float = 0.065
     soft_multiplier: float = 0.5
 
-    def apply(self, nwau_growth: float) -> float:
+    def apply(self, nwau_growth: float) -> Array | np.ndarray:
         """Calculate the cap effect on funding share.
 
         Args:
@@ -73,8 +72,8 @@ class CapRule:
         return lax.cond(self.rule_type == 0, hard_cap, soft_cap)
 
 
-@struct.dataclass
-class AuditRule:
+@pytree_dataclass
+class AuditRule(PytreeRecord):
     """Handles integrity and audit pressure logic.
 
     Defines how coding intensity translates into detection risk or financial penalties.
@@ -88,7 +87,7 @@ class AuditRule:
     threshold_penalty_high: float = 3.0
     threshold_penalty_low: float = 0.1
 
-    def evaluate(self, coding_intensity: float, active_pressure: float) -> float:
+    def evaluate(self, coding_intensity: float, active_pressure: float) -> Array | np.ndarray:
         """Calculate the probability of detection or audit penalty."""
 
         # Proportional logic
@@ -109,8 +108,8 @@ class AuditRule:
         return lax.cond(self.rule_type == 0, proportional, threshold_rule)
 
 
-@struct.dataclass
-class EligibilityRule:
+@pytree_dataclass
+class EligibilityRule(PytreeRecord):
     """Determines NWAU eligibility and activity stream partitioning.
 
     Defines the boundary between Activity Based Funding (ABF) and Block funding.
@@ -122,7 +121,7 @@ class EligibilityRule:
     venue_shift_impact: float = 0.10
     eligibility_abf_share_min: float = 0.5
 
-    def get_abf_share(self, venue_shift_strat: float) -> float:
+    def get_abf_share(self, venue_shift_strat: float) -> Array | np.ndarray:
         """Determines the share of activity that remains in ABF."""
         base_abf_share = 1.0 - self.block_funding_base
         # If strategy is 'Shift' (1.0), we reduce ABF share (moving activity to Block)
@@ -132,8 +131,8 @@ class EligibilityRule:
         return jnp.clip(target_abf_share, self.eligibility_abf_share_min, 1.0)
 
 
-@struct.dataclass
-class ReconciliationRule:
+@pytree_dataclass
+class ReconciliationRule(PytreeRecord):
     """Handles annual financial true-ups and emergency transfers.
 
     Simulates the "Safety Net" or bailout mechanisms triggered by system pressure.
@@ -145,7 +144,9 @@ class ReconciliationRule:
     bailout_increment: float = 0.05
     safety_net_generosity: float = 1.5
 
-    def calculate_bailout(self, current_pressure: float, month_growth_factor: float) -> float:
+    def calculate_bailout(
+        self, current_pressure: float, month_growth_factor: float
+    ) -> Array | np.ndarray:
         """Calculates the bailout amount based on system pressure."""
         bail_inc = jnp.where(
             current_pressure > self.safety_net_threshold,

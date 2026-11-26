@@ -6,7 +6,7 @@ Utilities for finding optimal policy levers using JAX-accelerated objective func
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import Any
+from typing import Any, NamedTuple
 
 import jax.numpy as jnp
 from jaxopt import ScipyBoundedMinimize
@@ -16,15 +16,22 @@ from nhra_gt.domain.state import Params, StateJax
 from nhra_gt.engine import run_simulation_jax
 
 
+class _PolicySearch(NamedTuple):
+    """Parameter, bounds and objective for a policy search."""
+
+    param_to_optimize: str
+    bounds: tuple[float, float]
+    objective_fn: Callable[[StateJax, PyTree], float]
+
+
 def optimize_policy_jax(
     init_state: StateJax,
     base_params: Params,
-    strategies: jnp.ndarray,  # [num_steps, 10]
+    strategies: jnp.ndarray,
     prng_key: Any,
     num_steps: int,
-    param_to_optimize: str,
-    bounds: tuple[float, float],
-    objective_fn: Callable[[StateJax, PyTree], float],  # (final_state, trajectory) -> scalar
+    *options: Any,
+    **named_options: Any,
 ) -> dict[str, Any]:
     """Optimizes a single parameter to minimize a given objective.
 
@@ -34,6 +41,8 @@ def optimize_policy_jax(
         strategies: Pre-defined strategies for the simulation.
         prng_key: Random key.
         num_steps: Simulation length.
+        *options: Historical positional field name, bounds and objective function.
+        **named_options: The same values by keyword.
         param_to_optimize: Name of field in Params to vary.
         bounds: (min, max) for the parameter.
         objective_fn: Function to minimize.
@@ -41,6 +50,7 @@ def optimize_policy_jax(
     Returns:
         A dictionary with the optimized parameter value and result metadata.
     """
+    param_to_optimize, bounds, objective_fn = _PolicySearch(*options, **named_options)
 
     def loss(x):
         # Update params with candidate value

@@ -1,7 +1,12 @@
+"""Tests for reporting dashboard."""
+
 from __future__ import annotations
 
 import pandas as pd
 from scripts.dashboard import prepare_share_drift_data
+
+_BREACH_YEAR = 2027
+_BREACH_SHARE = 0.38
 
 
 def test_prepare_share_drift_data():
@@ -22,5 +27,5 @@ def test_prepare_share_drift_data():
 
     assert "drift_gap" in df.columns  # (nominal - effective)
     assert len(breaches) == 1
-    assert breaches[0]["year"] == 2027
-    assert breaches[0]["value"] == 0.38
+    assert breaches[0]["year"] == _BREACH_YEAR
+    assert breaches[0]["value"] == _BREACH_SHARE

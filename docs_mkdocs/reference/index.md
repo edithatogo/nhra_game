@@ -2,7 +2,7 @@
 
 This section provides auto-generated documentation for the `nhra_gt` Python package.
 
-If you want comprehensive coverage, start with the [Full API Index](api/index.md) which is generated from the package module tree.
+Open **Full API Index** in the sidebar to browse the reference generated from the package module tree.
 
 ---
 

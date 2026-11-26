@@ -13,31 +13,31 @@ This project has three main “ways in”:
 The CI workflow runs the baseline and context pack targets via Snakemake:
 
 ```bash
-poetry run snakemake --cores 1 run_baseline context_pack --forceall
+uv run snakemake --cores 1 run_baseline context_pack --forceall
 ```
 
 ### Build the context pack
 
 ```bash
-poetry run python scripts/build_context_pack.py
+uv run python scripts/build_context_pack.py
 ```
 
 ### Check parameter traceability
 
 ```bash
-poetry run python scripts/check_parameters_grounded.py
+uv run python scripts/check_parameters_grounded.py
 ```
 
 ### Build the docs locally
 
 ```bash
-poetry run mkdocs build
+uv run mkdocs build
 ```
 
 ### Run the Streamlit app
 
 ```bash
-poetry run streamlit run streamlit_app.py
+uv run streamlit run streamlit_app.py
 ```
 
 ## Where things live

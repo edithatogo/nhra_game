@@ -1,3 +1,5 @@
+"""Tests for engine benchmark."""
+
 import jax
 import jax.numpy as jnp
 
@@ -18,7 +20,7 @@ def test_simulation_performance(benchmark):
     # Benchmark
     # We use a lambda to ensure the function is called exactly as expected
     def run():
-        f, t = run_simulation_jax(init_state, params, strategies, key, num_steps)
+        f, _t = run_simulation_jax(init_state, params, strategies, key, num_steps)
         f.pressure.block_until_ready()
         return f
 

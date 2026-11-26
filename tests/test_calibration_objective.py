@@ -1,8 +1,13 @@
+"""Tests for calibration objective."""
+
 from __future__ import annotations
 
 from typing import Any
 
 import numpy as np
+
+_EXPECTED_LOW_LOSS = 0.01
+_EXPECTED_HIGH_LOSS = 0.5
 
 
 def stochastic_objective(
@@ -29,8 +34,8 @@ def test_stochastic_objective_penalizes_variance() -> None:
     score_high = stochastic_objective(means, targets, high_var, lam=1.0)
 
     # Low variance should be better (0.01 vs 0.5)
-    assert score_low == 0.01
-    assert score_high == 0.5
+    assert score_low == _EXPECTED_LOW_LOSS
+    assert score_high == _EXPECTED_HIGH_LOSS
     assert score_high > score_low
 
 

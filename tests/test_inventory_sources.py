@@ -1,13 +1,20 @@
+"""Tests for inventory sources."""
+
 from __future__ import annotations
 
 import os
+import zipfile
 from pathlib import Path
 
-from scripts.audit.inventory_sources import discover_sources
+from scripts.audit.inventory_sources import discover_sources, verify_sources_integrity
+
+_ARCHIVE_COUNT = 2
+_DIAGRAM_COUNT = 2
 
 
 def test_discover_sources_finds_zips_and_diagrams(tmp_path: Path) -> None:
     # Setup mock structure
+    """Check discover sources finds zips and diagrams."""
     (tmp_path / "archive").mkdir()
     (tmp_path / "archive" / "test1.zip").write_text("fake zip")
     (tmp_path / "test2.zip").write_text("fake zip")
@@ -32,17 +39,14 @@ def test_discover_sources_finds_zips_and_diagrams(tmp_path: Path) -> None:
         assert "diagrams/flow.mmd" in diagrams
         assert "diagrams/structure.dot" in diagrams
 
-        assert len(sources["zips"]) == 2
-        assert len(sources["diagrams"]) == 2
+        assert len(sources["zips"]) == _ARCHIVE_COUNT
+        assert len(sources["diagrams"]) == _DIAGRAM_COUNT
     finally:
         os.chdir(old_cwd)
 
 
 def test_verify_sources_integrity(tmp_path: Path) -> None:
-    import zipfile
-
-    from scripts.audit.inventory_sources import verify_sources_integrity
-
+    """Check verify sources integrity."""
     # Create valid zip
     valid_zip = tmp_path / "valid.zip"
     with zipfile.ZipFile(valid_zip, "w") as zf:

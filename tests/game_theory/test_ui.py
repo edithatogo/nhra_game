@@ -1,3 +1,5 @@
+"""Tests for UI."""
+
 from unittest.mock import MagicMock, patch
 
 from nhra_gt.game_theory.registry import GameDefinition, GameRegistry

@@ -1,9 +1,14 @@
+"""Tests for LLM parsing."""
+
 from __future__ import annotations
 
 import pytest
 
 # Implementation will be in a new module
 from scripts.llm_evidence_parser import LLMEvidenceExtractor
+
+_EXTRACTED_MEAN = 0.53
+_EXTRACTED_LOWER_BOUND = 0.51
 
 
 def test_llm_parsing_to_schema(mocker):
@@ -26,8 +31,8 @@ def test_llm_parsing_to_schema(mocker):
     entry = extractor.parse_evidence(raw_text)
 
     assert entry.parameter == "within4_base"
-    assert entry.mean == 0.53
-    assert entry.lower_ci == 0.51
+    assert entry.mean == _EXTRACTED_MEAN
+    assert entry.lower_ci == _EXTRACTED_LOWER_BOUND
     assert entry.nhmrc_level == "III-2"
 
 

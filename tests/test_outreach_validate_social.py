@@ -1,3 +1,5 @@
+"""Tests for outreach validate social."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -6,6 +8,7 @@ from scripts.outreach.validate_social import validate_x_threads
 
 
 def test_validate_social_flags_long_tweet(tmp_path: Path) -> None:
+    """Check validate social flags long tweet."""
     root = tmp_path / "series"
     social = root / "01_demo" / "social"
     social.mkdir(parents=True)

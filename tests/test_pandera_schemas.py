@@ -1,3 +1,5 @@
+"""Tests for pandera schemas."""
+
 from __future__ import annotations
 
 import pandas as pd
